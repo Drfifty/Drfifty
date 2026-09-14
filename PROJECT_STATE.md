@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 1 FINAL COMPREHENSIVE LOCK (71 Points)
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.1a AUTH & RBAC DONE (Arena) — 71 Points Frozen → 2.1a Delivered
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v1.1 — **Phase 1 FINAL COMPREHENSIVE LOCK — 71 Points Frozen (59 + 6 Suggestions + 6 Oil Updates)**
+- **State Version:** v1.2 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC Delivered (Arena ultra-concise)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -21,7 +21,9 @@
 - [x] **59 Master Decisions Frozen:** Q1-59 fully approved
 - [x] **6 Architect Suggestions Approved:** Paymob sub-merchant auto+fallback, FX seed exchangerate-api */30, app_settings_schema seed, pgvector primary, intervention/image GD, Parquet hash archive
 - [x] **6 Oil Updates Frozen (النفط):** Contact protection timing (30), 5% commission (34), B2B single-payer (36), 12h grace once (38), 500 favs cap (40), no source buyout SaaS-only (52) — all locked
-- [x] **This update:** State → Phase 1 FINAL COMPREHENSIVE LOCK 71 points; generating final comprehensive doc
+- [x] **Phase 1 FINAL COMPREHENSIVE LOCK 71 points** → docs `PHASE1_FINAL_COMPREHENSIVE.md` frozen + pushed
+- [x] **Global Rename cursor→arena 2026-09-14:** `.cursorrules`→`.arenarules`, zero cursor remains, Arena env lock `arena/01a09d54-drfifty` — pushed `762d759`
+- [x] **PHASE 2.1a — Auth & RBAC Schema [DONE]:** 9 tables canonical `users/roles/permissions/role_permissions/user_roles/micro_switch_matrix/feature_flags/data_leak_patterns/refresh_tokens` (MySQL 8.4 InnoDB utf8mb4, JSON not JSONB, FK CASCADE, BTREE), AU Lite toggles, Regex 100% post-escrow, Silent Token Rotation 15m/7d HttpOnly+Lax+Inertia/Axios queue — DDL `database/schema/2026_09_14_2.1a_auth_rbac_canonical.sql` + migration `2026_09_14_000010_create_auth_rbac_schema.php` + spec `docs/PHASE2_2.1A_AUTH_RBAC_SCHEMA.md` with Mermaid ERD
 
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
@@ -47,9 +49,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 1 ANALYSIS — FINAL COMPREHENSIVE LOCK 71 points — ZERO CODE — 100% understood and frozen
-- **Deliverable now:** `docs/PHASE1_FINAL_COMPREHENSIVE.md` — unified final Phase 1 analysis (59 + 6 suggestions + 6 oil) + market research + SWOT + DB/API contracts
-- **After approval:** Micro-Sprint execution 1-3 files/150 lines vertical slices (Rule 21/33), with Paymob sub-merchant, FX cron, pgvector, Parquet, image GD baked into first sprints
+- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a Auth & RBAC DONE** (Arena ultra-concise + clean architecture + silent rotation locked)
+- **Deliverable now:** `[PROMPT 2.1a]` delivered — DDL + ERD + Silent Rotation pipeline (see `docs/PHASE2_2.1A_AUTH_RBAC_SCHEMA.md`)
+- **Next:** `[PROMPT 2.1b]` — Wallet/Escrow DDL (awaiting prompt) — continuing prompt-by-prompt FULL unabridged, no truncation
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -61,7 +63,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-14 — Rule 20 — Next: PHASE1_FINAL_COMPREHENSIVE.md*
+*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.1a DONE — Next: [PROMPT 2.1b]*
 
 ---
 ## 9. MANDATORY GLOBAL CORRECTION 2026-09-14 — 15→9 Modules
