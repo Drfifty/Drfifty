@@ -22,7 +22,7 @@
 - [x] **6 Architect Suggestions Approved:** Paymob sub-merchant auto+fallback, FX seed exchangerate-api */30, app_settings_schema seed, pgvector primary, intervention/image GD, Parquet hash archive
 - [x] **6 Oil Updates Frozen (النفط):** Contact protection timing (30), 5% commission (34), B2B single-payer (36), 12h grace once (38), 500 favs cap (40), no source buyout SaaS-only (52) — all locked
 - [x] **Phase 1 FINAL COMPREHENSIVE LOCK 71 points** → docs `PHASE1_FINAL_COMPREHENSIVE.md` frozen + pushed
-- [x] **Global Rename cursor→arena 2026-09-14:** `.cursorrules`→`.arenarules`, zero cursor remains, Arena env lock `arena/01a09d54-drfifty` — pushed `762d759`
+- [x] **Global Rename to Arena 2026-09-14:** legacy rules file → `.arenarules`, zero legacy remains, Arena env lock `arena/01a09d54-drfifty` — pushed `762d759`
 - [x] **PHASE 2.1a — Auth & RBAC Schema [DONE]:** 9 tables canonical `users/roles/permissions/role_permissions/user_roles/micro_switch_matrix/feature_flags/data_leak_patterns/refresh_tokens` (MySQL 8.4 InnoDB utf8mb4, JSON not JSONB, FK CASCADE, BTREE), AU Lite toggles, Regex 100% post-escrow, Silent Token Rotation 15m/7d HttpOnly+Lax+Inertia/Axios queue — DDL `database/schema/2026_09_14_2.1a_auth_rbac_canonical.sql` + migration `2026_09_14_000010_create_auth_rbac_schema.php` + spec `docs/PHASE2_2.1A_AUTH_RBAC_SCHEMA.md` with Mermaid ERD
 
 ## 2. Tech Stack Lock (NO deviations)
