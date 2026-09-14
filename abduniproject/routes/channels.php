@@ -15,3 +15,7 @@ Broadcast::channel('private-escrow.{uuid}', function ($user, $uuid) {
     $esc = EscrowClearing::where('uuid', $uuid)->first();
     return $esc && ((int)$esc->buyer_id === (int)$user->id || (int)$esc->seller_id === (int)$user->id);
 });
+// Workforce — per-tenant private stream — Arena (app_id isolation)
+Broadcast::channel('private-tenant.{appId}.workforce', function ($user, $appId) {
+    return in_array($appId, ['AU_BUSINESS','AU_MED','AU_DEALS','AU_SERV','AU_INVEST']) && $user->can('workforce.tenant.view');
+});
