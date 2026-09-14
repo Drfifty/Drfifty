@@ -1,7 +1,7 @@
 # ABD UNI PROJECT — PHASE 1 FINAL COMPREHENSIVE ANALYSIS
 ## The Ultimate Frozen SOW — 71 Points Locked (59 + 6 Architect Suggestions + 6 Oil Updates) — ZERO CODE
 
-> **Project:** `abduniproject` | **Display:** `ABD UNI PROJECT` | **Local:** `D:\Project\Projects\abduniproject` | **Architecture:** Modular Monolith `app/Modules/` + DDD + Clean | **Governance:** `.cursorrules` v2.2 — 38 Rules, 11 Pillars | **SOW:** FINAL COMPREHENSIVE LOCK — 71/71 — No assumptions — Zero code until approval (Rule 2) | **Date:** 2026-09-14
+> **Project:** `abduniproject` | **Display:** `ABD UNI PROJECT` | **Local:** `D:\Project\Projects\abduniproject` | **Architecture:** Modular Monolith `app/Modules/` + DDD + Clean | **Governance:** `.arenarules` v2.2 — 38 Rules, 11 Pillars | **SOW:** FINAL COMPREHENSIVE LOCK — 71/71 — No assumptions — Zero code until approval (Rule 2) | **Date:** 2026-09-14
 
 ---
 

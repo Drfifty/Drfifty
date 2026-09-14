@@ -2,7 +2,7 @@
 ## Frozen SOW — FINAL LOCK (59/59 Decisions) — ZERO CODE
 
 > **Project Folder:** `abduniproject` | **Display:** `ABD UNI PROJECT` | **Architecture:** Modular Monolith `app/Modules/` + DDD + Clean | **Stack:** Laravel 12 PHP 8.4, React 19 Inertia v2, TS 5.7 strict zero any, Tailwind v4 Shadcn Lucide, Vite, Reverb 8080 wss exclusive | **DB:** MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core + PostgreSQL 16 PostGIS/pgcrypto AU MED exclusive | **Cache:** Redis | **Encryption:** AES-256-GCM + TLS 1.3 | **Edge:** Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only | **Local:** Laragon Windows `D:\Project\Projects\abduniproject`
-> **Governance:** `.cursorrules` v2.2 UNIFIED — 38 Rules, 11 Pillars | **SOW Status:** FROZEN — No assumptions, no code until Phase 1 approval (Rule 2) | **Date:** 2026-09-14
+> **Governance:** `.arenarules` v2.2 UNIFIED — 38 Rules, 11 Pillars | **SOW Status:** FROZEN — No assumptions, no code until Phase 1 approval (Rule 2) | **Date:** 2026-09-14
 
 ---
 
@@ -237,7 +237,7 @@ After Phase 1 approval, vertical slices (DB→Backend→API→Frontend→Test, R
 
 | Domain | Score | Evidence |
 |--------|-------|----------|
-| Memory | 100% | All 59 decisions cross-referenced to `.cursorrules` v2.2 + PROJECT_STATE + Module specs, no orphan, app_id isolated |
+| Memory | 100% | All 59 decisions cross-referenced to `.arenarules` v2.2 + PROJECT_STATE + Module specs, no orphan, app_id isolated |
 | Architecture | 100% | Modular Monolith isolation, layered SoC, zero raw SQL, JSON not JSONB in core |
 | Security | 100% | AES-256-GCM per-row IV, TOTP MFA, private Reverb, velocity+mutex, 0 wallet debit, chargeback freeze |
 | Precision | 100% | 59 decisions enumerated, trade-offs flagged, YAGNI lean |

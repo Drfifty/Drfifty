@@ -1,5 +1,5 @@
 ==============================================================================
-# ABD UNI PROJECT MONOLITH — MASTER CURSOR RULES & SYSTEM INITIALIZATION (CANONICAL — v2.2 UNIFIED)
+# ABD UNI PROJECT MONOLITH — MASTER ARENA RULES & SYSTEM INITIALIZATION (CANONICAL — v2.2 UNIFIED)
 ==============================================================================
 
 project_identity:
@@ -102,7 +102,7 @@ rules:
   - 26. STRICT 100% COMPREHENSIVE AI CALIBRATOR SUITE:
     - Before, during, and after EVERY Micro-Sprint and atomic sub-task, the Agent MUST execute the "AU Master AI Calibrator Suite" across all core competency domains (Memory, Architecture, Security, Precision, Craftsmanship, Operational).
     - Print a concise "Calibrator Verification Gate" output showing a 100% passing score for the active sub-task.
-    - If ANY competency score drops below 100% (even by 0.0001%), execution is STRICTLY BLOCKED: the Agent MUST self-recalibrate, reload .cursorrules and PROJECT_STATE.md, eliminate hallucinations, and re-test until a 100% score is verified before generating code.
+    - If ANY competency score drops below 100% (even by 0.0001%), execution is STRICTLY BLOCKED: the Agent MUST self-recalibrate, reload .arenarules and PROJECT_STATE.md, eliminate hallucinations, and re-test until a 100% score is verified before generating code.
   - 27. STRICT LAYERED ARCHITECTURE & SEPARATION OF CONCERNS (SoC):
     - Presentation Layer (Controllers/): HTTP Request parsing, validation trigger via FormRequests, and Inertia/JSON Response returning ONLY. Zero business logic.
     - Business Logic Layer (Actions/ or Services/): Single-responsibility action classes handling pure business domain rules and transactions.
@@ -212,7 +212,7 @@ superseded_lines:
   - "Phase 0 registry, Module 9 agent matrix, Phase 3.1 card header + toggles, Phase 4.0 C-Suite drawer -> REWRITTEN to the canonical Table 1.3 registry."
   - "Final Test Prompt 1 generic modules (former 'Users & Clients', 'Service Providers & B2B Entities', 'Bookings, Orders & Transactions' lines) -> REPLACED by project modules (Deals, Wallet, Escrow, EMR, Dispatch)."
   - "Font pair drift 'Cairo/IBM Plex Sans' (Phases 4.0/6.0) -> UNIFIED to the Phase 3.0 token-set pair: Cairo / Tajawal (Arabic) + Inter (Latin/numerals)."
-  - "Embedded .cursorrules (banner v2.1 + missing 'native Spatial' in the database line) -> UPDATED to v2.2 UNIFIED with the native Spatial mirror."
+  - "Embedded .arenarules (banner v2.1 + missing 'native Spatial' in the database line) -> UPDATED to v2.2 UNIFIED with the native Spatial mirror."
   - "SCREEN 3 title 'SECURITY, DRM, DRM & POISON PILL VAULT' (duplicate DRM) -> CORRECTED to 'SECURITY, DRM & POISON PILL VAULT'."
   - "Bare 'AES-256' in AU MED clinical lines -> UNIFIED to AES-256-GCM per Rule 6."
   - "Undefined Reverb transport (no port/endpoint anywhere) -> DEFINED in B.10 (port 8080, wss://, BROADCAST_PORT) and added as a `reverb` container in the B.11 docker stack."

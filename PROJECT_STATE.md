@@ -7,7 +7,7 @@
 - **project_display_name:** `ABD UNI PROJECT`
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
-- **.cursorrules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
+- **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
 - **State Version:** v1.1 — **Phase 1 FINAL COMPREHENSIVE LOCK — 71 Points Frozen (59 + 6 Suggestions + 6 Oil Updates)**
 
 ## 1. What Was Built
@@ -70,6 +70,6 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 
 **Defect Fixed:** Prior references counting 15 modules incorrectly included 4 B2C Spokes, financial ledger core, and AI gateway as extra modules, plus counted Phase 2/4/5/6 work packages (Core Infra, Frontend Master, Backend B.1-B.14, RBAC, Poison Pill, Test Suites) as Modules 10-15. Those are **NOT modules** — they are sub-systems integrated inside Modules 1-9 (e.g., RBAC → Module 9 Module 7/13, Poison Pill → Module 9 Module 14).
 
-**Files corrected:** `abduniproject/.cursorrules` (total_modules 15→9, ecosystem_scale), `abduniproject/docs/MODULES_INDEX.md` (rewritten to 9), `PROJECT_STATE.md` (§0/§1/§4), `abduniproject/docs/CANONICAL_MANIFEST.md` (verified), `PHASE1_MASTER_ARCHITECTURE` and `PHASE1_FINAL_COMPREHENSIVE` addendum applied in next commit.
+**Files corrected:** `abduniproject/.arenarules` (total_modules 15→9, ecosystem_scale), `abduniproject/docs/MODULES_INDEX.md` (rewritten to 9), `PROJECT_STATE.md` (§0/§1/§4), `abduniproject/docs/CANONICAL_MANIFEST.md` (verified), `PHASE1_MASTER_ARCHITECTURE` and `PHASE1_FINAL_COMPREHENSIVE` addendum applied in next commit.
 
 **Single Source of Truth:** Table 1.4 = 9 rows (Phase 1 Modules 1-9). Any reference to Module 10-15 is a defect to be ignored.
