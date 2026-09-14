@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.2c SERV & INVEST APIS DONE (Arena) — 71 Points → 2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c Delivered
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.2d AU MED APIS DONE (Arena) — 71 Points → 2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c+2.2d Delivered
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v1.8 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC + 2.1b Wallet/Escrow + 2.1c AU DEALS + 2.1d AU SERV Spatial + 2.2a Auth/Financial + 2.2b AU DEALS + 2.2c SERV & INVEST APIs Delivered (Arena ultra-concise)**
+- **State Version:** v1.9 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC + 2.1b Wallet/Escrow + 2.1c AU DEALS + 2.1d AU SERV Spatial + 2.2a Auth/Financial + 2.2b AU DEALS + 2.2c SERV/INVEST + 2.2d AU MED Anonymized Delivered (Arena ultra-concise)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -30,6 +30,7 @@
 - [x] **PHASE 2.2a — Auth & Financial APIs [DONE]:** 9 endpoints canonical `POST /auth/login|register|refresh + GET /me + GET balance + POST deposit|withdraw-request + POST escrow/lock|release|dispute` (JWT 15m + HttpOnly 7d, Idempotency-Key, Pillar6 race-guard, 3-Tier snapshot, RBAC view≠execute) — spec `docs/PHASE2_2.2A_AUTH_FINANCIAL_APIS.md` + routes `routes/api/v1/auth_wallet_escrow.php`
 - [x] **PHASE 2.2b — AU DEALS APIs [DONE]:** 7 endpoints canonical `POST listings + GET listings (FULLTEXT+Spatial feed) + GET listings/{uuid} + GET/POST stagnant + GET providers catalog` (Idempotency-Key, Oil1 contact hidden, 24h stagnant promote, FULLTEXT ngram) — spec `docs/PHASE2_2.2B_DEALS_APIS.md` + routes `routes/api/v1/deals.php`
 - [x] **PHASE 2.2c — SERV & INVEST APIs [DONE]:** 4 endpoints canonical `POST /serv/tickets + PATCH radius + POST /invest/dispatches` + Reverb `presence-dispatch-{region}` live POINT + `private-invest.{uuid}` escrow (WSS 8080, ProviderLocationUpdated/TicketCreated/DispatchRadiusAdjusted) — spec `docs/PHASE2_2.2C_SERV_INVEST_APIS.md` + routes `routes/api/v1/serv.php|invest.php` + `routes/channels.php`
+- [x] **PHASE 2.2d — AU MED Anonymized APIs [DONE]:** 4 endpoints canonical `GET /au-med/providers + GET providers/{uuid} + POST appointments (hash-only complaint) + POST telemetry/audit (SHA256 hashes, ZERO raw)` + `AnonymizedTelemetryMiddleware` (422 raw block, TTL 90d PG) — spec `docs/PHASE2_2.2D_MED_APIS.md` + routes `routes/api/v1/med.php`
 
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
@@ -55,8 +56,8 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c DONE** (Arena ultra-concise + Reverb WSS 8080)
-- **Deliverable now:** `[PROMPT 2.2c]` delivered — SERV & INVEST REST+WebSocket (see `docs/PHASE2_2.2C_SERV_INVEST_APIS.md`)
+- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c+2.2d DONE** (Arena ultra-concise + PG anonymized)
+- **Deliverable now:** `[PROMPT 2.2d]` delivered — AU MED Anonymized APIs (see `docs/PHASE2_2.2D_MED_APIS.md`)
 - **Next:** `[PROMPT 2.3]` — Global Search & Realtime (awaiting prompt) — continuing FULL unabridged
 
 ## 8. Risks Mitigated
@@ -69,7 +70,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.2c DONE — Next: [PROMPT 2.3]*
+*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.2d DONE — Next: [PROMPT 2.3]*
 
 ---
 ## 9. MANDATORY GLOBAL CORRECTION 2026-09-14 — 15→9 Modules
