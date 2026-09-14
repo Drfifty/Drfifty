@@ -7,7 +7,7 @@
 - **project_display_name:** `ABD UNI PROJECT`
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
-- **.cursorrules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 15 Modules — loaded
+- **.cursorrules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
 - **State Version:** v1.1 — **Phase 1 FINAL COMPREHENSIVE LOCK — 71 Points Frozen (59 + 6 Suggestions + 6 Oil Updates)**
 
 ## 1. What Was Built
@@ -16,7 +16,7 @@
 - [x] Shared kernel: `RegexDataLeakDetector`, `AgentStrategyManager` Tri-Hybrid, `CheckModuleStatus` 503, Enums `AppId`/`Currency`
 - [x] Migrations: `feature_flags` (AU Lite), `agent_actions` ledger (append-only, confidence<90 fallback, HITL), `app_wallets` multi-currency (no base, CHECK>=0, `exchange_rates` + `deal_exchange_snapshots`)
 - [x] Frontend: `Types/index.ts` strict zero any, `AppLayout` RTL logical, `DataTable` server-paginated (Rule 13)
-- [x] Docs: `CANONICAL_MANIFEST`, `AGENT_REGISTRY` (13), `MODULES_INDEX` (15), `COMPLIANCE_AUDIT`, `PHASE1_MASTER_ARCHITECTURE` (ZERO CODE, 59 frozen)
+- [x] Docs: `CANONICAL_MANIFEST`, `AGENT_REGISTRY` (13), `MODULES_INDEX` (9), `COMPLIANCE_AUDIT`, `PHASE1_MASTER_ARCHITECTURE` (ZERO CODE, 59 frozen) — 9 MODULES CANONICAL
 - [x] **Phase 1 Ingestion:** All chunks Vision + Modules 1-9 Parts 1-3 memorized, live market research + SWOT delivered (Vezeeta/Yodawy, TijaraHub/MaxAB, Property Finder $525M, Paymob/Fawry)
 - [x] **59 Master Decisions Frozen:** Q1-59 fully approved
 - [x] **6 Architect Suggestions Approved:** Paymob sub-merchant auto+fallback, FX seed exchangerate-api */30, app_settings_schema seed, pgvector primary, intervention/image GD, Parquet hash archive
@@ -29,8 +29,8 @@ Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia
 ## 3. Applications Registry (5) — space-form app_id
 AU BUSINESS `ab_` (core, non-hibernatable, owns Paymob sub-merchant + FX) | AU MED `amed_` (pgsql clinical+pgvector) | AU DEALS `adl_` | AU SERV `asv_` | AU INVEST `ainv_`
 
-## 4. Agents: 13 Canonical | Modules: 15
-Agents 1 CFO, 2 CTO, 3 CMO, 4 Vendor Success, 5 Customer Support, 6 SecOps, 7 CLO, 8 Supply Chain, 9 PR, 10 QA/Medical, 11 DevOps/Code Sandbox, 12 Global Controller, 13 Fraud/AML. Modules 1-9 Phase 1 (Auth→Dashboard), 10-15 later.
+## 4. Agents: 13 Canonical | Modules: 9 — EXACTLY 9 (1-9)
+Agents 1 CFO, 2 CTO, 3 CMO, 4 Vendor Success, 5 Customer Support, 6 SecOps, 7 CLO, 8 Supply Chain, 9 PR, 10 QA/Medical, 11 DevOps/Code Sandbox, 12 Global Controller, 13 Fraud/AML. Modules 1-9 Phase 1 (Auth→Dashboard) — Modules 10-15 VOID per 2026-09-14 correction.
 
 ## 5. Pillars 11 — All Enforced + Final Tweaks
 Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → RegexDataLeakDetector → lockForUpdate+Mutex → Calibrator → Ephemeral Swarm (prod) → Silent Token Rotation → Edge DoS (prod) → Tiered Mutation — plus final: pgvector, intervention/image GD, Parquet archive, Paymob sub-merchant auto.
@@ -62,3 +62,14 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
 *Last updated: 2026-09-14 — Rule 20 — Next: PHASE1_FINAL_COMPREHENSIVE.md*
+
+---
+## 9. MANDATORY GLOBAL CORRECTION 2026-09-14 — 15→9 Modules
+
+**Canonical Correction Applied:** System is EXACTLY **9 MODULES (1-9)** — 5 Applications (AU BUSINESS + AU MED/AU DEALS/AU SERV/AU INVEST) | 13 Agents | 9 Modules
+
+**Defect Fixed:** Prior references counting 15 modules incorrectly included 4 B2C Spokes, financial ledger core, and AI gateway as extra modules, plus counted Phase 2/4/5/6 work packages (Core Infra, Frontend Master, Backend B.1-B.14, RBAC, Poison Pill, Test Suites) as Modules 10-15. Those are **NOT modules** — they are sub-systems integrated inside Modules 1-9 (e.g., RBAC → Module 9 Module 7/13, Poison Pill → Module 9 Module 14).
+
+**Files corrected:** `abduniproject/.cursorrules` (total_modules 15→9, ecosystem_scale), `abduniproject/docs/MODULES_INDEX.md` (rewritten to 9), `PROJECT_STATE.md` (§0/§1/§4), `abduniproject/docs/CANONICAL_MANIFEST.md` (verified), `PHASE1_MASTER_ARCHITECTURE` and `PHASE1_FINAL_COMPREHENSIVE` addendum applied in next commit.
+
+**Single Source of Truth:** Table 1.4 = 9 rows (Phase 1 Modules 1-9). Any reference to Module 10-15 is a defect to be ignored.

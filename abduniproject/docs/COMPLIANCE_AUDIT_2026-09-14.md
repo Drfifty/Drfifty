@@ -22,7 +22,7 @@
 | encryption | AES-256-GCM + TLS 1.3 | none | .env + pgsql pgcrypto note | ✅ |
 | 5 apps | space-form app_id + PascalCase ns only | none | documented in PROJECT_STATE + manifest + AppId enum | ✅ |
 | 13 agents | Table 1.3 supersedes Phase3.x | none | docs/AGENT_REGISTRY.md + agent_actions ledger | ✅ |
-| 15 modules | Table 1.4 | none | docs/MODULES_INDEX.md | ✅ |
+| 9 modules | Table 1.4 | none | docs/MODULES_INDEX.md | ✅ |
 | typography | Cairo/Tajawal + Inter, RTL-first | none | app.css + AppLayout dir=rtl logical props | ✅ |
 | sprint limits | 1–3 files / 150 lines | — | enforced, documented | ✅ |
 | edge | CF Enterprise + Nginx 20/s + Fail2ban (PROD Docker only) | none | docker-compose.prod.yml (prod-only comment) | ✅ |
@@ -63,3 +63,7 @@
 ---
 **Arabic Summary:** تمت مطابقة المستودع بالكامل مع المانيفستو الموحد: إنشاء الهيكل المعياري، تثبيت الحزمة التقنية، فصل قواعد MySQL/PostgreSQL، تفعيل Reverb 8080، وتوثيق الوكلاء والوحدات، مع اجتياز بوابة المعايرة الستة وبدون أي إضافات غير مطلوبة.
 
+
+---
+## CORRECTION ADDENDUM 2026-09-14 — 15→9 Modules (MANDATORY GLOBAL CORRECTION)
+System canonical is EXACTLY 9 MODULES (1-9): Authentication (1), Homepage (2), Stage 1 Taxonomy (3), Single Deal Page (4), Wallet/Checkout (5), Interaction Hub (6), Auxiliary/CMS (7), Workforce/Calibrator (8), Master Admin Dashboard (9). Former Modules 10-15 (Core Infra, Frontend Master, Backend B.1-B.14, RBAC, Poison Pill, Test Suites) are VOID — they are Phase 2/4/5/6 work packages integrated inside Modules 1-9, incorrectly counted. Any reference to Module 10-15 in earlier drafts is a defect — corrected per Phase 2 Directive.

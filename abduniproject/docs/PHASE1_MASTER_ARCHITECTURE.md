@@ -251,3 +251,7 @@ After Phase 1 approval, vertical slices (DB→Backend→API→Frontend→Test, R
 **Arabic Summary (ملخص عربي):** تم تجميد وثيقة الهندسة الرئيسية بدون كود — تغطي 15 وحدة و13 وكيلًا و5 تطبيقات تحت محفظة واسكرو مغلق عبر Paymob (5%، 1.5x مقايضة/1x خيري، كفالة 12 ساعة واحدة)، مع معايير عدم إسكرو سلبي وكفالة محفظة مقدسة وتنفيذ صفقة واحدة دافعة فقط، وقنوات Reverb خاصة، وتدرج احتفاظ 90 يومًا → S3، وجاهزية تنفيذ شرائح رأسية دقيقة.
 
 *Document Status: FROZEN — ZERO CODE — Awaiting Phase 1 Approval to proceed to Micro-Sprints.*
+
+---
+## CORRECTION ADDENDUM 2026-09-14 — 15→9 Modules (MANDATORY GLOBAL CORRECTION)
+System canonical is EXACTLY 9 MODULES (1-9): Authentication (1), Homepage (2), Stage 1 Taxonomy (3), Single Deal Page (4), Wallet/Checkout (5), Interaction Hub (6), Auxiliary/CMS (7), Workforce/Calibrator (8), Master Admin Dashboard (9). Former Modules 10-15 (Core Infra, Frontend Master, Backend B.1-B.14, RBAC, Poison Pill, Test Suites) are VOID — they are Phase 2/4/5/6 work packages integrated inside Modules 1-9, incorrectly counted. Any reference to Module 10-15 in earlier drafts is a defect — corrected per Phase 2 Directive.

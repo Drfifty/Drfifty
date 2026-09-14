@@ -1,4 +1,6 @@
-# Table 1.4 — The 15 Architectural Modules Index
+# Table 1.4 — The 9 Architectural Modules Index (CANONICAL — CORRECTED 2026-09-14)
+
+> **System Canonical:** 5 Applications (1 Core B2B `AU BUSINESS` + 4 B2C Spokes `AU MED`, `AU DEALS`, `AU SERV`, `AU INVEST`) | 13 Smart Agents (1-13) | **EXACTLY 9 MODULES (1-9)** — Modules 10-15 references are VOID.
 
 | # | Module | Source Card |
 |---|--------|-------------|
@@ -11,15 +13,12 @@
 | 7 | Auxiliary Services, Loyalty Points & External Coupon Engine, Blog CMS & Smart Integrations Hub | Phase 1 — Module 7 |
 | 8 | AU Digital Workforce Marketplace & Commercial Business Calibrator SaaS | Phase 1 — Module 8 |
 | 9 | Exhaustive Platform-Wide Master Admin Dashboard Architecture (Parts 1–3) | Phase 1 — Module 9 |
-| 10 | Platform Core Infrastructure, High-Traffic Architecture & System Extensions | Phase 2 |
-| 11 | Full Frontend Master Architecture, Atomic Components & Screen Specifications | Phase 4.0 |
-| 12 | Full Backend Architecture, Services B.1–B.14 & API Pipelines | Phase 5.0 |
-| 13 | Zero-Trust RBAC | Phase 5.0 (B.3) |
-| 14 | Poison Pill DRM Engine | Phase 5.0 (B.3) |
-| 15 | Full Verification, Test Suites 1–13 & Final E2E Acceptance Blueprint | Phase 6.0 |
+
+## Correction Note (2026-09-14)
+- **Former Modules 10-15 VOID:** `10 Platform Core Infrastructure`, `11 Frontend Master Architecture`, `12 Backend Architecture B.1–B.14`, `13 Zero-Trust RBAC`, `14 Poison Pill DRM`, `15 Test Suites 1–13` were **NOT modules** — they are Phase 2 / 4.0 / 5.0 / 6.0 work packages and sub-systems integrated **inside** Modules 1-9 (e.g., RBAC inside Module 9 Module 7/13, Poison Pill inside Module 9 Module 14, Core Infra inside Dashboard telemetry). Any document counting 15 modules is a defect — corrected to 9.
 
 ## Notes
-- **Abwab Al Khair (Charity)** is NOT a standalone module — it is a zero-fee deal-type value within the standard taxonomy (Module 3), with no separate schema/UI/admin.
+- **Abwab Al Khair (Charity)** is NOT a standalone module — zero-fee deal-type value within Module 3 taxonomy.
 - **AU MED** clinical store uses PostgreSQL; all other modules use MySQL core.
 
 ## Module Isolation Contract (Rule 5 + Rule 30)
@@ -29,4 +28,4 @@ Each module lives at `app/Modules/{ModuleName}/` with strict layers:
 - `Models/` → schema, relations, scopes, casts only
 - `Requests/` → validation + authorization
 - `Enums/` → native PHP 8.4 enums
-Shared logic → `app/Modules/Shared/` (Rule 28) — never duplicated across modules.
+Shared logic → `app/Modules/Shared/` (Rule 28) — never duplicated.

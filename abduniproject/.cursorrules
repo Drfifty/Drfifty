@@ -34,9 +34,9 @@ ecosystem_scope:
   core_hub: "abduniproject (AU BUSINESS — B2B)"
   b2c_apps: ["AU MED", "AU DEALS", "AU SERV", "AU INVEST"]
   total_applications: 5 # AU BUSINESS (Core Hub) + AU MED, AU DEALS, AU SERV, AU INVEST
-  ecosystem_scale: "Core B2B Engine (abduniproject / AU BUSINESS) powering 4 B2C Applications (AU MED, AU DEALS, AU SERV, AU INVEST), 13 AI Agents, and 15 Modules"
+  ecosystem_scale: "Core B2B Engine (abduniproject / AU BUSINESS) powering 4 B2C Applications (AU MED, AU DEALS, AU SERV, AU INVEST), 13 AI Agents, and 9 Modules"
   total_agents: 13 # See Table 1.3 for the full registry
-  total_modules: 15 # See Table 1.4 for the full index
+  total_modules: 9 # See Table 1.4 — EXACTLY 9 Modules (1-9) — canonical
   commercial_offerings:
     - "Digital Workforce Marketplace: Selling AI Agents via Outright Enterprise Purchase (Buyout) or Managed Hosted Salary (Monthly Subscription via app_wallet)"
     - "Commercial Business Calibrator SaaS: Tri-Stage Commercial Profitability & Quality Verification Engine (Pre-Op, In-Op, Post-Op Gates)"
@@ -217,3 +217,7 @@ superseded_lines:
   - "Bare 'AES-256' in AU MED clinical lines -> UNIFIED to AES-256-GCM per Rule 6."
   - "Undefined Reverb transport (no port/endpoint anywhere) -> DEFINED in B.10 (port 8080, wss://, BROADCAST_PORT) and added as a `reverb` container in the B.11 docker stack."
   - "Historical notes preserved from the superseded registries: old Phase 0 Agent 2 (CSO) — the isolated 'Approve & Launch' UI action was '(formerly assigned to marketing optimization in early draft)'; old Phase 0 Agent 4 (CAA) — support ticket triage / routing / refund resolution was '(formerly referred to as customer support & workflow automation)' (functions now carried by Agent 5 - Customer Support Director). Former Phase 3.1 toggle names: Agent 2: Market Trend Analysis / Propose Regional Expansion (now on Agent 3); Agent 3: Audit Terms / Modify Terms of Service (now on Agent 7); Agent 4: Build n8n/Make Workflows / Deploy to Live Production (now 'Build n8n/Make Workflows' + 'Merge PR to Production' on Agent 11); Agent 5: Draft Ads / Execute Marketing Budget / Send External Emails / Draft Emails (now on Agent 3); Agent 7: Analyze Sales Conversions / Dispatch Guidance Briefs / Alter Vendor Tiers (now on Agent 4)."
+
+# CORRECTION LOG 2026-09-14 — MANDATORY GLOBAL CORRECTION 15→9 Modules
+# System canonical: 5 Applications (1 Core B2B AU BUSINESS + 4 B2C Spokes AU MED/AU DEALS/AU SERV/AU INVEST) | 13 Smart Agents | EXACTLY 9 MODULES (1-9)
+# Modules 10-15 (former Phase 2/4/5/6 infrastructure/frontend/backend/RBAC/Poison Pill/Test Suites) were NOT modules — they are Phase 2+ work packages / sub-systems under the 9 Modules, incorrectly counted.

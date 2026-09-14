@@ -148,3 +148,7 @@ Actor→Goal→Steps→Alt Flows for Auth L1-3, P2P quota intercept (2→over-fe
 
 *Document: ZERO CODE — FROZEN — Awaiting Phase 1 Final Approval.*
 
+
+---
+## CORRECTION ADDENDUM 2026-09-14 — 15→9 Modules (MANDATORY GLOBAL CORRECTION)
+System canonical is EXACTLY 9 MODULES (1-9): Authentication (1), Homepage (2), Stage 1 Taxonomy (3), Single Deal Page (4), Wallet/Checkout (5), Interaction Hub (6), Auxiliary/CMS (7), Workforce/Calibrator (8), Master Admin Dashboard (9). Former Modules 10-15 (Core Infra, Frontend Master, Backend B.1-B.14, RBAC, Poison Pill, Test Suites) are VOID — they are Phase 2/4/5/6 work packages integrated inside Modules 1-9, incorrectly counted. Any reference to Module 10-15 in earlier drafts is a defect — corrected per Phase 2 Directive.
