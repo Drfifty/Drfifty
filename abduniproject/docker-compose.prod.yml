@@ -1,0 +1,59 @@
+# ABD UNI PROJECT — Production Docker ONLY (Ephemeral Swarm + Edge)
+# WARNING: This file is for PRODUCTION deployment. Never use in Laragon local dev.
+# Environment Clarification: Laragon = local, Docker = prod — do not cross-apply.
+
+services:
+  app:
+    image: abduniproject/app:prod
+    build: { context: ., dockerfile: Dockerfile }
+    environment:
+      - APP_ENV=production
+      - BROADCAST_CONNECTION=reverb
+      - REVERB_PORT=8080
+      - REVERB_SCHEME=https
+    depends_on: [mysql, pgsql, redis, reverb]
+    deploy: { replicas: 2 }
+
+  nginx:
+    image: nginx:alpine
+    ports: ["80:80", "443:443", "8080:8080"]
+    volumes: ["./docker/nginx.prod.conf:/etc/nginx/nginx.conf:ro"]
+    depends_on: [app]
+
+  mysql:
+    image: mysql:8.4
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-buffer-pool-size=1G
+    environment: { MYSQL_DATABASE: abduniproject, MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}" }
+    volumes: [mysql_data:/var/lib/mysql]
+    ports: ["3306:3306"]
+
+  pgsql:
+    image: postgis/postgis:16-3.4
+    environment: { POSTGRES_DB: abduniproject_clinical, POSTGRES_PASSWORD: "${DB_PGSQL_PASSWORD}" }
+    volumes: [pgsql_data:/var/lib/postgresql/data]
+    # PostGIS + pgcrypto: run CREATE EXTENSION postgis; CREATE EXTENSION pgcrypto;
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes: [redis_data:/data]
+
+  # Ephemeral Swarm workers — auto-scale via Redis Queues, self-terminate (Pillar 8)
+  worker:
+    image: abduniproject/app:prod
+    command: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+    deploy: { replicas: 3 }
+    depends_on: [redis]
+
+  reverb:
+    image: abduniproject/app:prod
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    ports: ["8080:8080"]
+    environment: { REVERB_SCHEME: https }
+
+  # Cloudflare Tunnel / WAF is external (Enterprise) — Nginx rate-limit 20 req/sec + Fail2ban inside container
+  fail2ban:
+    image: crazymax/fail2ban:latest
+    volumes: ["/var/log:/var/log:ro"]
+
+volumes: { mysql_data: {}, pgsql_data: {}, redis_data: {} }

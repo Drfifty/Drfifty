@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* ABD UNI PROJECT — Tailwind v4 + Design Tokens (Phase 3.0)
+   Typography: Arabic Cairo/Tajawal 400/600/700 · Latin/num Inter
+   RTL-first: dir=rtl + logical props ps-/pe-/ms-/me-/text-start
+*/
+
+@theme {
+  --font-arabic: "Cairo", "Tajawal", sans-serif;
+  --font-latin: "Inter", sans-serif;
+  --color-brand: #0f172a;
+  --color-accent: #0ea5e9;
+}
+
+:root {
+  font-family: var(--font-latin), var(--font-arabic), system-ui, sans-serif;
+}
+
+/* RTL-first base — Cairo for Arabic, Inter for Latin */
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), var(--font-latin), sans-serif;
+  text-align: start;
+}
+html[dir="ltr"] body {
+  font-family: var(--font-latin), var(--font-arabic), sans-serif;
+}
+
+/* Shadcn-style base */
+@layer base {
+  * { @apply border-slate-200; }
+  body { @apply bg-white text-slate-900 antialiased; }
+}
