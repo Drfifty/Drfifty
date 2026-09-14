@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.1c AU DEALS DONE (Arena) — 71 Points → 2.1a+2.1b+2.1c Delivered
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.1d AU SERV DONE (Arena) — 71 Points → 2.1a+2.1b+2.1c+2.1d Delivered
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v1.4 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC + 2.1b Wallet/Escrow + 2.1c AU DEALS Delivered (Arena ultra-concise)**
+- **State Version:** v1.5 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC + 2.1b Wallet/Escrow + 2.1c AU DEALS + 2.1d AU SERV Spatial Delivered (Arena ultra-concise)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -26,6 +26,7 @@
 - [x] **PHASE 2.1a — Auth & RBAC Schema [DONE]:** 9 tables canonical `users/roles/permissions/role_permissions/user_roles/micro_switch_matrix/feature_flags/data_leak_patterns/refresh_tokens` (MySQL 8.4 InnoDB utf8mb4, JSON not JSONB, FK CASCADE, BTREE), AU Lite toggles, Regex 100% post-escrow, Silent Token Rotation 15m/7d HttpOnly+Lax+Inertia/Axios queue — DDL `database/schema/2026_09_14_2.1a_auth_rbac_canonical.sql` + migration `2026_09_14_000010_create_auth_rbac_schema.php` + spec `docs/PHASE2_2.1A_AUTH_RBAC_SCHEMA.md` with Mermaid ERD
 - [x] **PHASE 2.1b — Wallet & Escrow Engine [DONE]:** 7 tables canonical `app_wallets/exchange_rates/commission_rules/escrow_clearings/deal_exchange_snapshots/wallet_transactions/financial_audit_logs` (InnoDB utf8mb4, CHECK balance>=0, subunit BIGINT, GENERATED available, TRIGGER immutability), 3-Tier 5% Oil2 snapshots frozen, Paymob blind sub-merchant, FX locked_at, barter 1.5/1x 50/50, 48h dispute + 12h grace once — DDL `database/schema/2026_09_14_2.1b_wallet_escrow_canonical.sql` + migration `2026_09_14_000011_create_wallet_escrow_schema.php` + spec `docs/PHASE2_2.1B_WALLET_ESCROW_SCHEMA.md` with Mermaid ERD + Race-Guard (lockForUpdate+Redis Mutex)
 - [x] **PHASE 2.1c — AU DEALS Listings [DONE]:** 5 tables canonical `deal_categories/deals_listings/deal_items/promotional_bundles/stagnant_deals` (InnoDB utf8mb4, JSON Rule7, FULLTEXT ngram x2, POINT SRID4326 GENERATED + SPATIAL, Tiered Mutation), 24h stagnant cron, hierarchical taxonomy — DDL `database/schema/2026_09_14_2.1c_deals_canonical.sql` + migration `2026_09_14_000012_create_deals_schema.php` + spec `docs/PHASE2_2.1C_DEALS_SCHEMA.md` with Mermaid ERD
+- [x] **PHASE 2.1d — AU SERV Spatial [DONE]:** 3 tables canonical `service_providers/service_tickets/dispatch_logs` (InnoDB utf8mb4, POINT SRID4326 live + POLYGON SRID4326 coverage, SPATIAL INDEX x4, ST_Distance_Sphere sub-ms), 48h dispute + 12h grace, live heartbeat via Reverb — DDL `database/schema/2026_09_14_2.1d_serv_canonical.sql` + migration `2026_09_14_000013_create_serv_schema.php` + spec `docs/PHASE2_2.1D_SERV_SCHEMA.md` with Mermaid ERD + Spatial Query Layout
 
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
@@ -51,9 +52,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a+2.1b+2.1c DONE** (Arena ultra-concise + FULLTEXT ngram + Spatial)
-- **Deliverable now:** `[PROMPT 2.1c]` delivered — AU DEALS Listings 5 tables + FULLTEXT + stagnant 24h (see `docs/PHASE2_2.1C_DEALS_SCHEMA.md`)
-- **Next:** `[PROMPT 2.1d]` — AU MED Clinical (PostgreSQL) (awaiting prompt) — continuing FULL unabridged
+- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a+2.1b+2.1c+2.1d DONE** (Arena ultra-concise + Spatial sub-ms)
+- **Deliverable now:** `[PROMPT 2.1d]` delivered — AU SERV Spatial 3 tables + POINT/POLYGON + SPATIAL INDEX (see `docs/PHASE2_2.1D_SERV_SCHEMA.md`)
+- **Next:** `[PROMPT 2.2a]` — Global API Contract (awaiting prompt) — continuing FULL unabridged
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -65,7 +66,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.1c DONE — Next: [PROMPT 2.1d]*
+*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.1d DONE — Next: [PROMPT 2.2a]*
 
 ---
 ## 9. MANDATORY GLOBAL CORRECTION 2026-09-14 — 15→9 Modules
