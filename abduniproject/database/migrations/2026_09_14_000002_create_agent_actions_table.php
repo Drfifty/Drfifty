@@ -1,5 +1,7 @@
 <?php
-// سجل إجراءات الوكلاء — Append-only ledger (Governance — 13 Agents)
+// سجل إجراءات الوكلاء — Append-only ledger (Governance — 13 Agents) — Arena Canonical — IN-PLACE AUDIT FIX 2026-09-14
+// CORE ANCHOR: AU BUSINESS (ab_) Master Core B2B dispatches 13 agents via micro_switch_matrix — Tri-Hybrid confidence<90 fallback, HITL, Calibrator 100→90%
+// Phase1→2 alignment: 5 Apps | 9 Modules 1-9 | 13 Agents (Table 1.3) — Modules 8/9 workforce+calibrator — Pillars 1-3,7
 // كل إجراء للوكلاء يجب أن يسجل هنا للتدقيق
 
 declare(strict_types=1);
@@ -25,6 +27,7 @@ return new class extends Migration {
             $table->json('payload')->nullable(); // MySQL JSON — never JSONB
             $table->timestamp('created_at')->useCurrent();
             $table->index(['agent_id', 'created_at']);
+            $table->index('hitl_required'); // HITL queue instant
             $table->index('confidence_score');
 
             $table->foreign('hitl_granted_by')->references('id')->on('users')->nullOnDelete();

@@ -1,5 +1,5 @@
 <?php
-// هجرة مصادقة وصلاحيات — 2.1a — MySQL 8.4 InnoDB utf8mb4 — Pillar 4,5,9 — Arena
+// هجرة مصادقة وصلاحيات — 2.1a — MySQL 8.4 InnoDB utf8mb4 — Pillar 4,5,9 — Arena — AUDIT FIX 2026-09-14 — CORE AU BUSINESS Master B2B anchor
 declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema; use Illuminate\Support\Facades\DB;
 return new class extends Migration {
@@ -38,10 +38,13 @@ return new class extends Migration {
    $t->id(), $t->tinyInteger('agent_id')->unsigned()->index(), $t->string('capability_key',80), $t->string('sub_capability',80)->nullable(),
    $t->string('label',150), $t->string('label_ar',150), $t->text('description')->nullable(),
    $t->boolean('is_enabled')->default(true), $t->boolean('requires_hitl')->default(false), $t->foreignId('hitl_role_id')->nullable()->constrained('roles')->nullOnDelete(),
-   $t->boolean('default_enabled')->default(true), $t->enum('app_id',['AU_BUSINESS','AU_MED','AU_DEALS','AU_SERV','AU_INVEST'])->nullable()->index(),
+   $t->boolean('default_enabled')->default(true), $t->enum('preferred_driver',['deterministic','cloud','local_gpu'])->default('deterministic')->comment('Tri-Hybrid 2.3d no-restart'), $t->boolean('llm_fallback_enabled')->default(true)->comment('0=deterministic-only'),
+   $t->enum('app_id',['AU_BUSINESS','AU_MED','AU_DEALS','AU_SERV','AU_INVEST'])->nullable()->index(),
    $t->tinyInteger('module_id')->unsigned()->nullable(), $t->timestamps(), $t->unique(['agent_id','capability_key','sub_capability','app_id'],'uq_micro')
   ]));
   DB::statement("ALTER TABLE micro_switch_matrix ADD CONSTRAINT chk_micro_agent CHECK (agent_id BETWEEN 1 AND 13)");
+  DB::statement("ALTER TABLE micro_switch_matrix ADD CONSTRAINT chk_micro_module CHECK (module_id IS NULL OR module_id BETWEEN 1 AND 9)");
+  try{ DB::statement("ALTER TABLE micro_switch_matrix ADD CONSTRAINT chk_flag_json_valid CHECK (JSON_VALID(allowed_user_ids) OR allowed_user_ids IS NULL)"); }catch(\Throwable $e){}
   // feature_flags — إن وجدت سابقاً نرقّيها إضافياً (Rule11 لا هدم)
   if (Schema::hasTable('feature_flags')) { Schema::table('feature_flags', function(Blueprint $t){
    if(!Schema::hasColumn('feature_flags','flag_key')) $t->string('flag_key',50)->unique()->after('id');

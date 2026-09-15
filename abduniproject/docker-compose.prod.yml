@@ -1,9 +1,10 @@
 # ABD UNI PROJECT — Production Docker ONLY (Ephemeral Swarm + Edge)
 # WARNING: Laragon = local dev, Docker = prod — never cross-apply.
 # Arena env: 0.0.0.0 preview, Reverb 8080 wss://, Cloudflare WAF + Nginx 20/s + Fail2ban
+# CORE ANCHOR: AU BUSINESS (ab_) Master Core B2B — app service is AU BUSINESS hub powering 4 B2C spokes (AU_MED/AU_DEALS/AU_SERV/AU_INVEST) — 5 Applications, 9 Modules sequential, 13 Agents — single Paymob vault, 5% adjustable, single-payer, 100% anti-leak, Calibrator 100→90%
 
 services:
-  app:
+  app: # AU BUSINESS hub — Master Core B2B (ab_) — Modular Monolith powering 4 spokes — 5 Apps (app_id ENUM) + 9 Modules + 13 Agents
     image: abduniproject/app:prod
     build: { context: ., dockerfile: Dockerfile }
     environment:

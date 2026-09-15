@@ -8,6 +8,23 @@
 - **Wallet Q34-39 + Oil2:** **5% unified base** `0.0500` at launch, **per-module dynamic** via `commission_rules` dashboard, **OCR $0.01 exact → manual**, **barter 1.5x/1.0 split 50/50** (`barter_split JSON`), **sacred wallet** (no negative via CHECK+TRIGGER).
 - **FX Seed:** `provider=exchangerate_api` Cron `*/30`, transparent `locked_rate`.
 
+### 0.1 AU BUSINESS — Master Core B2B Anchor (AUDIT FIX 2026-09-14 — Phase1→2 Strict Alignment)
+
+**AU BUSINESS (`ab_`, `AU_BUSINESS`) is the Master Core B2B Platform — non-hibernatable (`is_core=1`, `CheckModuleStatus` → `503` blocked), owns **Paymob sub-merchant vault**, **single `app_wallet` universal ledger (no base, `BIGINT subunit`, `CHECK>=0`)**, **FX `exchangerate_api` */30**, and **shared RBAC + AU Lite gateway**. The 4 B2C spokes — **AU MED (`amed_`)**, **AU DEALS (`adl_`)**, **AU SERV (`asv_`)**, **AU INVEST (`ainv_`)** — are `is_core=0` hibernatable and **settle exclusively through AU BUSINESS vault** (no spoke-local liquidity). All tables/APIs below enforce `app_id ENUM('AU_BUSINESS',...) DEFAULT 'AU_BUSINESS'` as root tenure.
+
+**Hub-and-Spoke:**
+```
+[AU BUSINESS Core `ab_` — B2B Escrow Vault + Wallet + RBAC + Calibrator — Modules 1-9 anchor]
+      ├─ AU MED (clinical PG + pgvector)
+      ├─ AU DEALS (B2B medicine exchange — Module 4)
+      ├─ AU SERV (real-time dispatch — Module 5/6)
+      └─ AU INVEST (micro-finance)
+```
+**Strict Sequential:** `5 Applications` (1 core + 4 spokes) | `9 Modules 1→9` (no 10-15) | `13 Agents 1→13` (`micro_switch_matrix` + `preferred_driver`) | `100% Anti-Leak` (`RegexDataLeakDetector` until `post-escrow holding`) | `Universal Wallet` (`single app_wallet`, `5% adjustable` `commission_rules`, `single-payer Oil3`) | `Calibrator 100→90%` (`Pre<15ms/In/Post` + `Ephemeral Swarm`).
+
+---
+**Universal Wallet & Escrow (5 Apps):** `AU BUSINESS` owns `app_wallets` vault — spokes share ledger; `commission_rules` `5%` per-module adjustable; `escrow_clearings` `single-payer Oil3` + `48h dispute + 12h grace once Oil4` + `90d hot→S3 Parquet`.
+
 ---
 
 ## 1) Canonical DDL — Production Ready
@@ -43,6 +60,10 @@
 | `commission_rules` | `uq_rule_tier_active` | UNIQUE BTREE | Versioned tier, instant lookup |
 | `escrow_clearings` | `trg_esc_no_snapshot_update` | TRIGGER | **Immutability**: snapshot fields frozen |
 | `escrow_clearings` | `idx_esc_status` `idx_esc_paymob` | BTREE | Dispute/grace cron + Paymob webhook |
+| `escrow_clearings` | `idx_esc_app` | BTREE | Multi-tenant vault filter (AU_BUSINESS core) |
+| `escrow_clearings` | `chk_esc_fx_json` `chk_esc_barter_json` | CHECK JSON_VALID | Prevent corrupt fx/barter JSON |
+| `wallet_transactions` | `chk_wt_fx_json` `chk_wt_meta_json` | CHECK JSON_VALID | Ledger JSON guard |
+| `app_wallets` | `chk_wallet_available_nonnegative` | CHECK | Sacred wallet 3rd guard (available>=0) |
 | `wallet_transactions` | `trg_wt_no_update/delete` | TRIGGER | Ledger append-only |
 | `wallet_transactions` | `idx_wt_wallet` | BTREE | Per-wallet statement <50ms |
 | `financial_audit_logs` | `uq_audit_day_wallet` | UNIQUE BTREE | Daily reconciliation idempotent |

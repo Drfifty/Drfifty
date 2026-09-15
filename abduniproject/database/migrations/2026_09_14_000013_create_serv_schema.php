@@ -1,5 +1,5 @@
 <?php
-// هجرة AU SERV الجغرافية — 2.1d — MySQL 8.4 Spatial POINT/POLYGON — Arena
+// هجرة AU SERV الجغرافية — 2.1d — MySQL 8.4 Spatial — AUDIT FIX 2026-09-14 — CORE AU BUSINESS dispatch under Master B2B POINT/POLYGON — Arena
 declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema; use Illuminate\Support\Facades\DB;
 return new class extends Migration {

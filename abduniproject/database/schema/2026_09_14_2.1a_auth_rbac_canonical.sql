@@ -2,6 +2,7 @@
 -- ABD UNI PROJECT — PHASE 2.1a AUTH & RBAC CANONICAL DDL (MySQL 8.4 InnoDB utf8mb4)
 -- Arena env | branch arena/01a09d54-drfifty | 5 Apps | 13 Agents | 9 Modules | Pillar 4,5,9
 -- Rule7: JSON (not JSONB) | Rule6: AES-256-GCM | Engine InnoDB | Charset utf8mb4_unicode_ci
+-- CORE ANCHOR: AU BUSINESS (ab_) is Master Core B2B Engine — powers 4 B2C spokes AU_MED/AU_DEALS/AU_SERV/AU_INVEST via shared RBAC/AU Lite gate
 -- =============================================================================
 SET NAMES utf8mb4; SET FOREIGN_KEY_CHECKS=0;
 
@@ -74,6 +75,8 @@ CREATE TABLE `micro_switch_matrix` (
   `label` VARCHAR(150) NOT NULL, `label_ar` VARCHAR(150) NOT NULL, `description` TEXT NULL,
   `is_enabled` TINYINT(1) NOT NULL DEFAULT 1, `requires_hitl` TINYINT(1) NOT NULL DEFAULT 0,
   `hitl_role_id` BIGINT UNSIGNED NULL, `default_enabled` TINYINT(1) NOT NULL DEFAULT 1,
+  `preferred_driver` ENUM('deterministic','cloud','local_gpu') NOT NULL DEFAULT 'deterministic' COMMENT 'Tri-Hybrid switcher — DB no-restart (2.3d)',
+  `llm_fallback_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=deterministic-only fallback blocked',
   `app_id` ENUM('AU_BUSINESS','AU_MED','AU_DEALS','AU_SERV','AU_INVEST') NULL COMMENT 'NULL=global',
   `module_id` TINYINT UNSIGNED NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -94,6 +97,8 @@ CREATE TABLE `feature_flags` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`), UNIQUE KEY `uq_flag_key` (`flag_key`), KEY `idx_flag_enabled` (`is_enabled`),
   CONSTRAINT `chk_flag_rollout` CHECK (`rollout_percentage` BETWEEN 0 AND 100),
+  CONSTRAINT `chk_flag_json_valid` CHECK (`allowed_user_ids` IS NULL OR JSON_VALID(`allowed_user_ids`)),
+  CONSTRAINT `chk_flag_roles_json_valid` CHECK (`enabled_for_roles` IS NULL OR JSON_VALID(`enabled_for_roles`)),
   CONSTRAINT `fk_flag_toggler` FOREIGN KEY (`last_toggled_by`) REFERENCES `users`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

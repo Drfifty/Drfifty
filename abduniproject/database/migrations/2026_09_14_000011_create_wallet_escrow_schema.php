@@ -1,5 +1,5 @@
 <?php
-// هجرة المحفظة والضمان — 2.1b — MySQL 8.4 — Pillar6 Race-Guard + Escrow Immutability + 3-Tier — Arena
+// هجرة المحفظة والضمان — 2.1b — MySQL 8.4 — Pillar6 Race-Guard + Escrow Immutability + 3-Tier — Arena — AUDIT FIX 2026-09-14 — CORE ANCHOR: AU BUSINESS Master vault (universal, 5% Oil2, single-payer, 90d→S3)
 declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema; use Illuminate\Support\Facades\DB;
 return new class extends Migration {

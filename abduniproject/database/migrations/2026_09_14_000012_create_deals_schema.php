@@ -1,5 +1,5 @@
 <?php
-// هجرة AU DEALS — 2.1c — MySQL 8.4 — FULLTEXT ngram + Spatial — Arena
+// هجرة AU DEALS — 2.1c — MySQL 8.4 — AUDIT FIX 2026-09-14 — CORE AU BUSINESS vault + AU DEALS spoke (adl_) — 9 Modules sequential — FULLTEXT ngram + Spatial — Arena
 declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema; use Illuminate\Support\Facades\DB;
 return new class extends Migration {

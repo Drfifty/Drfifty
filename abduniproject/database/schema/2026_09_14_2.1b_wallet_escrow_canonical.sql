@@ -2,6 +2,7 @@
 -- ABD UNI PROJECT — PHASE 2.1b FINANCIAL & ESCROW CANONICAL DDL (MySQL 8.4 InnoDB utf8mb4)
 -- Arena env | branch arena/01a09d54-drfifty | Pillar 6 (lockForUpdate+Mutex) | 5% Oil2 | Escrow Immutability
 -- Rule7 JSON | Rule11 additive | CHECK balance>=0 | subunit BIGINT (cents) | Paymob blind sub-merchant
+-- CORE ANCHOR: AU BUSINESS (ab_) owns Paymob sub-merchant + single app_wallet ledger — 4 B2C spokes settle through AU BUSINESS vault (universal, 5% adjustable, single-payer Oil3)
 -- =============================================================================
 SET NAMES utf8mb4; SET FOREIGN_KEY_CHECKS=0;
 
@@ -57,7 +58,7 @@ CREATE TABLE `escrow_clearings` (
   `hold_started_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, `dispute_deadline_at` DATETIME NOT NULL COMMENT 'hold+48h', `grace_expires_at` DATETIME NOT NULL COMMENT 'hold+12h once Oil4',
   `milestone_number` TINYINT UNSIGNED NULL, `total_milestones` TINYINT UNSIGNED NULL, `released_at` DATETIME NULL, `refunded_at` DATETIME NULL,
   `hash_chain` CHAR(64) NOT NULL, `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`), UNIQUE KEY `uq_esc_uuid` (`uuid`), KEY `idx_esc_buyer` (`buyer_id`), KEY `idx_esc_seller` (`seller_id`), KEY `idx_esc_status` (`status`), KEY `idx_esc_module` (`module_id`), KEY `idx_esc_paymob` (`paymob_transaction_id`),
+  PRIMARY KEY (`id`), UNIQUE KEY `uq_esc_uuid` (`uuid`), KEY `idx_esc_buyer` (`buyer_id`), KEY `idx_esc_seller` (`seller_id`), KEY `idx_esc_status` (`status`), KEY `idx_esc_module` (`module_id`), KEY `idx_esc_app` (`app_id`), KEY `idx_esc_paymob` (`paymob_transaction_id`),
   CONSTRAINT `chk_esc_module` CHECK (`module_id` BETWEEN 1 AND 9), CONSTRAINT `chk_esc_amt_gt0` CHECK (`amount_subunit`>0),
   CONSTRAINT `fk_esc_buyer` FOREIGN KEY (`buyer_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT, CONSTRAINT `fk_esc_seller` FOREIGN KEY (`seller_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT,
   CONSTRAINT `fk_esc_comm_rule` FOREIGN KEY (`commission_rule_id`) REFERENCES `commission_rules`(`id`) ON DELETE SET NULL
@@ -85,6 +86,8 @@ CREATE TABLE `wallet_transactions` (
   `fx_snapshot` JSON NULL, `meta` JSON NULL, `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`), UNIQUE KEY `uq_wt_uuid` (`uuid`), KEY `idx_wt_wallet` (`wallet_id`,`created_at`), KEY `idx_wt_user` (`user_id`), KEY `idx_wt_ref` (`reference_type`,`reference_uuid`), KEY `idx_wt_paymob` (`paymob_transaction_id`),
   CONSTRAINT `chk_wt_amt_ne0` CHECK (`amount_subunit`<>0),
+  CONSTRAINT `chk_wt_fx_json` CHECK (`fx_snapshot` IS NULL OR JSON_VALID(`fx_snapshot`)),
+  CONSTRAINT `chk_wt_meta_json` CHECK (`meta` IS NULL OR JSON_VALID(`meta`)),
   CONSTRAINT `fk_wt_wallet` FOREIGN KEY (`wallet_id`) REFERENCES `app_wallets`(`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_wt_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

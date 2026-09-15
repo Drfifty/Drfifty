@@ -31,7 +31,7 @@
 -- users: phone encrypted app-layer AES-256-GCM (phone_encrypted/iv/tag), softDeletes
 -- roles: is_system immutable, level hierarchy, guard web
 -- permissions: CHECK module 1-9, agent 1-13, type view/execute/both
--- micro_switch_matrix: requires_hitl + hitl_role_id → roles.id, default_enabled
+-- micro_switch_matrix: requires_hitl + hitl_role_id → roles.id, default_enabled, preferred_driver ENUM('deterministic','cloud','local_gpu') DEFAULT 'deterministic' (Tri-Hybrid 2.3d DB no-restart), llm_fallback_enabled TINYINT(1) DEFAULT 1
 -- feature_flags: flag_key IN (au_med,au_deals,au_serv,au_invest,au_business), is_core=1 locks AU BUSINESS, JSON columns allowed_user_ids/enabled_for_roles, rollout 0-100
 -- data_leak_patterns: regex PCRE (Egypt mobile, email, wa.me, https, t.me), category/severity, is_active+is_strict_post_escrow_only BTREE
 -- refresh_tokens: uuid, token_hash CHAR64 SHA256, expires_at, revoked_at, rotated_from_id self-FK, device_fingerprint SHA256(UA+IP)
@@ -52,6 +52,10 @@ Full SQL → `../../database/schema/2026_09_14_2.1a_auth_rbac_canonical.sql` (se
 | `user_roles` | `uq_user_role_app` | UNIQUE BTREE | One assignment per app |
 | `micro_switch_matrix` | `uq_micro` | UNIQUE BTREE | Deterministic toggle key |
 | `micro_switch_matrix` | `idx_micro_enabled` | BTREE | Instant Agent capability eval |
+| `micro_switch_matrix` | `preferred_driver` | ENUM | Tri-Hybrid switcher (2.3d) DB no-restart |
+| `micro_switch_matrix` | `llm_fallback_enabled` | TINYINT | 0=deterministic-only, budget guard |
+| `feature_flags` | `chk_flag_json_valid` | CHECK JSON_VALID | Prevent corrupt JSON whitelist |
+| `feature_flags` | `chk_flag_roles_json_valid` | CHECK JSON_VALID | Prevent corrupt roles JSON |
 | `feature_flags` | `uq_flag_key` | UNIQUE BTREE | AU Lite instant flag eval (<5ms) |
 | `feature_flags` | `chk_flag_rollout` | CHECK 0-100 | Safe gradual rollout |
 | `data_leak_patterns` | `idx_dlp_cat_active` | BTREE | Regex scan pre-filter (skip inactive) |
@@ -123,6 +127,9 @@ erDiagram
     bool is_enabled
     bool requires_hitl
     bigint hitl_role_id FK
+    bool default_enabled
+    enum preferred_driver "deterministic/cloud/local_gpu 2.3d"
+    bool llm_fallback_enabled
     enum app_id
     tinyint module_id "1-9"
   }

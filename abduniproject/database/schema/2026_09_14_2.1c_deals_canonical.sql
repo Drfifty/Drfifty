@@ -2,6 +2,7 @@
 -- ABD UNI PROJECT — PHASE 2.1c AU DEALS CANONICAL DDL (MySQL 8.4 InnoDB utf8mb4)
 -- Arena env | branch arena/01a09d54-drfifty | AU DEALS (adl_) B2B Inventory & Medicine Exchange
 -- Rule7 JSON | Tiered Mutation | FULLTEXT ngram | Spatial-ready | Pillar 1/4 | Oil 30/40
+-- CORE ANCHOR: Deals served through AU BUSINESS vault + AU Lite gate — AU DEALS (adl_) is B2C spoke under AU BUSINESS master (shared app_wallet, 5% commission, Regex leak guard)
 -- =============================================================================
 SET NAMES utf8mb4; SET FOREIGN_KEY_CHECKS=0;
 
@@ -15,6 +16,7 @@ CREATE TABLE `deal_categories` (
   `is_active` TINYINT(1) NOT NULL DEFAULT 1, `is_hidden` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`), UNIQUE KEY `uq_cat_uuid` (`uuid`), UNIQUE KEY `uq_cat_slug_app` (`slug`,`app_id`), KEY `idx_cat_parent` (`parent_id`), KEY `idx_cat_active` (`is_active`,`is_hidden`),
+  CONSTRAINT `chk_cat_schema_json` CHECK (`attributes_schema` IS NULL OR JSON_VALID(`attributes_schema`)),
   CONSTRAINT `fk_cat_parent` FOREIGN KEY (`parent_id`) REFERENCES `deal_categories`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -47,7 +49,9 @@ CREATE TABLE `deals_listings` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, `deleted_at` DATETIME NULL,
   PRIMARY KEY (`id`), UNIQUE KEY `uq_listing_uuid` (`uuid`), KEY `idx_listing_seller` (`seller_id`), KEY `idx_listing_cat` (`category_id`), KEY `idx_listing_bundle` (`bundle_id`), KEY `idx_listing_status` (`status`,`is_hidden`), KEY `idx_listing_app_cur` (`app_id`,`currency`), KEY `idx_listing_expiry` (`expiry_date`), KEY `idx_listing_stagnant` (`is_stagnant`),
   FULLTEXT KEY `ft_listing_title_desc` (`title`,`description`) WITH PARSER ngram, FULLTEXT KEY `ft_listing_title_desc_ar` (`title_ar`,`description_ar`) WITH PARSER ngram,
+  SPATIAL INDEX `spx_listing_point` (`location_point`),
   CONSTRAINT `chk_listing_price` CHECK (`price_subunit`>0), CONSTRAINT `chk_listing_stock` CHECK (`stock_quantity`>=0),
+  CONSTRAINT `chk_listing_attrs_json` CHECK (`attributes` IS NULL OR JSON_VALID(`attributes`)), CONSTRAINT `chk_listing_meta_json` CHECK (`meta` IS NULL OR JSON_VALID(`meta`)),
   CONSTRAINT `fk_listing_seller` FOREIGN KEY (`seller_id`) REFERENCES `users`(`id`) ON DELETE CASCADE, CONSTRAINT `fk_listing_cat` FOREIGN KEY (`category_id`) REFERENCES `deal_categories`(`id`) ON DELETE RESTRICT, CONSTRAINT `fk_listing_bundle` FOREIGN KEY (`bundle_id`) REFERENCES `promotional_bundles`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
