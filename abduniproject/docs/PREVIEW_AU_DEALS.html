@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="neo-pearl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AU DEALS — Consumer Marketplace Preview — Arena Phase 3.4</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--canvas:#FAFAFA;--canvas2:#F4F4F5;--obsidian:#09090b;--surface:#FAFAFA;--surface2:#ffffff;--border:#E4E4E7;--text:#18181B;--muted:#71717A;--amber:#F59E0B;--crimson:#EF4444;--cyan:#06B6D4;--emerald:#10B981}
+*{font-family:'Cairo','Tajawal','Inter',system-ui}
+.font-latin{font-family:'Inter',system-ui}
+.glass-pearl{background:rgba(250,250,250,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(228,228,231,.9);box-shadow:0 8px 32px rgba(9,9,11,.06)}
+.glass-obsidian{background:rgba(9,9,11,.92);backdrop-filter:blur(16px);border:1px solid rgba(39,39,42,1);color:#FAFAFA}
+.metallic{position:relative;overflow:hidden}
+.metallic::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 40%,transparent 60%,rgba(255,255,255,.08));pointer-events:none}
+.neon-amber{box-shadow:0 0 18px rgba(245,158,11,.18)}
+.neon-crimson{box-shadow:0 0 18px rgba(239,68,68,.18)}
+.neon-cyan{box-shadow:0 0 18px rgba(6,182,212,.15)}
+.neon-emerald{box-shadow:0 0 18px rgba(16,185,129,.15)}
+.prox{transition:all .18s}
+.prox:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(9,9,11,.08);border-color:rgba(6,182,212,.25)}
+.shimmer{position:relative;overflow:hidden}
+.shimmer::before{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:shimmer 3.2s infinite}
+@keyframes shimmer{0%{left:-120%}60%{left:130%}100%{left:130%}}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.float{animation:float 3.4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.countdown-amber{color:#F59E0B;font-variant-numeric:tabular-nums}
+.countdown-crimson{color:#EF4444;font-variant-numeric:tabular-nums;animation:pulse 1.1s infinite}
+::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-thumb{background:#E4E4E7;border-radius:99px}
+.axis-active{background:#09090b;color:#FAFAFA;border-color:#09090b;box-shadow:0 4px 16px rgba(9,9,11,.15)}
+.axis-idle{background:#FFFFFF;border:1px solid #E4E4E7;color:#71717A}
+.axis-idle:hover{border-color:#09090b;color:#18181B}
+.badge-obsidian{background:#09090b;color:#FAFAFA}
+</style>
+</head>
+<body class="min-h-screen bg-[#FAFAFA] text-[#18181B] antialiased selection:bg-cyan-500/20">
+<canvas id="mesh" class="fixed inset-0 -z-10 opacity-[0.035]"></canvas>
+<div id="cursorGlow" class="pointer-events-none fixed inset-0 -z-10 opacity-30" style="background:radial-gradient(700px circle at var(--cx,50%) var(--cy,50%), rgba(6,182,212,.08), transparent 60%)"></div>
+
+<!-- Header Neo-White + Obsidian -->
+<header class="sticky top-0 z-30">
+  <div class="glass-obsidian border-b border-[#27272A]">
+    <div class="max-w-[1280px] mx-auto px-4 lg:px-6 h-[62px] flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-[#FAFAFA] grid place-items-center font-black text-[#09090b] text-[11px] tracking-widest">AU DEALS</div>
+      <div class="hidden sm:block">
+        <div class="text-[11px] tracking-[.14em] text-[#A1A1AA]">ABD UNI PROJECT — ARENA · B2C CONSUMER</div>
+        <div class="text-[14px] font-extrabold leading-none text-[#FAFAFA]">سوق المستهلك <span class="font-latin text-[#A1A1AA] font-normal">· 6-Axis · Redis GEO + Reverb 8080</span></div>
+      </div>
+      <div class="ms-auto hidden lg:flex items-center gap-2">
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#FAFAFA] text-[#09090b] font-bold">السلة 3</span>
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-emerald-500 text-white">ضمان 48h</span>
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-amber-500 text-black">Flash 02:14:33</span>
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-cyan-500 text-white">Radar 10km</span>
+      </div>
+      <button class="px-4 h-9 rounded-full bg-[#FAFAFA] text-[#09090b] text-[12px] font-bold">تسجيل دخول</button>
+    </div>
+  </div>
+  <div class="glass-pearl border-b border-[#E4E4E7]/80">
+    <div class="max-w-[1280px] mx-auto px-4 lg:px-6 h-[48px] flex items-center gap-2 overflow-x-auto">
+      <span class="text-[11px] tracking-widest text-[#71717A] whitespace-nowrap">6 محاور</span>
+      <div id="axisSwitcher" class="flex gap-1.5 p-1 rounded-full bg-[#F4F4F5] border border-[#E4E4E7] ms-2">
+        <button data-axis="buy" class="axis-btn axis-active px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap">بيع وشراء</button>
+        <button data-axis="rent" class="axis-btn axis-idle px-3.5 py-1.5 rounded-full text-[12px] whitespace-nowrap">إيجار</button>
+        <button data-axis="book" class="axis-btn axis-idle px-3.5 py-1.5 rounded-full text-[12px] whitespace-nowrap">حجز</button>
+        <button data-axis="barter" class="axis-btn axis-idle px-3.5 py-1.5 rounded-full text-[12px] whitespace-nowrap">استبدال</button>
+        <button data-axis="auction" class="axis-btn axis-idle px-3.5 py-1.5 rounded-full text-[12px] whitespace-nowrap">مزاد</button>
+        <button data-axis="urgent" class="axis-btn axis-idle px-3.5 py-1.5 rounded-full text-[12px] whitespace-nowrap bg-amber-500/10 border-amber-500/30 text-amber-700">عاجل</button>
+      </div>
+      <div class="ms-auto flex items-center gap-2">
+        <div class="hidden md:flex items-center gap-1.5 rounded-full bg-[#09090b] text-[#FAFAFA] px-3 py-1.5 text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 pulse"></span> بث حي AU BUSINESS
+          <span class="font-latin text-[#A1A1AA]">stock:deal:{id} DECRBY</span>
+        </div>
+        <button class="w-9 h-9 rounded-full glass-pearl grid place-items-center">🛒</button>
+        <button class="w-9 h-9 rounded-full glass-pearl grid place-items-center">🔔</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1280px] mx-auto px-4 lg:px-6 py-5 lg:py-6">
+  <!-- Search + Radar controls -->
+  <section class="glass-pearl rounded-[16px] p-4 lg:p-5 metallic">
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+      <div class="flex-1 min-w-[220px] relative">
+        <input id="searchInput" placeholder="ابحث: ايفون، بلايستيشن، إيجار شقة..." class="w-full h-11 rounded-full bg-white border border-[#E4E4E7] ps-11 pe-4 text-[13px] focus:outline-none focus:border-[#09090b]"/>
+        <span class="absolute start-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-[#09090b] text-white grid place-items-center text-[12px]">⌕</span>
+        <span class="absolute end-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 text-[11px] bg-cyan-500 text-white px-2.5 py-1 rounded-full">بحث بصري 📷</span>
+      </div>
+      <div class="flex rounded-full bg-[#F4F4F5] p-1 border border-[#E4E4E7]">
+        <button data-radius="2" class="radius-btn px-3 py-1.5 rounded-full text-[12px] bg-white border border-[#E4E4E7]">2km مشي</button>
+        <button data-radius="10" class="radius-btn px-3 py-1.5 rounded-full text-[12px] bg-[#09090b] text-white font-bold">10km</button>
+        <button data-radius="999" class="radius-btn px-3 py-1.5 rounded-full text-[12px]">المدينة</button>
+      </div>
+      <button id="arToggle" class="h-11 px-4 rounded-full bg-cyan-500 text-white text-[12px] font-bold neon-cyan">AR رادار</button>
+    </div>
+    <div class="flex flex-wrap gap-1.5 text-[11px]">
+      <span class="px-2.5 py-1 rounded-full bg-[#09090b] text-white">السعر 5k–20k</span>
+      <span class="px-2.5 py-1 rounded-full bg-white border border-[#E4E4E7]">توصيل 24h</span>
+      <span class="px-2.5 py-1 rounded-full bg-white border border-[#E4E4E7]">تقييم 4+ ★</span>
+      <span class="px-2.5 py-1 rounded-full bg-amber-500 text-black">عاجل فقط</span>
+      <span class="ms-auto font-latin text-[#71717A]">FULLTEXT ngram + ST_Distance_Sphere + Agent 3 re-rank 94%</span>
+    </div>
+  </section>
+
+  <!-- Main 3-col: Feed + Auction/Barter + Radar/Group -->
+  <div class="grid grid-cols-12 gap-4 mt-4">
+    <!-- Feed -->
+    <section class="col-span-12 lg:col-span-7 space-y-3">
+      <div class="flex items-center gap-2">
+        <h2 class="text-[13px] font-extrabold">موجز الصفقات — موزع جغرافي + سلة متعددة التجار</h2>
+        <span class="ms-auto text-[11px] px-2 py-1 rounded-full bg-white border border-[#E4E4E7]">3 تجار · شحن مقسم</span>
+      </div>
+      <!-- Flash deal card -->
+      <div class="glass-pearl rounded-[16px] p-3 prox border-amber-500/30">
+        <div class="flex gap-3">
+          <img src="https://picsum.photos/seed/iphone/120/120" class="w-[96px] h-[96px] rounded-xl object-cover border border-[#E4E4E7]"/>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-[11px] px-2 py-1 rounded-full bg-amber-500 text-black font-bold">Flash -40% · 01:23:44</span>
+              <span class="text-[11px] px-2 py-1 rounded-full bg-[#09090b] text-white">المتبقي 7/30</span>
+              <span class="ms-auto text-[11px] font-latin text-[#71717A]">stock:deal:8841 DECRBY 12</span>
+            </div>
+            <div class="text-[13px] font-bold mt-1">ايفون 15 برو — حالة ممتازة</div>
+            <div class="text-[11px] text-[#71717A]">متغيرات: 256GB · تيتانيوم · <span class="text-emerald-600">Syndicate ✓</span> · <span id="flashPrice" class="font-latin font-bold text-[#18181B]">42,500 EGP</span> <span class="line-through font-latin text-[#A1A1AA]">70,800</span></div>
+            <div class="mt-2 flex gap-2">
+              <button class="flex-1 h-8 rounded-full bg-[#09090b] text-white text-[12px] font-bold">أضف للسلة — قفل سعر 3د</button>
+              <button class="px-3 h-8 rounded-full bg-white border border-[#E4E4E7] text-[12px]">مقارنة</button>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 h-1.5 rounded-full bg-[#F4F4F5] overflow-hidden"><div class="h-full w-[68%] bg-amber-500"></div></div>
+        <div class="flex justify-between text-[11px] text-[#71717A] mt-1"><span>Agent 11 — خوادم Surge 12 · طابور 2.3k</span><span class="font-latin">Horizon flash:orders</span></div>
+      </div>
+      <!-- Multi-vendor cart grouped -->
+      <div class="glass-pearl rounded-[16px] p-3">
+        <div class="text-[12px] font-bold flex items-center gap-2">سلة متعددة التجار <span class="text-[11px] font-normal text-[#71717A]">تقسيم تلقائي شحن/دفع</span> <span class="ms-auto text-[11px] px-2 py-1 rounded-full bg-emerald-500 text-white">إجمالي 3 عناصر</span></div>
+        <div class="mt-3 space-y-2">
+          <div class="rounded-xl border border-[#E4E4E7] overflow-hidden">
+            <div class="h-7 bg-[#09090b] text-white flex items-center px-3 text-[11px]">تاجر: متجر النيل — 2 عناصر · شحن 45 EGP · دفع منفصل <span class="ms-auto">4.8 ★</span></div>
+            <div class="p-2 flex items-center gap-3 bg-white"><img src="https://picsum.photos/seed/ps5/60/60" class="w-12 h-12 rounded-lg object-cover"/><div class="flex-1 text-[12px]"><div class="font-bold">بلايستيشن 5 — مستعمل</div><div class="font-latin text-[#71717A]">28,000 EGP ×1</div></div><span class="text-[11px] px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/20">مقايضة متاحة</span></div>
+            <div class="p-2 flex items-center gap-3 bg-white border-t border-[#F4F4F5]"><img src="https://picsum.photos/seed/headset/60/60" class="w-12 h-12 rounded-lg object-cover"/><div class="flex-1 text-[12px]"><div class="font-bold">سماعة سوني — جديد</div><div class="font-latin text-[#71717A]">3,200 EGP ×1</div></div><span class="text-[11px] px-2 py-1 rounded-full bg-cyan-500/10 text-cyan-700 border border-cyan-500/20">إيجار متاح</span></div>
+          </div>
+          <div class="rounded-xl border border-[#E4E4E7] overflow-hidden">
+            <div class="h-7 bg-[#09090b] text-white flex items-center px-3 text-[11px]">تاجر: إيجارك — 1 عنصر إيجار <span class="ms-auto">4.6 ★</span></div>
+            <div class="p-2 flex items-center gap-3 bg-white"><img src="https://picsum.photos/seed/camera/60/60" class="w-12 h-12 rounded-lg object-cover"/><div class="flex-1 text-[12px]"><div class="font-bold">كاميرا سوني A7 — إيجار يومي</div><div class="font-latin text-[#71717A]">600 EGP/يوم · تأمين 4,000</div></div><span class="text-[11px] px-2 py-1 rounded-full bg-amber-500 text-black">حجز 3د</span></div>
+          </div>
+        </div>
+        <div class="mt-3 p-2 rounded-xl bg-[#F4F4F5] border border-[#E4E4E7] flex items-center gap-2 text-[11px]"><span>الإجمالي مع تقسيم الشحن:</span><span class="font-latin font-bold">33,845 EGP</span><span class="ms-auto">ضمان 48h QR</span><button class="px-4 h-8 rounded-full bg-[#09090b] text-white font-bold">ادفع — escrow holding</button></div>
+      </div>
+      <!-- Wishlist + Agent3 -->
+      <div class="glass-pearl rounded-[16px] p-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-cyan-500 text-white grid place-items-center">3</div>
+        <div class="flex-1"><div class="text-[12px] font-bold">Agent 3 — مقترح لك 94% · سعرك المفضل نزل -12%</div><div class="text-[11px] text-[#71717A]">قائمة الرغبات: ايفون 15 · بلايستيشن · شقة إيجار</div></div>
+        <span class="text-[11px] px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-700">For You</span>
+      </div>
+    </section>
+
+    <!-- Auction + Barter -->
+    <section class="col-span-12 lg:col-span-5 space-y-3">
+      <!-- Auction Arena -->
+      <div class="glass-pearl rounded-[16px] p-3 border-crimson/20 neon-crimson">
+        <div class="flex items-center gap-2">
+          <h3 class="text-[13px] font-extrabold flex items-center gap-2">حلبة المزاد الحي <span class="w-2 h-2 rounded-full bg-crimson pulse"></span> <span class="text-[11px] font-normal text-[#71717A]">Reverb private-auction.41 &lt;100ms</span></h3>
+          <span id="auctionCountdown" class="ms-auto font-latin text-[13px] font-bold px-2.5 py-1 rounded-full bg-crimson text-white countdown-crimson">00:00:28</span>
+        </div>
+        <div class="mt-2 rounded-xl overflow-hidden border border-[#E4E4E7]">
+          <div class="h-7 bg-[#09090b] text-white flex items-center px-3 text-[11px]">مزاد: ساعة رولكس — احتياطي 120,000 · الحالي 98,500 <span class="ms-auto font-latin">مقدم 12,000 holding</span></div>
+          <div id="bidStream" class="h-[140px] overflow-auto bg-white p-2 space-y-1.5 text-[12px]">
+            <div class="flex justify-between p-2 rounded-lg bg-[#F4F4F5]"><span>User_X مزايد</span><span class="font-latin font-bold">97,500</span><span class="text-[11px] text-[#71717A]">auto</span></div>
+            <div class="flex justify-between p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20"><span>أنت</span><span class="font-latin font-bold">98,500</span><span class="text-[11px] text-emerald-700">يدوي</span></div>
+            <div class="flex justify-between p-2 rounded-lg bg-white border border-[#E4E4E7]"><span>User_Y</span><span class="font-latin">98,000</span></div>
+          </div>
+          <div class="p-2 bg-[#FAFAFA] border-t border-[#E4E4E7] flex gap-2">
+            <input id="bidInput" type="number" placeholder="98,500+500" class="flex-1 h-9 rounded-full bg-white border border-[#E4E4E7] px-3 font-latin text-[13px]"/>
+            <button id="bidBtn" class="px-4 h-9 rounded-full bg-crimson text-white text-[12px] font-bold">زايد +500</button>
+            <label class="flex items-center gap-1.5 text-[11px] bg-white border border-[#E4E4E7] rounded-full px-3"><input id="autoBid" type="checkbox"/> Auto حتى <input id="autoMax" value="110000" class="w-16 h-6 rounded-full border border-[#E4E4E7] px-2 font-latin text-[11px]"/></label>
+          </div>
+          <div id="snipBanner" class="hidden p-2 bg-amber-500 text-black text-[11px] text-center font-bold">تم التمديد +2د — حماية sniping (30s الأخيرة) — anti_sniping_logs</div>
+          <div class="p-2 flex gap-1.5">
+            <button class="flex-1 h-7 rounded-full bg-[#09090b] text-white text-[11px]">+500</button>
+            <button class="flex-1 h-7 rounded-full bg-white border border-[#E4E4E7] text-[11px]">+1,000</button>
+            <button class="flex-1 h-7 rounded-full bg-white border border-[#E4E4E7] text-[11px]">+5,000</button>
+            <span class="ms-auto text-[11px] text-[#71717A]">Agent 13 Sybil 8% ✓</span>
+          </div>
+        </div>
+        <div class="mt-2 text-[11px] flex items-center gap-2"><span class="px-2 py-1 rounded-full bg-white border border-[#E4E4E7]">وديعة مطلوبة &gt;50k</span><span class="px-2 py-1 rounded-full bg-emerald-500 text-white">RequireAuctionDeposit ✓</span><span class="ms-auto font-latin text-[#71717A]">lockForUpdate + Mutex auction:{id}:bid</span></div>
+      </div>
+
+      <!-- Barter Builder -->
+      <div class="glass-pearl rounded-[16px] p-3 border-emerald-500/20 neon-emerald">
+        <div class="flex items-center gap-2">
+          <h3 class="text-[13px] font-extrabold">مُنشئ المقايضة — حاسبة فرق نقدي تلقائي</h3>
+          <span class="ms-auto text-[11px] px-2 py-1 rounded-full bg-emerald-500 text-white">مقايضة</span>
+        </div>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <div class="rounded-xl bg-white border border-[#E4E4E7] p-2">
+            <div class="text-[11px] text-[#71717A]">أنت تعرض (A)</div>
+            <select id="offerSelect" class="w-full mt-1 h-9 rounded-xl bg-[#F4F4F5] border border-[#E4E4E7] px-2 text-[12px]"><option value="10000">بلايستيشن 4 — 10,000</option><option value="8000">دراجة — 8,000</option></select>
+            <div class="mt-2 text-[11px]">القيمة السوقية <span id="offerValue" class="font-latin font-bold">10,000</span> <span class="text-[#71717A]">Agent1</span></div>
+          </div>
+          <div class="rounded-xl bg-white border border-[#E4E4E7] p-2">
+            <div class="text-[11px] text-[#71717A]">تطلب (B)</div>
+            <select id="wantSelect" class="w-full mt-1 h-9 rounded-xl bg-[#F4F4F5] border border-[#E4E4E7] px-2 text-[12px]"><option value="12000">ايفون 13 — 12,000</option><option value="9000">تابلت — 9,000</option></select>
+            <div class="mt-2 text-[11px]">القيمة السوقية <span id="wantValue" class="font-latin font-bold">12,000</span></div>
+          </div>
+        </div>
+        <div class="mt-2 p-3 rounded-xl bg-[#09090b] text-white flex items-center gap-3">
+          <div class="text-[11px]">الفرق النقدي</div>
+          <div id="deltaBox" class="ms-auto font-latin font-bold text-amber-400">+2,000 تدفعها</div>
+          <label class="flex items-center gap-1 text-[11px] bg-white/10 rounded-full px-2 py-1"><input id="charityToggle" type="checkbox"/> Abwab Al Khair 1x</label>
+          <span id="factorBadge" class="text-[11px] px-2 py-1 rounded-full bg-white text-[#09090b]">1.5x تجاري</span>
+        </div>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <button class="h-9 rounded-full bg-emerald-500 text-white text-[12px] font-bold">إرسال عرض — قفل اسكرو</button>
+          <button class="h-9 rounded-full bg-white border border-[#E4E4E7] text-[12px]">فحص QR تسليم</button>
+        </div>
+        <div class="mt-2 text-[11px] text-[#71717A]">Agent 3 تقييم ثانوي · Agent 1 تحقق 1.5x — escrow ثنائي الساق `barter_escrow_ledgers`</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Group Buy + Radar AR -->
+  <div class="grid grid-cols-12 gap-4 mt-4">
+    <section class="col-span-12 lg:col-span-6 glass-pearl rounded-[16px] p-4">
+      <div class="flex items-center gap-2">
+        <h3 class="text-[13px] font-extrabold">مجموعات الشراء الجماعي — تجميع الشراء</h3>
+        <span class="ms-auto text-[11px] px-2 py-1 rounded-full bg-amber-500 text-black">ينتهي 02:14:33</span>
+      </div>
+      <div class="mt-3 grid grid-cols-1 gap-3">
+        <div class="rounded-xl bg-white border border-[#E4E4E7] p-3 flex items-center gap-3">
+          <img src="https://picsum.photos/seed/rice/70/70" class="w-14 h-14 rounded-xl object-cover"/>
+          <div class="flex-1"><div class="text-[12px] font-bold">أرز 25kg — مجموعة القاهرة</div><div class="text-[11px] text-[#71717A]">7/15 انضموا · شريحة 3: 15 شخص -25%</div>
+            <div class="mt-1.5 h-1.5 rounded-full bg-[#F4F4F5] overflow-hidden flex"><div class="h-full w-[46%] bg-amber-500"></div><div class="h-full w-[20%] bg-emerald-500"></div></div>
+            <div class="flex gap-1.5 text-[10px] mt-1"><span class="px-1.5 py-0.5 rounded bg-[#F4F4F5]">5 أشخاص -10%</span><span class="px-1.5 py-0.5 rounded bg-amber-500 text-black">10 -18%</span><span class="px-1.5 py-0.5 rounded bg-emerald-500 text-white">15 -25%</span><span class="ms-auto font-latin">السعر الحالي 7,500</span></div>
+          </div>
+          <button class="joinBtn px-4 h-9 rounded-full bg-[#09090b] text-white text-[12px] font-bold">انضم — حجز 15د</button>
+        </div>
+        <div class="rounded-xl bg-white border border-[#E4E4E7] p-3 flex items-center gap-3">
+          <img src="https://picsum.photos/seed/oil/70/70" class="w-14 h-14 rounded-xl object-cover"/>
+          <div class="flex-1"><div class="text-[12px] font-bold">زيت عباد 10ل — مجموعة الجيزة</div><div class="text-[11px] text-[#71717A]">12/15 · قريب للاكتمال</div>
+            <div class="mt-1.5 h-1.5 rounded-full bg-[#F4F4F5] overflow-hidden"><div class="h-full w-[80%] bg-emerald-500"></div></div>
+          </div>
+          <button class="joinBtn px-4 h-9 rounded-full bg-emerald-500 text-white text-[12px] font-bold">انضم</button>
+        </div>
+      </div>
+      <div class="mt-2 text-[11px] text-[#71717A] font-latin">group_buy_pools tiers JSON + Redis group:pool:{id}:count INCR + presence-group.{pool_id} live</div>
+    </section>
+
+    <section class="col-span-12 lg:col-span-6 glass-pearl rounded-[16px] p-4">
+      <div class="flex items-center gap-2">
+        <h3 class="text-[13px] font-extrabold">رادار AR — صفقات بالقرب</h3>
+        <span class="text-[11px] px-2 py-1 rounded-full bg-cyan-500 text-white">Radar 10km · 2/10/مدينة</span>
+        <label class="ms-auto flex items-center gap-1.5 text-[11px] bg-white border border-[#E4E4E7] rounded-full px-3 py-1"><input type="checkbox" checked/> AR مفعل</label>
+      </div>
+      <div class="mt-3 rounded-xl overflow-hidden border border-[#E4E4E7] bg-[#09090b] relative h-[220px]">
+        <div class="absolute inset-0 opacity-20" style="background: radial-gradient(circle at 50% 50%, rgba(6,182,212,.35), transparent 60%), linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size:100% 100%, 32px 32px, 32px 32px"></div>
+        <!-- rings -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] rounded-full border border-cyan-500/30"></div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] h-[100px] rounded-full border border-emerald-500/30"></div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[42px] h-[42px] rounded-full bg-cyan-500/20 border border-cyan-500/50 animate-pulse"></div>
+        <!-- scanner line -->
+        <div id="scanner" class="absolute left-1/2 top-1/2 w-[50%] h-[1px] bg-gradient-to-r from-transparent to-cyan-400 origin-left" style="transform:rotate(0deg)"></div>
+        <!-- nodes -->
+        <div class="absolute left-[62%] top-[28%] w-8 h-8 rounded-full bg-amber-500 border-2 border-white grid place-items-center text-[11px]">🏷️</div>
+        <div class="absolute left-[34%] top-[62%] w-8 h-8 rounded-full bg-emerald-500 border-2 border-white grid place-items-center text-[11px]">🔄</div>
+        <div class="absolute left-[71%] top-[66%] w-8 h-8 rounded-full bg-crimson border-2 border-white grid place-items-center text-[11px]">🔨</div>
+        <div class="absolute bottom-2 start-2 glass-pearl rounded-full px-3 py-1.5 text-[11px] flex items-center gap-2">📍 أنت هنا — 10km <span class="w-2 h-2 rounded-full bg-cyan-500 pulse"></span> <span class="font-latin text-[#71717A]">ST_Distance_Sphere</span></div>
+        <div class="absolute top-2 end-2 glass-pearl rounded-xl px-3 py-2 text-[11px]"><div class="font-bold">3 صفقات حولك</div><div class="font-latin text-[#71717A]">flash + barter + auction</div></div>
+      </div>
+      <div class="mt-2 grid grid-cols-3 gap-2 text-[11px]">
+        <div class="rounded-xl bg-white border border-[#E4E4E7] p-2 text-center"><div class="font-bold text-amber-600">Flash -30% 2km</div><div class="font-latin text-[#71717A]">ST_Contains</div></div>
+        <div class="rounded-xl bg-white border border-[#E4E4E7] p-2 text-center"><div class="font-bold text-emerald-600">مقايضة 0.8km</div><div class="font-latin">1.5x</div></div>
+        <div class="rounded-xl bg-white border border-[#E4E4E7] p-2 text-center"><div class="font-bold text-crimson">مزاد 1.2km</div><div class="font-latin">live</div></div>
+      </div>
+      <div class="mt-2 text-[11px] text-[#71717A]">user_deal_radar_preferences · ar_deal_nodes POINT/POLYGON · review_integrity_logs Agent13</div>
+    </section>
+  </div>
+
+  <!-- Wallet + Agents strip -->
+  <section class="mt-4 grid grid-cols-12 gap-3">
+    <div class="col-span-12 lg:col-span-5 glass-obsidian rounded-xl p-3 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-white text-[#09090b] grid place-items-center font-bold">💳</div>
+      <div class="flex-1"><div class="text-[12px] font-bold text-white">محفظتك — app_wallet</div><div class="text-[11px] text-[#A1A1AA] font-latin">نقدي 12,400 · استرداد 340 · نقاط 1,200 · محجوز 4 صفقات</div></div>
+      <span class="text-[11px] px-2 py-1 rounded-full bg-emerald-500 text-white">ضمان QR 48h</span>
+    </div>
+    <div class="col-span-12 lg:col-span-7 grid grid-cols-2 lg:grid-cols-4 gap-2 text-[11px]">
+      <div class="glass-pearl rounded-xl p-2 border-cyan-500/20"><div class="font-bold text-cyan-700">● Agent 3 — CMO</div><div class="text-[#71717A] mt-1">توصيات + هبوط سعر رغبات 94%</div></div>
+      <div class="glass-pearl rounded-xl p-2 border-emerald-500/20"><div class="font-bold text-emerald-700">● Agent 1 — CFO</div><div class="text-[#71717A] mt-1">ذكاء سعري + فرق مقايضة 1.5x</div></div>
+      <div class="glass-pearl rounded-xl p-2 border-amber-500/20"><div class="font-bold text-amber-700">● Agent 11 — Surge</div><div class="text-[#71717A] mt-1">DECRBY ذري + Horizon طابور</div></div>
+      <div class="glass-pearl rounded-xl p-2 border-red-500/20"><div class="font-bold text-red-600">● Agent 13 — Fraud</div><div class="text-[#71717A] mt-1">Sybil مزاد + مراجعات مزيفة</div></div>
+    </div>
+  </section>
+
+  <div class="mt-6 text-center text-[11px] text-[#71717A] font-latin">Arena · Phase 3.4 AU DEALS — Neo-White #FAFAFA Liquid Pearl frost 86% + obsidian #09090b accents + amber #F59E0B / crimson #EF4444 / cyan #06B6D4 / emerald #10B981 — Reverb 8080</div>
+</main>
+
+<script>
+// mesh light
+const c=document.getElementById('mesh'),x=c.getContext('2d'); let w,h,pts=[];
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+addEventListener('resize',resize);resize();
+pts=Array.from({length:28},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22}));
+(function loop(){ x.clearRect(0,0,w,h); x.strokeStyle='rgba(9,9,11,.06)'; x.fillStyle='rgba(9,9,11,.06)';
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy; if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1; x.beginPath();x.arc(p.x,p.y,1.1,0,Math.PI*2);x.fill();
+    pts.forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y); if(d<140){x.globalAlpha=.06*(1-d/140);x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke();x.globalAlpha=1}})
+  }); requestAnimationFrame(loop)})();
+addEventListener('mousemove',e=>{
+  document.documentElement.style.setProperty('--cx', e.clientX+'px');
+  document.documentElement.style.setProperty('--cy', e.clientY+'px');
+});
+// axis switch
+document.querySelectorAll('.axis-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.axis-btn').forEach(o=>{o.className='axis-btn axis-idle px-3.5 py-1.5 rounded-full text-[12px] whitespace-nowrap'});
+    b.className='axis-btn axis-active px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap';
+  })
+});
+document.querySelectorAll('.radius-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.radius-btn').forEach(o=>o.className='radius-btn px-3 py-1.5 rounded-full text-[12px]');
+    b.className='radius-btn px-3 py-1.5 rounded-full text-[12px] bg-[#09090b] text-white font-bold';
+  })
+});
+// flash countdown
+let flashSec = 5024;
+setInterval(()=>{flashSec--; const h=String(Math.floor(flashSec/3600)).padStart(2,'0'), m=String(Math.floor(flashSec%3600/60)).padStart(2,'0'), s=String(flashSec%60).padStart(2,'0');
+  const el=document.querySelector('.bg-amber-500.text-black'); if(el && el.textContent.includes('Flash')) el.textContent=`Flash -40% · ${h}:${m}:${s}`;
+},1000);
+// auction countdown + sniping
+let aucSec = 28, extended=false;
+const aucEl=document.getElementById('auctionCountdown'), snip=document.getElementById('snipBanner');
+setInterval(()=>{
+  aucSec--;
+  if(aucSec<0 && !extended) aucSec=0;
+  const m=String(Math.floor(aucSec/60)).padStart(2,'0'), s=String(aucSec%60).padStart(2,'0');
+  if(aucEl) aucEl.textContent=`00:${m}:${s}`;
+  if(aucSec<=5 && aucEl) aucEl.classList.add('animate-pulse');
+},1000);
+document.getElementById('bidBtn')?.addEventListener('click',()=>{
+  const stream=document.getElementById('bidStream'), input=document.getElementById('bidInput');
+  const val = parseInt(input.value||'99000');
+  const row=document.createElement('div');
+  row.className='flex justify-between p-2 rounded-lg bg-crimson/10 border border-crimson/20';
+  row.innerHTML=`<span>أنت</span><span class="font-latin font-bold">${val.toLocaleString()}</span><span class="text-[11px] text-crimson">يدوي</span>`;
+  stream.prepend(row);
+  // anti-sniping trigger if within final 30s
+  if(aucSec<=30 && !extended){
+    extended=true; aucSec=120;
+    if(snip) snip.classList.remove('hidden');
+    setTimeout(()=>snip?.classList.add('hidden'), 3500);
+  }
+});
+// barter delta calculator 1.5x / 1x
+function recalc(){
+  const offer=parseInt(document.getElementById('offerSelect').value);
+  const want=parseInt(document.getElementById('wantSelect').value);
+  const charity=document.getElementById('charityToggle').checked;
+  const factor= charity ? 1.0 : 1.5;
+  // commercial: baseline *1.5
+  const offerVal = Math.round(offer * factor);
+  const wantVal = Math.round(want * factor);
+  document.getElementById('offerValue').textContent=offerVal.toLocaleString();
+  document.getElementById('wantValue').textContent=wantVal.toLocaleString();
+  const delta = wantVal - offerVal;
+  const box=document.getElementById('deltaBox');
+  if(delta>0) box.textContent=`+${delta.toLocaleString()} تدفعها`;
+  else if(delta<0) box.textContent=`${Math.abs(delta).toLocaleString()} تستلمها`;
+  else box.textContent=`متوازن 0`;
+  document.getElementById('factorBadge').textContent= charity ? '1x خيري' : '1.5x تجاري';
+}
+['offerSelect','wantSelect','charityToggle'].forEach(id=> document.getElementById(id)?.addEventListener('change', recalc));
+recalc();
+// join group buy
+document.querySelectorAll('.joinBtn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    b.textContent='تم الحجز ✓'; b.className='px-4 h-9 rounded-full bg-emerald-500 text-white text-[12px] font-bold';
+    b.disabled=true;
+  })
+});
+// scanner rotate
+let deg=0; setInterval(()=>{deg=(deg+1.2)%360; const sc=document.getElementById('scanner'); if(sc) sc.style.transform=`rotate(${deg}deg)`}, 30);
+// search visual mock
+document.getElementById('searchInput')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ e.target.value='نتائج: '+ e.target.value + ' — 94% مطابقة Agent3'; }
+});
+</script>
+</body>
+</html>
