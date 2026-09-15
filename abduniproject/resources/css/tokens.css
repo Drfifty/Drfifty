@@ -37,14 +37,18 @@
   --border-pearl: #E4E4E7;
   --border-pearl-subtle: 1px solid var(--border-pearl);
 
-  /* لمسات مجالية — Domain Accents */
-  --accent-primary: #06B6D4; /* cyan — Radar/Services */
+  /* لمسات مجالية — Domain Accents — Part 2 Tokens */
+  --accent-primary: #06B6D4; /* cyan — Radar/Services / AI Cyan */
   --accent-cyan: #06B6D4;
-  --accent-emerald: #10B981; /* wealth/yields */
+  --accent-emerald: #10B981; /* wealth/yields — Success */
   --accent-amber: #F59E0B; /* flash/auctions */
   --accent-secondary: #818cf8;
-  --brand-crimson: #EF4444; /* risk/alerts */
+  --brand-crimson: #EF4444; /* risk/alerts — Threat */
   --brand-crimson-hover: color-mix(in srgb, var(--brand-crimson) 88%, black);
+  --brand-gold: #C5A059; /* Brand Accent — Gold */
+  --brand-gold-hover: color-mix(in srgb, var(--brand-gold) 88%, black);
+  --canvas-dark: #0A0A0C; /* Dark — Part 2 */
+  --canvas-dark-hover: color-mix(in srgb, var(--canvas-dark) 88%, white);
 
   /* تفاعل الألوان */
   --accent-primary-hover: color-mix(in srgb, var(--accent-primary) 88%, black);

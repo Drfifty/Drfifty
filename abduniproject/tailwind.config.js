@@ -24,7 +24,9 @@ export default {
         accent: 'var(--accent-primary)',
         'accent-secondary': 'var(--accent-secondary)',
         crimson: 'var(--brand-crimson)',
-        // مجالات
+        gold: 'var(--brand-gold)',
+        dark: 'var(--canvas-dark)',
+        // مجالات — Part 2
         'accent-cyan': 'var(--accent-cyan)',
         'accent-emerald': 'var(--accent-emerald)',
         'accent-amber': 'var(--accent-amber)',
