@@ -4,14 +4,14 @@
 
 import { PropsWithChildren, useRef } from "react";
 import { usePage } from "@inertiajs/react";
-import type { PageProps } from "@/Types";
+import type { SharedPageProps } from "@/Types/global.d";
 import { useParticleCanvas } from "@/Hooks/useParticleCanvas";
 import { useProximityLighting } from "@/Hooks/useProximityLighting";
 
 export default function AppLayout({ children }: PropsWithChildren) {
-  const { props } = usePage<PageProps & Record<string, unknown>>();
-  const dir = (props.dir as PageProps["dir"] | undefined) ?? "rtl";
-  const locale = (props.locale as PageProps["locale"] | undefined) ?? "ar";
+  const { props } = usePage<SharedPageProps>();
+  const dir = (props.dir as SharedPageProps["dir"] | undefined) ?? "rtl";
+  const locale = (props.locale as SharedPageProps["locale"] | undefined) ?? "ar";
   const appId = props.app_id as string | undefined;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);

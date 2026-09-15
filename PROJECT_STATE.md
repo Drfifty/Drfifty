@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — UNIFIED DESIGN SYSTEM & ATOMIC ARCHITECTURE LOCKED (Arena) — v3.9 — 71 Points + Phase 2 PRISTINE + 3.0/3.1 HQ + 3.2 B2B Locked + 3.3 Vault Locked + 3.4 Marketplace Locked + 3.5 Wealth Locked + 3.6 Field Services + Preview Delivered + Obsidian Canvas Standard Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — PHASE 4.0 FRONTEND FOUNDATIONS LOCKED (Arena) — v4.0 — 71 Points + Phase 2 PRISTINE + 3.0/3.1 HQ + 3.2 B2B Locked + 3.3 Vault Locked + 3.4 Marketplace Locked + 3.5 Wealth Locked + 3.6 Field Services + 4.0 Foundations (TS Strict + Atomic Primitives + TenantContext) Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v3.9 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV Field Services Platform (4 Domains + Dispatch + Tutoring) + Visual Preview Delivered + Unified Design System & Atomic Component Architecture is officially locked (Arena)**
+- **State Version:** v4.0 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV Field Services Platform (4 Domains + Dispatch + Tutoring) + Visual Preview Delivered + Unified Design System & Atomic Architecture v3.9 Locked + PHASE 4.0 Frontend Foundations (TS Strict + DynamicTable + TenantContext + LeakDetector) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -50,6 +50,8 @@
 
 - [x] **UNIFIED DESIGN SYSTEM & ATOMIC ARCHITECTURE LOCKED v3.9 [DIRECTIVE ENFORCED 2026-09-15]:** Obsidian Canvas Standard Deep Cosmic Obsidian Stone #09090b + particle mesh 42 dots + proximity --cx/--cy unified across 5 Apps (AU BUSINESS ab_ + AU MED amed_ + AU DEALS adl_ + AU SERV asv_ + AU INVEST ainv_) — Centralized `tailwind.config.js` canvas #09090b / surface-pearl #FAFAFA / accent cyan #06B6D4 emerald #10B981 amber #F59E0B crimson #EF4444 + radius/shadow tokens — Global CSS tokens `resources/css/tokens.css` --canvas-background/--surface-primary rgba(9,9,11,.80) --surface-pearl #FAFAFA/92 --shadow-elevation-* --border-* --radius-* --accent-* + `resources/css/app.css` Obsidian canvas + proximity + RTL Cairo/Tajawal+Inter — 8 Atomic Components `resources/js/Components/UI/{Button,GlassCard,Badge,Modal,DataGrid,RadarMap,StatCard,FormInput}.tsx` React19 TS strict ZERO any token-driven no hardcoded colors single-file propagate — 5 Decoupled Hooks `resources/js/Hooks/{useSpatialDispatch,useAuctionStream,useEscrowLock,useParticleCanvas,useProximityLighting}.ts` isolating websocket/map/escrow/bidding from JSX — `resources/js/Layouts/AppLayout.tsx` refactored to Obsidian canvas + particle canvas + glass-outer header — `resources/js/Services/cn.ts` merge helper — Maintainability Guarantee: any component/arrangement/button position swappable without touching controllers/APIs/models — **Unified Design System & Atomic Component Architecture is officially locked**
 
+- [x] **PHASE 4.0 — Frontend Master Architecture & Atomic Primitives Foundations [DONE 2026-09-15 — INITIAL TASK]:** Stack React 19 / Inertia v2 / TS 5.7 strict ZERO any + Tailwind v4 + Vite Monorepo `resources/js/` — `tsconfig.json` strict true noUnusedLocals/Parameters + path `@/*` — `resources/js/Types/global.d.ts` SharedPageProps extends Record tenant:TenantContext (app_id/available_apps/dir/locale/locale_digits/permissions/feature_flags/experiment_cohorts) + AuthUser + Flash + Money MinorUnits integer + CspReport + Vite client — `Components/UI/Button.tsx` token-driven variant primary|secondary|ghost|crimson size sm|md|lg + permission DOM-purge + experiment data attr + forwardRef + focus-ring AA + RTL ps/pe — `Components/UI/Modal.tsx` Obsidian backdrop 45% + Pearl inner + ESC + focus-trap + body scroll lock + aria-modal + RTL — `Components/UI/DynamicTable.tsx` Rule13 server-paginated Inertia router.visit preserveState + columns permission purge + isMoney Intl.NumberFormat EGP latn + ps/pe + visible focus-ring + empty state — `Components/UI/FormInput.tsx` label/error/hint + leakMask PHONE/EMAIL/URL + sanitize payload + data-numeric Latin — `Contexts/TenantContext.tsx` Provider + useTenant + Can purge + `Utils/sanitize.ts` maskLeak/containsLeak/sanitizePayload + `Hooks/useTenant.ts` + `Hooks/useFormSanitizer.ts` + `Pages/AU BUSINESS/` space-form added — **PAUSE & SUMMARIZE: Foundations delivered, awaiting approval before Auth & Onboarding Flow (Phase 2 Step 1)**
+
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
 
@@ -74,9 +76,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 3 FIELD SERVICES — **3.6 COMPLETE + UNIFIED DESIGN SYSTEM & ATOMIC ARCHITECTURE LOCKED v3.9** (Arena — AU SERV dispatch + maintenance + tutoring — Obsidian Canvas Standard #09090b + Atomic React 19/Inertia v2)
-- **Deliverable now:** `[PHASE 3.6 + 3.9 LOCK]` delivered — AU SERV 4 Domains + Spatial Dispatch 60s + Two-Tier Escrow + Tutoring WebRTC + Hybrid Obsidian-Pearl Preview + **[ARCHITECTURAL LOCK] Unified Design System & Atomic Component Architecture is officially locked** — Obsidian Canvas Standard #09090b particle --cx/--cy + centralized tailwind.config.js + tokens.css/glass-outer(80%) glass-inner(92%) + 8 Atomics Button|GlassCard|Badge|Modal|DataGrid|RadarMap|StatCard|FormInput token-driven + 5 Hooks useSpatialDispatch|useAuctionStream|useEscrowLock|useParticleCanvas|useProximityLighting decoupled + AppLayout Obsidian — zero hardcoded colors in pages — single-file propagate (see `docs/PHASE3_3.6_AU_SERV_BLUEPRINT.md` + `docs/PREVIEW_AU_SERV.html` + `abduniproject/tailwind.config.js` + `resources/css/tokens.css` + `resources/js/Components/UI/` + `resources/js/Hooks/`)
-- **Next:** Preview verification — temp `docs/PREVIEW_AU_SERV.html` pending approval `rm` — Unified System locked — proceed `[PHASE 4]` or next (awaiting prompt)
+- **Phase:** 4 FRONTEND MASTER ARCHITECTURE — **4.0 FOUNDATIONS LOCKED v4.0** (Arena — React 19/Inertia v2 TS Strict + Atomic Primitives + TenantContext — Obsidian Canvas Standard #09090b)
+- **Deliverable now:** `[PHASE 4.0 FOUNDATIONS]` delivered — tsconfig strict + Types/global.d.ts TenantContext + Button(RBAC purge) + Modal(ESC/focus-trap) + DynamicTable(Rule13 + money EGP latn + permission purge) + FormInput(leakMask) + TenantContext/Can + sanitize.ts + useTenant/useFormSanitizer + Pages/AU BUSINESS space-form — **PAUSE & SUMMARIZE — Awaiting explicit approval before Shared Auth & Onboarding Flow** (see `abduniproject/tsconfig.json` + `resources/js/Types/global.d.ts` + `resources/js/Components/UI/{Button,Modal,DynamicTable,FormInput}.tsx` + `resources/js/Contexts/TenantContext.tsx`)
+- **Next:** Phase 4.0 Step 1 — Shared Auth & Onboarding Flow → Master Admin HQ Dashboard (AI C-Suite, Vault, Telemetry) → AU MED → AU DEALS/AU BUSINESS → AU SERV/AU INVEST — PAUSED awaiting approval
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -88,7 +90,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-15 — Rule 20 — Arena — UNIFIED DESIGN SYSTEM & ATOMIC ARCHITECTURE LOCKED v3.9 — Unified Design System & Atomic Component Architecture is officially locked — Next: Preview Review + Cleanup → [PHASE 4]*
+*Last updated: 2026-09-15 — Rule 20 — Arena — PHASE 4.0 FOUNDATIONS LOCKED v4.0 — tsconfig + global.d.ts + Button/Modal/DynamicTable/FormInput + TenantContext — PAUSE awaiting approval → Next: Auth Flow*
 
 
 ---
