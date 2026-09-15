@@ -1,28 +1,40 @@
-// ABD UNI PROJECT — Master layout (RTL-first, Inertia v2, React 19)
-// Arabic: Cairo/Tajawal · Latin: Inter — via app.css tokens + Tailwind logical props
+// ABD UNI PROJECT — Master layout — Obsidian Canvas Standard Locked
+// الخلفية الكونية + الجسيمات + الإضاءة التقاربية موحدة عبر التطبيقات الخمسة + لوحة الإدارة
+// الطباعة: Cairo/Tajawal عربي · Inter لاتيني · logical props ps-/pe- لـ RTL
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useRef } from "react";
 import { usePage } from "@inertiajs/react";
 import type { PageProps } from "@/Types";
+import { useParticleCanvas } from "@/Hooks/useParticleCanvas";
+import { useProximityLighting } from "@/Hooks/useProximityLighting";
 
 export default function AppLayout({ children }: PropsWithChildren) {
-  const { props } = usePage<PageProps>();
-  const dir = props.dir ?? "rtl";
-  const locale = props.locale ?? "ar";
+  const { props } = usePage<PageProps & Record<string, unknown>>();
+  const dir = (props.dir as PageProps["dir"] | undefined) ?? "rtl";
+  const locale = (props.locale as PageProps["locale"] | undefined) ?? "ar";
+  const appId = props.app_id as string | undefined;
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useParticleCanvas(canvasRef, { count: 42 });
+  useProximityLighting(rootRef);
 
   return (
-    <div dir={dir} lang={locale} className="min-h-screen bg-white text-slate-900">
-      {/* Header — logical padding ps/pe for RTL */}
-      <header className="border-b border-slate-200 ps-6 pe-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold font-[var(--font-arabic)]">ABD UNI PROJECT</h1>
-        <span className="text-sm text-slate-500">{props.app_id}</span>
+    <div ref={rootRef} dir={dir} lang={locale} className="canvas-obsidian min-h-screen text-[var(--text-primary)] antialiased">
+      {/* خلفية جسيمية — Obsidian موحدة — --cx/--cy يحدّثها useProximityLighting */}
+      <canvas ref={canvasRef} className="particle-grid" aria-hidden />
+
+      {/* Header — Outer Obsidian Glass */}
+      <header className="glass-outer sticky top-0 z-30 ps-6 pe-6 py-4 flex items-center justify-between">
+        <h1 className="text-section font-bold tracking-tight text-white">ABD UNI PROJECT</h1>
+        <span className="text-micro text-[var(--text-secondary)]">{appId ?? "Arena"}</span>
       </header>
 
-      {/* Main — text-start for RTL/LTR auto */}
+      {/* Main — يحمل Pearl داخلي عبر صفحات العرض */}
       <main className="ps-6 pe-6 py-6 text-start">{children}</main>
 
-      <footer className="border-t border-slate-100 ps-6 pe-6 py-4 text-center text-xs text-slate-400">
-        abduniproject · Modular Monolith · MySQL 8.4 + PostgreSQL 16 · Reverb 8080
+      <footer className="border-t border-[var(--border-main)] ps-6 pe-6 py-4 text-center text-micro text-[var(--text-secondary)]">
+        abduniproject · Obsidian Canvas · Modular Monolith · MySQL 8.4 + PostgreSQL 16 · Reverb 8080
       </footer>
     </div>
   );
