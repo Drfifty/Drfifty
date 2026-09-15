@@ -12,6 +12,9 @@ use Inertia\Inertia;
 Route::get('/', fn () => Inertia::render('Welcome', ['app_id' => 'AU BUSINESS']))->name('home');
 Route::get('/health', fn () => response()->json(['status' => 'ok', 'reverb' => 8080]))->name('health');
 
+// Dev Sandbox — Living showcase for Phase 4.0 atomic primitives & screens — local only
+Route::get('/dev/sandbox', fn () => Inertia::render('Dev/Sandbox'))->name('dev.sandbox');
+
 // User — authenticated tenant context
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');

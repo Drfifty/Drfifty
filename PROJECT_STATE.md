@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — PHASE 4.0 PART 2 ATOMIC PRIMITIVES LOCKED (Arena) — v4.1 — 71 Points + Phase 2 PRISTINE + 3.0/3.1 HQ + 3.2 B2B Locked + 3.3 Vault Locked + 3.4 Marketplace Locked + 3.5 Wealth Locked + 3.6 Field Services + 4.0 Foundations + 4.0 Part 2 Atomic (Button/SecureInput/Table/Modal/Hold/Badge/Switcher/Error) Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — PHASE 4.0 DEV SANDBOX LIVING SHOWCASE LOCKED (Arena) — v4.2 — 71 Points + Phase 2 PRISTINE + 3.0/3.1 HQ + 3.2 B2B Locked + 3.3 Vault Locked + 3.4 Marketplace Locked + 3.5 Wealth Locked + 3.6 Field Services + 4.0 Foundations + 4.2 Sandbox (/dev/sandbox) Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v4.1 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV Field Services Platform (4 Domains + Dispatch + Tutoring) + Visual Preview Delivered + Unified Design System v3.9 Locked + PHASE 4.0 Foundations v4.0 + PHASE 4.0 Part 2 Atomic Primitives (7 components) Locked (Arena)**
+- **State Version:** v4.2 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV Field Services Platform (4 Domains + Dispatch + Tutoring) + Visual Preview Delivered + Unified Design System v3.9 Locked + PHASE 4.0 Foundations v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 (/dev/sandbox) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -54,6 +54,8 @@
 
 - [x] **PHASE 4.0 Part 2 — Atomic UI Primitives & Design System [DONE 2026-09-15 — PART 2]:** Tokens updated `#0A0A0C Dark + #C5A059 Gold + #10B981 Success + #EF4444 Threat + #06B6D4 AI Cyan` via `tokens.css`/`tailwind.config.js` — `Button.tsx` 5 variants `primary(dark)/secondary/danger/ai-action/gold` + aliases `ghost/crimson` + `isLoading/isDisabled/icon/requiredPermission/appContext` RBAC purge + forwardRef — `FormInput.tsx` standard RTL + `SecureFormInput.tsx` RegexDataLeakDetector maskLeak phone/email/URL as-you-type — `DynamicTable.tsx` sortable headers ↑↓ + rowActions + multi-select checkboxes + status badges via render + pagination Inertia preserveState + money EGP latn — `Modal.tsx` ESC + focus-trap + backdrop blur + dynamic actions + `ConfirmHoldModal.tsx` 2s hold-to-confirm progress for Kill-Switch/Session Revocation + variant danger/gold/ai-action — `StatusBadge.tsx` 6 states `Verified/Pending/Danger/VIP/Anonymous/AI_Active` pill — `MultiTenantSwitcher.tsx` 6 pills `MASTER_HQ/AU BUSINESS/AU MED/AU DEALS/AU SERV/AU INVEST` router.visit — `ErrorBoundary.tsx` class boundary suppress stack in prod — **PAUSE awaiting next prompt**
 
+- [x] **PHASE 4.0 Dev Sandbox — Living Component & Screen Showcase [DONE 2026-09-15 — DEV UTILITY]:** `resources/js/Pages/Dev/Sandbox.tsx` 176 lines cumulative dynamic showcase at `/dev/sandbox` — sections `Part 1 & 2: Atomic Primitives` → future `Part 3 HQ / Part 4 AU BUSINESS` auto-registered — renders Button (primary/secondary/danger/ai-action/gold/ghost/crimson + isLoading/isDisabled/icon/permission), FormInput + SecureFormInput live RegexDataLeakDetector (`010…` → `***`), DynamicTable mock EGP 1.25M/0.89M/4.5M minor-units + sortable ↑↓ + selectable + rowActions + StatusBadge, Modal + ConfirmHoldModal 2s hold, StatusBadge 6 states dot, MultiTenantSwitcher 6 pills, ErrorBoundary Thrower demo — `routes/web.php` `GET /dev/sandbox → Inertia::render('Dev/Sandbox')` — `tsc -p tsconfig.json --noEmit` 0 errors — ready for continuous live refresh
+
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
 
@@ -78,9 +80,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 4 FRONTEND MASTER ARCHITECTURE — **4.0 PART 2 ATOMIC PRIMITIVES LOCKED v4.1** (Arena — React 19/Inertia v2 TS Strict + 7 Primitives + Gold/Dark Tokens #0A0A0C/#C5A059 — Obsidian)
-- **Deliverable now:** `[PHASE 4.0 PART 2 ATOMIC]` delivered — Gold/Dark tokens + Button 5 variants + SecureFormInput leak mask + DynamicTable sortable/rowActions/multi-select + Modal/ConfirmHold 2s + StatusBadge 6 states + MultiTenantSwitcher 6 pills + ErrorBoundary — **PAUSE awaiting next prompt** (see `resources/js/Components/UI/{Button,FormInput,SecureFormInput,DynamicTable,Modal,ConfirmHoldModal,StatusBadge,MultiTenantSwitcher,ErrorBoundary}.tsx` + `tokens.css`/`tailwind.config.js`)
-- **Next:** PAUSED — Awaiting next prompt after Part 2 Atomic — Next: Master Admin HQ / AU MED screens per workflow
+- **Phase:** 4 FRONTEND MASTER ARCHITECTURE — **4.2 DEV SANDBOX LIVING SHOWCASE LOCKED v4.2** (Arena — React 19/Inertia v2 TS Strict + /dev/sandbox cumulative — Obsidian)
+- **Deliverable now:** `[PHASE 4.0 DEV SANDBOX]` delivered — Dev/Sandbox.tsx 176 lines at /dev/sandbox rendering all Part 1&2 primitives live + route `routes/web.php` + tsc 0 errors — **Ready for continuous refresh — cumulative for Part 3 HQ onward** (see `resources/js/Pages/Dev/Sandbox.tsx` + `routes/web.php`)
+- **Next:** Continuous — /dev/sandbox live — Next: Part 3 Master HQ screens (auto-registered in Sandbox) → Part 4 AU BUSINESS — PAUSED awaiting next prompt
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -92,7 +94,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-15 — Rule 20 — Arena — PHASE 4.0 PART 2 ATOMIC LOCKED v4.1 — 7 primitives Button/SecureInput/Table/Modal/Hold/Badge/Switcher/Error + Gold/Dark tokens — PAUSE awaiting next prompt*
+*Last updated: 2026-09-15 — Rule 20 — Arena — PHASE 4.0 DEV SANDBOX v4.2 — /dev/sandbox 176 lines + all Part 1&2 primitives live + tsc 0 — Ready for continuous refresh*
 
 
 ---
