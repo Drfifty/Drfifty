@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — PHASE 3.1 PART 1 HQ BLUEPRINT DONE (Arena) — v3.3 — 71 Points + Phase 2 PRISTINE + 3.0 Design System + 3.1 10-Screen HQ Spec Delivered
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — PHASE 3.2 AU BUSINESS BLUEPRINT DONE (Arena) — v3.4 — 71 Points + Phase 2 PRISTINE + 3.0/3.1 HQ + 3.2 B2B Portal + Preview Delivered
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v3.3 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 Design System v3.2 + PHASE 3.1 PART 1 HQ BLUEPRINT (10 Screens + 13 Agents) Delivered (Arena — Spec Mode Only)**
+- **State Version:** v3.4 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 AU BUSINESS B2B Blueprint (Merchant/Trade/Wallet/AI) + Visual Preview Delivered (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -42,6 +42,7 @@
 - [x] **POST-PHASE 2 DEEP AUDIT — IN-PLACE REFACTOR [DONE 2026-09-14]:** Character-by-character audit across `database/schema` (4), `database/migrations` (7), `docs` (16), `docker-compose.prod.yml` — AU BUSINESS Master Core B2B anchor added to 14 specs (hub diagrams), `micro_switch_matrix` added `preferred_driver+llm_fallback_enabled`, `SPATIAL INDEX spx_listing_point`, `CHECK JSON_VALID` (6 tables), `idx_esc_app`+`chk_*_json`, `feature_flags` canonical rebuild, `app_wallets` BIGINT subunit `version+GENERATED`, early migrations idempotent + `docker-compose` AU BUSINESS hub comments — 22 in-place fixes — `docs/PHASE2_AUDIT_REPORT.md` + `PROJECT_STATE v3.1` locked pristine
 - [x] **PHASE 3.0 — Master Design System & Core Component Tokens [DONE 2026-09-15 — Spec Mode Only]:** Theme-agnostic token ecosystem (9 semantic colors `canvas/surface/text/border/accent/crimson` + `shadow-elevation-sm/md/lg` + `border-subtle/medium/bold` + `focus:ring-accent`) via `var(--token)` → Tailwind v4 `bg-surface` etc. (6 themes: Minimal/Glass/Brutalist/Material/Dark/High-Contrast), dynamic `BackgroundLayer` (gradient/particle/mesh/shader), typography Cairo/Tajawal+Inter (32→11px) + 8pt grid (4-64) + `ps/pe`-logical RTL, 8 atomics (Button/Ghost, Canvas Wrapper, Float-Inputs/Combobox/Date/Tags, DataTable sticky/pagination, MicroSwitch, HITL 4-CTAs, HUD Cyan/Crimson toasts, Modal/Drawer blur 8px), RBAC `blur-md` + 5-App Switcher, breakpoints 1440/1024/768/320 + WCAG AA 4.5:1 — spec `docs/PHASE3_3.0_DESIGN_SYSTEM.md` (no code)
 - [x] **PHASE 3.1 PART 1 — Master Admin Dashboard & AI C-Suite HQ Blueprint [DONE 2026-09-15 — Spec Mode Only]:** Global Framework (Top Header: Kill-Switch hold 2s `#EF4444` + Calibrator 100→90 gauge emerald/amber/crimson + App Switcher 6 pills + AU Lite Freeze Bar + Profile/RBAC + Kill-All Sessions) + Collapsible Sidebar 10 Enterprise Suites (C-Suite Governance, Financial Vault, Monetization, Taxonomy, Loyalty, Disputes/SLA, HR/Permissions, DRM Poison Pill, Telemetry Swarms, Broadcast/Ads/Geo) + 10 Screens exhaustive: S1 24/7 C-Suite HITL (70/30 split, 13 Agents exact titles 1→13, 4 CTAs Approve/Reject/Modify/AskLater, PR Visualizer diff + Proactive Learning strict "Admin, I found [X]...Y%" + RAG Drawer pgvector Agent 7) → S10 Broadcast/Ads/GeoDispatch — cinematic liquid-metallic/glass obsidian `#09090b` + neon cyan `#06B6D4`/emerald/amber/crimson + particle mesh + proximity lighting `--cursor-x/y` encapsulated in `tokens.css` — spec `docs/PHASE3_3.1_HQ_BLUEPRINT_PART1.md` (no code, 13-Agent lock, API-First Reverb 8080)
+- [x] **PHASE 3.2 — AU BUSINESS Merchant & B2B Portal Blueprint [DONE 2026-09-15]:** ONLY B2B `AU BUSINESS ab_` single writer → 4 B2C `AU MED/DEALS/SERV/INVEST` realtime via `MerchantCatalogUpdatedEvent` + Redis `b2c:catalog:*` + Reverb `private-catalog` — 7 Sections: S1 KYC deterministic OCR → Agent 12 HITL + Branches `POINT/POLYGON SRID4326` radius 5/50/national + Staff `Branch Manager/Cashier/Inventory/Appointment` PIN+biometric `staff_action_logs` hash_chain + Entity Selector 4 pills + POS offline-first `merchant_pos_terminals` ESC/POS Thermal/WebBluetooth/Barcode + split-payment Cash/Wallet QR/Card + Dashboard KPI + Agent 4 Insights, S2 Universal Catalog `merchant_catalogs` `physical/digital/clinical/rental/real_estate` + Bulk Excel 500/chunk + Inventory Guardrails + 6-Axis Studio `Sale|Rental|Booking|Barter|Auction|Urgent is_urgent push presence-dispatch`, S3 B2B Wholesale Inter-Pharmacy Swap `b2b_swapping_requests` Syndicate + Bulk Escrow `partial_milestone`, S4 Wallet `Available/Pending/TaxReserve/Fees` + Payout `InstaPay/VodafoneCash/IBAN AES-GCM` threshold 50000 + `wallet_settlements` hash + ZATCA/ETA QR `SHA256+ECDSA`, S5 Cognitive AI embedded 5 agents (Agent 4 0-100% quality + background remove, Agent 3 price/marketplace/liquidation/budget, Agent 1 ZATCA, Agent 12 KYC+AU Lite, Agent 13 Fraud >80% freeze HARD-BLOCKED seize), S6 Kanban 5 cols `Pending→Preparing→Out→Completed→Disputed` + Chat `RegexDataLeakDetector until holding` + Escalate, S7 Tiers `FREE 20/SILVER 100/GOLD 500/PLATINUM 2000` + Boosters keyword auction + geo `ST_Buffer` — 12 migrations `merchants,branches,staff,staff_logs,catalogs,deal_items,b2b_swaps,payouts,settlements,contexts,pos_terminals,marketing,zatca,widgets,liquidation` + 2 Middleware `CheckMerchantSubscriptionQuota + MaskCustomerSensitiveData` → specs `docs/PHASE3_3.2_AU_BUSINESS_BLUEPRINT.md` + Visual `docs/PREVIEW_AU_BUSINESS.html` liquid metallic glass obsidian `#09090b` neon `06B6D4/10B981/F59E0B/EF4444` particle mesh + dashboard+POS responsive
 
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
@@ -67,9 +68,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 3 HQ BLUEPRINT — **3.1 PART 1 COMPLETE (Spec Mode Only)** (Arena — cinematic 10 screens)
-- **Deliverable now:** `[PHASE 3.1 PART 1]` delivered — 10-Screen Master HQ + 13-Agent Governance (see `docs/PHASE3_3.1_HQ_BLUEPRINT_PART1.md` — no code, token-isolated)
-- **Next:** `[PHASE 3.1 PART 2]` — 13-Agent Workspaces Deep Dive + 5-App Continuity (awaiting prompt — inherits 3.0/3.1)
+- **Phase:** 3 B2B PORTAL — **3.2 COMPLETE (B2B Blueprint + Preview)** (Arena — AU BUSINESS command center)
+- **Deliverable now:** `[PHASE 3.2]` delivered — AU BUSINESS B2B Portal 7 Sections + 12 Migrations + Agent Workspaces Embedded + Liquid Metallic Preview (see `docs/PHASE3_3.2_AU_BUSINESS_BLUEPRINT.md` + `docs/PREVIEW_AU_BUSINESS.html` — temp preview)
+- **Next:** Preview verification — upon approval cleanup `rm docs/PREVIEW_AU_BUSINESS.html` + proceed `[PHASE 3.3]` AU MED or next app (awaiting prompt)
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -81,7 +82,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-15 — Rule 20 — Arena — PHASE 3.1 PART 1 DONE v3.3 — Next: [PHASE 3.1 PART 2] Workspaces Deep Dive*
+*Last updated: 2026-09-15 — Rule 20 — Arena — PHASE 3.2 DONE v3.4 — Next: Preview Review + Cleanup → [PHASE 3.3]*
 
 
 ---
