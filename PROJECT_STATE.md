@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.3a BACKEND LAYOUT DONE (Arena) — 71 Points → 2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c+2.2d+2.2e+2.2f+2.3a Delivered
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-14 — Phase 2.3b FRONTEND LAYOUT DONE (Arena) — 71 Points → 2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c+2.2d+2.2e+2.2f+2.3a+2.3b Delivered
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v2.2 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC + 2.1b Wallet/Escrow + 2.1c AU DEALS + 2.1d AU SERV Spatial + 2.2a Auth/Financial + 2.2b AU DEALS + 2.2c SERV/INVEST + 2.2d AU MED + 2.2e Governance/Calibrator + 2.2f Workforce + 2.3a Backend Layout Delivered (Arena ultra-concise)**
+- **State Version:** v2.3 — **Phase 1 LOCK 71 Points + Phase 2.1a Auth/RBAC + 2.1b Wallet/Escrow + 2.1c AU DEALS + 2.1d AU SERV Spatial + 2.2a Auth/Financial + 2.2b AU DEALS + 2.2c SERV/INVEST + 2.2d AU MED + 2.2e Governance/Calibrator + 2.2f Workforce + 2.3a Backend + 2.3b Frontend Delivered (Arena ultra-concise)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -34,6 +34,7 @@
 - [x] **PHASE 2.2e — Governance & Calibrator [DONE]:** 8 endpoints canonical `GET system/modules/status + POST toggle (no deploy, is_core lock) + POST leak-check (100% Regex) + GET calibrator/health-score (100→90% auto-heal) + POST pre-op (<15ms) + POST kill-switch (sever LLM) + GET/POST hitl queue/approve` — spec `docs/PHASE2_2.2E_GOVERNANCE_APIS.md` + routes `routes/api/v1/governance.php`
 - [x] **PHASE 2.2f — Workforce Marketplace [DONE]:** 4 endpoints canonical `GET agents catalogue + POST checkout (buyout license SaaS-only + subscription monthly via escrow 12h + Mutex) + GET tenant-agents + POST dispatch (HITL+Reverb)` + `private-tenant.{app_id}.workforce` streaming (Queued/Progress/Completed) + `EnsureTenantWorkforce` app_id isolation — spec `docs/PHASE2_2.2F_WORKFORCE_APIS.md` + routes `routes/api/v1/workforce.php` + `routes/channels.php`
 - [x] **PHASE 2.3a — Backend Layout [DONE]:** Clean Arch DDD tree `app/Domain/{Wallet,Escrow,AUDeals,AUServ,AUInvest,AUMed,Workforce,Calibrator} + app/Services/{Rules,Security,Agents,Calibrator} + docker/sandboxes` (deterministic 0-cost, Regex 100%, Tri-Hybrid, SelfHealing) + 8 interface contracts (Repositories/Actions/Gates/Drivers) — spec `docs/PHASE2_2.3A_BACKEND_LAYOUT.md` + scaffold `.gitkeep`
+- [x] **PHASE 2.3b — Frontend Layout [DONE]:** React 19 + Inertia v2 + Zustand tree `resources/js/{Components/{UI,Layout,Calibrator,Governance},Stores,Services,Router,Pages/AU MED|DEALS|SERV|INVEST|Admin}` + 4 HQ widgets (PerformanceGauge 100→90%, Emergency Red Button, MicroSwitchMatrixPanel, HitlInbox) + Guards (Auth/Role/AppId/FeatureFlag) — spec `docs/PHASE2_2.3B_FRONTEND_LAYOUT.md` + scaffold `.gitkeep`
 
 ## 2. Tech Stack Lock (NO deviations)
 Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
@@ -59,9 +60,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c+2.2d+2.2e+2.2f+2.3a DONE** (Arena ultra-concise + DDD 3-layer)
-- **Deliverable now:** `[PROMPT 2.3a]` delivered — Backend Layout DDD + 8 contracts (see `docs/PHASE2_2.3A_BACKEND_LAYOUT.md`)
-- **Next:** `[PROMPT 2.3b]` — Frontend + Security Vault (awaiting prompt) — continuing FULL unabridged
+- **Phase:** 2 ARCHITECTURE & SPEC — **2.1a+2.1b+2.1c+2.1d+2.2a+2.2b+2.2c+2.2d+2.2e+2.2f+2.3a+2.3b DONE** (Arena ultra-concise + React 19 HQ)
+- **Deliverable now:** `[PROMPT 2.3b]` delivered — Frontend Layout + 4 HQ widgets (see `docs/PHASE2_2.3B_FRONTEND_LAYOUT.md`)
+- **Next:** `[PROMPT 2.3c]` — Security Vault & DRM (awaiting prompt) — continuing FULL unabridged
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -73,7 +74,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.3a DONE — Next: [PROMPT 2.3b]*
+*Last updated: 2026-09-14 — Rule 20 — Arena — Phase 2.3b DONE — Next: [PROMPT 2.3c]*
 
 ---
 ## 9. MANDATORY GLOBAL CORRECTION 2026-09-14 — 15→9 Modules
