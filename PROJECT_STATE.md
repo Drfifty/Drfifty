@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.3 ZERO-TRUST RBAC + POISON PILL DRM — Arena — v5.0-B.3 — Micro-Permissions STORED+Tagged + WORM Hash-Chain Queued + Stable Fingerprint machine-id + Heartbeat HMAC 576×5m 48h + Quarantine 503 Hierarchy DRM>AU Lite>RBAC + Argon2id 5/min + 7d Grace NOT Auto-Delete — B.1a/B.2a Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.4 TRI-HYBRID + CALIBRATOR HEALING — Arena — v5.0-B.4 — Deterministic 0-cost First → CircuitBreaker 5/5m → BudgetGuard Redis Lua Atomic Cairo → SSRF Allowlist → Prompt Re-sanitize → 30s Tags Runtime → Event Calibrator <15ms → Traceparent — B.1a/b2a/b3 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.3 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a Locked + B.3 Zero-Trust RBAC (Micro-Permissions STORED+Audit Tagged + DOM 30s Visibility vs Server 403/202) + WORM Security Audit Hash-Chain Queued Partitioned + Poison Pill DRM (Singleton 1 + Stable machine-id + HMAC Heartbeat 576×5m 48h + Quarantine 503 > AU Lite + Argon2id 5/min + 7d Grace NOT Auto-Delete) Locked (Arena)**
+- **State Version:** v5.0-B.4 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3 Locked + B.4 Tri-Hybrid (Deterministic FSM 0-cost → CircuitBreaker 5/5m → BudgetGuard Lua Atomic Cairo Daily → SSRF Allowlist → Prompt Re-sanitize → AgentRuntimeCache 30s Tags → Event Calibrator <15ms) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.3 ZERO-TRUST RBAC + POISON PILL DRM LOCKED v5.0-B.3** (Arena — Laravel 12 PHP 8.4 SecOps Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.3]` delivered — `docs/PHASE5_B3_GOVERNANCE_DRM.md` (8 sections: Super Admin Gate MFA, Micro-Permissions STORED+Audit+Tagged 30s DOM vs Server 403/202, WORM Audit Hash-Chain Queued+PII Partition, DRM Singleton Fingerprint machine-id+AES-GCM+RSA+HMAC Heartbeat 576×5m 48h→Quarantine 503 >AU Lite + 7d Grace NOT Auto-Delete + Argon2id 5/min + double-confirm Annihilate, Middleware Hierarchy DRM>AU Lite>RBAC, 6 Sprints B.3.1-B.3.6, Calibrator 100%) + 3 migrations (000017 micro_switch_matrix+b.1a compat+audits, 000018 security_audit_logs WORM hash-chain, 000019 system_drm_states singleton+events) + 16 code files (SubCapabilityKey+DrmReasonCode+MicroSwitchRepository+MicroPermissionCache+EloquentMicroSwitch+Fingerprint+DrmHeartbeat+SecurityAuditLogger+Jobs+QuarantineGuard+RequireMicroPermission+SecurityAuditMiddleware+MicroPermissionController+DrmController+Requests+Events+AnnihilationJob) + config/drm.php + .env DRM vars — **PAUSE before B.4**
-- **Next:** PAUSED — B.3 spec+code hardened with 14-flaw pre-audit — Awaiting B.4 Tri-Hybrid AI Strategy prompt
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.4 TRI-HYBRID + CALIBRATOR HEALING LOCKED v5.0-B.4** (Arena — Laravel 12 PHP 8.4 AI Infra Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.4]` delivered — `docs/PHASE5_B4_TRI_HYBRID.md` (9 sections: DriverInterface + Proposal VO threshold >=90, CircuitBreaker 5/5m HALF_OPEN, BudgetGuard Redis Lua Cairo daily atomic + HITL, AgentRuntimeCache 30s tags ai_runtime, SSRF allowlist 3s + re-sanitize BLOCK, Manager fallback order preferred→cloud/local_gpu, Event AgentConfidenceEvaluated → CalibratorHealingListener queue calibrator <15ms price/promo/reroute R37, traceparent LLM) + 2 migrations (000020 micro_switch driver_override/threshold, 000021 agent_budget_caps PK agent+date audit mirror) + 15 code files (DriverInterface+Proposal+Exceptions+AgentRuntimeCache+BudgetGuard+CircuitBreaker+LocalGpu/Cloud Clients+3 Drivers+AgentStrategyManager+AgentConfidenceEvaluated+CalibratorHealingListener+SelfHealingEngine+HitlBudgetAlertJob+TieredPricingEngine) + config/ai.php + .env AI vars — **PAUSE before B.5**
+- **Next:** PAUSED — B.4 hardened with 14-flaw pre-audit (F-01→F-13) — Awaiting B.5 AU MED Clinical Vault prompt
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,28 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.3 — docs/PHASE5_B3_GOVERNANCE_DRM.md + 3 migrations + 16 files + DRM harden — PAUSE before B.4*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.4 — docs/PHASE5_B4_TRI_HYBRID.md + 2 migrations + 15 files + Tri-Hybrid harden 14 fixes — PAUSE before B.5*
+
+---
+
+## 15. PHASE 5.0 B.4 — TRI-HYBRID AGENTSTRATEGYMANAGER & CALIBRATOR HEALING [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Senior AI Infra Systems Engineer — Tri-Hybrid adapter (Deterministic 0-cost → Cloud → Local GPU) + BudgetGuard + CircuitBreaker + Dynamic Runtime Switching + CalibratorSelfHealing — Pre-Execution Audit 14 flaws → hardening F-01→F-13 integrated before commit.
+> **Audit Screening (Pre-Execution 2026-09-16):** 14 vulnerabilities/features identified — Budget race check-then-increment over-spend, config drift ai_agents_config vs micro_switch_matrix, threshold ==90 ambiguous, SSRF via LOCAL_GPU_ENDPOINT private IP, secrets in DB/log, prompt injection bypass leak detector, no timeout/CircuitBreaker hang worker, hot row budget per-request DB, missing indexes, Cairo vs UTC daily reset, hierarchy preferred_driver vs auto, SoC circular Manager→Calibrator, budget-exhausted infinite loop, missing traceparent.
+
+**Deliverable:** `docs/PHASE5_B4_TRI_HYBRID.md` (v5.0-B.4 harden) — 9 sections + DDL + Driver Contracts:
+
+- **§1 Driver Architecture DDD R27:** `DriverInterface::propose(): Proposal{confidence 0-100, output, tokens, costUsd, reasonCode}` + `Proposal VO >=90 pass strict` + `DeterministicRuleDriver` FSM 2s Regex 0 token, `CloudLlmDriver` via `CloudLlmClient` 5s `CLOUD_LLM_API_KEY` .env only, `LocalGpuDriver` via `LocalGpuClient` 3s `LOCAL_GPU_ENDPOINT` SSRF allowlist + cost `LOCAL_GPU_COST_PER_1K` — timeout connect 1s, never hardcode R17.
+- **§2 Fallback & CircuitBreaker + Budget:** `AgentStrategyManager::execute` flow — `AgentRuntimeCache 30s tags + re-sanitize prompt BLOCK→HITL → BudgetGuard checkExceeded terminal → deterministic isPass threshold → fallback order preferred_driver (micro_switch) → circuit skip OPEN → Budget wouldExceed skip → try driver timeout 2/5/3s → recordSuccess/Failure 5→OPEN 5min HALF_OPEN probe`. **BudgetGuard Lua atomic** `INCRBYFLOAT budget:{id}:{CairoDate}:spend` + `EXPIRE 25h` + revert if > cap cap, add tokens/spend atomically, nightly flush to `agent_budget_caps` audit. **CircuitBreaker** `circuit:{driver}:{agentId}` CLOSED→5 failures→OPEN 300s→HALF_OPEN single probe.
+- **§3 Dynamic Runtime Switching:** **NO new `ai_agents_config`** — extends `micro_switch_matrix` additive `driver_override ENUM auto/deterministic/cloud/local_gpu DEFAULT auto, deterministic_threshold TINYINT 90 CHECK 0-100, idx_ms_driver` + reuse `MicroPermissionCache` tags+lock 30s + Reverb `AgentRuntimeToggled` flush. Resolved via `AgentRuntimeCache::resolve(agentId,appId)` precedence `micro_switch > budget > confidence`.
+- **§4 Calibrator Integration Event-Decoupled F-11:** Manager dispatches `AgentConfidenceEvaluated(agentId, confidence, reasonCode, traceId, durationMs, costUsd)` → `CalibratorHealingListener` `queue:calibrator` ShouldQueue async <15ms Pre-Op → `CalibratorSelfHealingEngine::evaluate` → `priceAdjustment TieredPricingEngine, autoPromotion stagnant_deals, reroute stats_wallet_daily` — R37 stats isolation no `COUNT(*) on live`, no circular call.
+- **§5 DDL MySQL 8.4 JSON not JSONB:** `000020` alter micro_switch add columns + `chk_threshold` + `idx_ms_driver`; `000021` `agent_budget_caps(agent_id TINYINT 1-13, budget_date DATE Cairo, daily_token_limit 100k, daily_cost_cap 5.0000, current_* flush, PK agent+date, idx budget_date, CHECK)`. Redis keys `budget:{id}:{date}:spend/tokens`, `circuit:{driver}:{agent}`.
+- **§6 Contracts Sprint-Ready:** `RegexMismatchException`, `DeterministicConfidenceBelowThreshold`, `BudgetExhausted`, `CircuitOpen` typed; Manager DI `deterministic, cloud, localGpu, circuit, budget`; `traceparent 00-{trace_id}` propagated to LLM headers F-13; allowlist logging `+ agent_id, driver, confidence, tokens, cost_usd` single-line JSON.
+- **§7-§8 Sprints B.4.1-B.4.6:** Migrations → Contracts/VO → Cache/Guards → Clients SSRF → 3 Drivers → Manager+Event+Calibrator — each ≤150L; verification gates Lua concurrency 100 no over-spend, 5 fails OPEN, toggle 30s flush no restart, SSRF 169.254 blocked 422, prompt BLOCK→HITL, 90 pass 89.9 fallback, traceparent logged, queue calibrator <15ms.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 Eloquent/R17 env/R18 transaction/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 validation + Pillars 1 (0-cost),2 (<90 fallback),3 (Tri-Hybrid Switcher),7 (Calibrator) + 13 Agents canonical + 9 Modules + 5 Apps — hardened.
+
+**Next:** B.5 AU MED Clinical Vault — awaiting prompt
 
 ---
 
