@@ -16,12 +16,21 @@ final class CalibratorSelfHealingEngine {
  public function heal(int $health): bool {
   $threshold = (int) config('ai.calibrator_threshold', config('ai.threshold', 90));
   if($health >= $threshold) return false;
+  // FIX-360-11 healing window 15s for micro staleness guard
+  try{ Cache::put('calibrator:heal:window', 1, 15); }catch(\Throwable){}
   // FIX-360-01/02: targeted tags pinned redis DB1 — never full flush
   CacheTagGuard::flushTags(['feature_flags','micro_perm','ai_runtime']);
   CacheTagGuard::forget('calibrator:health');
   $this->recycleWorkers();
   $this->stepDownDrivers($health);
-  try{ DB::table('healing_events')->insert(['health_score'=>$health,'actions'=>json_encode(['tags_flush','recycle','step_down']),'created_at'=>now('Africa/Cairo')]); }catch(\Throwable){}
+  // FIX-360-14 WORM hash chain
+  try{
+   $prev = DB::table('healing_events')->orderByDesc('id')->value('hash_current');
+   $cur = hash('sha256', ($prev??''). $health . json_encode(['tags_flush','recycle','step_down']) . microtime(true));
+   DB::table('healing_events')->insert(['health_score'=>$health,'actions'=>json_encode(['tags_flush','recycle','step_down']),'prev_hash'=>$prev,'hash_current'=>$cur,'created_at'=>now('Africa/Cairo')]);
+  }catch(\Throwable){
+   try{ DB::table('healing_events')->insert(['health_score'=>$health,'actions'=>json_encode(['tags_flush','recycle','step_down']),'created_at'=>now('Africa/Cairo')]); }catch(\Throwable){}
+  }
   Log::info('calibrator_heal',['health'=>$health,'actions'=>['tags_flush','recycle','step_down']]);
   try{ event(new \App\Events\GovernanceAlerted('calibrator_drop', $health, 'heal '.$health.'<90')); }catch(\Throwable){}
   return true;
