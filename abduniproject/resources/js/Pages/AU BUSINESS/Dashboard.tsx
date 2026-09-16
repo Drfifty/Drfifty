@@ -44,7 +44,7 @@ const MOCK_FEED: WholesaleFeedItem[] = [
 ];
 
 export default function Dashboard() {
-  const { props } = usePage<SharedPageProps>();
+  const { props } = usePage<SharedPageProps & { feed?: WholesaleFeedItem[] }>();
   const tenantApp = (props.tenant?.app_id ?? props.app_id) as string;
   const isBusiness = tenantApp === TENANT;
   const scale = (props as unknown as { profile?: { scale: BusinessScale } }).profile?.scale ?? "wholesaler";
@@ -52,31 +52,33 @@ export default function Dashboard() {
     wholesale_liquidity_minor: 245000000, active_escrow_count: 7, active_escrow_minor: 34200000,
     bulk_inventory_value_minor: 189000000, calibrator_score: 92, calibrator_status: "amber", currency: "EGP",
   };
-  const [feed, setFeed] = useState<WholesaleFeedItem[]>(MOCK_FEED);
+  // FIX-P1-06: server feed hydration — props.feed when exists, MOCK fallback only for sandbox — no interval when real
+  const serverFeed = (props as unknown as { feed?: WholesaleFeedItem[] }).feed;
+  const [feed, setFeed] = useState<WholesaleFeedItem[]>(serverFeed ?? MOCK_FEED);
   const [filter, setFilter] = useState<WholesaleFeedItem["type"] | "all">("all");
   const [q, setQ] = useState("");
-  const sanitizedQ = useMemo(() => maskLeak(q), [q]);
+  const [debouncedQ, setDebouncedQ] = useState(q);
+  useEffect(() => { const id=window.setTimeout(()=> setDebouncedQ(q), 300); return ()=> window.clearTimeout(id); }, [q]);
+  const sanitizedQ = useMemo(() => maskLeak(debouncedQ), [debouncedQ]);
 
-  // Live tick — simulate real-time wholesale feed
+  // Live tick — FIX-P1-12 only when mock (no server feed) — debounced perf
   useEffect(() => {
+    if (serverFeed && serverFeed.length>0) return;
     const t = window.setInterval(() => {
       const types: WholesaleFeedItem["type"][] = ["bulk_request", "barter_match", "quotation"];
-      const nt: WholesaleFeedItem = {
-        id: `live-${Date.now()}`, type: types[Math.floor(Math.random() * 3)],
-        title: "Live Bulk RFQ", title_ar: "طلب جملة حي", company: "AutoFeed", qty: 100 + Math.floor(Math.random() * 900),
-        amount_minor: (50 + Math.floor(Math.random() * 90)) * 100000, currency: "EGP", status: "pending", created_at: new Date().toISOString(),
-      };
+      const nt: WholesaleFeedItem = { id: `live-${Date.now()}`, type: types[Math.floor(Math.random() * 3)], title: "Live Bulk RFQ", title_ar: "طلب جملة حي", company: "AutoFeed", qty: 100 + Math.floor(Math.random() * 900), amount_minor: (50 + Math.floor(Math.random() * 90)) * 100000, currency: "EGP", status: "pending", created_at: new Date().toISOString(), };
       setFeed((a) => [nt, ...a].slice(0, 8));
     }, 6000);
     return () => clearInterval(t);
-  }, []);
+  }, [serverFeed]);
 
   if (!isBusiness) {
     return <AppLayout><GlassCard level="inner" className="text-center"><p className="text-section font-bold">عزل المستأجر — يتطلب AU BUSINESS</p><p className="text-body text-[var(--text-secondary)]">app_id الحالي: {tenantApp}</p></GlassCard></AppLayout>;
   }
 
   const canBulk = scale !== "freelancer" && scale !== "home_project";
-  const visible = feed.filter(f => filter === "all" || f.type === filter).filter(f => !sanitizedQ || f.title_ar.includes(sanitizedQ) || f.company.includes(sanitizedQ));
+  // FIX-P1-12: memoize visible — avoids O(n) on every render
+  const visible = useMemo(() => feed.filter(f => filter === "all" || f.type === filter).filter(f => !sanitizedQ || f.title_ar.includes(sanitizedQ) || f.company.includes(sanitizedQ)), [feed, filter, sanitizedQ]);
 
   const go = (path: string): void => router.visit(path, { headers: { "X-App-Id": TENANT, "X-Tenant": TENANT } as unknown as Record<string,string>, preserveScroll: true });
 

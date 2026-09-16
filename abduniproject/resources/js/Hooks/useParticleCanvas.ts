@@ -8,6 +8,7 @@ interface Options {
 }
 
 export function useParticleCanvas(canvasRef: React.RefObject<HTMLCanvasElement | null>, { count = 42, color = "rgba(250,250,250,0.22)" }: Options = {}) {
+  // FIX-P1-12: mobile 28 dots reduces O(n²) 861→378 calcs — battery
   const raf = useRef<number | null>(null);
 
   useEffect(() => {
@@ -22,7 +23,9 @@ export function useParticleCanvas(canvasRef: React.RefObject<HTMLCanvasElement |
     const cssW = canvas.offsetWidth;
     const cssH = canvas.offsetHeight;
 
-    const dots = Array.from({ length: count }, () => ({
+    const isMobile = typeof window!=="undefined" && window.matchMedia("(max-width: 768px)").matches;
+    const effCount = isMobile ? Math.min(count, 28) : count;
+    const dots = Array.from({ length: effCount }, () => ({
       x: Math.random() * cssW,
       y: Math.random() * cssH,
       vx: (Math.random() - 0.5) * 0.35,
