@@ -2,7 +2,7 @@
 // Phase 4.0: Multi-Tenancy + App Isolation — Strict TS + RTL
 import { createContext, useContext } from "react";
 import type { PropsWithChildren } from "react";
-import type { TenantContext } from "@/Types/global.d";
+import type { TenantContext, Dir, Locale } from "@/Types/global.d";
 import { usePage } from "@inertiajs/react";
 import type { SharedPageProps } from "@/Types/global.d";
 

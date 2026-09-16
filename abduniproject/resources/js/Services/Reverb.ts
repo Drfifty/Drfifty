@@ -1,5 +1,8 @@
 // Reverb — B.10 F-15 + FIX-P1-02 — Arena — BROADCAST_PORT single source + TTL dedup + X-App-Id + reconnect — TS strict zero any
+/// <reference types="vite/client" />
+// @ts-ignore laravel-echo types optional
 import Echo from 'laravel-echo';
+// @ts-ignore pusher
 import Pusher from 'pusher-js';
 declare global { interface Window { Pusher: typeof Pusher } }
 if (typeof window !== 'undefined') (window as unknown as { Pusher: typeof Pusher }).Pusher = Pusher;

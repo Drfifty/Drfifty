@@ -65,7 +65,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const perm = requiredPermission ?? permission;
     if (perm && !page.permissions?.includes(perm) && !page.tenant?.permissions?.includes(perm)) return null;
     // FIX-P1-09: feature_flag view gate (AU Lite) + HITL approval gate
-    if (featureFlag && page.feature_flags?.[featureFlag] === false) return null;
+    // FIX-P1-09: cast Record for TS strict index
+    if (featureFlag && (page as unknown as {feature_flags?:Record<string,boolean>}).feature_flags?.[featureFlag] === false) return null;
     if (featureFlag && page.tenant?.feature_flags?.[featureFlag] === false) return null;
     if (appContext && page.app_id !== appContext && page.tenant?.app_id !== appContext) return null;
 
