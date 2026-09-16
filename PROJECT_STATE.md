@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.2a AUDIT FIX APPLIED — Arena — v5.0-B.2a — Wallet TRIM>=15 + Atomic Idempotency + Version Guard 409 + Heartbeat Replica + Batched Purge + HMAC Logs + B.1a STORED+Audit Ledger — B.1+B.2 Retrospective Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.3 ZERO-TRUST RBAC + POISON PILL DRM — Arena — v5.0-B.3 — Micro-Permissions STORED+Tagged + WORM Hash-Chain Queued + Stable Fingerprint machine-id + Heartbeat HMAC 576×5m 48h + Quarantine 503 Hierarchy DRM>AU Lite>RBAC + Argon2id 5/min + 7d Grace NOT Auto-Delete — B.1a/B.2a Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.2a AUDIT FIX — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1 DDD Locked (v5.0-B.1a STORED+Audit+ReDoS+TenantStrict+Tags) + B.2 Financial Engine & Escrow v5.0-B.2a (Atomic Idempotency + TRIM15 + Version409 + Heartbeat5s + BatchedPurge + HMAC Logs + READ COMMITTED) Locked (Arena)**
+- **State Version:** v5.0-B.3 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a Locked + B.3 Zero-Trust RBAC (Micro-Permissions STORED+Audit Tagged + DOM 30s Visibility vs Server 403/202) + WORM Security Audit Hash-Chain Queued Partitioned + Poison Pill DRM (Singleton 1 + Stable machine-id + HMAC Heartbeat 576×5m 48h + Quarantine 503 > AU Lite + Argon2id 5/min + 7d Grace NOT Auto-Delete) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.1/B.2 AUDIT FIX LOCKED v5.0-B.2a** (Arena — Laravel 12 PHP 8.4 Résilience Hardened)
-- **Deliverable now:** `[B.1/B.2 AUDIT]` delivered & **APPLIED** — 3 migrations + 18 code files + 2 spec amendments — DDL hardened (STORED indexed, TRIM15, hash SORT_KEYS, heartbeat, batched purge) + Services (RedisFeatureFlagCache stampede lock + audit, RedisRegexDataLeakDetector 64KB/ReDoS, EscrowLockService READ COMMITTED + version409 + atomic idempotency, WalletMutex ordered, ReplicaConnectionResolver heartbeat, ConfigureJsonLogging HMAC) + Middleware (AULiteModuleGuard degraded 503, SanitizeDataLeaks multipart-safe, EnsureTenant strict enum, Idempotency atomic 422, TraceId W3C) + Audit specs v5.0-B.1a/v5.0-B.2a — **PAUSE before B.3**
-- **Next:** PAUSED — B.1/B.2 audit fixes committed — Awaiting B.3 Governance, Micro-Permissions & DRM prompt (B.3 pure spec mode)
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.3 ZERO-TRUST RBAC + POISON PILL DRM LOCKED v5.0-B.3** (Arena — Laravel 12 PHP 8.4 SecOps Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.3]` delivered — `docs/PHASE5_B3_GOVERNANCE_DRM.md` (8 sections: Super Admin Gate MFA, Micro-Permissions STORED+Audit+Tagged 30s DOM vs Server 403/202, WORM Audit Hash-Chain Queued+PII Partition, DRM Singleton Fingerprint machine-id+AES-GCM+RSA+HMAC Heartbeat 576×5m 48h→Quarantine 503 >AU Lite + 7d Grace NOT Auto-Delete + Argon2id 5/min + double-confirm Annihilate, Middleware Hierarchy DRM>AU Lite>RBAC, 6 Sprints B.3.1-B.3.6, Calibrator 100%) + 3 migrations (000017 micro_switch_matrix+b.1a compat+audits, 000018 security_audit_logs WORM hash-chain, 000019 system_drm_states singleton+events) + 16 code files (SubCapabilityKey+DrmReasonCode+MicroSwitchRepository+MicroPermissionCache+EloquentMicroSwitch+Fingerprint+DrmHeartbeat+SecurityAuditLogger+Jobs+QuarantineGuard+RequireMicroPermission+SecurityAuditMiddleware+MicroPermissionController+DrmController+Requests+Events+AnnihilationJob) + config/drm.php + .env DRM vars — **PAUSE before B.4**
+- **Next:** PAUSED — B.3 spec+code hardened with 14-flaw pre-audit — Awaiting B.4 Tri-Hybrid AI Strategy prompt
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,29 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.2a AUDIT FIX — 3 migrations + 18 files — B1 STORED+Audit+ReDoS+Tenant+Tags+Degraded + B2 AtomicIdem+TRIM15+Version409+Heartbeat+BatchedPurge+HMAC+READ_COMMITTED — PAUSE before B.3*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.3 — docs/PHASE5_B3_GOVERNANCE_DRM.md + 3 migrations + 16 files + DRM harden — PAUSE before B.4*
+
+---
+
+## 14. PHASE 5.0 B.3 — ZERO-TRUST RBAC & POISON PILL DRM [DONE 2026-09-16 — Audit-Augmented Production-Grade]
+
+> **Directive:** SecOps & Cybersecurity Architect — Hardened Enterprise RBAC (Module 13) + Anti-Piracy Poison Pill (Module 14) — Pre-Execution Audit 14 flaws → hardening integrated before commit.
+> **Audit Screening (Pre-Execution 2026-09-16):** 14 vulnerabilities/features identified — Hardcoded super_admin bypass ignores banned/suspended, micro_switch free string privilege escalation, DOM cache stale vs execution race, security_audit_logs sync insert latency + PII leak + missing hash-chain+partition, MAC rotation Docker Swarm false quarantine, heartbeat no debounce 48h boundary thrash, quarantine DDL block breaks migrations, hierarchy DRM vs AU Lite conflict, micro cache no tag/stampede, Argon2id vs plain hash, license stored plaintext, missing 2-man annihilation, heartbeat MITM no HMAC.
+
+**Deliverable:** `docs/PHASE5_B3_GOVERNANCE_DRM.md` (v5.0-B.3 harden) — 8 sections + 3 DDL + Flows + Endpoints:
+
+- **§1 Super Admin Supremacy:** `Gate::before` gated on `hasRole(super_admin) && is_active && email_verified_at && mfa_verified` session, **respecting** `QuarantineGuard` allowlist — even super_admin cannot write while `is_quarantine_active` except `drm/status|disarm|annihilate` GET. Prevents banned super_admin bypass.
+- **§1.2 micro_switch_matrix additive:** `agent_id 1-13, app_id, module_id 1-9, sub_capability_key 80 ENUM (SubCapabilityKey cases deals.create … governance.drm.annihilate), is_enabled, approval_required, preferred_driver (B.1a compat), llm_fallback_enabled, granted_by FK, reason 500, UNIQUE(agent,app,module,cap), idx agent_app/enabled/module, CHECKs 1-13/1-9` + `micro_switch_audits` WORM REVOKE + `MicroPermissionCache` `micro_perm:{env}:{agent}:{app}` Redis 30s tags `micro_perm` + `Cache::lock` stampede.
+- **§1.3 DOM vs Server:** `GET /governance/micro-permissions` returns `{visible:[btn.deals.create], requiresApproval:[escrow.release], degradedMode, quarantineActive}` computed cached 30s (DRM>AU Lite>RBAC filtered) — DOM only hides; `RequireMicroPermission:cap` re-validates server: `is_enabled false →403 MICRO_PERMISSION_DENIED`, `approval_required true && no hitl_approvals approved →202 HITL_APPROVAL_REQUIRED`.
+- **§2 Audit Watchdog:** `security_audit_logs` `uuid, trace_id 32, user_id, agent_id, app_id, module_id, action, route 150, method, query_params JSON allowlist, payload_hash 64 SORT_KEYS redacted, payload_snapshot JSON allowlist (no password/passphrase/totp), ip 45, user_agent, prev_hash, hash_current SHA256(prev+payload), created_at(3)` + `WORM REVOKE UPDATE,DELETE` + `CHECK JSON_VALID` + indexes user/route/trace/agent + monthly partition + async via `SecurityAuditMiddleware terminate()` → `LogSecurityAuditJob` queue `security-audit` batch 100 with `SELECT hash_current FOR UPDATE` chain — 0ms hot path, single-line JSON trace_id propagated.
+- **§3 Poison Pill DRM:** `system_drm_states` singleton `id=1`, `is_quarantine_active, quarantine_triggered_at, grace_expires_at=triggered+7d CHECK grace>=triggered, master_passphrase_hash Argon2id, hardware_fingerprint_hash SHA256, encrypted AES-GCM, license_payload_encrypted+signature RSA, last_heartbeat_at/status, heartbeat_fail_count, disarm_attempts` + `system_drm_events` WORM + `FingerprintService::generate()` stable `hash(sha256, APP_KEY: machine-id: domain: ip)` NOT MAC + encrypt AES-GCM; `DrmHeartbeatService beat()` 5min HMAC `X-Signature hash_hmac(sha256, nonce+fp, DRM_HMAC_KEY)` + nonce, timeout5, ok→reset fail 0, fail→increment, `fail>=576 (48h)` → `DB::transaction lockForUpdate` atomic `is_quarantine_active=1, grace=now+7d` + `system_drm_events HEARTBEAT_48H_FAIL` + `Cache::forget drm:active` + `DrmQuarantineTriggered` Reverb + email super_admin.
+- **§3.4 Quarantine Specs:** `QuarantineGuard` after TraceId before AU Lite — `Cache drm:active 60s`, `isWrite POST/PUT/PATCH/DELETE && !allowlist(drm/status|disarm|annihilate|heartbeat|GET) →503 DRM_QUARANTINE_ACTIVE {grace_expires_at} Retry-After 3600 + X-DRM headers`, `__ddl/migrate` abort, `REVOKE DROP,ALTER ON abduniproject.* FROM abd_app` (migrator `abd_migrator` separate), grace daily 09:00 email NOT auto-annihilate, disarm `POST /drm/disarm` Argon2id + TOTP 6 + `Throttle 5/min` + verify fingerprint, success flush cache + event `DISARM_SUCCESS`; annihilate `POST /drm/annihilate` requires `master_passphrase+TOTP+confirm_token HMAC(APP_KEY) 5min + X-Second-Admin-Token` → queues `AnnihilationJob` 202 NOT instant, job checks `grace_expires_at<now` else blocked + second confirm via `artisan drm:annihilate --confirm`.
+- **§4 Hierarchy:** `QuarantineGuard (DRM 503) → EnsureTenant (X-App-Id enum 422) → AULiteModuleGuard (503) → RequireMicroPermission (403/202) → SanitizeDataLeaks (422) → Idempotency (422) → execution` — trace_id + security audit on every request.
+- **§5 APIs & §6 Sprints B.3.1-B.3.6:** Migrations DDL → Enums → Repos/Cache → Services Heartbeat/Fingerprint/Audit → Middleware/Events → Controllers/Requests — ≤150L/file, verification gates (Gate respects quarantine, visible array matches matrix, 403 vs 202, WORM hash chain 0ms, HMAC 5m 576→503, stable fingerprint, Argon2id+2-man).
+
+**Verification:** `.arenarules` R36 view≠execute + R11 additive + Columns 13×9 + Pillars 4+5+7 + B1a/B2a hierarchy re-verified, 71pts+JWT+MFA+RSA+HMAC+partition, no mock, production-grade.
+
+**Next:** B.4 Tri-Hybrid AI Strategy — awaiting prompt
 
 ---
 
