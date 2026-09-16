@@ -49,17 +49,21 @@ export default function PrescriptionShow() {
 
   if (!isMed) return <AppLayout><GlassCard level="inner" className="text-center"><p className="text-section font-bold">يتطلب AU MED</p></GlassCard></AppLayout>;
 
+  // FIX-P2-09 expiry guard + FIX-P2-07 RBAC + FIX-P2-14 X-Trace
+  const expired = new Date(MOCK_RX.expires_at).getTime() < Date.now();
   const fulfill = (m: FulfillmentMode): void => {
+    if (expired) return;
     setMode(m);
+    const idem = typeof crypto!=="undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
     router.post("/med/prescriptions/fulfill", { app_id: TENANT, prescription_id: MOCK_RX.id, mode: m, pharmacy } as unknown as never,
-      { headers: { "X-App-Id": TENANT } as unknown as Record<string, string>, preserveScroll: true });
+      { headers: { "X-App-Id": TENANT, "Idempotency-Key": idem, "X-Trace-Id": (document.querySelector('meta[name="trace-id"]') as HTMLMetaElement)?.content ?? "" } as unknown as Record<string, string>, preserveScroll: true } as unknown as Record<string,unknown>);
   };
 
   return (
     <AppLayout>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-title font-bold text-white">روشتة رقمية — E-Prescription</h1>
-        <StatusBadge state="Verified" label={`QR Signed · ${MOCK_RX.qr_signature.slice(0, 10)}`} />
+        {expired ? <StatusBadge state="Danger" label="Expired" /> : <StatusBadge state="Verified" label={`QR Signed · ${MOCK_RX.qr_signature.slice(0, 10)}`} /> }
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[380px_1fr]">
@@ -93,12 +97,12 @@ export default function PrescriptionShow() {
         <h3 className="text-section font-semibold">Fulfillment Action Hub — صرف فوري</h3>
         <p className="text-micro text-[var(--text-secondary)]">اختر طريقة الاستلام — تُحوّل للأقرب على AU BUSINESS وتُرسل عبر AU SERV</p>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
-          <button onClick={() => fulfill("home_delivery")} className={`rounded-[var(--radius-md)] border p-4 text-start ${mode === "home_delivery" ? "border-[var(--accent-cyan)] bg-[rgba(6,182,212,0.08)]" : "bg-white border-[var(--border-pearl)]"}`}>
+          <button disabled={expired} onClick={() => fulfill("home_delivery")} className={`rounded-[var(--radius-md)] border p-4 text-start ${mode === "home_delivery" ? "border-[var(--accent-cyan)] bg-[rgba(6,182,212,0.08)]" : "bg-white border-[var(--border-pearl)]"}`}>
             <p className="text-body font-bold">🚚 Instant Home Delivery</p>
             <p className="text-micro text-[var(--text-secondary)]">يُوجَّه لأقرب صيدلية شريكة على AU BUSINESS ويُرسل عبر AU SERV</p>
             <p className="mt-2 text-micro font-mono">pharmacy 1.2km · ETA 18m · dispatched via AU SERV</p>
           </button>
-          <button onClick={() => fulfill("qr_pickup")} className={`rounded-[var(--radius-md)] border p-4 text-start ${mode === "qr_pickup" ? "border-[var(--brand-gold)] bg-[rgba(197,160,89,0.12)]" : "bg-white border-[var(--border-pearl)]"}`}>
+          <button disabled={expired} onClick={() => fulfill("qr_pickup")} className={`rounded-[var(--radius-md)] border p-4 text-start ${mode === "qr_pickup" ? "border-[var(--brand-gold)] bg-[rgba(197,160,89,0.12)]" : "bg-white border-[var(--border-pearl)]"}`}>
             <p className="text-body font-bold">🏪 In-Store QR Pickup</p>
             <p className="text-micro text-[var(--text-secondary)]">يحجز المخزون في صيدلية مختارة للمسح المادي للـ QR</p>
             <p className="mt-2 text-micro font-mono">lock qty · pickup window 24h</p>

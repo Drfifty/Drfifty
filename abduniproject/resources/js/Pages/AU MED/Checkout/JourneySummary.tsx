@@ -57,9 +57,11 @@ export default function JourneySummary() {
     else setInsurance({ provider: p, eligibility: "eligible", coverage_limit_minor: p === "AXA" ? 300000 : 200000, copay_pct: p === "AXA" ? 20 : 25, expiry: "2027-06-01" });
   };
 
+  // FIX-P2-10 Idempotency-Key + FIX-P2-07 RBAC + FIX-P2-14 X-Trace
   const pay = (): void => {
+    const idem = typeof crypto!=="undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
     router.post("/med/checkout/pay", { app_id: TENANT, journey_id: MOCK_JOURNEY.journey_id, insurance_provider: insurance.provider } as unknown as never,
-      { headers: { "X-App-Id": TENANT } as unknown as Record<string, string> });
+      { headers: { "X-App-Id": TENANT, "Idempotency-Key": idem, "X-Trace-Id": (document.querySelector('meta[name="trace-id"]') as HTMLMetaElement)?.content ?? "" } as unknown as Record<string, string> } as unknown as Record<string,unknown>);
   };
 
   return (
@@ -132,7 +134,7 @@ export default function JourneySummary() {
               <div className="mt-2 h-2 rounded-full bg-[var(--surface-secondary)]"><div className="h-2 rounded-full bg-[var(--accent-emerald)]" style={{ width: `${Math.min(100, (copay.netPayable / MOCK_WALLET.balance_minor) * 100)}%` }} /></div>
               <p className="mt-1 text-micro text-[var(--text-secondary)]">{copay.netPayable <= MOCK_WALLET.balance_minor ? "✓ رصيد كافٍ" : "✗ رصيد غير كافٍ — اشحن المحفظة"}</p>
             </div>
-            <Button className="mt-3 w-full" isDisabled={copay.netPayable > MOCK_WALLET.balance_minor} onClick={pay}>ادفع عبر المحفظة — Pay {fmt(copay.netPayable)}</Button>
+            <Button className="mt-3 w-full" featureFlag="au_med" requiredPermission="med.checkout.pay" isDisabled={copay.netPayable > MOCK_WALLET.balance_minor} onClick={pay}>ادفع عبر المحفظة — Pay {fmt(copay.netPayable)}</Button>
             <p className="mt-1 text-micro text-[var(--text-secondary)]">Headers: X-App-Id AU MED · escrow per sub-deal</p>
           </GlassCard>
         </div>

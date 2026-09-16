@@ -39,9 +39,13 @@ export default function HospitalIndex() {
   const { props } = usePage<SharedPageProps>();
   const isMed = (props.tenant?.app_id ?? props.app_id) === TENANT;
   const [q, setQ] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState(q);
+  useEffect(() => { const id=window.setTimeout(()=> setDebouncedQ(q),300); return ()=> window.clearTimeout(id); }, [q]);
   const [urgent, setUrgent] = useState<UrgentDispatchState>({ is_urgent: false, radius_km: 2, lat: 30.0444, lng: 31.2357 });
   const [slots, setSlots] = useState<ScheduledSlot[]>(todaySlots());
-  const sanitized = useMemo(() => maskLeak(q), [q]);
+  // FIX-P2-04 debounce leak + FIX-P2-12 expiry poll central
+  const sanitized = useMemo(() => maskLeak(debouncedQ), [debouncedQ]);
+  useEffect(()=>{ const id=window.setInterval(()=> setSlots(a=> a.map(s=> s.locked_until && new Date(s.locked_until).getTime() < Date.now() ? {...s, locked:false, locked_until:undefined}:s)),1000); return()=> window.clearInterval(id);},[]);
 
   if (!isMed) return <AppLayout><GlassCard level="inner" className="text-center"><p className="text-section font-bold">عزل المستأجر — يتطلب AU MED</p><p className="text-body text-[var(--text-secondary)]">app_id الحالي: {String(props.tenant?.app_id ?? props.app_id)}</p></GlassCard></AppLayout>;
 
@@ -49,13 +53,14 @@ export default function HospitalIndex() {
 
   const toggleUrgent = (v: boolean): void => setUrgent(s => ({ ...s, is_urgent: v, radius_km: v ? 2 : 2 }));
   const expandRadius = (): void => setUrgent(s => ({ ...s, radius_km: s.radius_km === 2 ? 5 : s.radius_km === 5 ? 10 : 2 }));
+  // FIX-P2-06 mutex 409 rollback + FIX-P2-07 RBAC + FIX-P2-14 X-Trace-Id
   const bookSlot = (id: string): void => {
     const cur = slots.find(s => s.id === id);
     if (!cur || cur.locked) return;
-    // atomic mutex lock — optimistic
+    const snap = slots;
     setSlots(a => a.map(s => (s.id === id ? { ...s, locked: true, locked_until: new Date(Date.now() + 10 * 60 * 1000).toISOString() } : s)));
     router.post("/med/slots/book", { app_id: TENANT, slot_id: id, scheduled_at: cur.scheduled_at } as unknown as never,
-      { headers: { "X-App-Id": TENANT } as unknown as Record<string, string>, preserveScroll: true });
+      { headers: { "X-App-Id": TENANT, "X-Trace-Id": (document.querySelector('meta[name="trace-id"]') as HTMLMetaElement)?.content ?? "" } as unknown as Record<string, string>, preserveScroll: true, onError: () => setSlots(snap) } as unknown as Record<string, unknown>);
   };
 
   return (
@@ -89,8 +94,8 @@ export default function HospitalIndex() {
             <h3 className="text-body font-bold text-[var(--brand-crimson)]">🚨 إرسال عاجل — Proximity Filter مع توسيع تدريجي 2km → 5km → 10km</h3>
             <p className="text-micro text-[var(--text-secondary)]">lat {urgent.lat} lng {urgent.lng} · نطاق حالي {urgent.radius_km}km — يُرسل لأقرب طبيب/ممرض منزلي</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <Button variant="danger" onClick={expandRadius}>توسيع النطاق → {urgent.radius_km === 2 ? "5km" : urgent.radius_km === 5 ? "10km" : "2km"}</Button>
-              <Button variant="secondary" onClick={() => router.visit("/med/dispatch/urgent", { data: { app_id: TENANT, is_urgent: true, radius_km: urgent.radius_km } as unknown as never, headers: { "X-App-Id": TENANT } as unknown as Record<string, string> })}>إرسال فوري في {urgent.radius_km}km</Button>
+              <Button variant="danger" featureFlag="au_med" requiredPermission="med.dispatch.urgent" onClick={expandRadius}>توسيع النطاق → {urgent.radius_km === 2 ? "5km" : urgent.radius_km === 5 ? "10km" : "2km"}</Button>
+              <Button variant="secondary" featureFlag="au_med" requiredPermission="med.dispatch.urgent" onClick={() => router.visit("/med/dispatch/urgent", { data: { app_id: TENANT, is_urgent: true, radius_km: urgent.radius_km } as unknown as never, headers: { "X-App-Id": TENANT, "X-Trace-Id": (document.querySelector('meta[name="trace-id"]') as HTMLMetaElement)?.content ?? "" } as unknown as Record<string, string> })}>إرسال فوري في {urgent.radius_km}km</Button>
               <StatusBadge state="Danger" label={`${urgent.radius_km}km`} />
             </div>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
