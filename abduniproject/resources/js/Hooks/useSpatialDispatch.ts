@@ -71,11 +71,11 @@ export function useSpatialDispatch({
     try { echo = (window as unknown as { Echo?: unknown }).Echo; } catch {}
     if (!echo && token) { try { echo = createReverbFromEnv(token, appId); } catch {} }
     if (!echo) return;
-    const sub = (echo as { join: (c:string)=>{ listen:(e:string,cb:()=>void)=>unknown } }).join(channel);
+    const sub = (echo as unknown as { join: (c:string)=>{ listen:(e:string,cb:()=>void)=> unknown; leave?:(c:string)=>void } }).join(channel);
     sub.listen("ProviderAccepted", () => setStatus("accepted"));
     return () => {
       try {
-        echo.leave(channel);
+        (echo as unknown as { leave:(c:string)=>void }).leave(channel);
       } catch {
         // تجاهل عند التنظيف
       }
