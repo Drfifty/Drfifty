@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.4 TRI-HYBRID + CALIBRATOR HEALING — Arena — v5.0-B.4 — Deterministic 0-cost First → CircuitBreaker 5/5m → BudgetGuard Redis Lua Atomic Cairo → SSRF Allowlist → Prompt Re-sanitize → 30s Tags Runtime → Event Calibrator <15ms → Traceparent — B.1a/b2a/b3 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.5 5-APPS SCHEMAS + WORKFORCE — Arena — v5.0-B.5 — Deals FULLTEXT ngram+SPATIAL 4326 + Serv POINT/POLYGON SPATIAL + Invest State-Machine minor WORM + Med pgsql pgcrypto HMAC + Workforce Tenant-Isolated PARTITION + Eloquent app_id Scopes — B.1a/b2a/b3/b4 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.4 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3 Locked + B.4 Tri-Hybrid (Deterministic FSM 0-cost → CircuitBreaker 5/5m → BudgetGuard Lua Atomic Cairo Daily → SSRF Allowlist → Prompt Re-sanitize → AgentRuntimeCache 30s Tags → Event Calibrator <15ms) Locked (Arena)**
+- **State Version:** v5.0-B.5 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4 Locked + B.5 5-Apps Schemas (Deals ngram SPATIAL + Serv 4326 + Invest State-Machine minor + Med pgsql pgcrypto HMAC + Workforce Tenant-Isolated Partition) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.4 TRI-HYBRID + CALIBRATOR HEALING LOCKED v5.0-B.4** (Arena — Laravel 12 PHP 8.4 AI Infra Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.4]` delivered — `docs/PHASE5_B4_TRI_HYBRID.md` (9 sections: DriverInterface + Proposal VO threshold >=90, CircuitBreaker 5/5m HALF_OPEN, BudgetGuard Redis Lua Cairo daily atomic + HITL, AgentRuntimeCache 30s tags ai_runtime, SSRF allowlist 3s + re-sanitize BLOCK, Manager fallback order preferred→cloud/local_gpu, Event AgentConfidenceEvaluated → CalibratorHealingListener queue calibrator <15ms price/promo/reroute R37, traceparent LLM) + 2 migrations (000020 micro_switch driver_override/threshold, 000021 agent_budget_caps PK agent+date audit mirror) + 15 code files (DriverInterface+Proposal+Exceptions+AgentRuntimeCache+BudgetGuard+CircuitBreaker+LocalGpu/Cloud Clients+3 Drivers+AgentStrategyManager+AgentConfidenceEvaluated+CalibratorHealingListener+SelfHealingEngine+HitlBudgetAlertJob+TieredPricingEngine) + config/ai.php + .env AI vars — **PAUSE before B.5**
-- **Next:** PAUSED — B.4 hardened with 14-flaw pre-audit (F-01→F-13) — Awaiting B.5 AU MED Clinical Vault prompt
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.5 5-APPS SCHEMAS + WORKFORCE LOCKED v5.0-B.5** (Arena — Laravel 12 PHP 8.4 Dual-DB Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.5]` delivered — `docs/PHASE5_B5_SCHEMAS.md` (9 sections: Deals FULLTEXT ngram Arabic + geo_point SPATIAL 4326 via stats, Serv POINT SRID4326+POLYGON SPATIAL sub-ms, Invest draft→funding→funded→escrow_locked→released trigger + minor BIGINT WORM hash_chain, Med pgsql amed_medical_providers/ appointments pgp_sym_encrypt + nlp_hash HMAC + provider_trust_scores pre-aggregated, Workforce tenant_agent_subscriptions UK tenant+agent+app FK matrix + agent_execution_logs WORM partitioned + agent_memory_sandboxes isolated trigger) + 3 migrations additive (000022 deals ngram+SPATIAL, 000023 serv SPATIAL+invest state-machine, 000024 pgsql med pgcrypto HMAC + workforce tenant-isolated) + 12 Eloquent Domain Models with TenantScoped + SRID + FULLTEXT/SPATIAL scopes + state-machine + pgcrypto accessors + HMAC chain + WORM + PGCRYPTO_KEY/TELEMETRY_HMAC_KEY .env — **PAUSE before B.6**
+- **Next:** PAUSED — B.5 hardened with 14-flaw pre-audit (F-01→F-13) — Awaiting B.6 API Pipelines prompt
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,27 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.4 — docs/PHASE5_B4_TRI_HYBRID.md + 2 migrations + 15 files + Tri-Hybrid harden 14 fixes — PAUSE before B.5*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.5 — docs/PHASE5_B5_SCHEMAS.md + 3 migrations + 12 models + Dual-DB harden 14 fixes — PAUSE before B.6*
+
+---
+
+## 16. PHASE 5.0 B.5 — 5-APPS SCHEMAS & WORKFORCE MARKETPLACE [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Lead DB Architect — Enterprise Multi-Tenant + MySQL Spatial — Pre-Execution Audit 14 flaws (F-01→F-13) → hardening integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B5_SCHEMAS.md` (v5.0-B.5 harden) — 9 sections + Dual-DB DDL + DDD Mappings:
+
+- **§1 AU DEALS MySQL additive F-01:** `deal_categories (amed hasTable, parent FK, schema_json JSON_VALID)`, `deals_listings (uuid, tenant RESTRICT, category RESTRICT, app_id, title/description `FULLTEXT ngram` F-05, geo_point POINT SRID4326 SPATIAL F-06, price_minor BIGINT F-12, is_hidden Tier1, is_stagnant)`, `deal_items (listing CASCADE, sku unique, attributes JSON_VALID, price_minor)`, `promotional_bundles (items_json JSON_VALID, chk dates)`, `stagnant_deals (listing CASCADE, agent 1-13, detected_at, is_promoted, log via stats_deals_daily 00:30 Cairo F-09 R37)` — verification `MATCH AGAINST ngram` + `ST_Distance_Sphere <5000 SPATIAL`.
+- **§2 AU SERV Spatial F-06:** `service_providers (provider_location POINT SRID4326 NOT NULL SPATIAL, coverage_zone POLYGON SRID4326 SPATIAL, is_active, app_id, user CASCADE)`, `service_tickets (requester RESTRICT, provider SET NULL, status 8, pickup_point POINT SPATIAL 4326)`, `dispatch_logs (ticket CASCADE, provider CASCADE, distance_m, created_at, COMMENT partitioned monthly F-11)` — inserts via `ST_SRID(POINT(lng lat),4326)` + Redis Mutex + `FOR UPDATE`.
+- **§3 AU INVEST F-07/F-12:** `investment_deals (amount_minor BIGINT, funding_target/funded minor, status draft→funding→funded→escrow_locked→released/refunded/expired with BEFORE UPDATE trigger SIGNAL 45000 canTransition, chk amount>0, tenant RESTRICT)`, `funding_rounds (deal CASCADE, status open/closed/cancelled)`, `escrow_contracts (deal CASCADE, escrow_clearing FK B.2a SET NULL)`, `investor_ledgers (deal RESTRICT, investor RESTRICT, amount_minor !=0, prev_hash/hash_current chain WORM REVOKE F-11)` — no DECIMAL.
+- **§4 AU MED pgsql F-02/F-03/F-04:** `connection: pgsql` only — `amed_medical_providers (uuid gen_random_uuid, user_id logical FK, app_id AU MED CHECK, clinic_location geography POINT 4326 GIST PostGIS)`, `amed_medical_appointments (patient, provider RESTRICT, complaint_encrypted TEXT pgp_sym_encrypt PGCRYPTO_KEY F-04, status scheduled/completed/cancelled)`, `amed_provider_trust_scores (provider PK CASCADE, score 0-100, computed_at, pre-aggregated from stats_provider_daily F-09)`, `amed_consultation_telemetry (appointment CASCADE, nlp_hash HMAC hash_hmac sha256 canonical+TELEMETRY_HMAC_KEY F-03 zero raw, payload_hash, prev/hash_current chain, WORM, 90d retention, partition)` — `Model $connection='pgsql'` + `pgp_sym_decrypt` accessor.
+- **§5 Workforce Tenant-Isolated F-08/F-10/F-11:** `digital_agents (TINYINT 1-13 PK, code unique, app_id) seeded 13`, `tenant_agent_subscriptions (UK tenant,agent,app F-08 isolation, tenant CASCADE, agent RESTRICT, status active/suspended/cancelled, chk 1-13)`, `agent_execution_logs (subscription CASCADE, agent RESTRICT, input/output hash 64, tokens/cost, status queued/running/completed/failed, prev/hash chain, partitioned monthly F-11, REVOKE)`, `agent_memory_sandboxes (FK agent CASCADE tenant CASCADE, UK tenant+agent+key, memory_json JSON_VALID, app_id CHECK, trigger app isolation SIGNAL F-08)` — FK matrix explicit RESTRICT vs CASCADE.
+- **§6 DDD Models:** `TenantScoped trait scopeTenant(app_id)` on all MySQL models; `DealsListing::scopeSearch (MATCH BOOLEAN MODE), scopeNearby (ST_Distance_Sphere)`, `ServiceProvider::scopeWithinRadius/Covers`, `InvestmentDeal::TRANSITIONS + canTransition()`, `InvestorLedger/AgentExecutionLog/ConsultationTelemetry WORM booted() chain + REVOKE`, `MedicalAppointment pgsql $connection + complaint decrypt accessor/setter pgp_sym_encrypt`, `ConsultationTelemetry HMAC booted chain`, `AgentMemorySandbox isolated` — Eloquent only R12, JSON not JSONB R7.
+- **§7 Sprints B.5.1-B.5.6:** 3 migrations additive (000022 deals ngram+SRID, 000023 serv+invest state-machine, 000024 pgsql med+workforce) + 12 Domain Models TenantScoped + SRID + FULLTEXT/SPATIAL scopes + state-machine + pgcrypto — each ≤150L; verification gates hasTable collision pass, FULLTEXT ngram Arabic hits, SPATIAL sub-ms, invest invalid transition 45000, minor BIGINT, pgsql encrypted/HMAC chain, sandbox mismatched app_id 45000, partition monthly.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 app_id Eloquent/R17 env/R18 transaction/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 env + Pillars + Dual-DB ratified + 13 Agents + 9 Modules.
+
+**Next:** B.6 API Pipelines — awaiting prompt
 
 ---
 
