@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.9 WORKFORCE MARKETPLACE (CATALOGUE+CHECKOUT escrow+DISPATCH logs) — Arena — v5.0-B.9 — Catalogue 60s REDACT + WalletMutex+Idempotency+5% + Budget Lua+Circuit 5/5m + cursor20 stats R37 — B.1a/b2a/b3/b4/b5/b6/b7/b8 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.10 REVERB REALTIME (presence-dispatch+tenant.workforce+intercept+governance alerts) — Arena — v5.0-B.10 — 8080 wss BROADCAST_PORT + event_id UUID + last50 buffer + throttle 5s batch20 — B.1a/b2a/b3/b4/b5/b6/b7/b8/b9 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.9 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5+b6/b7/b8 Locked + B.9 Workforce Marketplace (Catalogue+Checkout escrow+Dispatch logs) Locked (Arena)**
+- **State Version:** v5.0-B.10 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9 Locked + B.10 Reverb Realtime (presence-dispatch+tenant.workforce+intercept+governance alerts) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.9 WORKFORCE MARKETPLACE LOCKED v5.0-B.9** (Arena — Laravel 12 PHP 8.4 Workforce Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.9]` delivered — `docs/PHASE5_B9_WORKFORCE.md` v5.0-B.9 hardened 9 sections (F-01 Idempotency+WalletMutex+EscrowLockService minor BIGINT 5%, F-02 micro enum workforce.* 5 caps, F-03 hierarchy Trace→Tenant422→Quarantine503→AULite→micro403/202→Sanitize→Idempotency alias tenant_agents, F-04 catalogue 60s+replica 5s cursor20 REDACT, checkout server-derived pricing, dispatch Budget Lua Cairo+Circuit 5/5m+HITL 202+Reverb private-tenant, logs stats R37 10s cache, WORM hash_chain) + 4 Actions +4 Requests TRIM≥15 64KB +3 Resources minor +5 Controllers thin ≤60L + Events/Jobs Reverb 8080 + migration guard 000028 — **PAUSE before B.10**
-- **Next:** PAUSED — B.9 hardened with 18-flaw pre-audit (B9-01→B9-18 F-01→F-16) — Awaiting B.10 Realtime Calibrator next
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.10 REVERB REALTIME LOCKED v5.0-B.10** (Arena — Laravel 12 PHP 8.4 Reverb Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.10]` delivered — `docs/PHASE5_B10_REVERB.md` v5.0-B.10 hardened 9 sections (F-01 channel registry 6 channels presence+private, F-02 Zero-Trust presence 27 gov enum+chat intercept super_admin+support REDACT+governance super_admin MFA, F-03 BROADCAST_PORT alias 8080 validated, F-04 event_id UUID+Cairo+trace + last50 Redis buffer + replay, F-05 strict JSON schemas 4 payloads, F-06 GPS 5s throttle + batch 20/2s, F-07 channel auth Cache 30s, WORM hash_chain) + 4 Events ProviderLocationUpdated/WorkforceStepUpdated/ChatIntercepted/GovernanceAlerted ≤60L HasEventId+ReverbBuffer + ReplayController + routes/channels.php hardened + reverb 8080 wss + migration guard 000029 — **PAUSE before B.11**
+- **Next:** PAUSED — B.10 hardened with 18-flaw pre-audit (B10-01→B10-18 F-01→F-16) — Awaiting B.11 Docker & Edge next
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,29 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.9 — docs/PHASE5_B9_WORKFORCE.md + 4 Actions +4 Requests+3 Resources+5 Controllers+Events/Jobs+Routes harden 18 fixes B9-01→B9-18 F-01→F-16 + migration guard 000028 — PAUSE before B.10*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.10 — docs/PHASE5_B10_REVERB.md + 4 Events +HasEventId+ReverbBuffer+ReplayController+channels.php hardened+reverb 8080 wss + migration guard 000029 — PAUSE before B.11*
+
+---
+
+## 21. PHASE 5.0 B.10 — REVERB REALTIME CHANNELS & EVENTS [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.10 — قنوات البث المباشر وأحداث WebSockets (Reverb) — Pre-Execution Audit 18 flaws (B10-01→B10-18) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B10_REVERB.md` (v5.0-B.10 harden audit 9 sections) + Realtime Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤60L, additive only:
+
+- **§1 Transport F-03/F-14:** `.env.example BROADCAST_PORT=8080 alias REVERB_PORT` + `config/broadcasting.php & reverb.php port (int) env BROADCAST_PORT fallback REVERB_PORT` + validation `BROADCAST_CONNECTION===reverb` else throw prod + `VITE_REVERB_*` 8080. Nginx `proxy_pass reverb:8080` `wss://` via Cloudflare `TRUSTED_PROXIES`.
+
+- **§2 Channels F-01/F-02/F-07/F-10:** `routes/channels.php` PATCHED — `presence-dispatch-{region} 27 enum governorate + AU SERV app_id + degraded 503 + Cache ticket ownership 30s`; `private-invest/escrow {uuid} Cache 30s buyer|seller`; `private-tenant.{appId}.workforce canonical + alias {app_id} compat Cache workforce tenant.view`; `private-admin-support-intercept.{chatId} super_admin|support + chat exists tenant.app disputed REDACT Cache 30s`; `private-governance-alerts super_admin+MFA+email_verified+active coalesced`. No duplicate, additive.
+
+- **§3 Events F-05/F-11:** `ProviderLocationUpdated presence-dispatch lat -90..90 lng -180..180 heading 0..359 region enum status available|busy|offline throttle 5s batch 20/2s` `v1.provider.location.updated` + `WorkforceStepUpdated private-tenant step queued|progress|token_spike|completed|failed tokens cost` `v1.workforce.step.updated` + `ChatIntercepted REDACT *** phone/email/url` `v1.chat.intercepted` + `GovernanceAlerted calibrator_drop|drm_quarantine|kill_switch health%` `v1.governance.alerted` — all `ShouldBroadcastNow/ShouldBroadcast + HasEventId UUIDv4 + Cairo iso8601 + trace_id + ReverbBuffer push`.
+
+- **§4 Guarantees F-04/F-15/F-16:** `HasEventId` trait `event_id uuid + event_version v1 + timestamp Cairo` ; `ReverbBuffer push LPUSH broadcast:buffer:{channel} LTRIM 0 49 EXPIRE 86400 + processed:event:{id} Cache 3600 NX` ; `ReplayController GET /api/v1/reverb/replay?channel=?&after_event_id=?` `auth.jwt 60/min` returns next 50 oldest→newest ; `resources/js/Services/Reverb.ts` `createReverb Echo reverb wssPort+forceTLS + DedupSet 5000 + fetchReplay` TS strict zero any.
+
+- **§5-§7 Sprints B.10.1-B.10.6:** `HasEventId + ReverbBuffer + BROADCAST_PORT alias + channels hardened 6` + `4 Events ≤60L + upgraded WorkforceDispatched/AiKillSwitch/DrmQuarantine versioned v1.` + `ReplayController + routes/api/v1/reverb.php replay 50` + `Reverb.ts dedup` + `migration 000029_b10_reverb_guarantees guard` — `hasTable hasColumn` only `down empty`.
+
+**Verification:** `.arenarules` R36/R11 additive + Pillars 8 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
+
+**Next:** B.11 Docker & Edge — awaiting prompt
 
 ---
 

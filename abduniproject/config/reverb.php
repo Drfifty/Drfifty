@@ -1,5 +1,5 @@
 <?php
-// ABD UNI PROJECT — Reverb exclusive realtime driver (port 8080, wss://)
+// ABD UNI PROJECT — Reverb exclusive realtime driver (port 8080, wss://) — B.10 F-03/F-14 BROADCAST_PORT alias
 // No Pusher/Ably/Soketi — Reverb is the sole driver per manifest
 
 declare(strict_types=1);
@@ -15,7 +15,7 @@ return [
             'app_id' => env('REVERB_APP_ID'),
             'options' => [
                 'host' => env('REVERB_HOST', '0.0.0.0'),
-                'port' => env('REVERB_PORT', 8080),
+                'port' => (int) env('BROADCAST_PORT', env('REVERB_PORT', 8080)),
                 'scheme' => env('REVERB_SCHEME', 'http'),
                 'useTLS' => env('REVERB_SCHEME', 'http') === 'https', // wss:// in prod via Nginx/Cloudflare
             ],
