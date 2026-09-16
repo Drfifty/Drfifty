@@ -2,7 +2,8 @@
 // routes/console.php — B.12 F-06 + FIX-360-03 stagger — single source — withoutOverlapping+onOneServer — Africa/Cairo — Arena
 declare(strict_types=1);
 use Illuminate\Support\Facades\Schedule;
-// FIX-360-03: stagger Cairo hour burst :07/:12/:13/:22 + 5-min offset via cron — prevents 00:00 contention (R15/R23)
+// FIX-360-03/R37: stagger Cairo hour burst :07/:12/:13/:22 + 5-min offset via cron — prevents 00:00 contention (R15/R23)
+Schedule::command('stats:aggregate')->dailyAt('00:30')->withoutOverlapping(25)->onOneServer()->timezone('Africa/Cairo');
 Schedule::command('idempotency:purge --batch=1000')->hourlyAt(12)->withoutOverlapping(60)->onOneServer()->runInBackground()->timezone('Africa/Cairo');
 Schedule::command('au:stagnant-deals-scan')->hourlyAt(7)->withoutOverlapping(55)->onOneServer()->runInBackground()->timezone('Africa/Cairo');
 Schedule::command('au:calibrator-health-check')->cron('2,7,12,17,22,27,32,37,42,47,52,57 * * * *')->withoutOverlapping(4)->onOneServer()->timezone('Africa/Cairo');
