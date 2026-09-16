@@ -7,3 +7,7 @@ Schedule::command('au:stagnant-deals-scan')->hourly()->withoutOverlapping(55)->o
 Schedule::command('au:calibrator-health-check')->everyFiveMinutes()->withoutOverlapping(4)->onOneServer()->timezone('Africa/Cairo');
 Schedule::command('au:drm-heartbeat-check')->everyFiveMinutes()->withoutOverlapping(4)->onOneServer()->timezone('Africa/Cairo');
 Schedule::command('au:red-team-simulation')->hourly()->withoutOverlapping(55)->onOneServer()->runInBackground()->timezone('Africa/Cairo');
+# B.13 F-12 — Proactive loops 24/7 — every15m Security, hourly Legal, every30m Refactor — withoutOverlapping onOneServer
+Schedule::call(fn()=> app(\App\Services\Swarm\SecurityLoop::class)->tick())->everyFifteenMinutes()->withoutOverlapping(14)->onOneServer()->timezone('Africa/Cairo');
+Schedule::call(fn()=> app(\App\Services\Swarm\LegalLoop::class)->tick())->hourly()->withoutOverlapping(55)->onOneServer()->timezone('Africa/Cairo');
+Schedule::call(fn()=> app(\App\Services\Swarm\RefactoringLoop::class)->tick())->everyThirtyMinutes()->withoutOverlapping(28)->onOneServer()->timezone('Africa/Cairo');

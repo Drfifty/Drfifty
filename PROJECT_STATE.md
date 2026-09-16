@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.12 COMMANDS CRON & SEEDERS + QUEUE BULKHEAD — Arena — v5.0-B.12 — 4 seeders 9 modules + 4 cron withoutOverlapping Cairo + 4 queues critical/standard/low/ai bulkhead 10s/125s + failed Jobs Agent6 — B.1a→B.11 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.13 EPHEMERAL SWARMS & PROACTIVE HEALING — Arena — v5.0-B.13 — SpawnEphemeral ai 125s semaphore 10 + 3 loops Security 15m Legal hr Refactor 30m low + calibrator targeted heal 90 — B.1a→B.12 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.12 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10/b11 Locked + B.12 Commands Cron & Seeders + Queue Bulkhead (4 seeders 9 modules + 4 cron Cairo + 4 queues critical bulkhead + failed Agent6) Locked (Arena)**
+- **State Version:** v5.0-B.13 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10/b11/b12 Locked + B.13 Ephemeral Swarms & Proactive Healing (SpawnEphemeral ai + 3 loops Security/Legal/Refactor low + calibrator targeted heal) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.12 COMMANDS LOCKED v5.0-B.12** (Arena — Laravel 12 PHP 8.4 Cron Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.12]` delivered — `docs/PHASE5_B12_COMMANDS.md` v5.0-B.12 hardened 9 sections (F-01 4 seeders 9 modules not 15 + F-02 SuperAdmin hashed is_super_admin, F-03 MicroSwitch 13×9 SubCapabilityKey updateOrInsert, F-04 FeatureFlags 5 is_core, F-05 Regex 8 idempotent, F-06 routes/console.php 5 cron Cairo withoutOverlapping+onOneServer, F-07 stagnant hourly R37 stats chunk100 low queue, F-08 calibrator 5m single lock reuses SelfHealing, F-09 drm 5m delegate beat() single, F-10 red-team hourly replica low, F-11 queue.php/horizon.php bulkhead 4, F-12 compose 4 workers critical/standard/low/ai 10s/125s never block critical, F-13 failed_jobs dead-letter, F-14 AppServiceProvider failing→Agent6) + 4 au:* commands ≤60L + 4 seeders + migration 000031 — **PAUSE before B.13**
-- **Next:** PAUSED — B.12 hardened with 20-flaw pre-audit (B12-01→B12-20 F-01→F-16) — Awaiting B.13 Self-Healing next
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.13 EPHEMERAL LOCKED v5.0-B.13** (Arena — Laravel 12 PHP 8.4 Swarm Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.13]` delivered — `docs/PHASE5_B13_EPHEMERAL.md` v5.0-B.13 hardened 9 sections (F-01 SpawnEphemeralWorkerJob ai 125s 3 tries semaphore 10 via docker-socket-proxy + fallback ai, F-04 SecurityLoop 15m low replica HITL, F-05 RefactoringLoop 30m low EXPLAIN hasIndex, F-06 LegalLoop hourly low, F-07 CalibratorSelfHealingEngine targeted Cache::tags feature_flags/micro_perm/ai_runtime + forget heal, F-09 recycle low/ai graceful 40s, F-11 queue bulkhead ai/low not critical, F-14 healing_events WORM) + 4 Jobs +3 Loops + engine patch + routes 3 calls + migration 000032 — **PAUSE before B.14**
+- **Next:** PAUSED — B.13 hardened with 20-flaw pre-audit (B13-01→B13-20 F-01→F-16) — Awaiting B.14 Micro-Sprints next
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.12 — docs/PHASE5_B12_COMMANDS.md + 4 seeders 9 modules + 4 cron withoutOverlapping Cairo + 4 queues bulkhead critical/standard/low/ai + failed Agent6 + migration 000031 — PAUSE before B.13*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.13 — docs/PHASE5_B13_EPHEMERAL.md + SpawnEphemeral ai 125s semaphore 10 + 3 loops Security/Legal/Refactor low + calibrator targeted heal feature_flags + healing_events + migration 000032 — PAUSE before B.14*
 
 ---
 
@@ -119,6 +119,28 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 **Verification:** `.arenarules` R36/R11 additive + Pillars 8 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
 
 **Next:** B.12 Scheduling & Self-Healing — awaiting prompt
+
+---
+
+## 24. PHASE 5.0 B.13 — EPHEMERAL SWARMS & PROACTIVE HEALING ENGINE [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.13 — محرك العمالة المؤقتة وسلسلة الشفاء الذاتي (Ephemeral Swarms & Proactive Healing Engine) — Pre-Execution Audit 20 flaws (B13-01→B13-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B13_EPHEMERAL.md` (v5.0-B.13 harden audit 9 sections) + Swarm + Healing — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤60L, additive only:
+
+- **§1 Swarm F-01→F-03:** `Jobs/SpawnEphemeralWorkerJob` `ShouldQueue ai 125s tries3 queue ai` `semaphore ephemeral:sem 10 NX 60` → `docker-socket-proxy POST /containers/create sandbox:php84 Labels au.app/tenant read_only tmpfs` → `/start → /wait 30s → /delete` fallback `AgentStrategyManager execute` ; `EPHEMERAL_MAX_CONTAINERS=10 DOCKER_HOST tcp://docker-socket-proxy:2375` ; `failed() → GovernanceAlerted job_failed → Agent6` ; preserves bulkhead `critical` never used.
+
+- **§2 Proactive Loops F-04→F-06:** `Services/Swarm/SecurityLoop tick 15m lock 14m → SecurityProbeJob low replica R37 hitl_approvals pending security.vulnerability` ; `RefactoringLoop 30m → OptimizeQueryJob low EXPLAIN replica hasIndex guard hitl_approvals refactor.index_proposal` ; `LegalLoop hourly → LegalComplianceJob low legal.compliance_check` — each `withoutOverlapping+onOneServer+Cairo`.
+
+- **§3 Calibrator Heal F-07→F-09:** `CalibratorSelfHealingEngine evaluate + heal(health<90)` `Cache::tags(['feature_flags','micro_perm','ai_runtime'])->flush()` **not** `agents_cache/routes_cache` (non-existent) and **not** `Cache::flush` full — preserves `SESSION DB0` ; `Cache::forget calibrator:health` ; `recycleWorkers() Http POST docker-socket-proxy low/ai force graceful 40s + horizon:terminate low/ai` ; `stepDownDrivers <80 → deterministic` + `Cache micro_perm flush` ; `healing_events` WORM audit ; single source via `AuCalibratorHealthCheck everyFiveMinutes lock 4m`.
+
+- **§4 Scheduler F-12:** `routes/console.php` PATCHED add `Schedule::call(SecurityLoop tick) every15m + Legal hourly + Refactor every30m` each `withoutOverlapping 14/55/28 onOneServer Cairo` — keeps B.12 `au:stagnant etc` 5 crons.
+
+- **§5 DDL F-14/F-15:** `migrations/000032_b13_healing_guard` `if !hasTable healing_events create id+health_score+actions JSON+created_at WORM` guard ; `.env.example` `EPHEMERAL_MAX_CONTAINERS 10 SECURITY_LOOP_INTERVAL 15 REFACTOR_LOOP_INTERVAL 30 DOCKER_HOST` ; `config` bulkhead already `queue ai` mapping.
+
+**Verification:** `.arenarules` R6/R11 additive + Columns 13×9 + Pillars 7+8 + B1a B.3 hierarchy re-verified, bulkhead preserved, 20 findings fixed, zero-regression.
+
+**Next:** B.14 Micro-Sprints — awaiting prompt
 
 ---
 
