@@ -1,7 +1,16 @@
 # PHASE 5.0 — B.1 النواة والمعمارية وتكامل الـ DDD والـ AU Lite
 > **ABD UNI PROJECT — Full Backend Architecture Spec (Laravel 12 / PHP 8.4 — Modular Monolith + DDD + Clean Architecture) — Arena Canonical v5.0**
 > **Stack Lock:** Laravel 12 PHP 8.4 (single approved backend, `app/` — no alternative frameworks) | MySQL 8.4+ InnoDB utf8mb4 Spatial **core** for 5 apps | PostgreSQL 16 + PostGIS + pgcrypto **exclusively AU MED clinical** (ratified dual-DB) | Redis Cache/Queue/Mutex | Laravel Reverb 8080 wss:// exclusive (no Pusher/Socket.io) | 5 Apps space-form (`AU BUSINESS` `AU MED` `AU DEALS` `AU SERV` `AU INVEST`) | 13 Agents exact registry (Table 1.3) | 9 Modules 1-9 | Project folder `abduniproject`
-> **Refs:** `.arenarules` R1-R38 + 11 Pillars + Sprint Limits (3 files/≤150 lines) | `PROJECT_STATE.md` v4.3 → v5.0-B.1
+> **Refs:** `.arenarules` R1-R38 + 11 Pillars + Sprint Limits (3 files/≤150 lines) | `PROJECT_STATE.md` v4.3 → v5.0-B.1 → **v5.0-B.1a AUDIT FIX 2026-09-16 (APPROVED & APPLIED)**
+
+> **AMENDMENT v5.0-B.1a — AUDIT RETROSPECTIVE FIX (APPROVED 2026-09-16):**
+> - **B1-F1** `module_key/is_active/updated_by` now **STORED + INDEXED** (not VIRTUAL) — `VIRTUAL` cannot be indexed on MySQL 8.4 → fixed via `2026_09_14_000014_fix_feature_flags_b1_audit.php` with `STORED + idx_flag_module_key/is_active`.
+> - **B1-F2** Added `feature_flag_audits` append-only ledger (`flag_key, old/new_is_enabled, old/new_degraded_mode, actor_id, reason 500, ip 45, meta JSON`) with `REVOKE UPDATE,DELETE` + `FK flag_key` — every toggle auditable, Reverb `FeatureFlagToggled` broadcasts to invalidate tags.
+> - **B1-F3** `SanitizeDataLeaks` now skips `multipart/form-data UploadedFile`, truncates leaves to 64KB, preserves file fields, sanitize recurses arrays, sets `X-Leak-Sanitized`.
+> - **B1-F4** `EloquentDataLeakPatternRepository::validateRegexPattern()` ReDoS guard: compile timing >10ms fails, `preg_last_error==PREG_BACKTRACK_LIMIT_ERROR` skip, `max_input_bytes=65535` truncation, patterns priority-ordered (phone 10 → social 90).
+> - **B1-F5** Added `EnsureTenant` strict `X-App-Id` enum validation **before** `AULiteModuleGuard`; middleware order `TrustProxies → TraceId → EnsureTenant → AULiteModuleGuard → SanitizeDataLeaks`; unknown `X-App-Id` → 422.
+> - **B1-F6** Cache keys now `au:flags:{env}:au_med` (env-namespaced) + `Cache::tags(['feature_flags'])` + stampede `Cache::lock(key:refresh,5)->block(3)`.
+> - **Degraded Mode Matrix** explicitly: `degraded_mode=1` → `GET/HEAD/OPTIONS` pass, `POST/PUT/PATCH/DELETE` → `503 {code:DEGRADED_READ_ONLY}`.
 
 ---
 
@@ -171,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `feature_flags` (
   `flag_name_ar` VARCHAR(120) NOT NULL,
   `description` TEXT NULL,
   `is_enabled` TINYINT(1) NOT NULL DEFAULT 1,
-  `is_active` TINYINT(1) GENERATED ALWAYS AS (`is_enabled`) VIRTUAL COMMENT 'B.1 alias — is_active = is_enabled',
+  `is_active` TINYINT(1) GENERATED ALWAYS AS (`is_enabled`) STORED COMMENT 'B.1 alias — is_active = is_enabled — AUDIT B1-F1 STORED+indexed',
   `is_core` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '1 = AU BUSINESS non-hibernatable',
   `degraded_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=normal, 1=read-only degraded (B.1)',
   `rollout_percentage` TINYINT UNSIGNED NOT NULL DEFAULT 100,
@@ -180,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `feature_flags` (
   `maintenance_message` TEXT NULL,
   `maintenance_message_ar` TEXT NULL,
   `last_toggled_by` BIGINT UNSIGNED NULL,
-  `updated_by` BIGINT UNSIGNED GENERATED ALWAYS AS (`last_toggled_by`) VIRTUAL COMMENT 'B.1 alias',
+  `updated_by` BIGINT UNSIGNED GENERATED ALWAYS AS (`last_toggled_by`) STORED COMMENT 'B.1 alias — AUDIT B1-F1 STORED',
   `last_toggled_at` DATETIME NULL,
   `created_at` TIMESTAMP NULL,
   `updated_at` TIMESTAMP NULL,
@@ -237,7 +246,8 @@ interface FeatureFlagRepositoryInterface {
   /** @return array{is_enabled:bool,degraded_mode:bool,rollout:int}|null */
   public function findByKey(ModuleKey $key): ?array;
   public function isEnabled(ModuleKey $key): bool;
-  public function setEnabled(ModuleKey $key, bool $enabled, ?int $actorId): void;
+  public function setEnabled(ModuleKey $key, bool $enabled, ?int $actorId, ?string $reason = null, ?string $ip = null): void;
+  public function setDegradedMode(ModuleKey $key, bool $degraded, ?int $actorId, ?string $reason = null): void;
 }
 ```
 ```php

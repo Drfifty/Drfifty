@@ -29,6 +29,22 @@ return [
             'spatial' => true, // native MySQL 8.4 Spatial
         ],
 
+        'mysql_replica' => [
+            'driver' => 'mysql',
+            'host' => env('DB_REPLICA_HOST', env('DB_HOST', '127.0.0.1')),
+            'port' => env('DB_REPLICA_PORT', env('DB_PORT', '3306')),
+            'database' => env('DB_DATABASE', 'abduniproject'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => 'InnoDB',
+            'isolation_level' => env('DB_ISOLATION_LEVEL', 'READ COMMITTED'), // C-F1 financial tx
+            'sticky' => true,
+        ],
+
         // AU MED clinical store only — never for core tables
         'pgsql' => [
             'driver' => 'pgsql',

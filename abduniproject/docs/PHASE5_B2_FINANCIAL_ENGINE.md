@@ -1,7 +1,17 @@
 # PHASE 5.0 — B.2 قواعد البيانات والمنطق المالي والمحفظة والـ Escrow الحصين
 > **ABD UNI PROJECT — Financial Engine & Escrow Subsystem — Principal Fintech Backend (High-Concurrency Ledger & Pessimistic Locking) — Arena Canonical v5.0-B.2**
 > **Stack Lock:** Laravel 12 PHP 8.4 | MySQL 8.4+ InnoDB utf8mb4 (core, single source — لا PostgreSQL في B.2) | Redis funnel/lock | Reverb 8080 exclusive | 5 Apps space-form | 13 Agents (Agent 1 CFO — rate setter, no retroactive power) | 9 Modules | `abduniproject`
-> **Refs:** `.arenarules` R6,R11,R12,R18,R35,R37 + Pillars 6,1 | `PROJECT_STATE.md` v5.0-B.1 → B.2 | B.1 DDD tree | B.5 dual-DB | B.10 traceparent | B.11 replica
+> **Refs:** `.arenarules` R6,R11,R12,R18,R35,R37 + Pillars 6,1 | `PROJECT_STATE.md` v5.0-B.1 → B.2 → **v5.0-B.2a AUDIT FIX 2026-09-16 (APPROVED & APPLIED)** | B.1 DDD tree | B.5 dual-DB | B.10 traceparent | B.11 replica
+
+> **AMENDMENT v5.0-B.2a — AUDIT RETROSPECTIVE FIX (APPROVED 2026-09-16):**
+> - **B2-F1** Idempotency now atomic: `SELECT ... FOR UPDATE` inside tx + `catch 23000 Duplicate` replay verbatim 200, plus `request_hash` mismatch → `422 IDEMPOTENCY_KEY_REUSE_MISMATCH`.
+> - **B2-F2** `wallet_adjustment_logs.mandatory_rationale` CHECK now `CHAR_LENGTH(TRIM(...))>=15`; `FormRequest::prepareForValidation` trims + `TrustProxies *` + `$request->ip()` after CF.
+> - **B2-F3** `app_wallets` update uses `WHERE version=?` optimistic guard → `409 VERSION_CONFLICT`; deadlock ordering `ORDER BY id ASC`; `WalletMutex::lockMany()`; `READ COMMITTED` isolation (`DB::statement SET TRANSACTION...`).
+> - **B2-F4** Commission math via `Brick\Money`/`Money::multipliedBy` with `ROUND_HALF_UP`, rate widened to `DECIMAL(10,6)` (0.0001 precision) to avoid `65,4` overflow.
+> - **B2-F5** Replica lag via `heartbeat` table `TIMESTAMPDIFF(MICROSECOND, beat_at, NOW(3))` not `SHOW SLAVE STATUS`; `DB_REPLICA_LAG_THRESHOLD=5` env + `ReplicaConnectionResolver` caches 5s.
+> - **B2-F6** Idempotency purge now batched `DELETE ... LIMIT 1000` loop via `PurgeExpiredIdempotencyKeys` hourly, not `EVENT`.
+> - **B2-F7** Logging uses `hash_hmac(sha256,userId,LOG_HMAC_KEY)` salted, `Money`→`Money` VO, `replica_lag_ms` in allowlist, `JsonFormatter includeStacktraces:false`, hash canonical `json_encode SORT_KEYS`.
+> - **B1+B2 C-F1** Financial transactions set `READ COMMITTED` to reduce gap locks on hot wallet rows; queue `heartbeat` beat every 1s via scheduler.
 
 ---
 

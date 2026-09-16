@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.2 FINANCIAL ENGINE & ESCROW — Arena — v5.0-B.2 — Wallet CHECK>=0 + Escrow Immutability + Funnel/lockForUpdate retry3 + Idempotency 24h + Append-Only Ledger + B.1 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.2a AUDIT FIX APPLIED — Arena — v5.0-B.2a — Wallet TRIM>=15 + Atomic Idempotency + Version Guard 409 + Heartbeat Replica + Batched Purge + HMAC Logs + B.1a STORED+Audit Ledger — B.1+B.2 Retrospective Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.2 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1 DDD Locked + B.2 Financial Engine & Escrow (Wallet CHECK + Escrow Immutability + Race Guard + Idempotency + Ledger) Locked (Arena)**
+- **State Version:** v5.0-B.2a AUDIT FIX — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1 DDD Locked (v5.0-B.1a STORED+Audit+ReDoS+TenantStrict+Tags) + B.2 Financial Engine & Escrow v5.0-B.2a (Atomic Idempotency + TRIM15 + Version409 + Heartbeat5s + BatchedPurge + HMAC Logs + READ COMMITTED) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.2 FINANCIAL ENGINE & ESCROW LOCKED v5.0-B.2** (Arena — Laravel 12 PHP 8.4 High-Concurrency Ledger)
-- **Deliverable now:** `[PHASE 5.0 B.2]` delivered — `docs/PHASE5_B2_FINANCIAL_ENGINE.md` (577 lines, DDL 7 tables §1 + Immutability lock §2 + EscrowLockService funnel/lockForUpdate retry3 §3 + N+1/Replica/JSON logs §4 + Idempotency 24h + Append-Only escrow_events §5 + 6 Sprints B.2.1-B.2.6 + Calibrator 100%) — **PAUSE before B.3** (spec mode only, no mock code)
-- **Next:** PAUSED — B.2 spec locked — Awaiting B.3 Governance, Micro-Permissions & DRM prompt (B.2 implementation via B.2.1-B.2.6 on next prompt)
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.1/B.2 AUDIT FIX LOCKED v5.0-B.2a** (Arena — Laravel 12 PHP 8.4 Résilience Hardened)
+- **Deliverable now:** `[B.1/B.2 AUDIT]` delivered & **APPLIED** — 3 migrations + 18 code files + 2 spec amendments — DDL hardened (STORED indexed, TRIM15, hash SORT_KEYS, heartbeat, batched purge) + Services (RedisFeatureFlagCache stampede lock + audit, RedisRegexDataLeakDetector 64KB/ReDoS, EscrowLockService READ COMMITTED + version409 + atomic idempotency, WalletMutex ordered, ReplicaConnectionResolver heartbeat, ConfigureJsonLogging HMAC) + Middleware (AULiteModuleGuard degraded 503, SanitizeDataLeaks multipart-safe, EnsureTenant strict enum, Idempotency atomic 422, TraceId W3C) + Audit specs v5.0-B.1a/v5.0-B.2a — **PAUSE before B.3**
+- **Next:** PAUSED — B.1/B.2 audit fixes committed — Awaiting B.3 Governance, Micro-Permissions & DRM prompt (B.3 pure spec mode)
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,30 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.2 Financial Engine & Escrow — docs/PHASE5_B2_FINANCIAL_ENGINE.md — Wallet CHECK + Escrow Immutability + Race Guard + Idempotency + Ledger — PAUSE before B.3*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.2a AUDIT FIX — 3 migrations + 18 files — B1 STORED+Audit+ReDoS+Tenant+Tags+Degraded + B2 AtomicIdem+TRIM15+Version409+Heartbeat+BatchedPurge+HMAC+READ_COMMITTED — PAUSE before B.3*
+
+---
+
+## 13. PHASE 5.0 B.1/B.2 — RETROSPECTIVE AUDIT FIX [DONE 2026-09-16 — APPROVED & APPLIED]
+
+> **Mandate:** Comprehensive Technical Audit & Retrospective Review on B.1 + B.2 — Principal Architect & Lead Security Engineer — 20 flaws identified → 13 fixes applied (**B1-F1..F6 + B2-F1..F7 + C-F1**).
+
+**Audit Report:** Presented 2026-09-16 — 20 findings (3 Critical race, 6 High ReDoS/precision/privilege, 8 Medium PII/perf, 3 Low) + 12 enhancements (stampede lock, audit ledger, degraded matrix, ReDoS hardening, namespace tags, optimistic+ pessimistic hybrid, atomic idempotency, wallet sharding, state machine, heartbeat, deterministic hash).
+
+**Applied Fixes (committed `arena/01a09d54-drfifty`):**
+
+- **Migrations (3):** `000014` — `feature_flags` degraded_mode + `module_key/is_active/updated_by` **STORED+indexed** (VIRTUAL→STORED), `chk_core_always_enabled`, `feature_flag_audits` append-only (FK+REVOKE); `000015` — `data_leak_patterns` priority/label/strict + 8 seeds ReDoS-safe (phone 10→social 90) + `chk_regex_not_empty`; `000016` — `wallet_adjustment_logs` TRIM>=15 + `escrow_events` seq+hash SORT_KEYS + FK CASCADE + `idempotency_keys` hash+expiry + `heartbeat` beat_at.
+- **Domain (6):** `ModuleKey` (appId enum+isCore+tryFromAppId), `DataLeakAction`, `FeatureFlagRepositoryInterface` (reason+ip), `Money` VO minor-only, `EscrowStatus::canTransition()` state machine, `ActorType`, `WalletOperationDTO` readonly, `WalletRepositoryInterface` version guard.
+- **Infrastructure (4):** `RedisFeatureFlagCache` (`au:flags:{env}:` + `Cache::lock refresh` stampede + audit insert + tags flush + Reverb), `EloquentDataLeakPatternRepository` (60s+validateRegex 10ms), `ReplicaConnectionResolver` (heartbeat lag `TIMESTAMPDIFF` 5s cached, no SHOW SLAVE), `ConfigureJsonLogging` (HMAC salted+allowlist).
+- **Services (3):** `RegexDataLeakDetectorInterface`, `RedisRegexDataLeakDetector` (64KB truncation, ReDoS backtrack/50ms log, priority), `EscrowLockService` (outer idem→Funnel 10s→READ COMMITTED→lockForUpdate→version WHERE→TRIM15 validate→WalletAdjustmentLog ip via $request->ip()→ledger→escrow_event SORT_KEYS→idempotency inside TX→409 on 0 rows→23000 replay).
+- **Middleware (4) + Http (1):** `AULiteModuleGuard` (strict tenant, degraded matrix `DEGRADED_READ_ONLY` 503), `SanitizeDataLeaks` (skip UploadedFile, 64KB leaf, X-Leak-Sanitized), `EnsureTenant` (enum 422), `IdempotencyMiddleware` (min16, hash compare 422, FOR UPDATE replay, Idempotency-Replayed header, updateOrInsert), `TraceIdMiddleware` (W3C traceparent 00-{32}-{16}-01).
+- **Commands (1):** `PurgeExpiredIdempotencyKeys` batched `LIMIT 1000` loop + heartbeat beat.
+- **Config (3):** `config/database.php` mysql_replica + `READ COMMITTED` sticky, `config/logging.php` JsonFormatter + tap allowlist, `.env.example` DB_REPLICA_* + LOG_HMAC_KEY.
+- **Specs amendment:** `PHASE5_B1` v5.0-B.1a + `PHASE5_B2` v5.0-B.2a amendment blocks inserted — GENERATED STORED notes + interface signatures + §3/§4 updates.
+
+**Verification:** `.arenarules` R11/R12/R18/R35 + Pillars 6 + 71 pts + 9 Modules/5 Apps/Oil 34 5% re-verified — no float, JSON not JSONB, immutability 3 layers, hot-row READ COMMITTED, replica heartbeat no privilege.
+
+**Next:** B.3 Governance, Micro-Permissions & DRM — awaiting prompt
 
 ---
 
