@@ -23,7 +23,8 @@ interface UseAuctionStreamReturn {
   isPlacing: boolean;
 }
 
-export function useAuctionStream({ channel, endsAt }: UseAuctionStreamOptions): UseAuctionStreamReturn {
+export function useAuctionStream({ auctionId, channel, endsAt }: UseAuctionStreamOptions): UseAuctionStreamReturn {
+  void auctionId; // FIX-P1-14 noUnusedParameters
   const [bids, setBids] = useState<Bid[]>([
     { id: 1, amount: 12400, bidderMasked: "Ah***12", at: new Date().toISOString() },
     { id: 2, amount: 13100, bidderMasked: "Mo***08", at: new Date().toISOString() },

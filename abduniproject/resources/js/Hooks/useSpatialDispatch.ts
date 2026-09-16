@@ -34,12 +34,13 @@ function haversineKm(aLat: number, aLng: number, bLat: number, bLng: number): nu
 }
 
 export function useSpatialDispatch({
-  orderId: _orderId,
+  orderId,
   customerLat,
   customerLng,
   radiusKm = 5,
   channel,
 }: UseSpatialDispatchOptions): UseSpatialDispatchReturn {
+  void orderId; // FIX-P1-14 channel binding reserved
   const [providers] = useState<Provider[]>([
     { id: 1, lat: customerLat + 0.008, lng: customerLng + 0.006, accent: "cyan" },
     { id: 2, lat: customerLat - 0.012, lng: customerLng + 0.004, accent: "emerald" },

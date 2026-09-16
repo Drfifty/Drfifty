@@ -20,10 +20,11 @@ interface UseEscrowLockReturn {
   isBusy: boolean;
 }
 
-export function useEscrowLock({ orderId: _orderId, tier1Amount = 500, tier2Amount = null }: UseEscrowLockOptions): UseEscrowLockReturn {
+export function useEscrowLock({ orderId, tier1Amount = 500, tier2Amount = null }: UseEscrowLockOptions): UseEscrowLockReturn {
   const [status, setStatus] = useState<EscrowStatus>("unlocked");
   const [isBusy, setIsBusy] = useState(false);
   const [tier2, setTier2] = useState<number | null>(tier2Amount);
+  void orderId; // FIX-P1-14 noUnusedParameters — reserved for channel binding
 
   const lockTier1 = useCallback(async () => {
     setIsBusy(true);
