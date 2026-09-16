@@ -16,10 +16,13 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0', // required for preview proxy
+    host: '0.0.0.0', // required for preview proxy — FIX-P1-13 e2b preview
     port: 5173,
+    cors: true,
     hmr: {
-      host: 'localhost',
+      host: '0.0.0.0',
+      clientPort: 443,
+      protocol: 'wss',
     },
   },
   build: {

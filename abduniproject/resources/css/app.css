@@ -4,16 +4,7 @@
 /* ABD UNI PROJECT — Tailwind v4 + Design Tokens (Phase 3.0 → Obsidian Lock) */
 /* الطباعة: Cairo/Tajawal 400/600/700 عربي · Inter لاتيني/أرقام */
 /* RTL-first: dir=rtl + logical props ps-/pe-/ms-/me-/text-start */
-
-@theme {
-  --font-arabic: "Cairo", "Tajawal", sans-serif;
-  --font-latin: "Inter", sans-serif;
-  /* ربط رموز Obsidian بـ Tailwind حتى تعيد التلوين فورًا */
-  --color-canvas: var(--canvas-background);
-  --color-surface: var(--surface-primary);
-  --color-surface-secondary: var(--surface-secondary);
-  --color-pearl: var(--surface-pearl);
-}
+// FIX-P1-11: token single source — @theme removed here, kept only in tokens.css (no triple source)
 
 :root {
   font-family: var(--font-latin), var(--font-arabic), system-ui, sans-serif;
