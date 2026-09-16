@@ -8,14 +8,15 @@ final class MicroPermissionCache {
  public static function key(int $agentId, string $appId): string { return "micro_perm:".app()->environment().":{$agentId}:{$appId}"; }
  public static function allForAgent(int $agentId, string $appId): array {
   $k=self::key($agentId,$appId);
-  $cached=Cache::get($k);
+  // FIX-360-02: pinned redis DB1
+  $cached=Cache::store('redis')->get($k) ?? Cache::get($k);
   if($cached!==null) return $cached;
   $lock=Cache::lock($k.':refresh',5);
   try{ $lock->block(3); }catch(\Throwable){ return Cache::get($k) ?? []; }
   $rows=DB::table('micro_switch_matrix')->where('agent_id',$agentId)->where('app_id',$appId)->get(['sub_capability_key','is_enabled','approval_required','module_id']);
   $val=$rows->mapWithKeys(fn($r)=>[$r->sub_capability_key=>['enabled'=>(bool)$r->is_enabled,'approval'=>(bool)$r->approval_required,'module_id'=>$r->module_id]])->all();
-  Cache::put($k,$val,self::TTL);
-  try{ Cache::tags(['micro_perm'])->put($k,$val,self::TTL);}catch(\Throwable){}
+  Cache::store('redis')->put($k,$val,self::TTL);
+  try{ Cache::store('redis')->tags(['micro_perm'])->put($k,$val,self::TTL);}catch(\Throwable){ try{Cache::tags(['micro_perm'])->put($k,$val,self::TTL);}catch(\Throwable){} }
   try{$lock->release();}catch(\Throwable){}
   return $val;
  }
@@ -27,5 +28,5 @@ final class MicroPermissionCache {
   $all=self::allForAgent($agentId,$appId);
   return (bool)($all[$cap]['approval'] ?? false);
  }
- public static function invalidate(int $agentId,string $appId): void { Cache::forget(self::key($agentId,$appId)); try{Cache::tags(['micro_perm'])->flush();}catch(\Throwable){} }
+ public static function invalidate(int $agentId,string $appId): void { \App\Support\CacheTagGuard::forget(self::key($agentId,$appId)); \App\Support\CacheTagGuard::flushTags(['micro_perm']); }
 }

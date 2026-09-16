@@ -16,6 +16,13 @@ final class RequireMicroPermission {
    // fallback to user_id micro check — if no agent, check generic
    $agentId=1; // default CFO for platform caps
   }
+  // FIX-360-11: micro staleness guard — X-Force-Refresh or healing window bypass cache
+  $staleCheck = $request->header('X-Force-Refresh') || Cache::has('calibrator:heal:window');
+  if($staleCheck){
+   // re-read DB strictly when healing window
+   $dbRow = DB::table('micro_switch_matrix')->where(['agent_id'=>$agentId,'app_id'=>$appId,'sub_capability_key'=>$cap])->first(['is_enabled','approval_required']);
+   if($dbRow && !$dbRow->is_enabled) return response()->json(['message'=>'Micro-permission denied (db)','cap'=>$cap,'code'=>'MICRO_PERMISSION_DENIED'],403);
+  }
   if(!MicroPermissionCache::isEnabled($agentId,$appId,$moduleId,$cap)){
    return response()->json(['message'=>'Micro-permission denied','cap'=>$cap,'code'=>'MICRO_PERMISSION_DENIED'],403);
   }
