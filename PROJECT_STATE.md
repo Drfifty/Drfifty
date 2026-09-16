@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.6 AUTH/WALLET/ESCROW ISOLATED APIS — Arena — v5.0-B.6 — JWT 15m + __Host-refresh 7d Hashed Family + Reuse Revoke + Silent Single-Flight Interceptor + EscrowLockService minor+Version+READ COMMITTED+Idempotency 24h + Stats R37 + Hierarchy DRM>Lite>Micro 403/202>Leak 422 — B.1a/b2a/b3/b4/b5 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.7 4-APPS ISOLATED APIS (DEALS/SERV/INVEST/MED) — Arena — v5.0-B.7 — ngram FULLTEXT 4326 + SPATIAL 4326 + Idempotency + WORM + pgsql HMAC + Agent3 Tri-Hybrid + Stats R37 — B.1a/b2a/b3/b4/b5/b6 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.6 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5 Locked + B.6 Auth/Wallet/Escrow Isolated APIs (JWT Hashed Family + EscrowLockService+Idempotency+R37) Locked (Arena)**
+- **State Version:** v5.0-B.7 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5+b6 Locked + B.7 4-Apps Isolated APIs (DEALS ngram+SPATIAL / SERV nearby 4326 / INVEST WORM / MED pgsql HMAC) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.6 AUTH/WALLET/ESCROW ISOLATED APIS LOCKED v5.0-B.6** (Arena — Laravel 12 PHP 8.4 Fintech Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.6]` delivered — `docs/PHASE5_B6_APIS.md` (9 sections: JWT 15m Access + __Host-refresh 7d token_hash SHA256 family rotated_from_id reuse→family revoke Secure HttpOnly Lax 0 loop single-flight interceptor, Wallet deposit/withdraw via EscrowLockService lockForUpdate+Mutex+version 409+READ COMMITTED+Idempotency 24h ≥16 FOR UPDATE inside tx + reuse 422 + verbatim replay, admin adjust TRIM≥15 chk_wal_rationale_trim + ip TrustProxies, Escrow lock/release/dispute state-machine trigger canTransition 45000 + escrow_rate_applied immutable 5%/4%/3% tiers + WORM escrow_events, GET balance stats-isolated R37 30s Cache::tags + replica heartbeat 5s, full hierarchy TraceId→EnsureTenant 422→QuarantineGuard 503→AULite 503→micro 403/202→Sanitize 422→Idempotency 422) + migration 000025 additive guards + Domain/Auth 3 Actions + JwtService HS256 + Requests 7 (Login/Register/Deposit/Withdraw/Adjust/Lock/Release/Dispute TRIM) + Resources 3 (WalletBalance/AuthUser/Escrow minor formatted) + Controllers 4 thin (Auth/Wallet/Escrow/AdminAdjust) + Middleware AuthenticateJwt + config/jwt + routes hardened + interceptor `AuthRefreshInterceptor.ts` single-flight — **PAUSE before B.7**
-- **Next:** PAUSED — B.6 hardened with 20-flaw pre-audit (F-01→F-14) — Awaiting B.7 Deals/Serv APIs prompt
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.7 4-APPS ISOLATED APIS LOCKED v5.0-B.7** (Arena — Laravel 12 PHP 8.4 Quad-App Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.7]` delivered — `docs/PHASE5_B7_APIS.md` (9 sections: DEALS create `TenantScoped ngram` search `MATCH ngram BOOLEAN + price/category/geo 4326` alias `/search→listings` paginate 20 cache 60s replica 5s, stagnant promote Agent3 CMO Tri-Hybrid deterministic→Cloud/Circuit 5/5m→Budget Lua + Calibrator event 202; SERV `POST tickets` Mutex+SPATIAL 4326 dispatch + `GET nearby` `ST_Distance_Sphere 5000m SPATIAL is_active`; INVEST `GET opportunities` 60s tags + `POST pledge` WORM `investor_ledgers` chain + funding_rounds lockForUpdate + escrow_contracts + Idempotency; MED `pgsql` `amed_medical_providers GIST + clinics` + `appointments pgp_sym_encrypt PGCRYPTO_KEY` + `telemetry HMAC TELEMETRY_HMAC_KEY WORM partitioned 90d` zero raw `AnonymizedTelemetryMiddleware 422`; all hierarchy `Trace→Tenant 422→Quarantine 503→AULite 503→micro 403/202→Sanitize 422→Idempotency 422`) + 6 Actions + 9 Requests TRIM + 5 Resources + 8 Controllers thin ≤60L + Middleware `AnonymizedTelemetryMiddleware` + routes 4 hardened aliases + no new DDL (reuse 000022-024) — **PAUSE before B.8**
+- **Next:** PAUSED — B.7 hardened with 21-flaw pre-audit (F-01→F-14) — Awaiting B.8 Workforce Marketplace prompt
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,31 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.6 — docs/PHASE5_B6_APIS.md + 1 migration + 14 code files + API harden 20 fixes F-01→F-14 — PAUSE before B.7*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.7 — docs/PHASE5_B7_APIS.md + 6 Actions +14 API files + Routes+Middleware harden 21 fixes F-01→F-14 (0 new DDL reuse 000022-024) — PAUSE before B.8*
+
+---
+
+## 18. PHASE 5.0 B.7 — 4-APPS ISOLATED REST APIs (DEALS/SERV/INVEST/MED) [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Senior API Architect — 4 Apps Quad — Pre-Execution Audit 21 flaws (F-01→F-14) → hardening integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B7_APIS.md` (v5.0-B.7 harden) — 9 sections + Actions/Resources/Controllers:
+
+- **§1 Routes Hardened F-01/F-02:** `routes/api/v1/deals.php` `GET listings/search(listings alias)` `GET listings/{uuid}` `POST listings micro:deals.create` + `POST stagnant/promote/{uuid} micro:deals.promote Agent3` 202; `serv.php` `GET providers/nearby radius 5km SPATIAL` + `POST tickets micro:serv.ticket.create` + alias `/serve`; `invest.php` `GET opportunities paginate 20` + `POST escrow/pledge alias dispatches micro:invest.fractional.issue WORM`; `med.php+au-med` `GET providers pgsql GIST` + `POST appointments pgp_sym_encrypt` + `POST telemetry/audit HMAC pgsql WORM` — all `ensureTenant 422 → drm.quarantine 503 → au.lite 503 → micro 403/202 → sanitize 422 → idempotency 422` + `throttle:search 20/min nearby 60/min invest 30/min` + `TraceId→X-Trace-Id`.
+
+- **§2 DEALS Search F-05:** `ScopeSearch whereRaw MATCH(title,description) AGAINST(? IN BOOLEAN MODE)` ngram token2 Arabic hits + `category/price_min/max minor` filters `TenantScoped app_id` + `near_lng/lat/radius ST_Distance_Sphere SRID4326 SPATIAL <5ms` + `Replica mysql_replica heartbeat<5s ? replica:primary` + `Cache::tags deals:search:hash 60s + flush on create/promote` + `with category,dealItems eager ≤5 + paginate 20 cursor + X-DB-Route` — never live COUNT R37 use `stats_deals_daily`.
+
+- **§3 SERV Nearby F-04:** `NearbyProvidersRequest lat -90..90 lng -180..180 radius 100..50000` → `ServiceProvider SELECT ST_Distance_Sphere(provider_location, ST_SRID(POINT(lng lat),4326))<radius is_active + specialty + order distance limit 50 SPATIAL idx` → `ProviderNearbyResource distance_m` + `Cache 30s + throttle 60/min`.
+
+- **§4 INVEST Pledge F-06:** `PledgeRequest opportunity_id+round_id+amount_minor+BGP minor+reference_uuid` → `PledgeEscrowAction DB::transaction lock wallet+funding_round → WalletMutex→balance check 422→version 409 → investor_ledgers WORM prev/hash_current REVOKE partitioned → funding_rounds raised_minor→if target≥→closed+deal funded/escrow_locked→escrow_contracts →idempotency inside tx verbatim` → 200 pledged or 409 not funding.
+
+- **§5 MED pgsql Privacy F-07:** `GET providers` `pgsql amed_medical_providers PostGIS ST_DWithin geography 50km GIST + trust pre-aggregated` Cache 60s; `POST appointments` `pgsql pgp_sym_encrypt(complaint_raw,PGCRYPTO_KEY) INSERT` `$connection=pgsql` `AppointmentResource` never exposes encrypted raw; `POST telemetry/audit` `AnonymizedTelemetryMiddleware 422 if raw/text/chat keys` → `RecordTelemetryAction canonical ksort→hmac TELEMETRY_HMAC_KEY→payload_hash→prev/hash_current WORM partitioned 90d retention pgsql`.
+
+- **§6 Actions/Resources/Controllers Thin F-12:** 6 Actions `CreateListing/PromoteStagnant/DispatchTicket/PledgeEscrow/BookAppointment/RecordTelemetry` ≤120L SRP reuse `EscrowLockService, AgentStrategyManager deterministic→fallback, ScopeTenant/nearby/search`; 9 Requests `TRIM+enum+exists+between`; 5 Resources minor formatted `number_format(minor/100,2)` + meta trace; 8 Controllers `≤60L Request→Action→Resource` + Promote returns 202 with driver confidence.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 tenant/R17 env/R18 tx/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 HMAC + Pillars 3+5+6 + 13 Agents + 9 Modules + 5 Apps — additive 0 new DDL reuse 000022-024 — hardened.
+
+**Next:** B.8 Workforce Marketplace — awaiting prompt
 
 ---
 
