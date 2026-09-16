@@ -2,7 +2,7 @@
 // CheckoutAction — B.9 F-01/F-07/F-11 — Arena — WalletMutex+lockForUpdate+Idempotency+EscrowLockService minor BIGINT 5% SaaS-only Oil52
 declare(strict_types=1);
 namespace App\Domain\Workforce\Actions;
-use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Cache; use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Cache; use Illuminate\Support\Str; use App\Support\CacheTagGuard;
 final class CheckoutAction {
  public function execute(int $tenantId, string $appId, int $agentId, string $licenseType, string $currency, ?int $durationMonths, string $ip, ?string $idemKey, ?string $idemHash, ?string $idemEndpoint): array {
   $currency=strtoupper($currency ?: 'EGP');
@@ -70,7 +70,7 @@ final class CheckoutAction {
     }
     // audit WORM security_audit_logs via queued
     try{ \App\Services\Security\SecurityAuditLogger::log(['uuid'=>(string)Str::uuid(),'trace_id'=>app()->bound('trace_id')?app('trace_id'):bin2hex(random_bytes(16)),'user_id'=>$tenantId,'agent_id'=>$agentId,'app_id'=>$appId,'module_id'=>8,'action'=>'WORKFORCE_CHECKOUT','route'=>'api/v1/workforce/agents/checkout','method'=>'POST','query_params'=>null,'payload_hash'=>hash('sha256',$agentId.$licenseType),'payload_snapshot'=>null,'ip_address'=>$ip,'user_agent'=>substr(request()->userAgent()??'',0,255),'created_at'=>$now]); }catch(\Throwable){}
-    try{ Cache::tags(['workforce:catalog','wallet:balance'])->flush(); }catch(\Throwable){ try{Cache::flush();}catch(\Throwable){} }
+    CacheTagGuard::flushTags(['workforce:catalog','wallet:balance']);
     return $respPayload;
    },3);
   } finally { try{ $lock->release(); }catch(\Throwable){} }

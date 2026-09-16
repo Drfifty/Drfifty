@@ -2,7 +2,7 @@
 // CreateListingAction — B.7 F-05/F-09 — Arena — TRIM+category TenantScoped+is_hidden0+SPATIAL 4326+Cache flush
 declare(strict_types=1);
 namespace App\Domain\AUDeals\Actions;
-use Illuminate\Support\Facades\DB; use Illuminate\Support\Str; use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB; use Illuminate\Support\Str; use App\Support\CacheTagGuard;
 final class CreateListingAction {
  public function execute(array $v, int $tenantId, string $appId='AU DEALS'): object {
   return DB::transaction(function() use($v,$tenantId,$appId){
@@ -24,7 +24,7 @@ final class CreateListingAction {
     try{ DB::table('deal_items')->insert(['listing_id'=>$id,'sku'=>(string)Str::uuid(),'attributes'=>$attr,'price_minor'=>(int)$v['price_minor'],'stock'=>(int)($v['stock']??0),'created_at'=>now(),'updated_at'=>now()]); }catch(\Throwable){}
    }
    $row=DB::table('deals_listings')->where('id',$id)->first();
-   try{ Cache::tags(['deals:search'])->flush(); }catch(\Throwable){ Cache::flush(); }
+   CacheTagGuard::flushTags(['deals:search']);
    return (object)array_merge((array)$row,['uuid'=>$uuid]);
   },3);
  }
