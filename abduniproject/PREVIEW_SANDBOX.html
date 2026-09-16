@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sandbox — Phase 4.0 Living Showcase — ABD UNI PROJECT</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas-background:#09090b; --canvas-dark:#0A0A0C; --surface-primary:rgba(9,9,11,.80); --surface-secondary:#18181b;
+  --surface-pearl:rgba(250,250,250,.92); --surface-pearl-strong:#FAFAFA; --text-primary:#FAFAFA; --text-secondary:#A1A1AA;
+  --text-on-accent:#fff; --text-on-pearl:#18181B; --border-main:#27272A; --border-pearl:#E4E4E7;
+  --accent-primary:#06B6D4; --accent-cyan:#06B6D4; --accent-emerald:#10B981; --accent-amber:#F59E0B;
+  --brand-crimson:#EF4444; --brand-gold:#C5A059; --overlay-backdrop:rgba(0,0,0,.45);
+  --shadow-elevation-sm:0 1px 2px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.12);
+  --shadow-elevation-md:0 8px 32px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.16);
+  --shadow-elevation-lg:0 20px 60px rgba(0,0,0,.40),0 8px 24px rgba(0,0,0,.24);
+  --shadow-pearl-md:0 8px 32px rgba(9,9,11,.08); --radius-md:12px; --radius-lg:16px; --radius-pill:999px;
+  --motion-duration:180ms; --motion-ease:cubic-bezier(0.2,0.8,0.2,1); --cx:50%; --cy:50%;
+}
+*{box-sizing:border-box} html,body{margin:0;background:var(--canvas-background);color:var(--text-primary);font-family:"Cairo","Tajawal",system-ui,sans-serif}
+body{font-family:"Cairo","Tajawal",system-ui,sans-serif}
+[data-numeric="true"]{font-family:"Inter",sans-serif;font-variant-numeric:tabular-nums}
+.canvas-obsidian{position:relative;isolation:isolate;min-height:100vh}
+.canvas-obsidian::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(900px circle at var(--cx) var(--cy),rgba(6,182,212,.08),transparent 62%),radial-gradient(700px circle at 20% 80%,rgba(16,185,129,.04),transparent 60%),var(--canvas-background);pointer-events:none}
+.particle-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35}
+.glass-outer{background:rgba(9,9,11,.80);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(39,39,42,.9);box-shadow:var(--shadow-elevation-md);border-radius:var(--radius-lg)}
+.glass-inner{background:rgba(250,250,250,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(228,228,231,.95);box-shadow:var(--shadow-pearl-md);color:var(--text-on-pearl);border-radius:var(--radius-lg)}
+.focus-ring:focus-visible{outline:none;box-shadow:0 0 0 2px var(--canvas-background),0 0 0 4px var(--accent-primary)}
+.btn{inline-size:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:var(--radius-md);font-weight:600;transition:all var(--motion-duration) var(--motion-ease);cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.4;pointer-events:none}
+.btn-sm{height:32px;padding:0 12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.btn-md{height:36px;padding:0 16px;font-size:14px}
+.btn-lg{height:40px;padding:0 24px;font-size:18px}
+.btn-primary{background:var(--canvas-dark);color:#fff}
+.btn-secondary{background:var(--surface-pearl);color:var(--text-on-pearl);border-color:var(--border-pearl)}
+.btn-danger{background:var(--brand-crimson);color:#fff}
+.btn-ai{background:var(--accent-cyan);color:#fff}
+.btn-gold{background:var(--brand-gold);color:#000}
+.btn-ghost{background:transparent;color:var(--text-primary);border-color:transparent}
+.btn-ghost:hover{background:var(--surface-secondary)}
+.input{width:100%;border-radius:var(--radius-md);border:1px solid var(--border-pearl);background:var(--surface-pearl-strong);padding:10px 12px;font-size:14px;color:var(--text-on-pearl)}
+.input:focus{outline:none;box-shadow:0 0 0 2px var(--canvas-background),0 0 0 4px var(--accent-cyan);border-color:transparent}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-pill);border:1px solid transparent;padding:4px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.pill{border-radius:var(--radius-pill);padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid transparent}
+.table{width:100%;border-collapse:collapse}
+.table th, .table td{padding:12px 16px;text-align:start}
+.table thead{background:var(--surface-secondary);color:var(--text-secondary)}
+.table tbody tr{border-top:1px solid var(--border-pearl)}
+.table tbody tr:hover{background:var(--surface-pearl-strong)}
+.modal-backdrop{position:fixed;inset:0;background:var(--overlay-backdrop);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+</style>
+</head>
+<body class="canvas-obsidian">
+<canvas id="particles" class="particle-grid" aria-hidden></canvas>
+<div style="max-width:1120px;margin:0 auto;padding:24px">
+  <header class="glass-outer" style="padding:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div>
+      <h1 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-.015em">Sandbox — Phase 4.0 Living Showcase</h1>
+      <p style="margin:6px 0 0;color:var(--text-secondary);font-size:14px">عرض حي تراكمي — Part 1 & 2: Atomic Primitives — يُحدّث مع كل Part (Part 3 HQ → Part 4 AU BUSINESS …) — <span style="color:var(--brand-gold)">v4.2</span> — <span style="font-family:Inter">E2B 3000</span></p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge" style="background:var(--brand-gold);color:#000">Part 1 & 2: Atomic ✓</span>
+      <span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary);border-color:var(--border-main)">Part 3: HQ قادم</span>
+      <span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary);border-color:var(--border-main)">Part 4: AU BUSINESS قادم</span>
+    </div>
+  </header>
+
+  <!-- BUTTONS -->
+  <section class="glass-inner" style="margin-top:20px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">Button — كل الأنماط + الحالات</h2>
+    <p style="margin:6px 0 12px;color:var(--text-secondary);font-size:12px">Variants: primary #0A0A0C / secondary / danger #EF4444 / ai-action #06B6D4 / gold #C5A059 / ghost / crimson — isLoading / isDisabled / icon / requiredPermission / appContext</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="btn btn-md btn-primary">primary #0A0A0C</button>
+      <button class="btn btn-md btn-secondary">secondary</button>
+      <button class="btn btn-md btn-danger">danger #EF4444</button>
+      <button class="btn btn-md btn-ai">ai-action #06B6D4</button>
+      <button class="btn btn-md btn-gold">gold #C5A059</button>
+      <button class="btn btn-md btn-ghost">ghost</button>
+      <button class="btn btn-md" style="background:var(--brand-crimson);color:#fff">crimson</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <button class="btn btn-md btn-primary" id="btnLoading"><span id="btnLoadingSpin" style="display:none;width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite"></span><span>isLoading</span></button>
+      <button class="btn btn-md btn-secondary" disabled>isDisabled</button>
+      <button class="btn btn-md btn-ai">⚡ icon</button>
+      <button class="btn btn-md btn-ghost" style="border:1px dashed var(--border-pearl)">permission purge (مخفي إن بلا صلاحية)</button>
+      <button class="btn btn-md btn-secondary">appContext AU MED</button>
+    </div>
+  </section>
+
+  <!-- INPUTS -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px;display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div>
+      <h3 style="margin:0;font-size:18px;font-weight:600">FormInput — قياسي</h3>
+      <label for="in1" style="display:block;margin:12px 0 6px;font-size:14px;font-weight:500">البريد الإلكتروني</label>
+      <input id="in1" class="input" placeholder="name@domain.com" value="" oninput="document.getElementById('in1hint').textContent=this.value?'القيمة: '+this.value:'RTL + توكنات + رسالة مساعدة'"/>
+      <p id="in1hint" style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">RTL + توكنات + رسالة مساعدة</p>
+      <label style="display:block;margin:12px 0 6px;font-size:14px;font-weight:500">حقل بخطأ</label>
+      <input class="input" placeholder="خطأ" style="border-color:var(--brand-crimson)"/>
+      <p style="margin:6px 0 0;font-size:11px;color:var(--brand-crimson)">هذا الحقل مطلوب</p>
+    </div>
+    <div>
+      <h3 style="margin:0;font-size:18px;font-weight:600">SecureFormInput — RegexDataLeakDetector حي</h3>
+      <label for="secure" style="display:block;margin:12px 0 6px;font-size:14px;font-weight:500">هاتف / بريد / رابط — يُطمس تلقائياً</label>
+      <input id="secure" class="input" value="01012345678 test@example.com https://evil.com" autocomplete="off" spellcheck="false"/>
+      <p style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">جرّب: 01012345678 أو test@ex.com أو https://...</p>
+      <p style="margin:8px 0 0;font-size:11px;color:var(--text-secondary)">المخزن (مطمس): <span id="secureOut" dir="ltr" style="font-family:Inter;background:var(--surface-secondary);padding:2px 6px;border-radius:6px;color:var(--text-on-pearl)">010*** test@*** https://***</span></p>
+    </div>
+  </section>
+
+  <!-- TABLE -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">DynamicTable — EGP minor-units + فرز + تحديد + إجراءات + شارات</h2>
+    <p style="margin:6px 0 12px;color:var(--text-secondary);font-size:12px">125,000 قروش → 1,250.00 EGP (latn) — sortable ↑↓ — multi-select — rowActions</p>
+    <div style="overflow:auto;border:1px solid var(--border-main);border-radius:var(--radius-lg)">
+      <table class="table" id="dynTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="chkAll" onchange="toggleAll(this.checked)"/></th>
+            <th style="cursor:pointer" onclick="sortBy('name')">البيان <span id="sortName">↑</span></th>
+            <th style="cursor:pointer;text-align:end" onclick="sortBy('amount')">المبلغ (EGP) <span id="sortAmt">↕</span></th>
+            <th>الحالة</th>
+            <th style="text-align:end">إجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--border-pearl);flex-wrap:wrap;gap:8px">
+        <span style="font-size:11px;color:var(--text-secondary)">صفحة 1 من 2 · 3 إجمالي</span>
+        <div style="display:flex;gap:8px">
+          <button class="pill" style="background:var(--surface-pearl-strong);border-color:var(--border-pearl)" disabled>« السابق</button>
+          <button class="pill" style="background:var(--accent-primary);color:#fff">1</button>
+          <button class="pill" style="background:var(--surface-pearl-strong);border-color:var(--border-pearl)">2</button>
+          <button class="pill" style="background:var(--surface-pearl-strong);border-color:var(--border-pearl)">التالي »</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">Modal & ConfirmHoldModal — ESC + blur</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <button class="btn btn-md btn-primary" onclick="openModal('modal')">افتح Modal</button>
+      <button class="btn btn-md btn-danger" onclick="openModal('holdModal')">افتح ConfirmHold (2s)</button>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">StatusBadge — كل الحالات الست</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <span class="badge" style="background:var(--accent-emerald);color:#fff">● موثّق Verified</span>
+      <span class="badge" style="background:var(--accent-amber);color:#000">● قيد المراجعة Pending</span>
+      <span class="badge" style="background:var(--brand-crimson);color:#fff">● خطر Danger</span>
+      <span class="badge" style="background:var(--brand-gold);color:#000">● VIP</span>
+      <span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary);border-color:var(--border-main)">● مجهول Anonymous</span>
+      <span class="badge" style="background:var(--accent-cyan);color:#fff;box-shadow:var(--shadow-elevation-sm)">● AI نشط AI_Active</span>
+    </div>
+  </section>
+
+  <!-- SWITCHER -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">MultiTenantSwitcher — 6 سياقات</h2>
+    <div style="margin-top:12px;display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--surface-secondary);padding:4px;border-radius:var(--radius-pill)" id="switcher">
+      <button class="pill" data-v="MASTER_HQ" style="background:var(--brand-gold);color:#000">المركز الرئيسي HQ</button>
+      <button class="pill" data-v="AU BUSINESS">AU BUSINESS B2B</button>
+      <button class="pill" data-v="AU MED">AU MED</button>
+      <button class="pill" data-v="AU DEALS">AU DEALS</button>
+      <button class="pill" data-v="AU SERV">AU SERV</button>
+      <button class="pill" data-v="AU INVEST">AU INVEST</button>
+    </div>
+    <p style="margin:8px 0 0;font-size:11px;color:var(--text-secondary)">يبدّل app_id عبر router.visit — MASTER_HQ → /admin — البقية → /switch?app_id= — الحالي: <b id="curApp">MASTER_HQ</b></p>
+  </section>
+
+  <!-- ERROR BOUNDARY -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">ErrorBoundary — حماية الانهيار + إخفاء Stack</h2>
+    <div id="errBox" style="margin-top:12px;border:1px solid var(--border-pearl);background:var(--surface-pearl-strong);border-radius:var(--radius-md);padding:16px">
+      <p id="errText" style="margin:0;color:var(--text-secondary);font-size:14px">محتوى آمن — اضغط الزر لمحاكاة انهيار.</p>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-sm btn-secondary" onclick="toggleErr()">محاكاة انهيار</button>
+        <button class="btn btn-sm btn-ghost" onclick="resetErr()">إعادة تعيين</button>
+      </div>
+    </div>
+  </section>
+
+  <p style="text-align:center;margin:20px 0 0;font-size:11px;color:var(--text-secondary)">Sandbox تراكمي — سيُضاف Part 3 HQ / Part 4 AU BUSINESS تلقائياً في نفس الصفحة — <span style="font-family:Inter">https://3000-i42b7mbztqqiuzana28sw.e2b.app</span></p>
+</div>
+
+<!-- MODAL -->
+<div id="modal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px">
+  <div class="modal-backdrop" onclick="closeModal('modal')"></div>
+  <div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%">
+    <button onclick="closeModal('modal')" style="position:absolute;top:12px;left:12px;background:transparent;border:1px solid transparent;border-radius:8px;padding:6px 10px;cursor:pointer">✕</button>
+    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-on-pearl)">نافذة عادية</h3>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:14px">ESC أو الخلفية للإغلاق — blur 8px + قفل تمرير</p>
+    <p style="margin:12px 0 0;color:var(--text-secondary);font-size:14px">محتوى تجريبي — أزرار ديناميكية:</p>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button class="btn btn-md btn-secondary" onclick="closeModal('modal')">إغلاق</button>
+      <button class="btn btn-md btn-primary" onclick="closeModal('modal')">تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOLD MODAL -->
+<div id="holdModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px">
+  <div class="modal-backdrop" onclick="closeModal('holdModal')"></div>
+  <div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%">
+    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-on-pearl)">تأكيد عالي المخاطر</h3>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:14px">Kill-Switch / إلغاء جماعي — اضغط مطوّلاً 2 ثانية</p>
+    <p style="margin:8px 0 0;color:var(--text-secondary);font-size:14px">هذه العملية عالية المخاطر — لا يمكن التراجع. اضغط مطوّلاً لتأكيد التنفيذ.</p>
+    <div style="height:8px;background:var(--surface-secondary);border-radius:999px;overflow:hidden;margin-top:12px">
+      <div id="holdBar" style="height:100%;width:0;background:var(--brand-crimson);transition:width .05s linear"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button class="btn btn-md btn-secondary" onclick="closeModal('holdModal')">إلغاء</button>
+      <button class="btn btn-md btn-danger" id="holdBtn" onpointerdown="startHold(event)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()">اضغط مطوّلاً للتأكيد — 2 ثانية</button>
+    </div>
+  </div>
+</div>
+
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+// particles 42
+const c=document.getElementById('particles'), x=c.getContext('2d'); let w,h,dots=[];
+function resize(){w=c.width=c.offsetWidth*devicePixelRatio;h=c.height=c.offsetHeight*devicePixelRatio;x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+function init(){resize();dots=Array.from({length:42},()=>({x:Math.random()*c.offsetWidth,y:Math.random()*c.offsetHeight,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.1+.5}))}
+function tick(){x.clearRect(0,0,c.offsetWidth,c.offsetHeight); x.fillStyle='rgba(250,250,250,.22)';dots.forEach(d=>{d.x+=d.vx;d.y+=d.vy;if(d.x<0||d.x>c.offsetWidth)d.vx*=-1;if(d.y<0||d.y>c.offsetHeight)d.vy*=-1;x.beginPath();x.arc(d.x,d.y,d.r,0,Math.PI*2);x.fill()}); x.strokeStyle='rgba(250,250,250,.06)';x.lineWidth=.7;for(let i=0;i<dots.length;i++)for(let j=i+1;j<dots.length;j++){let dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, dist=Math.hypot(dx,dy);if(dist<110){x.globalAlpha=1-dist/110;x.beginPath();x.moveTo(dots[i].x,dots[i].y);x.lineTo(dots[j].x,dots[j].y);x.stroke()}} x.globalAlpha=1;requestAnimationFrame(tick)}
+init(); tick(); addEventListener('resize',resize);
+addEventListener('mousemove',e=>{let X=e.clientX/innerWidth*100, Y=e.clientY/innerHeight*100; document.documentElement.style.setProperty('--cx',X+'%');document.documentElement.style.setProperty('--cy',Y+'%')},{passive:true});
+if(matchMedia('(prefers-reduced-motion: reduce)').matches) c.style.display='none';
+
+// secure input leak mask
+const PHONE_RE=/(\+?20)?0?1[0-2,5][0-9]{8}/g, EMAIL_RE=/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, URL_RE=/https?:\/\/\S+/gi;
+function maskLeak(v){return v.replace(PHONE_RE,'***-****').replace(EMAIL_RE,'***@***').replace(URL_RE,'***')}
+const sec=document.getElementById('secure'), out=document.getElementById('secureOut');
+function updSecure(){let m=maskLeak(sec.value); out.textContent=m; out.dir='ltr'}; sec.addEventListener('input',updSecure); updSecure();
+
+// btn loading demo
+document.getElementById('btnLoading').addEventListener('click',function(){let s=document.getElementById('btnLoadingSpin'); s.style.display='inline-block'; this.disabled=true; setTimeout(()=>{s.style.display='none'; this.disabled=false},1500)})
+
+// table
+let rows=[
+  {id:1,name:'فاتورة #001 — صيدلية',amount_minor:125000,status:'Verified',checked:true},
+  {id:2,name:'فاتورة #002 — معمل',amount_minor:89000,status:'Pending',checked:false},
+  {id:3,name:'فاتورة #003 — توريد',amount_minor:450000,status:'AI_Active',checked:false},
+];
+let sortKey='name', sortDir='asc';
+function fmtEGP(minor){return new Intl.NumberFormat('ar-EG',{style:'currency',currency:'EGP',numberingSystem:'latn'}).format(minor/100)}
+function badge(s){const m={Verified:['var(--accent-emerald)','#fff','موثّق'],Pending:['var(--accent-amber)','#000','قيد المراجعة'],Danger:['var(--brand-crimson)','#fff','خطر'],VIP:['var(--brand-gold)','#000','VIP'],Anonymous:['var(--surface-secondary)','var(--text-secondary)','مجهول'],AI_Active:['var(--accent-cyan)','#fff','AI نشط']};let [bg,c,l]=m[s]||m.Verified;return `<span class="badge" style="background:${bg};color:${c}">${l}</span>`}
+function render(){let tb=document.getElementById('tbody'); tb.innerHTML=''; let data=[...rows]; data.sort((a,b)=>{let av=a[sortKey], bv=b[sortKey]; if(typeof av==='number'&&typeof bv==='number') return sortDir==='asc'?av-bv:bv-av; return sortDir==='asc'? String(av).localeCompare(String(bv),'ar'):String(bv).localeCompare(String(av),'ar')}); data.forEach(r=>{let tr=document.createElement('tr'); tr.innerHTML=`<td><input type="checkbox" ${r.checked?'checked':''} onchange="toggleRow(${r.id},this.checked)"></td><td>${r.name}</td><td style="text-align:end;font-family:Inter" data-numeric="true">${fmtEGP(r.amount_minor)}</td><td>${badge(r.status)}</td><td style="text-align:end"><div style="display:flex;justify-content:flex-end;gap:4px"><button onclick="alert('عرض ${r.name}')" style="border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:4px 8px;font-size:11px;cursor:pointer">عرض</button><button onclick="alert('حذف ${r.id}')" style="border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:4px 8px;font-size:11px;cursor:pointer">حذف</button></div></td>`; tb.appendChild(tr)}); document.getElementById('sortName').textContent=sortKey==='name'?(sortDir==='asc'?'↑':'↓'):'↕'; document.getElementById('sortAmt').textContent=sortKey==='amount'?(sortDir==='asc'?'↑':'↓'):'↕'; document.getElementById('chkAll').checked=rows.every(r=>r.checked)}
+function sortBy(k){ let key=k==='amount'?'amount_minor':k; if(sortKey===key) sortDir=sortDir==='asc'?'desc':'asc'; else{sortKey=key; sortDir='asc'} render()}
+function toggleRow(id,ck){rows.find(r=>r.id===id).checked=ck; render()}
+function toggleAll(ck){rows.forEach(r=>r.checked=ck); render()}
+render();
+
+// switcher
+document.querySelectorAll('#switcher [data-v]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#switcher [data-v]').forEach(x=>{x.style.background='transparent';x.style.color='var(--text-secondary)'}); b.style.background='var(--brand-gold)';b.style.color='#000'; document.getElementById('curApp').textContent=b.dataset.v}))
+
+// modals
+function openModal(id){document.getElementById(id).style.display='flex'; document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).style.display='none'; document.body.style.overflow=''; stopHold()}
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('modal');closeModal('holdModal')}})
+
+// hold
+let holdTimer=null, holdStart=0, holdProg=0;
+function startHold(e){e.preventDefault(); holdStart=Date.now(); holdProg=0; holdTimer=setInterval(()=>{let el=Date.now()-holdStart, pct=Math.min(100,el/2000*100); document.getElementById('holdBar').style.width=pct+'%'; document.getElementById('holdBtn').textContent=Math.round(pct)+'%'; if(pct>=100){clearInterval(holdTimer); holdTimer=null; closeModal('holdModal'); document.getElementById('holdBar').style.width='0%'; document.getElementById('holdBtn').textContent='اضغط مطوّلاً للتأكيد — 2 ثانية'; alert('تم التأكيد بعد 2 ثانية ✓')} },16)}
+function stopHold(){if(holdTimer)clearInterval(holdTimer); holdTimer=null; document.getElementById('holdBar').style.width='0%'; document.getElementById('holdBtn').textContent='اضغط مطوّلاً للتأكيد — 2 ثانية'}
+
+// error boundary demo
+let errOn=false;
+function toggleErr(){errOn=!errOn;let box=document.getElementById('errBox'), txt=document.getElementById('errText'); if(errOn){box.style.borderColor='var(--brand-crimson)'; box.style.background='rgba(239,68,68,.08)'; txt.innerHTML='<b style="color:var(--brand-crimson)">💥 انهيار محاكى — ErrorBoundary التقط الخطأ ✓</b><br><span style="font-family:Inter;font-size:11px">Simulated crash — stack suppressed in prod</span>';} else resetErr()}
+function resetErr(){errOn=false;let box=document.getElementById('errBox'), txt=document.getElementById('errText'); box.style.borderColor='var(--border-pearl)'; box.style.background='var(--surface-pearl-strong)'; txt.textContent='محتوى آمن — اضغط الزر لمحاكاة انهيار.';}
+</script>
+</body>
+</html>

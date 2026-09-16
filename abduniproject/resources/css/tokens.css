@@ -1,0 +1,166 @@
+/* ABD UNI PROJECT — Design Tokens (Arena Canonical) — Obsidian Canvas Standard */
+/* نظام الرموز الموحد — يغذي جميع التطبيقات الخمسة + لوحة الإدارة */
+/* تغيير قيمة var هنا يعيد تلوين النظام بالكامل بدون لمس .tsx — مستورد عبر app.css */
+
+@theme {
+  /* خطوط */
+  --font-arabic: "Cairo", "Tajawal", sans-serif;
+  --font-latin: "Inter", sans-serif;
+
+  /* لوحة Obsidian-Pearl الهجينة المتوازنة — Standard Locked */
+  --color-canvas: var(--canvas-background);
+  --color-surface: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-pearl: var(--surface-pearl);
+}
+
+:root {
+  /* === Canvas & Surfaces — Obsidian Standard === */
+  /* خلفية كونية عميقة — Obsidian Stone */
+  --canvas-background: #09090b;
+  /* حاويات خارجية رئيسية — Obsidian Glass 80% */
+  --surface-primary: rgba(9, 9, 11, 0.80);
+  --surface-secondary: #18181b;
+  /* مكونات داخلية تفاعلية — Neo-White Liquid Pearl */
+  --surface-pearl: rgba(250, 250, 250, 0.92);
+  --surface-pearl-strong: #FAFAFA;
+
+  /* نصوص — تباين عالي على Obsidian */
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-on-accent: #FFFFFF;
+  --text-on-pearl: #18181B;
+
+  /* حدود */
+  --border-main: #27272A;
+  --border-subtle: 1px solid var(--border-main);
+  --border-pearl: #E4E4E7;
+  --border-pearl-subtle: 1px solid var(--border-pearl);
+
+  /* لمسات مجالية — Domain Accents — Part 2 Tokens */
+  --accent-primary: #06B6D4; /* cyan — Radar/Services / AI Cyan */
+  --accent-cyan: #06B6D4;
+  --accent-emerald: #10B981; /* wealth/yields — Success */
+  --accent-amber: #F59E0B; /* flash/auctions */
+  --accent-secondary: #818cf8;
+  --brand-crimson: #EF4444; /* risk/alerts — Threat */
+  --brand-crimson-hover: color-mix(in srgb, var(--brand-crimson) 88%, black);
+  --brand-gold: #C5A059; /* Brand Accent — Gold */
+  --brand-gold-hover: color-mix(in srgb, var(--brand-gold) 88%, black);
+  --canvas-dark: #0A0A0C; /* Dark — Part 2 */
+  --canvas-dark-hover: color-mix(in srgb, var(--canvas-dark) 88%, white);
+
+  /* تفاعل الألوان */
+  --accent-primary-hover: color-mix(in srgb, var(--accent-primary) 88%, black);
+  --overlay-backdrop: rgba(0, 0, 0, 0.45);
+
+  /* ظلال وارتفاعات — Elevation */
+  --shadow-elevation-sm: 0 1px 2px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-elevation-md: 0 8px 32px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.16);
+  --shadow-elevation-lg: 0 20px 60px rgba(0, 0, 0, 0.40), 0 8px 24px rgba(0, 0, 0, 0.24);
+  --shadow-pearl-sm: 0 4px 16px rgba(9, 9, 11, 0.06);
+  --shadow-pearl-md: 0 8px 32px rgba(9, 9, 11, 0.08);
+
+  /* حدود مستديرة — Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* مسافات — 8pt Grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* حركة */
+  --motion-press: translateY(1px);
+  --motion-duration: 180ms;
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* طبقات زجاجية — Glass Levels */
+  --glass-outer-bg: rgba(9, 9, 11, 0.80);
+  --glass-outer-border: rgba(39, 39, 42, 0.9);
+  --glass-outer-blur: 14px;
+  --glass-inner-bg: rgba(250, 250, 250, 0.92);
+  --glass-inner-border: rgba(228, 228, 231, 0.95);
+  --glass-inner-blur: 12px;
+
+  /* خلفية تفاعلية — Proximity Lighting */
+  --cx: 50%;
+  --cy: 50%;
+}
+
+/* === طباعة — 5 مستويات === */
+.text-display { font-size: 32px; line-height: 36px; font-weight: 700; letter-spacing: -0.02em; }
+.text-title { font-size: 24px; line-height: 28px; font-weight: 600; letter-spacing: -0.015em; }
+.text-section { font-size: 18px; line-height: 22px; font-weight: 500; }
+.text-body { font-size: 14px; line-height: 16px; font-weight: 400; }
+.text-micro { font-size: 11px; line-height: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* === خلفية Obsidian + شبكة جسيمات + إضاءة تقاربية === */
+.canvas-obsidian {
+  background: var(--canvas-background);
+  position: relative;
+  isolation: isolate;
+}
+.canvas-obsidian::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(900px circle at var(--cx) var(--cy), rgba(6, 182, 212, 0.08), transparent 62%),
+    radial-gradient(700px circle at 20% 80%, rgba(16, 185, 129, 0.04), transparent 60%),
+    var(--canvas-background);
+  pointer-events: none;
+}
+.particle-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* === حاويات زجاجية — Outer Obsidian / Inner Pearl === */
+.glass-outer {
+  background: var(--glass-outer-bg);
+  backdrop-filter: blur(var(--glass-outer-blur));
+  -webkit-backdrop-filter: blur(var(--glass-outer-blur));
+  border: 1px solid var(--glass-outer-border);
+  box-shadow: var(--shadow-elevation-md);
+}
+.glass-inner {
+  background: var(--glass-inner-bg);
+  backdrop-filter: blur(var(--glass-inner-blur));
+  -webkit-backdrop-filter: blur(var(--glass-inner-blur));
+  border: 1px solid var(--glass-inner-border);
+  box-shadow: var(--shadow-pearl-md);
+  color: var(--text-on-pearl);
+}
+.glass-pearl-strong {
+  background: var(--surface-pearl-strong);
+  border: 1px solid var(--border-pearl);
+}
+
+/* === احترام تفضيل تقليل الحركة === */
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-press: none; }
+  .particle-grid, .canvas-obsidian::before { display: none; }
+}
+
+/* === تركيز وصول — Focus Ring === */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--canvas-background), 0 0 0 4px var(--accent-primary);
+}
+
+/* === RTL منطقي — Logical Props helper === */
+/* استخدم ps-/pe-/ms-/me- و text-start في جميع المكونات */
+
+/* === فحص تباين — 4.5:1 === */
+/* text-primary (#FAFAFA) على canvas (#09090b) = 19.5:1 ✓ */
+/* text-on-pearl (#18181B) على pearl (#FAFAFA) = 17.1:1 ✓ */

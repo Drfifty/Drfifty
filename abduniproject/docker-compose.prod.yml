@@ -1,0 +1,118 @@
+# ABD UNI PROJECT — Production Docker ONLY (Ephemeral Swarm + Edge)
+# WARNING: Laragon = local dev, Docker = prod — never cross-apply.
+# Arena env: 0.0.0.0 preview, Reverb 8080 wss://, Cloudflare WAF + Nginx 20/s + Fail2ban
+# CORE ANCHOR: AU BUSINESS (ab_) Master Core B2B — app service is AU BUSINESS hub powering 4 B2C spokes (AU_MED/AU_DEALS/AU_SERV/AU_INVEST) — 5 Applications, 9 Modules sequential, 13 Agents — single Paymob vault, 5% adjustable, single-payer, 100% anti-leak, Calibrator 100→90%
+
+services:
+  app: # AU BUSINESS hub — Master Core B2B (ab_) — Modular Monolith powering 4 spokes — 5 Apps (app_id ENUM) + 9 Modules + 13 Agents
+    image: abduniproject/app:prod
+    build: { context: ., dockerfile: Dockerfile }
+    environment:
+      APP_ENV: production
+      APP_KEY: "${APP_KEY}"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_DATABASE: abduniproject
+      DB_USERNAME: abduni
+      DB_PASSWORD: "${DB_PASSWORD}"
+      REDIS_HOST: redis
+      BROADCAST_CONNECTION: reverb
+      REVERB_APP_ID: "${REVERB_APP_ID}"
+      REVERB_APP_KEY: "${REVERB_APP_KEY}"
+      REVERB_HOST: "0.0.0.0"
+      REVERB_PORT: 8080
+      REVERB_SCHEME: https
+      LOCAL_GPU_ENDPOINT: "http://vllm_gpu:8000/v1"
+      FX_PROVIDER: "${FX_PROVIDER:-exchangerate_api}"
+    depends_on: { mysql: { condition: service_healthy }, pgsql: { condition: service_healthy }, redis: { condition: service_healthy }, reverb: { condition: service_started } }
+    deploy: { replicas: 2, resources: { limits: { cpus: '2', memory: 2G } }, restart_policy: { condition: on-failure } }
+    networks: [backend, front]
+    volumes: [app_storage:/var/www/storage]
+    healthcheck: { test: ["CMD", "php", "artisan", "health:check"], interval: 30s, timeout: 5s, retries: 3 }
+
+  nginx:
+    image: nginx:alpine
+    ports: ["80:80", "443:443", "8080:8080"]
+    volumes: ["./docker/nginx.prod.conf:/etc/nginx/nginx.conf:ro", "./docker/certs:/etc/nginx/certs:ro", "/var/log/nginx:/var/log/nginx"]
+    depends_on: [app, reverb]
+    networks: [front]
+    deploy: { resources: { limits: { memory: 512M } } }
+
+  mysql:
+    image: mysql:8.4
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-buffer-pool-size=1G --ngram-token-size=2
+    environment: { MYSQL_DATABASE: abduniproject, MYSQL_USER: abduni, MYSQL_PASSWORD: "${DB_PASSWORD}", MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}" }
+    volumes: [mysql_data:/var/lib/mysql, ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro]
+    networks: [backend]
+    healthcheck: { test: ["CMD", "mysqladmin", "ping", "-h", "localhost"], interval: 10s, retries: 5 }
+
+  pgsql:
+    image: postgis/postgis:16-3.4
+    environment: { POSTGRES_DB: abduniproject_clinical, POSTGRES_USER: abduni, POSTGRES_PASSWORD: "${DB_PGSQL_PASSWORD}" }
+    volumes: [pgsql_data:/var/lib/postgresql/data]
+    networks: [backend]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U abduni"], interval: 10s, retries: 5 }
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --appendonly yes
+    volumes: [redis_data:/data]
+    networks: [backend, sandbox]
+    healthcheck: { test: ["CMD", "redis-cli", "ping"], interval: 10s, retries: 3 }
+
+  reverb:
+    image: abduniproject/app:prod
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    environment: { REVERB_APP_ID: "${REVERB_APP_ID}", REVERB_APP_KEY: "${REVERB_APP_KEY}", REVERB_SCHEME: https }
+    networks: [backend, front]
+    healthcheck: { test: ["CMD", "nc", "-z", "localhost", "8080"], interval: 10s, retries: 3 }
+
+  worker:
+    image: abduniproject/app:prod
+    command: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 --max-jobs=1000
+    depends_on: [redis]
+    deploy: { replicas: 3, restart_policy: { condition: on-failure } }
+    networks: [backend]
+    environment: { QUEUE_CONNECTION: redis }
+
+  n8n:
+    image: n8nio/n8n:latest
+    environment: { N8N_HOST: n8n.abduni.com, N8N_PORT: 5678, N8N_PROTOCOL: https, WEBHOOK_URL: https://n8n.abduni.com, GENERIC_TIMEZONE: Africa/Cairo }
+    volumes: [n8n_data:/home/node/.n8n]
+    networks: [sandbox]
+    deploy: { replicas: 1 }
+
+  agent_sandboxes:
+    image: abduniproject/sandbox:php84
+    build: { context: ./docker/sandboxes/agent-sandbox }
+    environment: { SANDBOX_MODE: isolated, REDIS_HOST: redis }
+    networks: [sandbox]
+    deploy: { replicas: 0 }
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETGID, SETUID]
+
+  vllm_gpu:
+    image: vllm/vllm-openai:v0.4
+    command: --model mistralai/Mistral-7B-Instruct-v0.2 --port 8000 --dtype half
+    environment: { HUGGING_FACE_HUB_TOKEN: "${HF_TOKEN}" }
+    volumes: [vllm_cache:/root/.cache/huggingface]
+    networks: [gpu]
+    deploy: { resources: { reservations: { devices: [{ driver: nvidia, count: 1, capabilities: [gpu] }] } } }
+
+  fail2ban:
+    image: crazymax/fail2ban:latest
+    volumes: ["/var/log:/var/log:ro", "./docker/fail2ban/jail.local:/etc/fail2ban/jail.local:ro"]
+    network_mode: host
+    cap_add: [NET_ADMIN, NET_RAW]
+    depends_on: [nginx]
+
+networks:
+  front: { driver: overlay, attachable: true }
+  backend: { driver: overlay, internal: true }
+  sandbox: { driver: overlay, internal: true }
+  gpu: { driver: overlay, internal: true }
+
+volumes: { mysql_data: {}, pgsql_data: {}, redis_data: {}, n8n_data: {}, vllm_cache: {}, app_storage: {} }

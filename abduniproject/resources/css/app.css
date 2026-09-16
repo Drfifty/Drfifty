@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ABD UNI PROJECT — Tailwind v4 + Design Tokens (Phase 3.0 → Obsidian Lock) */
+/* الطباعة: Cairo/Tajawal 400/600/700 عربي · Inter لاتيني/أرقام */
+/* RTL-first: dir=rtl + logical props ps-/pe-/ms-/me-/text-start */
+
+@theme {
+  --font-arabic: "Cairo", "Tajawal", sans-serif;
+  --font-latin: "Inter", sans-serif;
+  /* ربط رموز Obsidian بـ Tailwind حتى تعيد التلوين فورًا */
+  --color-canvas: var(--canvas-background);
+  --color-surface: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-pearl: var(--surface-pearl);
+}
+
+:root {
+  font-family: var(--font-latin), var(--font-arabic), system-ui, sans-serif;
+}
+
+/* === RTL-first base — Cairo للعربية، Inter للاتينية === */
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), var(--font-latin), sans-serif;
+  text-align: start;
+}
+html[dir="ltr"] body {
+  font-family: var(--font-latin), var(--font-arabic), sans-serif;
+}
+
+/* === Canvas Obsidian الموحد — جميع التطبيقات الخمسة === */
+html, body {
+  background: var(--canvas-background);
+  color: var(--text-primary);
+}
+
+/* أرقام مالية — Inter tabular */
+[data-numeric="true"] {
+  font-family: var(--font-latin);
+  font-variant-numeric: tabular-nums;
+}
+
+/* === Shadcn base — يحترم الرموز === */
+@layer base {
+  * { border-color: var(--border-main); }
+  body { @apply antialiased; }
+  /* تركيز موحد */
+  :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas-background), 0 0 0 4px var(--accent-primary); }
+}
+
+/* === إضاءة تقاربية — Proximity Lighting عبر --cx/--cy === */
+.proximity-glow {
+  transition: box-shadow var(--motion-duration) var(--motion-ease), border-color var(--motion-duration) var(--motion-ease);
+}
+.proximity-glow:hover {
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 18%, transparent);
+  border-color: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+}
+
+/* === تقليل الحركة === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
