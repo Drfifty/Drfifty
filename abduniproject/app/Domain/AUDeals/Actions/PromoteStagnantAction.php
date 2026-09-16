@@ -34,7 +34,7 @@ final class PromoteStagnantAction {
   }
   DB::table('stagnant_deals')->where('id',$stale->id)->update(['is_promoted'=>1,'promoted_at'=>now(3)]);
   try{ event(new \App\Events\AgentConfidenceEvaluated(agentId:3, confidence:(float)($proposal->confidence ?? 95), driver:$driver, reasonCode:($proposal->reasonCode ?? 'OK'), traceId: app()->bound('trace_id')?app('trace_id'):null, durationMs:0, costUsd:(float)($proposal->costUsd ?? 0))); }catch(\Throwable){}
-  try{ Cache::tags(['deals:search'])->flush(); }catch(\Throwable){}
+  \App\Support\CacheTagGuard::flushTags(['deals:search']);
   return ['listing_uuid'=>$listingUuid,'confidence'=>$proposal->confidence ?? 95,'driver'=>$driver,'reasonCode'=>$proposal->reasonCode ?? 'OK'];
  }
 }

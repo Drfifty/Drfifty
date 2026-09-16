@@ -58,7 +58,7 @@ final class HitlAction {
     DB::table($table)->where('action_id',$row->action_id ?? $taskId)->update(['outcome'=>$decision==='approved'?'executed':'rejected','hitl_granted_by'=>$approverId]);
     try{ \App\Services\Security\SecurityAuditLogger::log(['uuid'=>(string)Str::uuid(),'trace_id'=>$trace,'user_id'=>$approverId,'agent_id'=>$row->agent_id ?? null,'app_id'=>'AU BUSINESS','module_id'=>9,'action'=>'HITL_'.strtoupper($decision),'route'=>'api/v1/ai/governance/hitl/approve','method'=>'POST','query_params'=>null,'payload_hash'=>hash('sha256',$rationale),'payload_snapshot'=>null,'ip_address'=>$ip,'user_agent'=>substr(request()->userAgent()??'',0,255),'created_at'=>now(3)]); }catch(\Throwable){}
    }
-   try{ Cache::tags(['micro_perm'])->flush(); }catch(\Throwable){}
+   \App\Support\CacheTagGuard::flushTags(['micro_perm']);
    try{ event(new \App\Events\MicroPermissionToggled($row->agent_id ?? 0, $row->app_id ?? 'AU BUSINESS', \App\Domain\Governance\Enums\SubCapabilityKey::tryFrom($row->capability ?? $row->capability_key ?? 'hitl.approve') ?? \App\Domain\Governance\Enums\SubCapabilityKey::HITL_APPROVE, $decision==='approved')); }catch(\Throwable){}
    // Reverb private tenant hitl — no AgentConfidenceEvaluated broadcast here (decoupled)
    return ['task_id'=>$taskId,'decision'=>$decision,'trace_id'=>$trace];
