@@ -17,5 +17,7 @@ enum SubCapabilityKey: string {
  // Governance + HITL + Calibrator — B.8 F-03/F-05/F-10 extended
  case GOVERNANCE_MICRO_TOGGLE='governance.micro.toggle'; case GOVERNANCE_DRM_DISARM='governance.drm.disarm'; case GOVERNANCE_DRM_ANNIHILATE='governance.drm.annihilate';
  case SYSTEM_MODULE_TOGGLE='system.module.toggle'; case HITL_APPROVE='hitl.approve'; case HITL_QUEUE='hitl.queue'; case CALIBRATOR_PREOP='calibrator.preop';
+ // Workforce — B.9 F-02 — exhaustive catalog vs tenant vs dispatch
+ case WORKFORCE_CATALOG_VIEW='workforce.catalog.view'; case WORKFORCE_CHECKOUT='workforce.checkout'; case WORKFORCE_TENANT_VIEW='workforce.tenant.view'; case WORKFORCE_DISPATCH='workforce.dispatch'; case WORKFORCE_LOGS_VIEW='workforce.logs.view';
  public static function isValid(string $v): bool { return self::tryFrom($v)!==null; }
 }

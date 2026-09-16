@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.8 CALIBRATOR & GOVERNANCE (SYSTEM TOGGLES + HEALTH 10s + PRE-OP <15ms + KILL-SWITCH + HITL) — Arena — v5.0-B.8 — Zero-Trust super_admin+MFA + PreOpGate + WORM + Circuit 5/5m + stats Calibrator 10s — B.1a/b2a/b3/b4/b5/b6/b7 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.9 WORKFORCE MARKETPLACE (CATALOGUE+CHECKOUT escrow+DISPATCH logs) — Arena — v5.0-B.9 — Catalogue 60s REDACT + WalletMutex+Idempotency+5% + Budget Lua+Circuit 5/5m + cursor20 stats R37 — B.1a/b2a/b3/b4/b5/b6/b7/b8 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.8 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5+b6+b7 Locked + B.8 Calibrator & Governance (System Toggles + Health 10s + Pre-Op <15ms + Kill-Switch + HITL) Locked (Arena)**
+- **State Version:** v5.0-B.9 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5+b6/b7/b8 Locked + B.9 Workforce Marketplace (Catalogue+Checkout escrow+Dispatch logs) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.8 CALIBRATOR & GOVERNANCE LOCKED v5.0-B.8** (Arena — Laravel 12 PHP 8.4 Governance Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.8]` delivered — `docs/PHASE5_B8_GOVERNANCE.md` v5.0-B.8 hardened 9 sections (F-01 additive patch governance.php hierarchy Trace→Tenant 422→Quarantine 503→AULite→PreOpGate→micro 403/202→Sanitize→Idempotency, Zero-Trust super_admin hasRole+MFA+active+email pre-op bypass micro only, pre-op <15ms cache-only, health-score stats_calibrator_daily 10s pre-agg 100→0 self_healing, kill-switch Throttle 5/min HMAC 5min flush ai_runtime+micro_perm Circuit OPEN 13×3 300s Reverb deterministic 100%, HITL cursor20 tenant+app isolated, WORM hash_chain) + 4 Actions + 4 Requests TRIM≥15 cursor + 3 Resources + 3 Controllers thin ≤60L + Middleware `PreOpGateMiddleware` + routes additive hierarchy + migration guard 000027 — **PAUSE before B.9**
-- **Next:** PAUSED — B.8 hardened with 18-flaw pre-audit (B8-01→B8-18 F-01→F-16) — Awaiting B.9 Workforce Marketplace next
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.9 WORKFORCE MARKETPLACE LOCKED v5.0-B.9** (Arena — Laravel 12 PHP 8.4 Workforce Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.9]` delivered — `docs/PHASE5_B9_WORKFORCE.md` v5.0-B.9 hardened 9 sections (F-01 Idempotency+WalletMutex+EscrowLockService minor BIGINT 5%, F-02 micro enum workforce.* 5 caps, F-03 hierarchy Trace→Tenant422→Quarantine503→AULite→micro403/202→Sanitize→Idempotency alias tenant_agents, F-04 catalogue 60s+replica 5s cursor20 REDACT, checkout server-derived pricing, dispatch Budget Lua Cairo+Circuit 5/5m+HITL 202+Reverb private-tenant, logs stats R37 10s cache, WORM hash_chain) + 4 Actions +4 Requests TRIM≥15 64KB +3 Resources minor +5 Controllers thin ≤60L + Events/Jobs Reverb 8080 + migration guard 000028 — **PAUSE before B.10**
+- **Next:** PAUSED — B.9 hardened with 18-flaw pre-audit (B9-01→B9-18 F-01→F-16) — Awaiting B.10 Realtime Calibrator next
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,29 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.8 — docs/PHASE5_B8_GOVERNANCE.md + 4 Actions +4 Requests+3 Resources+3 Controllers+Middleware+Routes harden 18 fixes B8-01→B8-18 F-01→F-16 + migration guard 000027 — PAUSE before B.9*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.9 — docs/PHASE5_B9_WORKFORCE.md + 4 Actions +4 Requests+3 Resources+5 Controllers+Events/Jobs+Routes harden 18 fixes B9-01→B9-18 F-01→F-16 + migration guard 000028 — PAUSE before B.10*
+
+---
+
+## 20. PHASE 5.0 B.9 — WORKFORCE MARKETPLACE (CATALOGUE+CHECKOUT escrow+DISPATCH logs) [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.9 — متجر الموظفين الرقميين (Digital Workforce Marketplace APIs) — Pre-Execution Audit 18 flaws (B9-01→B9-18) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B9_WORKFORCE.md` (v5.0-B.9 harden audit 9 sections) + Workforce Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L/≤60L, additive only:
+
+- **§1 Routes Additive F-03 Hardened:** `routes/api/v1/workforce.php` PATCHED — `GET agents [ensureTenant,drm.quarantine,sanitize,60/min]` cached 60s+replica; `POST checkout [auth.jwt,ensureTenant,drm.quarantine,micro:workforce.checkout,sanitize,idempotency,5/min]` via `WalletMutex+EscrowLockService minor BIGINT`; `GET tenant-agents alias tenant_agents [micro:workforce.tenant.view,sanitize,60/min]` cursor20 isolated; `POST agents/{id}/dispatch whereNumber 1..13 [micro:workforce.dispatch,sanitize,idempotency,30/min]` Budget Lua+Circuit+HITL 202; `GET agents/{id}/logs [micro:workforce.logs.view,sanitize,60/min]` stats 10s — hierarchy `Trace→Tenant422→Quarantine503→AULite→micro403/202→Sanitize422→Idempotency422`.
+
+- **§2 Catalogue & Purchase F-04/F-07/F-11:** `CatalogueRequest q+app_id+capability+cursor` → `CatalogueAction` `Cache tags workforce:catalog 60s + replica 5s heartbeat ? replica:primary X-DB-Route forPage 20 + prompt REDACT ***` → `WorkforceCatalogResource buyout 500000/sub 99000 minor formatted`. `CheckoutRequest agent_id 1..13 license_type buyout|subscription currency + duration` amount server-derived pricing_manifest not client → `CheckoutAction` `lock wallet:mutex 10s 429 → TX READ COMMITTED idempotency FOR UPDATE re-check → lock app_wallets → balance>= 422 → version 409 → wallet_transactions + escrow_events chain 64 hash + tenant_agent_subscriptions UK ends_at +1m subscription / null buyout SaaS-only Oil52 409 if active → idempotency 24h → SecurityAudit WORM + tags flush + Reverb`. `TenantAgents tenant isolated cursor20 eager agent`.
+
+- **§3 Dispatch & Logs F-08/F-12/F-13:** `DispatchRequest task_payload array 64KB prompt/instructions` → `DispatchAction` `subscription active+not expired → BudgetGuard Lua wouldExceed 0.02 429 → Circuit workforce OPEN 503 → micro approval HITL 202 → AgentExecutionLog WORM queued hash_chain → dispatch WorkforceDispatchJob queue workforce → BudgetGuard add → audit + WorkforceDispatched queued → 200`. `WorkforceDispatchJob` 200ms → running→completed + stats_agent_daily inc → Reverb `private-tenant.{id}.workforce`. `LogsRequest status+from/to+cursor` → `TenantLogsAction::logs` `Cache workforce:logs 10s + check ownership 404 → forPage 20 ordered DESC → X-Cache HIT` stats R37 not live COUNT.
+
+- **§4 Tenancy F-02/F-03/F-14:** `SubCapabilityKey` +5 `workforce.catalog.view|checkout|tenant.view|dispatch|logs.view` exhaustive `isValid 422 CAPABILITY_UNKNOWN`; `EnsureTenant X-App-Id enum 5 422` + `drm.quarantine 503 > Lite`; `TenantScoped` trait; `private-tenant+private-app workforce` `workforce.dispatched {queued,running,completed,failed}` 8080 wss; `throttle 5/30/60 Redis distributed`.
+
+- **§5-§7 Sprints B.9.1-B.9.6:** `SubCapabilityKey + config/workforce.php + routes PATCHED` + 4 Requests TRIM+enum+64KB + 3 Resources minor + 4 Actions `Catalogue Checkout Dispatch TenantLogs ≤120L reuse Escrow+WORM` + 5 Controllers thin ≤60L `Request→Action→Resource` + `Events/WorkforceDispatched + Jobs/WorkforceDispatchJob` + `migration 000028_b9_workforce_guard add pricing_manifest+capability+prompt + stats_agent_daily + idempotency app_id + micro seed 13×5` — `hasTable hasColumn` only `down empty`.
+
+**Verification:** `.arenarules` R36/R11 additive + Columns 13×9 + Pillars 1+5+7 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
+
+**Next:** B.10 Realtime Calibrator — awaiting prompt
 
 ---
 
