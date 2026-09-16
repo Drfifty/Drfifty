@@ -30,9 +30,15 @@ return new class extends Migration {
    });
    DB::statement("ALTER TABLE deals_listings ADD CONSTRAINT chk_price_ge0 CHECK (price_minor >= 0)");
   }
-  // Ensure FULLTEXT ngram exists (F-05)
-  try { DB::statement("ALTER TABLE deals_listings ADD FULLTEXT INDEX ft_deals_title_desc (title, description) WITH PARSER ngram"); } catch(\Throwable $e){}
-  try { DB::statement("ALTER TABLE deals_listings ADD SPATIAL INDEX spx_deals_geo (geo_point)"); } catch(\Throwable $e){}
+  // FIX-360-06: idempotent index guard — hasIndex before ALTER prevents duplicate bloat on cold DB
+  try {
+   $hasFt = !empty(DB::select("SHOW INDEX FROM deals_listings WHERE Key_name='ft_deals_title_desc'"));
+   if(!$hasFt) DB::statement("ALTER TABLE deals_listings ADD FULLTEXT INDEX ft_deals_title_desc (title, description) WITH PARSER ngram");
+  } catch(\Throwable $e){}
+  try {
+   $hasSpx = !empty(DB::select("SHOW INDEX FROM deals_listings WHERE Key_name='spx_deals_geo'"));
+   if(!$hasSpx) DB::statement("ALTER TABLE deals_listings ADD SPATIAL INDEX spx_deals_geo (geo_point)");
+  } catch(\Throwable $e){}
   if(!Schema::hasTable('deal_items')){
    Schema::create('deal_items', function(Blueprint $t){
     $t->id(); $t->unsignedBigInteger('listing_id'); $t->string('sku',60)->unique();

@@ -13,8 +13,9 @@ return new class extends Migration {
     $t->timestamps(); $t->index('user_id'); $t->index('app_id');
     $t->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
    });
-   try{ DB::statement("ALTER TABLE service_providers ADD SPATIAL INDEX spx_provider_location (provider_location)"); }catch(\Throwable $e){}
-   try{ DB::statement("ALTER TABLE service_providers ADD SPATIAL INDEX spx_coverage (coverage_zone)"); }catch(\Throwable $e){}
+   // FIX-360-06: hasIndex guard — idempotent
+   try{ $has = !empty(DB::select("SHOW INDEX FROM service_providers WHERE Key_name='spx_provider_location'")); if(!$has) DB::statement("ALTER TABLE service_providers ADD SPATIAL INDEX spx_provider_location (provider_location)"); }catch(\Throwable $e){}
+   try{ $has = !empty(DB::select("SHOW INDEX FROM service_providers WHERE Key_name='spx_coverage'")); if(!$has) DB::statement("ALTER TABLE service_providers ADD SPATIAL INDEX spx_coverage (coverage_zone)"); }catch(\Throwable $e){}
   }
   if(!Schema::hasTable('service_tickets')){
    Schema::create('service_tickets', function(Blueprint $t){
@@ -26,7 +27,7 @@ return new class extends Migration {
     $t->foreign('requester_id')->references('id')->on('users')->restrictOnDelete();
     $t->foreign('provider_id')->references('id')->on('service_providers')->nullOnDelete();
    });
-   try{ DB::statement("ALTER TABLE service_tickets ADD SPATIAL INDEX spx_ticket_pickup (pickup_point)"); }catch(\Throwable $e){}
+   try{ $has = !empty(DB::select("SHOW INDEX FROM service_tickets WHERE Key_name='spx_ticket_pickup'")); if(!$has) DB::statement("ALTER TABLE service_tickets ADD SPATIAL INDEX spx_ticket_pickup (pickup_point)"); }catch(\Throwable $e){}
   }
   if(!Schema::hasTable('dispatch_logs')){
    Schema::create('dispatch_logs', function(Blueprint $t){
