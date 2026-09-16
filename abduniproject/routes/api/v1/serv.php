@@ -12,8 +12,8 @@ Route::prefix('v1/serv')->middleware(['ensureTenant','drm.quarantine','au.lite:A
   Route::patch('tickets/{uuid}/radius', [TicketController::class, 'store'])->middleware(['micro:serv.dispatch','sanitize','idempotency']); // alias to store for radius adjust
  });
 });
-// alias /v1/serve → /v1/serv for spec compatibility F-01
-Route::prefix('v1/serve')->middleware(['ensureTenant','drm.quarantine','au.lite:AU SERV'])->group(function () {
- Route::get('providers/nearby', [ProviderNearbyController::class, 'index'])->middleware(['sanitize','throttle:serv-nearby']);
- Route::post('tickets', [TicketController::class, 'store'])->middleware(['auth.jwt','micro:serv.ticket.create','sanitize','idempotency']);
+// FIX-360-10: /v1/serve → /v1/serv 301 canonical single throttle key serv-nearby — R31
+Route::prefix('v1/serve')->middleware(['ensureTenant','drm.quarantine','au.lite:AU SERV','throttle:serv-nearby'])->group(function () {
+ Route::get('providers/nearby', function(){ return redirect('/api/v1/serv/providers/nearby',301); });
+ Route::post('tickets', function(){ return redirect('/api/v1/serv/tickets',301); });
 });

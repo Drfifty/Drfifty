@@ -14,11 +14,9 @@ Route::prefix('v1/med')->middleware(['ensureTenant','drm.quarantine','au.lite:AU
   Route::post('telemetry/audit', [TelemetryController::class, 'audit'])->middleware(['micro:med.telemetry.audit', AnonymizedTelemetryMiddleware::class,'sanitize','throttle:med-telemetry','idempotency']);
  });
 });
-// legacy /au-med alias (existing) keeps pgsql but redirects are handled by spec 302 — we duplicate handlers for additive
-Route::prefix('v1/au-med')->middleware(['ensureTenant','drm.quarantine','au.lite:AU MED'])->group(function () {
- Route::get('providers', [ProviderController::class, 'index'])->middleware(['sanitize','throttle:med-browse']);
- Route::middleware(['auth.jwt'])->group(function () {
-  Route::post('appointments', [AppointmentController::class, 'store'])->middleware(['micro:med.appointment','sanitize','idempotency']);
-  Route::post('telemetry/audit', [TelemetryController::class, 'audit'])->middleware(['micro:med.telemetry.audit', AnonymizedTelemetryMiddleware::class,'sanitize','throttle:med-telemetry','idempotency']);
- });
+// FIX-360-10: legacy /au-med alias canonicalized — 301 redirect to /v1/med + single throttle key med-browse — R31
+Route::prefix('v1/au-med')->middleware(['ensureTenant','drm.quarantine','au.lite:AU MED','throttle:med-browse'])->group(function () {
+ Route::get('providers', function(){ return redirect('/api/v1/med/providers',301); });
+ Route::post('appointments', function(){ return redirect('/api/v1/med/appointments',301); });
+ Route::post('telemetry/audit', function(){ return redirect('/api/v1/med/telemetry/audit',301); });
 });
