@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.7 4-APPS ISOLATED APIS (DEALS/SERV/INVEST/MED) — Arena — v5.0-B.7 — ngram FULLTEXT 4326 + SPATIAL 4326 + Idempotency + WORM + pgsql HMAC + Agent3 Tri-Hybrid + Stats R37 — B.1a/b2a/b3/b4/b5/b6 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.8 CALIBRATOR & GOVERNANCE (SYSTEM TOGGLES + HEALTH 10s + PRE-OP <15ms + KILL-SWITCH + HITL) — Arena — v5.0-B.8 — Zero-Trust super_admin+MFA + PreOpGate + WORM + Circuit 5/5m + stats Calibrator 10s — B.1a/b2a/b3/b4/b5/b6/b7 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.7 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5+b6 Locked + B.7 4-Apps Isolated APIs (DEALS ngram+SPATIAL / SERV nearby 4326 / INVEST WORM / MED pgsql HMAC) Locked (Arena)**
+- **State Version:** v5.0-B.8 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5+b6+b7 Locked + B.8 Calibrator & Governance (System Toggles + Health 10s + Pre-Op <15ms + Kill-Switch + HITL) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.7 4-APPS ISOLATED APIS LOCKED v5.0-B.7** (Arena — Laravel 12 PHP 8.4 Quad-App Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.7]` delivered — `docs/PHASE5_B7_APIS.md` (9 sections: DEALS create `TenantScoped ngram` search `MATCH ngram BOOLEAN + price/category/geo 4326` alias `/search→listings` paginate 20 cache 60s replica 5s, stagnant promote Agent3 CMO Tri-Hybrid deterministic→Cloud/Circuit 5/5m→Budget Lua + Calibrator event 202; SERV `POST tickets` Mutex+SPATIAL 4326 dispatch + `GET nearby` `ST_Distance_Sphere 5000m SPATIAL is_active`; INVEST `GET opportunities` 60s tags + `POST pledge` WORM `investor_ledgers` chain + funding_rounds lockForUpdate + escrow_contracts + Idempotency; MED `pgsql` `amed_medical_providers GIST + clinics` + `appointments pgp_sym_encrypt PGCRYPTO_KEY` + `telemetry HMAC TELEMETRY_HMAC_KEY WORM partitioned 90d` zero raw `AnonymizedTelemetryMiddleware 422`; all hierarchy `Trace→Tenant 422→Quarantine 503→AULite 503→micro 403/202→Sanitize 422→Idempotency 422`) + 6 Actions + 9 Requests TRIM + 5 Resources + 8 Controllers thin ≤60L + Middleware `AnonymizedTelemetryMiddleware` + routes 4 hardened aliases + no new DDL (reuse 000022-024) — **PAUSE before B.8**
-- **Next:** PAUSED — B.7 hardened with 21-flaw pre-audit (F-01→F-14) — Awaiting B.8 Workforce Marketplace prompt
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.8 CALIBRATOR & GOVERNANCE LOCKED v5.0-B.8** (Arena — Laravel 12 PHP 8.4 Governance Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.8]` delivered — `docs/PHASE5_B8_GOVERNANCE.md` v5.0-B.8 hardened 9 sections (F-01 additive patch governance.php hierarchy Trace→Tenant 422→Quarantine 503→AULite→PreOpGate→micro 403/202→Sanitize→Idempotency, Zero-Trust super_admin hasRole+MFA+active+email pre-op bypass micro only, pre-op <15ms cache-only, health-score stats_calibrator_daily 10s pre-agg 100→0 self_healing, kill-switch Throttle 5/min HMAC 5min flush ai_runtime+micro_perm Circuit OPEN 13×3 300s Reverb deterministic 100%, HITL cursor20 tenant+app isolated, WORM hash_chain) + 4 Actions + 4 Requests TRIM≥15 cursor + 3 Resources + 3 Controllers thin ≤60L + Middleware `PreOpGateMiddleware` + routes additive hierarchy + migration guard 000027 — **PAUSE before B.9**
+- **Next:** PAUSED — B.8 hardened with 18-flaw pre-audit (B8-01→B8-18 F-01→F-16) — Awaiting B.9 Workforce Marketplace next
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,29 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.7 — docs/PHASE5_B7_APIS.md + 6 Actions +14 API files + Routes+Middleware harden 21 fixes F-01→F-14 (0 new DDL reuse 000022-024) — PAUSE before B.8*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.8 — docs/PHASE5_B8_GOVERNANCE.md + 4 Actions +4 Requests+3 Resources+3 Controllers+Middleware+Routes harden 18 fixes B8-01→B8-18 F-01→F-16 + migration guard 000027 — PAUSE before B.9*
+
+---
+
+## 19. PHASE 5.0 B.8 — CALIBRATOR & GOVERNANCE (SYSTEM TOGGLES + HEALTH 10s + PRE-OP <15ms + KILL-SWITCH + HITL) [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.8 — واجهات المعايرة والحوكمة وغرفة الطوارئ (AU Calibrator & Governance APIs) — Pre-Execution Audit 18 flaws (B8-01→B8-18) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B8_GOVERNANCE.md` (v5.0-B.8 harden audit 9 sections) + Governance Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L/≤60L, additive only:
+
+- **§1 Routes Additive F-01 Hardened:** `routes/api/v1/governance.php` PATCHED — `GET system/modules/status [auth.jwt,ensureTenant,drm.quarantine,sanitize,60/min]` cached 30s tags; `POST system/modules/toggle [auth.jwt,ensureTenant,drm.quarantine,micro:governance.micro.toggle,sanitize,idempotency,10/min]` via `RedisFeatureFlagCache+MicroPermissionCache+WORM+Reverb is_core 422`; `GET calibrator/health-score [auth.jwt,ensureTenant,drm.quarantine,sanitize,60/min]` NO micro view; `POST calibrator/audit/pre-op [auth.jwt,ensureTenant,drm.quarantine,PreOpGateMiddleware,sanitize,100/min]` Zero-Trust super_admin hasRole+MFA+active+email bypass micro only; `POST ai/governance/kill-switch [auth.jwt,ensureTenant,drm.quarantine,micro:governance.drm.annihilate,sanitize,idempotency,5/min]` HMAC5min+TOTP; `GET hitl/queue + POST hitl/approve [micro:hitl.approve,30/min,cursor20 tenant+app]`; `POST security/leak-check` — hierarchy `Trace→Tenant422→Quarantine503→AULite→PreOpGate→micro403/202→Sanitize422→Idempotency422`.
+
+- **§2 System Toggles F-04/F-07:** `SystemToggleRequest polymorphic flag_key in:au_med/deals/serv/invest/business prohib agent_id|module_id, agent_id 1..13, capability_key required_with, module_id 1..9, is_enabled bool, reason TRIM≥15 max500 is_core_lock 422` → `ToggleModuleAction` `flag_key→RedisFeatureFlagCache::setEnabled throw if isCore else MicroSwitchRepository::set cap SubCapabilityKey + Cache tags flush micro_perm + WORM audit micro_switch_audits + Reverb MicroPermissionToggled` — rejection `AU BUSINESS 422 is_core_lock` + stale 30s re-read verified.
+
+- **§3 Calibrator & Gate F-06/F-09:** `GET health-score` reads `Cache calibrator:health 10s` else `DB replica stats_calibrator_daily Cairo today fallback_rate*0.42+budget*0.32+error*0.48 → 100-p c0..100 + self_healing last10 security_audit_logs SELF_HEALING` → `HealthScoreResource health_pct status self_healing cached db_route` + `Cache-Control max-age=10 X-Cache HIT/MISS`. `POST pre-op` `<15ms cache-only zero DB` `PreOpGateMiddleware` Zero-Trust `hasRole(super_admin)+is_active+email_verified+session mfa_verified` bypass `RequireMicroPermission calibrator.preop` else 403, then `CalibratorController@preOp` deterministic selfHealing evaluate if <90 — p95 <8ms.
+
+- **§4 Emergency Red Button & HITL F-05/F-10:** `KillSwitchRequest reason TRIM15 + confirm_token HMAC sha256(user:kill:ts,APP_KEY) valid 5min + totp 6` + `throttle 5/min Redis distributed + Idempotency` → `GovernanceController@killSwitch` HMAC verify → `KillSwitchAction` `SecurityAuditLogger hash_chain WORM + Cache tags flush ai_runtime+feature_flags+micro_perm + Circuit 13×3 OPEN 300s pipeline + Reverb AiKillSwitchTriggered fallback:deterministic private-admin.governance` → 100% deterministic `severed true Retry-After 300`. `HitlQueueRequest status pending|approved|rejected + cursor per_page20 app_id` → `HitlAction::queue` tenant+app filtered cursor20 `hitl_approvals` fallback `agent_actions hitl_required` ordered pending. `HitlApproveRequest task_id exists rationale TRIM15 decision approved|rejected` → `HitlAction::approve lockForUpdate + micro approver check + status update + audit WORM + flush + Reverb private-tenant.{app}.hitl`.
+
+- **§5-§7 Sprints B.8.1-B.8.6:** Middleware `PreOpGateMiddleware 40L` + 4 Requests TRIM/HMAC/cursor + 4 Actions `ToggleModule CalibratorHealth KillSwitch Hitl ≤120L SRP` + 3 Resources ≤60L + 3 Controllers thin ≤60L `Request→Action→Resource` + routes patch additive + migration guard 000027 `stats_calibrator_daily + hitl_approvals seed micro hitl/calibrator` — `hasTable hasColumn` only `down empty`.
+
+**Verification:** `.arenarules` R36/R11 additive + Columns 13×9 + Pillars 4+5+7 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
+
+**Next:** B.9 Workforce Marketplace — awaiting prompt
 
 ---
 

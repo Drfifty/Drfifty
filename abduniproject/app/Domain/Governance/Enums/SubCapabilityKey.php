@@ -14,8 +14,8 @@ enum SubCapabilityKey: string {
  case ESCROW_LOCK='escrow.lock'; case ESCROW_RELEASE='escrow.release'; case ESCROW_REFUND='escrow.refund'; case WALLET_ADJUST='wallet.adjust';
  // Agents/Calibrator
  case AGENTS_DEPLOY='agents.deploy'; case CALIBRATOR_OVERRIDE='calibrator.override';
- // Governance
+ // Governance + HITL + Calibrator — B.8 F-03/F-05/F-10 extended
  case GOVERNANCE_MICRO_TOGGLE='governance.micro.toggle'; case GOVERNANCE_DRM_DISARM='governance.drm.disarm'; case GOVERNANCE_DRM_ANNIHILATE='governance.drm.annihilate';
- case SYSTEM_MODULE_TOGGLE='system.module.toggle';
+ case SYSTEM_MODULE_TOGGLE='system.module.toggle'; case HITL_APPROVE='hitl.approve'; case HITL_QUEUE='hitl.queue'; case CALIBRATOR_PREOP='calibrator.preop';
  public static function isValid(string $v): bool { return self::tryFrom($v)!==null; }
 }
