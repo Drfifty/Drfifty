@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.11 DOCKER ARCHITECTURE & NETWORK ISOLATION — Arena — v5.0-B.11 — 13 services bridge web 20/s wss + chrony Clock Cairo skew+30s + graceful 40s checkpoint — B.1a→B.10 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.12 COMMANDS CRON & SEEDERS + QUEUE BULKHEAD — Arena — v5.0-B.12 — 4 seeders 9 modules + 4 cron withoutOverlapping Cairo + 4 queues critical/standard/low/ai bulkhead 10s/125s + failed Jobs Agent6 — B.1a→B.11 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.11 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10 Locked + B.11 Docker & Network Isolation (13 services bridge web 20/s wss + chrony Clock + graceful checkpoint) Locked (Arena)**
+- **State Version:** v5.0-B.12 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10/b11 Locked + B.12 Commands Cron & Seeders + Queue Bulkhead (4 seeders 9 modules + 4 cron Cairo + 4 queues critical bulkhead + failed Agent6) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.11 DOCKER ARCHITECTURE LOCKED v5.0-B.11** (Arena — Laravel 12 PHP 8.4-FPM Opcache JIT Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.11]` delivered — `docs/PHASE5_B11_DOCKER.md` v5.0-B.11 hardened 9 sections (F-01 13 services networks bridge front/backend/sandbox/gpu web only 80/443, F-02 nginx 20/s + CF + wss proxy + fail2ban, F-03 env complete REDIS_CACHE_DB=1 REDIS_QUEUE_DB=2 CALIBRATOR_HEALTH_THRESHOLD=90 LOCAL_GPU_ENDPOINT vllm_gpu:8000/v1 + CLOCK_SKEW_MARGIN 30, F-04 ClockInterface Africa/Cairo + FrozenClock + AppServiceProvider, F-05 chrony NTP + TTL+30s, F-06 graceful 40s SIGTERM drain, F-07 CheckpointTrait+DB checkpoint_json, F-08 vllm dual backend+gpu, F-09 redis noeviction 512mb) + Dockerfile Opcache JIT + compose 13 services + migration guard 000030 — **PAUSE before B.12**
-- **Next:** PAUSED — B.11 hardened with 20-flaw pre-audit (B11-01→B11-20 F-01→F-16) — Awaiting B.12 Scheduling next
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.12 COMMANDS LOCKED v5.0-B.12** (Arena — Laravel 12 PHP 8.4 Cron Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.12]` delivered — `docs/PHASE5_B12_COMMANDS.md` v5.0-B.12 hardened 9 sections (F-01 4 seeders 9 modules not 15 + F-02 SuperAdmin hashed is_super_admin, F-03 MicroSwitch 13×9 SubCapabilityKey updateOrInsert, F-04 FeatureFlags 5 is_core, F-05 Regex 8 idempotent, F-06 routes/console.php 5 cron Cairo withoutOverlapping+onOneServer, F-07 stagnant hourly R37 stats chunk100 low queue, F-08 calibrator 5m single lock reuses SelfHealing, F-09 drm 5m delegate beat() single, F-10 red-team hourly replica low, F-11 queue.php/horizon.php bulkhead 4, F-12 compose 4 workers critical/standard/low/ai 10s/125s never block critical, F-13 failed_jobs dead-letter, F-14 AppServiceProvider failing→Agent6) + 4 au:* commands ≤60L + 4 seeders + migration 000031 — **PAUSE before B.13**
+- **Next:** PAUSED — B.12 hardened with 20-flaw pre-audit (B12-01→B12-20 F-01→F-16) — Awaiting B.13 Self-Healing next
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.11 — docs/PHASE5_B11_DOCKER.md + 13 services bridge web 20/s wss + chrony Clock Cairo skew+30s + checkpoint + Dockerfile Opcache + migration guard 000030 — PAUSE before B.12*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.12 — docs/PHASE5_B12_COMMANDS.md + 4 seeders 9 modules + 4 cron withoutOverlapping Cairo + 4 queues bulkhead critical/standard/low/ai + failed Agent6 + migration 000031 — PAUSE before B.13*
 
 ---
 
@@ -119,6 +119,26 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 **Verification:** `.arenarules` R36/R11 additive + Pillars 8 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
 
 **Next:** B.12 Scheduling & Self-Healing — awaiting prompt
+
+---
+
+## 23. PHASE 5.0 B.12 — COMMANDS CRON & SEEDERS + QUEUE BULKHEAD [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.12 — محرك الأوامر المجدولة والبذر الأولي + Queue Bulkhead Isolation — Pre-Execution Audit 20 flaws (B12-01→B12-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B12_COMMANDS.md` (v5.0-B.12 harden audit 9 sections) + Scheduler + Bulkhead — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤60L, additive only:
+
+- **§1 Seeders F-01→F-05:** `SuperAdminSeeder` `users+user_roles` `AU BUSINESS` `Hash Argon2id env(SUPERADMIN_*)` `email_verified mfa 1` `updateOrInsert email` + `FeatureFlagsSeeder` `5 au_business(is_core=1)+med/deals/serv/invest is_core 0` `updateOrInsert flag_key` + `RegexDataLeakPatternsSeeder` `8 ReDoS-safe priority 10→90` `where label exists` + `MicroSwitchSeeder` `13×9 SubCapabilityKey 80 exhaustive` `updateOrInsert uk_agent_app_module_cap` + `DatabaseSeeder` aggregator — all `hasTable` guard, `WORM audit`, flush cache tags.
+
+- **§2 Commands F-07→F-10:** `AuStagnantDealsScan hourly` `Cache::lock 3300` `replica + stats_deals_daily` `chunkById 100 cap 500` `stagnant_deals agent 3` `dispatch low TieredPricingEngine 5/limit` ; `AuCalibratorHealthCheck everyFiveMinutes` `lock 240` `Cache 10s or stats_calibrator_daily` `<CALIBRATOR 90 → GovernanceAlerted + SelfHealing` ; `AuDrmHeartbeatCheck everyFiveMinutes` `lock 240 delegate DrmHeartbeatService.beat() HMAC 576` ; `AuRedTeamSimulation hourly` `lock 3300` `dispatch low 3 jobs SlowQuery replica + Legal + Pen tick`. Each `withoutOverlapping+onOneServer+Cairo`.
+
+- **§3 Scheduler F-06:** `routes/console.php` `Schedule::command ... ->hourly/everyFiveMinutes ->withoutOverlapping(55/4) ->onOneServer ->runInBackground ->timezone('Africa/Cairo')` 5 crons + `idempotency:purge`. Wires `AppServiceProvider` auto.
+
+- **§4 Bulkhead F-11→F-14:** `config/queue.php` `failed database-uuids failed_jobs` `bulkhead timeout 12/60/60/125` + `config/horizon.php` `supervisor-critical/standard/low/ai queue=[critical] timeout 12 max 5 etc` `balance auto` ; `docker-compose.prod.yml` PATCHED `worker-critical: --queue=critical --timeout=12 replicas 2` `worker-standard: --queue=standard 60 replicas1 (renamed worker)` `worker-low: low 60` `worker-ai: ai 125 replicas2` + deprecated `worker replicas0` compat ; `.env.example` `QUEUE_FAILED_DRIVER database-uuids + SUPERADMIN_* + HORIZON_BALANCE` ; `AppServiceProvider Queue::failing` → `Log job_failed_alert_agent6 + GovernanceAlerted job_failed` → `private-governance-alerts` Agent6 SecOps ; `migration 000031_b12_failed_jobs` guard.
+
+**Verification:** `.arenarules` R36/R11 additive + Columns 13×9 + Pillars 7+8 + B1a B.3 hierarchy re-verified, bulkhead 4, 20 findings fixed, zero-regression.
+
+**Next:** B.13 Self-Healing — awaiting prompt
 
 ---
 

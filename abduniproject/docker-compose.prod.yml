@@ -89,13 +89,53 @@ services:
     networks: [backend, front]
     healthcheck: { test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"127.0.0.1\", getenv(\"BROADCAST_PORT\")?:8080) ? 0 : 1);'"], interval: 10s, retries: 3 }
 
-  worker: # Ephemeral Swarm — queue worker graceful 40s + checkpoint (F-06/F-07)
+  worker-critical: # B.12 F-11 bulkhead critical — payments/escrow/AML freeze max 10s never blocked by ai — Arena
     image: abduniproject/app:prod
     stop_grace_period: 40s
     stop_signal: SIGTERM
-    command: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 --max-jobs=1000
+    command: php artisan queue:work redis --queue=critical --sleep=3 --tries=3 --timeout=12 --max-time=3600 --max-jobs=1000
     depends_on: [redis]
-    deploy: { replicas: 3, restart_policy: { condition: on-failure, delay: 10s } }
+    deploy: { replicas: 2, restart_policy: { condition: on-failure, delay: 10s } }
+    networks: [backend]
+    environment: { QUEUE_CONNECTION: redis, REDIS_QUEUE_DB: "${REDIS_QUEUE_DB:-2}", CLOCK_SKEW_MARGIN: "${CLOCK_SKEW_MARGIN:-30}" }
+
+  worker-standard: # B.12 bulkhead standard — notifications/emails — renamed from worker (compat)
+    image: abduniproject/app:prod
+    stop_grace_period: 40s
+    stop_signal: SIGTERM
+    command: php artisan queue:work redis --queue=standard --sleep=3 --tries=3 --timeout=60 --max-time=3600 --max-jobs=1000
+    depends_on: [redis]
+    deploy: { replicas: 1, restart_policy: { condition: on-failure, delay: 10s } }
+    networks: [backend]
+    environment: { QUEUE_CONNECTION: redis, REDIS_QUEUE_DB: "${REDIS_QUEUE_DB:-2}", CLOCK_SKEW_MARGIN: "${CLOCK_SKEW_MARGIN:-30}" }
+
+  worker-low: # B.12 bulkhead low — analytics/telemetry/reports — flooded must not block critical
+    image: abduniproject/app:prod
+    stop_grace_period: 40s
+    stop_signal: SIGTERM
+    command: php artisan queue:work redis --queue=low --sleep=3 --tries=3 --timeout=60 --max-time=3600 --max-jobs=1000
+    depends_on: [redis]
+    deploy: { replicas: 1, restart_policy: { condition: on-failure, delay: 10s } }
+    networks: [backend]
+    environment: { QUEUE_CONNECTION: redis, REDIS_QUEUE_DB: "${REDIS_QUEUE_DB:-2}", CLOCK_SKEW_MARGIN: "${CLOCK_SKEW_MARGIN:-30}" }
+
+  worker-ai: # B.12 bulkhead ai — LLM/RAG 120s — long jobs isolated
+    image: abduniproject/app:prod
+    stop_grace_period: 40s
+    stop_signal: SIGTERM
+    command: php artisan queue:work redis --queue=ai --sleep=3 --tries=3 --timeout=125 --max-time=3600 --max-jobs=1000
+    depends_on: [redis]
+    deploy: { replicas: 2, restart_policy: { condition: on-failure, delay: 10s } }
+    networks: [backend]
+    environment: { QUEUE_CONNECTION: redis, REDIS_QUEUE_DB: "${REDIS_QUEUE_DB:-2}", CLOCK_SKEW_MARGIN: "${CLOCK_SKEW_MARGIN:-30}" }
+
+  worker: # deprecated alias → worker-standard (B.12 compat — replicas 0 will be removed next deploy)
+    image: abduniproject/app:prod
+    stop_grace_period: 40s
+    stop_signal: SIGTERM
+    command: php artisan queue:work redis --queue=standard --sleep=3 --tries=3 --timeout=60 --max-time=3600 --max-jobs=1000
+    depends_on: [redis]
+    deploy: { replicas: 0, restart_policy: { condition: on-failure, delay: 10s } }
     networks: [backend]
     environment: { QUEUE_CONNECTION: redis, REDIS_QUEUE_DB: "${REDIS_QUEUE_DB:-2}", CLOCK_SKEW_MARGIN: "${CLOCK_SKEW_MARGIN:-30}" }
 

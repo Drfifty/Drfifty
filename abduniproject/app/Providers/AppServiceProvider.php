@@ -11,10 +11,17 @@ final class AppServiceProvider extends ServiceProvider {
   $this->app->alias(ClockInterface::class, 'clock');
  }
  public function boot(): void {
-  // TTL helper with skew — usage: app(ClockInterface::class)->skewMargin() or SystemClock::ttlWithSkew(30)
   if (app()->environment('production') && env('BROADCAST_CONNECTION', 'reverb') !== 'reverb') {
-   // soft guard — log not hard fail to allow queue log driver fallback (B.10)
    \Illuminate\Support\Facades\Log::warning('BROADCAST_CONNECTION not reverb in prod', ['trace' => app()->bound('trace_id') ? app('trace_id') : null]);
   }
+  // B.12 F-14 — failed 3 attempts → dead-letter + instant alert Agent 6 SecOps — queue bulkhead
+  try{
+   \Illuminate\Support\Facades\Queue::failing(function(\Illuminate\Queue\Events\JobFailed $e){
+    try{
+     \Illuminate\Support\Facades\Log::error('job_failed_alert_agent6', ['queue'=>$e->connectionName.':'.$e->job->getQueue(),'payload'=>$e->job->payload(),'exception'=>$e->exception->getMessage(),'trace'=>app()->bound('trace_id')?app('trace_id'):null]);
+     event(new \App\Events\GovernanceAlerted('job_failed', 0, substr($e->exception->getMessage(),0,200)));
+    }catch(\Throwable){}
+   });
+  }catch(\Throwable){}
  }
 }
