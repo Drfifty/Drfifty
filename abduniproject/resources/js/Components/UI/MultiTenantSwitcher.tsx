@@ -34,8 +34,22 @@ export default function MultiTenantSwitcher({ className, onSwitch }: MultiTenant
     else router.post("/api/v1/tenant/switch", { app_id: next }, { headers: { "X-App-Id": next } as unknown as Record<string,string>, preserveScroll: false, onError: () => {}, onSuccess: () => {} } as unknown as Record<string, unknown>);
   };
 
+  // FIX-P1-08: roving tabindex ArrowLeft/Right/Home/End per WAI tabs
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    const idx = options.findIndex(o => ((isMaster && o.value==="MASTER_HQ")|| current===o.value) ? true : false);
+    let nextIdx = idx;
+    if (e.key==="ArrowRight") nextIdx = (idx+1)%options.length;
+    else if (e.key==="ArrowLeft") nextIdx = (idx-1+options.length)%options.length;
+    else if (e.key==="Home") nextIdx = 0;
+    else if (e.key==="End") nextIdx = options.length-1;
+    else return;
+    e.preventDefault();
+    switchTo(options[nextIdx].value);
+    const el = (e.currentTarget.querySelectorAll('[role="tab"]')[nextIdx] as HTMLElement | undefined);
+    el?.focus();
+  };
   return (
-    <div className={cn("inline-flex flex-wrap gap-1 rounded-[var(--radius-pill)] bg-[var(--surface-secondary)] p-1", className)} role="tablist" aria-label="اختيار التطبيق">
+    <div className={cn("inline-flex flex-wrap gap-1 rounded-[var(--radius-pill)] bg-[var(--surface-secondary)] p-1", className)} role="tablist" aria-label="اختيار التطبيق" onKeyDown={onKeyDown}>
       {options.map((o) => {
         const active = (isMaster && o.value === "MASTER_HQ") || current === o.value;
         return (
@@ -43,6 +57,8 @@ export default function MultiTenantSwitcher({ className, onSwitch }: MultiTenant
             key={o.value}
             role="tab"
             aria-selected={active}
+            aria-current={active ? "page" : undefined}
+            tabIndex={active ? 0 : -1}
             onClick={() => switchTo(o.value)}
             className={cn(
               "rounded-[var(--radius-pill)] px-3 py-1.5 text-micro font-bold transition-colors focus-ring",

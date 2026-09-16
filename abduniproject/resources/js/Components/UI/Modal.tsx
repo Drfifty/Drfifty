@@ -27,7 +27,8 @@ export default function Modal({ open, onOpenChange, title, description, children
         const focusable = panelRef.current.querySelectorAll<HTMLElement>(
           'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
-        if (focusable.length === 0) return;
+        // FIX-P1-08: fallback when no focusable — keep focus on panel, prevent tab leak
+        if (focusable.length === 0) { e.preventDefault(); panelRef.current.focus(); return; }
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
         if (e.shiftKey && document.activeElement === first) {

@@ -25,9 +25,10 @@
   --surface-pearl: rgba(250, 250, 250, 0.92);
   --surface-pearl-strong: #FAFAFA;
 
-  /* نصوص — تباين عالي على Obsidian */
+  /* نصوص — FIX-P1-08 contrast 4.6:1 on pearl (was #A1A1AA 2.9:1) — WCAG AA */
   --text-primary: #FAFAFA;
-  --text-secondary: #A1A1AA;
+  --text-secondary: #71717A;
+  --text-muted: #A1A1AA; /* legacy obsidian muted — keep for dark bg */
   --text-on-accent: #FFFFFF;
   --text-on-pearl: #18181B;
 
