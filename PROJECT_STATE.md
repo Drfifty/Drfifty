@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.14 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10/b11/b12/b13 Locked + B.14 Retrospective DELTA Roadmap (Canonical 1.1→10.2 20 sprints DELTA 7) Locked (Arena)**
+- **State Version:** v5.0-B.14+B360 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10/b11/b12/b13 Locked + B.14 DELTA Locked + BACKEND 360 HARDENED 20 findings→16 fixes (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.14 RETROSPECTIVE DELTA LOCKED v5.0-B.14** (Arena — Laravel 12 PHP 8.4 Roadmap Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.14]` delivered — `docs/PHASE5_B14_ROADMAP.md` v5.0-B.14 hardened 6 sections (F-01 40→20 cap, F-02 1.1→10.2 keep, F-03 DELTA validation not duplication, F-04 AU BUSINESS anchor, F-05 JSON/SRID4326, F-06 RBAC 503 hibernation, F-07 R37 replica, F-08 bulkhead ai/low, F-09 deterministic-first, F-10 SoC ≤150L, F-11 Cairo skew 30s, F-12 Reverb 8080, F-13 single compose, F-14 R24/R25, F-15 R34, F-16 Module8) + canonical 20 sprints 13 DONE +7 DELTA — **PHASE 5.0 COMPLETE**
-- **Next:** PHASE 5.0 B.1→B.14 FULLY LOCKED — Awaiting Phase 6 / production deploy directive — no pending sprints
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.14+B360 LOCKED v5.0-B.14+B360** (Arena — Laravel 12 PHP 8.4 Roadmap Hardened + Backend 360 16 fixes)
+- **Deliverable now:** `[PHASE 5.0 B.14]` + `[BACKEND 360]` delivered — `docs/PHASE5_B14_ROADMAP.md` v5.0-B.14 hardened + 16 commits `cabd616→e56ff8d` (FIX-360-01→16 — CacheTagGuard, lean replica, bulkhead 12/60/60/125, WORM healing, idempotency app, etc.) — **PHASE 5.0 + BACKEND 360 COMPLETE**
+- **Next:** PHASE 5.0 B.1→B.14 + BACKEND 360 FULLY LOCKED — `arena/01a09d54-drfifty` ahead 15 commits — awaiting Phase 6 / production deploy directive — no pending sprints
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -97,6 +97,20 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
 *Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.14 — docs/PHASE5_B14_ROADMAP.md 104L canonical 1.1→10.2 20 sprints DELTA 7 validation — PHASE 5.0 B.1→B.14 COMPLETE*
+
+---
+
+## 26. PHASE 5.0 BACKEND 360 — 20 FINDINGS → 16 FIXES HARDENED [DONE 2026-09-16 — Approved EXECUTE — Arena]
+
+> **Directive:** `APPROVE & EXECUTE BACKEND 360` 2026-09-16 — Backend 360 Audit 20 findings (B360-01→20, 4 Critical) → 16 fixes additive ≤3 files/≤150L per commit executed on `arena/01a09d54-drfifty`.
+
+**Commits (15 after `14f01c2` B.14 lock):** `cabd616` 03/08/12 stagger+bulkhead+thresholds → `420f93d` 09/12 BROADCAST_PORT + AI_STEP_DOWN → `8abaabc` 01/02/13 Lock+CacheTagGuard → `d6048f2` 01 targeted flush → `86b7c5e` 12/15 calibrator+WalletMutex → `2025a83` 13 Swarm → `bcca201` 13 Commands → `71eb48c` 05/13 lint → `94b669b` 04 ledger → `295d616` 06 SPATIAL hasIndex → `99e9851` 07 stats_daily 00:30 Cairo → `8501011` 10 route 301 → `a3c1ac5` 14/16 WORM+idempotency → `9e64bed` 02/11 cache pinned+staleness → `03e523d` 14/16 WORM chain+heal window → `e56ff8d` 01/02 agent cache pinned.
+
+**Deliverables:** FIX-360-01 `Support/CacheTagGuard` pinned `store('redis')->tags` no `Cache::flush`; FIX-02 `RedisFeatureFlagCache/MicroPermission/AgentRuntime` DB1; FIX-03 `routes/console.php` :07/:12/:13/:22 + `stats:aggregate 00:30 Cairo withoutOverlapping 25 onOneServer Africa/Cairo`; FIX-04 `000033 agent_actions app_id ENUM5+FK+idx`; FIX-05 `scripts/lint_jsonb.sh` R7 gate pass; FIX-06 `000022/000023` `SHOW INDEX hasIndex` SPATIAL/FULLTEXT; FIX-07 `000034 stats_*_daily 5 tables + AggregateStats replica heartbeat`; FIX-08 `config/horizon.php` `12/60/60/125` critical/standard/low/ai bulkhead local=prod; FIX-09 `config/broadcasting.php/reverb.php BROADCAST_PORT 8080 alias REVERB_PORT + .env`; FIX-10 `routes/api/v1/med.php+serv.php 301 canonical single throttle`; FIX-11 `RequireMicroPermission X-Force-Refresh + calibrator:heal:window 15s` + `CacheTagGuard` re-read; FIX-12 `config/ai.php calibrator_threshold/step_down_threshold + threshold single source`; FIX-13 `Support/Lock withSkew +30s TTL` 7 files; FIX-14 `000035 healing_events WORM trigger REVOKE + prev/hash chain`; FIX-15 `WalletMutex wallet:mutex:{appId}:{id}`; FIX-16 `000036 uk_idem_user_endpoint_app + IdempotencyMiddleware app-scoped`.
+
+**Verification:** `scripts/lint_jsonb.sh pass`, `grep Cache::flush fallback 0`, `BROADCAST_PORT single source 8080`, `horizon timeouts 12/60/60/125`, `schedule:list 9 Cairo`, `hasTable hasColumn` guard all migrations `down empty` additive R11.
+
+**Next:** BACKEND 360 COMPLETE — `git push arena/01a09d54-drfifty` — awaiting Phase 6 deploy
 
 ---
 
