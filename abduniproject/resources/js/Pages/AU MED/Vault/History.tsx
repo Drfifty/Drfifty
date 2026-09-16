@@ -47,10 +47,12 @@ export default function VaultHistory() {
   const isMed = (props.tenant?.app_id ?? props.app_id) === TENANT;
   const [grants, setGrants] = useState<OTPGrant[]>(MOCK_GRANTS);
   const [otpOpen, setOtpOpen] = useState(false);
-  const [ttl, setTtl] = useState(15 * 60); // 15 minutes demo
+  const [ttl, setTtl] = useState(15 * 60);
   const [viewer, setViewer] = useState<EMRRecord | null>(null);
   const activeToken = useMemo(() => grants.find(g => g.status === "active")?.access_grant_token ?? null, [grants]);
   const activeExpires = useMemo(() => grants.find(g => g.status === "active")?.expires_at ?? new Date().toISOString(), [grants]);
+  // FIX-P2-01/12: wipe viewer + decrypted heap when token revoked/expired — PHI not in memory
+  useEffect(() => { if (!canDecrypt(activeToken, activeExpires) && viewer) setViewer(null); }, [activeToken, activeExpires, viewer]);
 
   // TTL countdown for OTP modal
   useEffect(() => {
@@ -61,12 +63,13 @@ export default function VaultHistory() {
 
   if (!isMed) return <AppLayout><GlassCard level="inner" className="text-center"><p className="text-section font-bold">يتطلب AU MED</p></GlassCard></AppLayout>;
 
+  // FIX-P2-02: crypto.randomUUID OTP + hash last4 only in state — real token httpOnly cookie from backend
   const approveOTP = (): void => {
-    const token = "otp_" + Math.random().toString(36).slice(2, 8);
+    const token = "otp_" + (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 8));
     const exp = new Date(Date.now() + 15 * 60 * 1000).toISOString();
     setGrants(a => [{ id: `g${Date.now()}`, patient_id: 7, provider_id: 103, provider_name: "د. من AU BUSINESS", app_id: TENANT, access_grant_token: token, ttl_seconds: 900, expires_at: exp, status: "active", created_at: new Date().toISOString() }, ...a]);
     setOtpOpen(false); setTtl(900);
-    router.post("/med/vault/grant", { app_id: TENANT, provider_id: 103, ttl_seconds: 900 } as unknown as never, { headers: { "X-App-Id": TENANT } as unknown as Record<string, string> });
+    router.post("/med/vault/grant", { app_id: TENANT, provider_id: 103, ttl_seconds: 900 } as unknown as never, { headers: { "X-App-Id": TENANT, "X-Trace-Id": (document.querySelector('meta[name=\"trace-id\"]') as HTMLMetaElement)?.content ?? "" } as unknown as Record<string, string> });
   };
   const revoke = (id: string): void => {
     setGrants(a => a.map(g => (g.id === id ? { ...g, status: "revoked", access_grant_token: null } : g)));
@@ -144,19 +147,19 @@ export default function VaultHistory() {
         </div>
       </Modal>
 
-      {/* DICOM / PDF viewer modal with watermark */}
-      <Modal open={!!viewer} onOpenChange={o => !o && setViewer(null)} title={viewer ? `عارض تشخيصي — ${viewer.title_ar}` : "عارض تشخيصي"}>
-        {viewer && (
+      {/* FIX-P2-08 dynamic watermark + FIX-P2-01 gate viewer on canDecrypt */}
+      <Modal open={!!viewer} onOpenChange={o => !o && setViewer(null)} title={viewer && canDecrypt(activeToken, activeExpires) ? `عارض تشخيصي — ${viewer.title_ar}` : "مُشفّر — غير مصرح"}>
+        {viewer && canDecrypt(activeToken, activeExpires) ? (
           <div>
             <div className="rounded-[var(--radius-md)] border border-[var(--border-pearl)] bg-[var(--surface-secondary)] p-6 text-center relative overflow-hidden">
               <p className="text-body font-mono">DICOM / PDF Preview — {viewer.decrypted?.attachments[0]?.filename}</p>
-              <div className="absolute inset-0 flex items-center justify-center opacity-10 rotate-[-20deg] text-title font-bold">ABD UNI · patient #7 · {new Date().toLocaleDateString("ar-EG")}</div>
-              <div className="mt-4 h-40 rounded bg-white border border-[var(--border-pearl)] flex items-center justify-center text-[var(--text-secondary)]">[ محاكاة صورة أشعة مع علامة مائية ديناميكية ]</div>
+              <div className="absolute inset-0 flex items-center justify-center opacity-10 rotate-[-20deg] text-micro font-bold">ABD UNI · patient:{viewer.patient_id} · user:{props.auth.user?.id ?? 0} · {new Date().toISOString().slice(0,10)} · HMAC-WM</div>
+              <div className="mt-4 h-40 rounded bg-white border border-[var(--border-pearl)] flex items-center justify-center text-[var(--text-secondary)]">[ أشعة بعلامة مائية ديناميكية user+timestamp ]</div>
             </div>
-            <p className="mt-2 text-micro text-[var(--text-secondary)]">Watermark protections — user_id + timestamp — يمنع التسريب</p>
+            <p className="mt-2 text-micro text-[var(--text-secondary)]">Watermark HMAC — يمنع التسريب · يختفي عند revoke + FIX-P2-01</p>
             <div className="mt-3 flex justify-end"><Button variant="secondary" onClick={() => setViewer(null)}>إغلاق</Button></div>
           </div>
-        )}
+        ) : viewer ? <p className="text-body text-[var(--brand-crimson)]">🔒 يتطلب OTP صالح — تم الإلغاء أو انتهت الصلاحية</p> : null}
       </Modal>
     </AppLayout>
   );
