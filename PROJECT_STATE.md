@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.1 CORE ARCHITECTURE & AU LITE + DATA LEAK — Arena — v5.0-B.1 — DDD Clean 9 Domains + Redis 503 + Regex 422 + 4.3 HQ Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.2 FINANCIAL ENGINE & ESCROW — Arena — v5.0-B.2 — Wallet CHECK>=0 + Escrow Immutability + Funnel/lockForUpdate retry3 + Idempotency 24h + Append-Only Ledger + B.1 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.1 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1 Core Architecture (DDD 9 Domains + AU Lite Redis 503 + Regex 422) Locked (Arena)**
+- **State Version:** v5.0-B.2 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1 DDD Locked + B.2 Financial Engine & Escrow (Wallet CHECK + Escrow Immutability + Race Guard + Idempotency + Ledger) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.1 CORE ARCHITECTURE, DDD & AU LITE LOCKED v5.0-B.1** (Arena — Laravel 12 PHP 8.4 Modular Monolith + DDD Clean 9 Domains + Redis + Regex)
-- **Deliverable now:** `[PHASE 5.0 B.1]` delivered — `docs/PHASE5_B1_CORE_ARCHITECTURE.md` (546 lines, DDD tree §1 + AU Lite feature_flags Redis 503 §2 + DataLeak Detector 422 §3 + Infrastructure §4 + 6 Micro-Sprints B.1.1-B.1.6 + Calibrator 100% gate) — **PAUSE before B.2** (spec mode only, no mock code)
-- **Next:** PAUSED — B.1 spec locked — Awaiting B.2 Financial Engine & Escrow Subsystem prompt (B.1 implementation via B.1.1-B.1.6 sprints on next prompt)
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.2 FINANCIAL ENGINE & ESCROW LOCKED v5.0-B.2** (Arena — Laravel 12 PHP 8.4 High-Concurrency Ledger)
+- **Deliverable now:** `[PHASE 5.0 B.2]` delivered — `docs/PHASE5_B2_FINANCIAL_ENGINE.md` (577 lines, DDL 7 tables §1 + Immutability lock §2 + EscrowLockService funnel/lockForUpdate retry3 §3 + N+1/Replica/JSON logs §4 + Idempotency 24h + Append-Only escrow_events §5 + 6 Sprints B.2.1-B.2.6 + Calibrator 100%) — **PAUSE before B.3** (spec mode only, no mock code)
+- **Next:** PAUSED — B.2 spec locked — Awaiting B.3 Governance, Micro-Permissions & DRM prompt (B.2 implementation via B.2.1-B.2.6 on next prompt)
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,26 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.1 Core Architecture & AU Lite + Data Leak — docs/PHASE5_B1_CORE_ARCHITECTURE.md — DDD 9 Domains + Redis 503 + Regex 422 + Calibrator 100% — PAUSE before B.2*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.2 Financial Engine & Escrow — docs/PHASE5_B2_FINANCIAL_ENGINE.md — Wallet CHECK + Escrow Immutability + Race Guard + Idempotency + Ledger — PAUSE before B.3*
+
+---
+
+## 12. PHASE 5.0 B.2 — FINANCIAL ENGINE & ESCROW SUBSYSTEM [DONE 2026-09-16 — Spec Mode Only]
+
+> **Directive:** Principal Fintech Backend — High-Concurrency Financial Ledgers + Pessimistic Locking — spec for Any AI Agent — no mock placeholders.
+
+**Deliverable:** `docs/PHASE5_B2_FINANCIAL_ENGINE.md` (37KB, 577 lines) — strict spec only:
+
+- **§1 DDL 7 tables MySQL 8.4 InnoDB utf8mb4:** `app_wallets(id,user_id,balance_minor BIGINT + VIRTUAL balance, currency ENUM, status, version, CHECK balance>=0 + available>=0, UNIQUE user+currency, FK CASCADE)` + `wallet_transactions(id,wallet_id,transaction_type,amount_minor,reference_uuid UNIQUE, metadata JSON_VALID, balance_after, app_id, indexes FK)` + `wallet_adjustment_logs(id,wallet_id,admin_id,amount_changed,previous/new_balance,mandatory_rationale TEXT CHECK CHAR_LENGTH>=15, ip_address VARCHAR45 $request->ip(), reference_uuid, REVOKE UPDATE/DELETE)` + `escrow_clearings(id,transaction_id UNIQUE, buyer/seller, amount_minor, status, escrow_rate_applied DECIMAL5,4 locked, commission_minor, fx/barter JSON_VALID, release_eligible_at, app_id, deal_type, 6 indexes, FK RESTRICT, CHECKs, trigger immutability)` + `commission_rules(id,tier_level 1-10, min/max_volume_minor, commission_percentage 0-50, rate GENERATED, app_id null=global, UNIQUE tier+app+volume, seed Tier1 5% Tier2 4% Tier3 3%)` + `escrow_events(event_id,transaction_id FK CASCADE, from/to_status, actor_type, actor_id, reason_code, payload_snapshot_hash SHA256 64, app_id, append-only REVOKE UPDATE/DELETE, idx transaction_created)` + `idempotency_keys(id, idempotency_key UNIQUE+user+endpoint, endpoint, user_id, request_hash SHA256, response_status/body JSON, expires_at +24h, EVENT purge)`
+- **§2 Escrow Immutability:** Rate 5% base (Q34 Oil2) locked at `created_at(3)` millisecond via `INSERT escrow_rate_applied` + 3-layer enforcement (BEFORE UPDATE SIGNAL 45000 + Eloquent guarded + REVOKE UPDATE(escrow_rate_applied) + Agent1 no retroactive) — workflow create→lock→later 6% only new deals
+- **§3 Race-Condition Guard:** `EscrowLockService` verbatim flow — `Idempotency gate outer → Redis funnel Cache::lock wallet:mutex:10s 429 → retry(3, DB::transaction(lockForUpdate + invariants + mutate + WalletAdjustmentLog min15 + ip + WalletTransaction + EscrowEvent + Idempotency) 3) → release` — `CHECK balance>=0` 3 levels + `UNIQUE reference_uuid` dedup + `version` optimistic
+- **§4 Query Discipline:** N+1 `with()` + QueryCountTest ≤5 CI fail + EXPLAIN verified indexes, `withCaching`, stats_wallet_daily (Rule37); Read/Write split `mysql primary` writes vs `mysql_replica` reads + lag `SHOW SLAVE STATUS Seconds_Behind_Master >5s fallback` + `X-DB-Route`; Structured logging single-line JSON `ts,level,trace_id,app_id,user_id_hashed,endpoint,duration_ms,error_code` allowlist redaction + `TraceIdMiddleware` W3C traceparent propagation HTTP→queue→broadcast
+- **§5 Idempotency & Ledger:** `Idempotency-Key` required ≥16 on every POST moves money, duplicate 24h returns verbatim 200 no re-execute + `IdempotencyMiddleware` 422 if missing; `escrow_events` append-only `REVOKE UPDATE,DELETE`, every transition persisted, SHA256 hash, single source for dispute `SELECT ... ORDER BY created_at` reconstruction — `REVOKE` grants list + index/FK matrix table
+- **§6-§7 Sprints B.2.1-B.2.6:** Migrations DDL → Enums/ValueObjects → Repositories/DTOs → Services EscrowLockService → Middleware Idempotency/TraceId + Requests → Replica+Logging — verification gates: CHECK 422/503, concurrency 100 parallel, EXPLAIN, trace_id single-line
+
+**Verification:** `.arenarules` R11/R12/R18/R35 + Pillars 6 + Stack Lock cross-checked, minor units BIGINT no float, MySQL JSON not JSONB, 13 Agents (CFO no retroactive), `abduniproject` folder
+
+**Next:** B.3 Governance, Micro-Permissions & DRM — awaiting prompt
 
 ---
 
