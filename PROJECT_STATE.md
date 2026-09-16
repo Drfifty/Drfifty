@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.5 5-APPS SCHEMAS + WORKFORCE — Arena — v5.0-B.5 — Deals FULLTEXT ngram+SPATIAL 4326 + Serv POINT/POLYGON SPATIAL + Invest State-Machine minor WORM + Med pgsql pgcrypto HMAC + Workforce Tenant-Isolated PARTITION + Eloquent app_id Scopes — B.1a/b2a/b3/b4 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.6 AUTH/WALLET/ESCROW ISOLATED APIS — Arena — v5.0-B.6 — JWT 15m + __Host-refresh 7d Hashed Family + Reuse Revoke + Silent Single-Flight Interceptor + EscrowLockService minor+Version+READ COMMITTED+Idempotency 24h + Stats R37 + Hierarchy DRM>Lite>Micro 403/202>Leak 422 — B.1a/b2a/b3/b4/b5 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.5 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4 Locked + B.5 5-Apps Schemas (Deals ngram SPATIAL + Serv 4326 + Invest State-Machine minor + Med pgsql pgcrypto HMAC + Workforce Tenant-Isolated Partition) Locked (Arena)**
+- **State Version:** v5.0-B.6 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5 Locked + B.6 Auth/Wallet/Escrow Isolated APIs (JWT Hashed Family + EscrowLockService+Idempotency+R37) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.5 5-APPS SCHEMAS + WORKFORCE LOCKED v5.0-B.5** (Arena — Laravel 12 PHP 8.4 Dual-DB Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.5]` delivered — `docs/PHASE5_B5_SCHEMAS.md` (9 sections: Deals FULLTEXT ngram Arabic + geo_point SPATIAL 4326 via stats, Serv POINT SRID4326+POLYGON SPATIAL sub-ms, Invest draft→funding→funded→escrow_locked→released trigger + minor BIGINT WORM hash_chain, Med pgsql amed_medical_providers/ appointments pgp_sym_encrypt + nlp_hash HMAC + provider_trust_scores pre-aggregated, Workforce tenant_agent_subscriptions UK tenant+agent+app FK matrix + agent_execution_logs WORM partitioned + agent_memory_sandboxes isolated trigger) + 3 migrations additive (000022 deals ngram+SPATIAL, 000023 serv SPATIAL+invest state-machine, 000024 pgsql med pgcrypto HMAC + workforce tenant-isolated) + 12 Eloquent Domain Models with TenantScoped + SRID + FULLTEXT/SPATIAL scopes + state-machine + pgcrypto accessors + HMAC chain + WORM + PGCRYPTO_KEY/TELEMETRY_HMAC_KEY .env — **PAUSE before B.6**
-- **Next:** PAUSED — B.5 hardened with 14-flaw pre-audit (F-01→F-13) — Awaiting B.6 API Pipelines prompt
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.6 AUTH/WALLET/ESCROW ISOLATED APIS LOCKED v5.0-B.6** (Arena — Laravel 12 PHP 8.4 Fintech Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.6]` delivered — `docs/PHASE5_B6_APIS.md` (9 sections: JWT 15m Access + __Host-refresh 7d token_hash SHA256 family rotated_from_id reuse→family revoke Secure HttpOnly Lax 0 loop single-flight interceptor, Wallet deposit/withdraw via EscrowLockService lockForUpdate+Mutex+version 409+READ COMMITTED+Idempotency 24h ≥16 FOR UPDATE inside tx + reuse 422 + verbatim replay, admin adjust TRIM≥15 chk_wal_rationale_trim + ip TrustProxies, Escrow lock/release/dispute state-machine trigger canTransition 45000 + escrow_rate_applied immutable 5%/4%/3% tiers + WORM escrow_events, GET balance stats-isolated R37 30s Cache::tags + replica heartbeat 5s, full hierarchy TraceId→EnsureTenant 422→QuarantineGuard 503→AULite 503→micro 403/202→Sanitize 422→Idempotency 422) + migration 000025 additive guards + Domain/Auth 3 Actions + JwtService HS256 + Requests 7 (Login/Register/Deposit/Withdraw/Adjust/Lock/Release/Dispute TRIM) + Resources 3 (WalletBalance/AuthUser/Escrow minor formatted) + Controllers 4 thin (Auth/Wallet/Escrow/AdminAdjust) + Middleware AuthenticateJwt + config/jwt + routes hardened + interceptor `AuthRefreshInterceptor.ts` single-flight — **PAUSE before B.7**
+- **Next:** PAUSED — B.6 hardened with 20-flaw pre-audit (F-01→F-14) — Awaiting B.7 Deals/Serv APIs prompt
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,33 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.5 — docs/PHASE5_B5_SCHEMAS.md + 3 migrations + 12 models + Dual-DB harden 14 fixes — PAUSE before B.6*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.6 — docs/PHASE5_B6_APIS.md + 1 migration + 14 code files + API harden 20 fixes F-01→F-14 — PAUSE before B.7*
+
+---
+
+## 17. PHASE 5.0 B.6 — AUTH/WALLET/ESCROW ISOLATED REST APIs [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Principal API Engineer — Secure Fintech REST + Silent Rotation — Pre-Execution Audit 20 flaws (F-01→F-14) → hardening integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B6_APIS.md` (v5.0-B.6 harden) — 9 sections + Contracts + Interceptor:
+
+- **§1 Routes Hardened F-03:** `routes/api/v1/auth_wallet_escrow.php` hierarchy fixed — `TraceId(global)→EnsureTenant 422→QuarantineGuard 503 DRM Retry-After 3600→AULite 503 DEGRADED_READ_ONLY→auth.jwt 401→RequireMicroPermission 403 MICRO_PERMISSION_DENIED / 202 HITL_APPROVAL_REQUIRED →SanitizeDataLeaks 422 DATA_LEAK_BLOCKED →IdempotencyMiddleware 422 IDEMPOTENCY_KEY_REQUIRED/REUSE_MISMATCH` — `POST auth/register|login|refresh(throttle:5/min Redis distributed) /auth/me|logout + GET wallet/balance (stats-isolated) + POST wallet/deposit|withdraw-request + escrow/lock|release|dispute + admin/wallet/adjust` — all money POST require `Idempotency-Key ≥16`.
+
+- **§2 Auth Silent Rotation F-04/F-12:** `JwtService::sign HS256` using `JWT_SECRET || hash(APP_KEY)` + `header.typ JWT` + `claims sub,app_id,trace_id,iat,exp 15m, jti 16b` → `Bearer <jwt>` + `verify signature+exp 401`. Refresh `64-hex random_bytes(32) → token_hash SHA256` stored `refresh_tokens(token_hash UNIQUE,expires_at 7d,revoked_at,rotated_from_id FK self,device=hash(ip|UA|app_id),ip)` never plaintext; `POST /auth/refresh` reads **cookie `__Host-refresh` only** `Secure;HttpOnly;SameSite=Lax;Path=/api;Max-Age=604800` + `Cache::lock refresh:{hash} 5 single-flight` → `lockForUpdate` → `if revoked → revoke family UPDATE revoked_at + security_audit REUSE_DETECTED 401` → `revoke old + insert new rotated_from_id + Set-Cookie new + return access`. Finite: reuse → 401 + family revoked; expired → 401; missing → 401 — interceptor never loops on `/auth/refresh`.
+
+- **§3 Wallet/Escrow via `EscrowLockService` F-01/F-02/F-06/F-07:** Reuses `000016` service verbatim — `outer replay → WalletMutex::lock id 10 else 429 → DB::transaction READ COMMITTED → SELECT wallet lockForUpdate → FOR UPDATE idempotency re-check → balance>=amount else 422 INSUFFICIENT_FUNDS → version WHERE expected else 409 VERSION_CONFLICT → WalletAdjustmentLog TRIM≥15 chk_wal_rationale_trim + ip via TrustProxies → wallet_transactions + escrow_events append-only REVOKE → idempotency insert 24h → catch 23000→replay` . Money all `amount_minor BIGINT` + `Money::multipliedBy HALF_UP` → commission 5%/4%/3% tiers locked at `created_at(3)` `commission_rate_snapshot immutable trigger 45000`.
+
+- **§4 Wallet `GET balance` R37 F-08:** Never live `SUM` — `Cache::tags(['wallet:balance:{user}:{appId}']) 30s` → prefer `stats_wallet_daily` 00:30 Cairo pre-aggregated → fallback `app_wallets WHERE user_id=? AND app_id=?` per currency `uk_user_currency` ≤5 queries + `EXPLAIN` indexed + `ReplicaConnectionResolver heartbeat TIMESTAMPDIFF<5s ? replica:primary` header `X-DB-Route` + `cached bool` in meta.
+
+- **§5 Validation & Resources F-05/F-10:** 7 FormRequests each `prepareForValidation trim` — `LoginRequest email lower+trim, RegisterRequest trim + confirmed, Deposit/Withdraw amount_minor int 1..9e18 currency in, WalletAdjustmentRequest wallet_id exists + amount_minor !=0 + mandatory_rationale min:15 after trim→msg, LockRequest transaction_id uuid + buyer≠seller + amount_minor>0 + deal_type enum + app_id enum, Release/Dispute checked state machine canTransition else 409`. Resources `WalletBalanceResource minor→formatted number_format(minor/100,2)`, `AuthUserResource allowlist`, `EscrowResource`. Controllers ultra-thin ≤90L: `__invoke(Request){ dto→service→Resource + meta trace_id + Idempotency-Replayed}`.
+
+- **§6 Frontend `AuthRefreshInterceptor.ts` F-18:** Strict TS `strict:true zero any` — `axios withCredentials:true` adds `Authorization Bearer`; response interceptor `if 401 && !url.includes('/auth/refresh') && !_retry → isRefreshing queue failedQueue[] → single POST /auth/refresh → setAccessToken(new) → processQueue → retry orig once`; `isRefreshing single-flight`; `second 401 → redirect /login once`; no infinite loop.
+
+- **§7 Sprints B.6.1-B.6.6 ≤150L:** `000025 additive hasTable guards + hasIndex CHK` + `config/jwt.php env wrapper` + `.env.example JWT_SECRET/TRUST_PROXIES/CORS` + `Services/Auth/JwtService` + `Domain/Auth 3 Actions + DTOs` + `7 Requests TRIM` + `3 Resources` + `4 Controllers thin + AuthenticateJwt` + `routes hardened + interceptor`.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 tenant/R17 env/R18 tx/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 HMAC + Pillars 6+9 + 13 Agents + 9 Modules + 5 Apps — hardened.
+
+**Next:** B.7 Deals/Serv APIs — awaiting prompt
 
 ---
 
