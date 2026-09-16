@@ -2,12 +2,12 @@
 // AuCalibratorHealthCheck — B.12 F-08 — every5m R37 cached 10s + lock 4m — reuses SelfHealing — Arena
 declare(strict_types=1);
 namespace App\Console\Commands;
-use Illuminate\Console\Command; use Illuminate\Support\Facades\Cache; use Illuminate\Support\Facades\DB;
+use Illuminate\Console\Command; use App\Support\Lock; use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Cache;
 final class AuCalibratorHealthCheck extends Command {
  protected $signature='au:calibrator-health-check';
  protected $description='Every5m calibrator health 100→90 check — cached 10s + 4m lock — coalesced alert';
  public function handle(): int {
-  $lock=Cache::lock('calibrator:health:check', 240);
+  $lock=Lock::withSkew('calibrator:health:check', 240);
   if(!$lock->get()){ $this->info('calibrator lock held'); return 0; }
   try{
    $health=(int)(Cache::get('calibrator:health') ?? DB::table('stats_calibrator_daily')->where('stat_date',\Carbon\Carbon::today('Africa/Cairo')->toDateString())->value('health_score') ?? 95);

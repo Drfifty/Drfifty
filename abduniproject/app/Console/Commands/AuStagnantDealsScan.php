@@ -2,12 +2,12 @@
 // AuStagnantDealsScan — B.12 F-07 — hourly R37 isolated — stats + chunk 100 + lock 55m — Arena
 declare(strict_types=1);
 namespace App\Console\Commands;
-use Illuminate\Console\Command; use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Cache;
+use Illuminate\Console\Command; use Illuminate\Support\Facades\DB; use App\Support\Lock;
 final class AuStagnantDealsScan extends Command {
  protected $signature='au:stagnant-deals-scan';
  protected $description='Hourly stagnant scan — stats isolated + chunk 100 + Agent3 promo 5/limit — 55m lock';
  public function handle(): int {
-  $lock=Cache::lock('stagnant:scan', 3300);
+  $lock=Lock::withSkew('stagnant:scan', 3300);
   if(!$lock->get()){ $this->info('stagnant scan lock held'); return 0; }
   try{
    // prefer stats table R37, fallback replica heartbeat

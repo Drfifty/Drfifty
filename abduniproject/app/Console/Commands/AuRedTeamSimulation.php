@@ -2,12 +2,12 @@
 // AuRedTeamSimulation — B.12 F-10 — hourly replica-isolated low queue — pen+legal+slowQuery — Arena
 declare(strict_types=1);
 namespace App\Console\Commands;
-use Illuminate\Console\Command; use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Cache;
+use Illuminate\Console\Command; use Illuminate\Support\Facades\DB; use App\Support\Lock;
 final class AuRedTeamSimulation extends Command {
  protected $signature='au:red-team-simulation';
  protected $description='Hourly red-team sim — replica slowQuery + legal + pen — pushed low queue 60s';
  public function handle(): int {
-  $lock=Cache::lock('redteam:sim', 3300);
+  $lock=Lock::withSkew('redteam:sim', 3300);
   if(!$lock->get()){ $this->info('redteam lock held'); return 0; }
   try{
    // slow query analysis — replica heartbeat fallback
