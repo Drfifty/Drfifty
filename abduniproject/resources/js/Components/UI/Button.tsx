@@ -19,6 +19,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   requiredPermission?: string;
   permission?: string; // alias
+  featureFlag?: string; // FIX-P1-09 AU Lite flag
   appContext?: string; // ex: "AU MED" — يطهر إن اختلف app_id
   experiment?: string;
 }
@@ -52,6 +53,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       icon,
       requiredPermission,
       permission,
+      featureFlag,
       appContext,
       experiment,
       className,
@@ -61,7 +63,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const { props: page } = usePage<SharedPageProps>();
     const perm = requiredPermission ?? permission;
-    if (perm && !page.permissions?.includes(perm)) return null;
+    if (perm && !page.permissions?.includes(perm) && !page.tenant?.permissions?.includes(perm)) return null;
+    // FIX-P1-09: feature_flag view gate (AU Lite) + HITL approval gate
+    if (featureFlag && page.feature_flags?.[featureFlag] === false) return null;
+    if (featureFlag && page.tenant?.feature_flags?.[featureFlag] === false) return null;
     if (appContext && page.app_id !== appContext && page.tenant?.app_id !== appContext) return null;
 
     const loadingActive = isLoading ?? loading ?? false;
