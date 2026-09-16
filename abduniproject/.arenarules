@@ -1,0 +1,223 @@
+==============================================================================
+# ABD UNI PROJECT MONOLITH — MASTER ARENA RULES & SYSTEM INITIALIZATION (CANONICAL — v2.2 UNIFIED)
+==============================================================================
+
+project_identity:
+  name: "ABD UNI PROJECT"
+  project_folder: "abduniproject" # The actual, locally approved project folder name — fixed, never changes
+  architecture: "Modular Monolith (app/Modules/) + Domain-Driven Design (DDD) + Clean Architecture"
+
+environment_profiles:
+  local_dev:
+    server: "Laragon (Windows) / PHP 8.4+"
+    purpose: "Local development only — Migrations, Testing, Debugging"
+    note: "None of the production rules (Docker Swarm, Cloudflare Enterprise, Nginx rate-limiting, Fail2ban) are active in this environment."
+  production_deploy:
+    infra: "Docker Swarm (Ephemeral Worker Containers) + Redis Queues"
+    edge: "Cloudflare Enterprise / WAF + Nginx (rate-limit: max 20 req/sec/IP) + Fail2ban"
+    note: "These rules are enforced ONLY when building explicit Deployment/CI-CD files, and never during any local development Micro-Sprint."
+
+tech_stack:
+  backend: "Laravel 12 (PHP 8.4+) — Action-Service-Repository Pattern"
+  frontend: "React 19 (JSX/TSX) via Inertia.js v2 (@inertiajs/react)"
+  language: "TypeScript v5.7+ — strict: true, ZERO 'any' types"
+  styling: "Tailwind CSS v4 + Shadcn UI Components"
+  icons: "Lucide React"
+  database: "MySQL 8.4 LTS (InnoDB, utf8mb4, native Spatial, Primary DB) — the sole relational data source for the platform core | PostgreSQL 16 (PostGIS + pgcrypto) — the exclusive clinical store for AU MED"
+  cache_queue: "Redis (Cache, Queues, Mutex Locks)"
+  state_and_forms: "Inertia useForm & usePage Hooks"
+  build: "Vite (HMR Development Server + Production Bundling)"
+  realtime: "Laravel Reverb (WebSocket Broadcasting + Realtime Events) — the exclusive real-time driver"
+  # Note: All Supabase references have been removed from the primary stack — Supabase may exist ONLY as an explicitly documented optional auxiliary service (e.g., Vector Search / Realtime, or an isolated off-site backup / PITR vault), never as an ambiguous alternative or complement to the primary database.
+
+ecosystem_scope:
+  core_hub: "abduniproject (AU BUSINESS — B2B)"
+  b2c_apps: ["AU MED", "AU DEALS", "AU SERV", "AU INVEST"]
+  total_applications: 5 # AU BUSINESS (Core Hub) + AU MED, AU DEALS, AU SERV, AU INVEST
+  ecosystem_scale: "Core B2B Engine (abduniproject / AU BUSINESS) powering 4 B2C Applications (AU MED, AU DEALS, AU SERV, AU INVEST), 13 AI Agents, and 9 Modules"
+  total_agents: 13 # See Table 1.3 for the full registry
+  total_modules: 9 # See Table 1.4 — EXACTLY 9 Modules (1-9) — canonical
+  commercial_offerings:
+    - "Digital Workforce Marketplace: Selling AI Agents via Outright Enterprise Purchase (Buyout) or Managed Hosted Salary (Monthly Subscription via app_wallet)"
+    - "Commercial Business Calibrator SaaS: Tri-Stage Commercial Profitability & Quality Verification Engine (Pre-Op, In-Op, Post-Op Gates)"
+  naming_convention:
+    - app_name: "AU BUSINESS"
+      namespace: "app/Modules/AUBusiness/"
+      db_prefix: "ab_"
+      role: "B2B Core Hub & Ecosystem Engine"
+    - app_name: "AU MED"
+      namespace: "app/Modules/AUMed/"
+      db_prefix: "amed_"
+      role: "Medical Services & B2C Healthcare"
+    - app_name: "AU DEALS"
+      namespace: "app/Modules/AUDeals/"
+      db_prefix: "adl_"
+      role: "B2B Inventory & Medicine Exchange"
+    - app_name: "AU SERV"
+      namespace: "app/Modules/AUServ/"
+      db_prefix: "asv_"
+      role: "Services & Operational Maintenance"
+    - app_name: "AU INVEST"
+      namespace: "app/Modules/AUInvest/"
+      db_prefix: "ainv_"
+      role: "Investment & Micro-Financing Engine"
+
+==============================================================================
+# A. CORE RULES & GOVERNANCE WORKFLOW (1 -> 38 — Unified Version Without Duplication)
+==============================================================================
+rules:
+
+  # --- Core Session Behavior ---
+  - 1. Upon receiving this initialization file for the first time in a session: reply ONLY with "Acknowledged. Awaiting Phase 1." and do NOT generate any other content.
+  - 2. NO CODE until the analysis/architecture phases are approved by the user.
+  - 3. NO ASSUMPTIONS: Ask clarifying questions first before making any assumption.
+  - 4. MICROSCOPIC STEPS: No bulk generation. Stop and wait for approval after each small step.
+
+  # --- Architecture & Direction ---
+  - 5. ARCHITECTURE & ROUTING: Strictly use a decoupled "Modular Monolith" (app/Modules/) structure. Backend Controllers MUST strictly follow folder division: Admin, User, and Public inside each module domain.
+  - 6. ZERO TRUST SECURITY: Prevent OWASP Top 10, sanitize all inputs, and enforce AES-256-GCM for sensitive data.
+  - 7. DYNAMIC DB & FORMS: SaaS-ready. Use the native MySQL 8.4 JSON column type (leveraging its internal binary storage optimization and virtual generated columns for indexing) or relational attribute tables (listing_attributes) for infinite custom category-specific fields. Never hardcode any dynamic attribute. STRICTLY DO NOT reference JSONB — this is a PostgreSQL-exclusive data type and does NOT exist in MySQL 8.4's type system or SQL syntax; using it will cause a hard migration failure. JSONB remains valid ONLY inside the AU MED PostgreSQL clinical store.
+  - 8. ARABIC COMMENTS: Add brief, non-interactive Arabic comments explaining every code block starting from Phase 1 execution, while keeping all code elements (classes, variables, functions) strictly in 100% English.
+  - 9. ARABIC SUMMARY: Provide a brief Arabic summary of changes after execution of every approved coding task, while keeping all output logs and technical syntax strictly in English.
+  - 10. FLAG RISKS: Point out trade-offs immediately (Performance, Security, Scaling).
+  - 11. NO DESTRUCTION: Never use migrate:fresh, drop(), or truncate in database migrations. Additive schema changes ONLY.
+  - 12. ELOQUENT & MULTI-TENANCY: Ensure all DB interactions go through Eloquent, optimized for multi-tenancy (app_id). NEVER write raw SQL.
+  - 13. UI STANDARDS: Always use the reusable DataTable component for all administrative grid listings, ensuring server-side pagination via Inertia.
+  - 14. BESPOKE CODE: 100% original code — no cloned templates, no proprietary code, and no external intellectual property.
+  - 15. HOLISTIC VIEW: Maintain the safety of all modules together — never break feature A to build feature B.
+  - 16. TOKEN ECONOMY: ZERO conversational filler ("Sure", "Here is") — output ONLY the requested code/comments.
+  - 17. NO HARDCODING: All configs, secrets, and URLs MUST be stored strictly in .env only.
+  - 18. DEFENSIVE PROGRAMMING: Use DB::transaction for all multi-step writes and log every exception explicitly — never swallow errors.
+  - 19. FILE INTEGRITY: When modifying files, apply precise diffs — never delete, truncate, or replace/overwrite code unrelated to the task.
+
+  # --- State & Memory Management ---
+  - 20. PRE-SHUTDOWN STATE UPDATE: Update PROJECT_STATE.md in the project root before ending any task/sprint/session — log what was built, the current context, and the next step.
+  - 21. VERTICAL IMPLEMENTATION: Complete every feature fully end-to-end (DB → Backend → API → Frontend → Testing) before moving to the next.
+  - 22. MICRO-PLAN & CHECKLIST: Before code, provide a Micro-Plan (What/Why/Files) and wait for approval; after execution, show the Checklist (✅ DB ✅ Backend ✅ Frontend) and STOP completely.
+  - 23. CHIEF ARCHITECT IMPACT AUDIT: Before modifying or adding any line of code, audit the entire project structure as Principal Lead Architect — evaluate cross-module dependencies, financial ledger integrity, and DB constraints, and apply all cascading changes simultaneously.
+  - 24. AUTOMATIC SESSION RESET TRIGGER: Upon completing 2 Micro-Sprints, automatically halt execution, perform the mandatory state update to PROJECT_STATE.md, and output: "⚠️ SYSTEM NOTICE: 2 Micro-Sprints Completed. State saved to PROJECT_STATE.md. Please start a FRESH SESSION."
+  - 25. AUTOMATIC STATE RECOVERY: At the start of ANY session, read PROJECT_STATE.md BEFORE taking any action, reading any codebase file, or generating anything.
+
+  # --- Quality & Calibration ---
+  - 26. STRICT 100% COMPREHENSIVE AI CALIBRATOR SUITE:
+    - Before, during, and after EVERY Micro-Sprint and atomic sub-task, the Agent MUST execute the "AU Master AI Calibrator Suite" across all core competency domains (Memory, Architecture, Security, Precision, Craftsmanship, Operational).
+    - Print a concise "Calibrator Verification Gate" output showing a 100% passing score for the active sub-task.
+    - If ANY competency score drops below 100% (even by 0.0001%), execution is STRICTLY BLOCKED: the Agent MUST self-recalibrate, reload .arenarules and PROJECT_STATE.md, eliminate hallucinations, and re-test until a 100% score is verified before generating code.
+  - 27. STRICT LAYERED ARCHITECTURE & SEPARATION OF CONCERNS (SoC):
+    - Presentation Layer (Controllers/): HTTP Request parsing, validation trigger via FormRequests, and Inertia/JSON Response returning ONLY. Zero business logic.
+    - Business Logic Layer (Actions/ or Services/): Single-responsibility action classes handling pure business domain rules and transactions.
+    - Data Access Layer (Models/): DB Schema definitions, Eloquent Relationships, Query Scopes, and Casts ONLY.
+  - 28. ABSOLUTE DRY & SHARED LOGIC REUSE (ZERO DUPLICATION):
+    - Logic required across multiple controllers, modules, or B2B/B2C apps MUST NEVER be duplicated.
+    - Shared functionality MUST be encapsulated into reusable Action classes, Domain Services, Base Contracts, or Traits located inside app/Modules/Shared/.
+  - 29. CODE BLOAT ELIMINATION & YAGNI PRINCIPLE (LEAN CODEBASE):
+    - Strict adherence to YAGNI (You Aren't Gonna Need It) and Clean Code principles. Eliminate redundant wrapper functions and bloated boilerplate. Always prefer native PHP 8.4 / Laravel 12 features (Enums, Form Requests, Scopes, Pipeline pattern).
+  - 30. STRICT DESIGN PATTERN & STRUCTURE COMPLIANCE:
+    - Random or arbitrary code placement is STRICTLY FORBIDDEN. All code MUST adhere 100% to the Modular Monolith + Action/Service pattern (app/Modules/{ModuleName}/{Layer}/). Every class MUST have a single responsibility (SRP) with explicit type hints and strict DTOs.
+  - 31. STRICT SCOPE BOUNDARY & YAGNI:
+    - Never add features, database fields, or architectural abstractions that were not explicitly requested in the approved specifications or PROJECT_STATE.md.
+    - Default to rejection: if unsure whether something should be added, DO NOT add it; ask for explicit confirmation first.
+    - Avoid adding extra libraries or design patterns simply for "best practice" unless they offer a critical, direct benefit. Keep every file small, readable, and easy to review.
+  - 32. MANDATORY ARCHITECTURAL MICRO-INSPECTION & MICRO-PLAN:
+    - Before writing code or modifying ANY existing file, perform a Micro-Inspection: read current implementations to maximize code reuse.
+    - Execute the smallest possible code mutation that solves the requirement without breaking existing logic.
+    - Provide a concise Micro-Plan stating: (1) What will be built, (2) Why it is built now, and (3) Exact file paths to create/modify.
+    - STOP and wait for user approval before writing any code.
+  - 33. STRICT VERTICAL FEATURE SLICES:
+    - Complete features end-to-end vertically. NEVER build the entire frontend or backend first, and NEVER use mock data if real endpoints exist.
+    - Database: Migrations, indexes, and constraints (e.g., CHECK (balance >= 0)).
+    - Backend: Controller split (Admin, User, Public), Form Requests, and Enums under app/Modules/{ModuleName}/.
+    - Security: Scoped app_id context and server-side execution locks.
+    - Frontend: Inertia v2 / React 19 components with complete DOM-level stripping for unauthorized actions.
+    - Audit & Testing: Log the action to audit_logs and execute atomic micro-tests.
+  - 34. MANDATORY CHECKPOINT & SPEC GAP ANALYSIS:
+    - After completing a vertical slice, halt execution and output the Completion Checklist: (✅ DB & Indexing, ✅ Multi-Tenant/RBAC Server Locks, ✅ DOM Purging, ✅ Backend Logic/API, ✅ Micro-Tests).
+    - Specification Gap Analysis: Explicitly list (1) Missing items from the specs, and (2) Unrequested items added.
+    - STOP COMPLETELY: Wait for explicit user confirmation before continuing. Never proceed automatically.
+  - 35. FINANCIAL CONCURRENCY, DATA LEAKS & STRICT TYPES:
+    - Database/Financial: Enforce Redis Mutex Locks and lockForUpdate() on all Escrow/Wallet withdrawals to block race conditions and double-spending.
+    - Data Leak Protection: Pass all inputs through RegexDataLeakDetector before DB persistence.
+    - Code Standards: Enforce strict TypeScript ("strict": true, ZERO any types), native PHP 8.4 Enums, and strict Eloquent pipelines without raw SQL.
+  - 36. SERVER-SIDE ACTION LOCKS & RBAC DISJUNCTION:
+    - Strictly separate "View" and "Execute" permissions.
+    - All POST/PUT/DELETE action endpoints MUST enforce explicit action-level permission middleware on the server side, independently of UI element visibility.
+  - 37. PERFORMANCE QUERY GUARD & STATISTICAL ISOLATION:
+    - Heavy statistical queries (COUNT(*), GROUP BY) on live transactional tables (app_wallets, escrow_clearings) are STRICTLY FORBIDDEN.
+    - All administrative metrics MUST read from pre-aggregated stats tables or cached scheduled jobs.
+  - 38. ENVIRONMENT SECRETS & SCHEMA VALIDATION:
+    - NEVER store raw secrets, API keys, or dynamic webhook secrets in the codebase.
+    - Every new configuration key MUST be added to .env.example with explicit comments and validated via Laravel's env() wrapper at startup.
+# B. THE 11 MANDATORY ARCHITECTURAL PILLARS
+architectural_pillars:
+  - 1. Deterministic-First Engine (0-Cost Priority): Primary system logic operates on 100% free deterministic PHP 8.4, Regex, and State Machines without consuming AI tokens.
+  - 2. Dynamic Graceful Fallback Engine: Automatic fallback to AI models governed by Circuit Breakers when deterministic execution returns Confidence Score < 90% or Regex Mismatch.
+  - 3. Tri-Hybrid Strategy Switcher (AgentStrategyManager): Supports runtime driver switching between DeterministicRuleDriver, CloudLlmDriver, and LocalGpuDriver.
+  - 4. AU Lite Modular Feature Flags (CheckModuleStatus): Dynamic hibernation of sub-applications (AU MED, AU DEALS, AU SERV, AU INVEST) via the feature_flags table, returning clean HTTP 503 states.
+  - 5. Programmatic Data Leak Protection (RegexDataLeakDetector): Zero-cost deterministic Regex sanitization to strip phone numbers, personal emails, and external links.
+  - 6. Financial Race-Condition Guardrails: All app_wallet transactions MUST enforce DB Pessimistic Locking (selectForUpdate()) combined with Redis Mutex Concurrency Locks.
+  - 7. AU Calibrator & Self-Healing Telemetry: Continuous health monitoring triggering automated container recycling, cache flushes, and route corrections.
+  - 8. Ephemeral Swarm Lifecycle: Auto-scaling Docker worker swarm containers spawned via Redis Queues for short-lived tasks that self-terminate upon completion.
+  - 9. Silent Token Rotation Pipeline: Short-lived Access Tokens paired with secure HttpOnly Refresh Token Cookies and frontend Inertia/Axios interceptors.
+  - 10. Edge & Infrastructure DoS Protection (Production environment only): Routes engineered behind Cloudflare Enterprise / WAF boundaries with Nginx dynamic rate-limiting (max 20 req/sec per IP) and Fail2ban blocking.
+  - 11. Tiered Entity Mutation Protocol:
+    - Tier 1 (Linked/Historical Entities): Database Hard-delete is STRICTLY FORBIDDEN. Only Hide/Show toggles (is_hidden = true/false) are allowed.
+    - Tier 2 (Unlinked Standalone Entities): Permit full Administrative Control (Hide / Show / Hard-Delete).
+# C. MICRO-SPRINT QUANTITATIVE BOUNDARIES
+sprint_limits:
+  max_files_per_iteration: 3 # Atomic File Execution Limit: 1 to 3 files maximum per code-generation iteration
+  max_lines_per_file: 150 # Code Line Capping: 150 lines per file maximum — maintains Clean Architecture and eliminates LLM hallucinations
+
+# D. FRONTEND & REACT 19 SKILLS
+frontend_skills:
+  - Always use React 19 Functional Components (.tsx) with Inertia hooks (@inertiajs/react).
+  - STRICTLY FORBIDDEN: Never write code, components, or files from any frontend framework other than the approved React 19 / Inertia.js v2.
+  - Always use the useForm hook from @inertiajs/react for all form states, validation, and submissions.
+  - Use Lucide React for all icons and follow Shadcn UI patterns for accessible components.
+  - Ensure 100% responsive design using Tailwind CSS v4 utility classes (Mobile-First).
+  - Build RTL-first: the primary direction is RTL Arabic (dir="rtl") with dynamic LTR English support; use Tailwind CSS v4 logical properties (ps-, pe-, ms-, me-, start, end) for all directional styling, following the Phase 3.0 Design System token set (typography, spacing, colors) as the single source of truth.
+  - Keep frontend logic modular: components belong in resources/js/Components, pages in resources/js/Pages.
+  - Frontend page directories MUST use the exact space-form application directory names ratified in Phase 4.0 (e.g., resources/js/Pages/AU MED/, resources/js/Pages/AU DEALS/), never PascalCase or underscore variants.
+  - strict TypeScript v5.7+ only — ZERO 'any' types.
+# E. BACKEND & DATABASE SKILLS
+backend_skills:
+  - Keep Controllers ultra-thin — HTTP Request/Response mapping ONLY.
+  - Move ALL business and domain logic into dedicated Action classes and Service classes.
+  - Apply Domain-Driven Design (DDD): structure code by bounded contexts / domains, not monolithic folders.
+  - Enforce strict Type Hinting and Return Types on every PHP 8.4 method, function, and property.
+  - Use DB::transaction for all multi-step write/update operations.
+  - Form Requests MUST handle all request validation — never validate inside Controllers.
+  - Write clear, indexed, and optimized Laravel migrations for MySQL 8.4 LTS — explicit Foreign Keys, proper Cascades, and database Indexes for all search fields.
+  - Use Eloquent API Resources for transforming backend data sent through Inertia to React 19.
+# F. ZERO-ERROR & AGENT WORKFLOW SKILLS
+zero_error_skills:
+  - Never guess missing code or leave placeholders like "TODO" or "/* write logic here */".
+  - Always provide complete, production-ready, fully functional code blocks.
+  - Check imports and namespaces thoroughly before generating files to avoid runtime missing-class errors.
+  - Verify compatibility between Inertia props (Backend) and React 19 props (Frontend).
+
+==============================================================================
+# APPENDIX: SUPERSEDED LINES LOG (CANONICAL CHANGE HISTORY — DO NOT RE-INTRODUCE)
+==============================================================================
+superseded_lines:
+  - "ALL Pusher / Socket.io WebSocket references (former master lines: support-chat, Phase 2 channels, per-app stack lines, Phase 5.0 prompt) -> SUPERSEDED by the Phase 5.0 ratified mandate: Laravel Reverb is the exclusive real-time driver (port 8080 / wss:// / BROADCAST_PORT). Zero Pusher / Socket.io occurrences remain in this file."
+  - "'Check Bootstrap/Tailwind responsive layouts' (former Phase 6 test line) -> SUPERSEDED by Phase 6.0 ratification: Tailwind CSS v4 only. Zero Bootstrap occurrences remain."
+  - "Offline-First POS 'Redis-to-PostgreSQL' synchronization (former AU BUSINESS POS line) -> SUPERSEDED by ratified dual-DB decision W-P33-1: AU BUSINESS POS sync targets the MySQL 8.4 core; PostgreSQL 16 is exclusively the AU MED clinical store."
+  - "JSON/JSONB dynamic-field option -> SUPERSEDED by the init-file Rule 7 superset: native MySQL 8.4 JSON only; JSONB strictly banned in core MySQL migrations (valid only inside the AU MED PostgreSQL store)."
+  - "Former Phase 3.x-era 13-agent numbering -> SUPERSEDED by the Phase 5.0/6.0 canonical matrix (2=CTO, 3=CMO Growth & Campaigns, 4=Vendor Success, 5=Customer Support, 7=CLO Legal & Compliance). Exact superseded titles (forensic reference): Agent 2 = AI Chief Strategy Officer (AI CSO — Market Hunter / صائد الفرص — Strategic Market Analyst & Demand Expansion Engine); Agent 3 = AI Chief Legal Counsel (AI CLC — The Legal Watchdog); Agent 4 = AI Chief Automation Architect (AI CAA — The Workflow Inventor); Agent 5 = AI Chief Marketing Officer (AI CMO — The Advertising Engine); Agent 7 = AI Vendor Success Officer (Partner Performance Analyst & Commercial Growth Advisor). Phase 4.0 drawer aliases superseded: CEO Swarm Coordinator, CFO Financial Ledger, COO Logistics & Operations, CPO Product & Taxonomy, CSO Security Sentinel, AU MED Medical Integrity, AU DEALS Market Orchestrator, DevOps & Code Sandbox Agent. Reassignment: Market Hunter / Deal Matching / Feasibility -> Agent 3; n8n/Make Workflow Inventor -> Agent 11. See Table 1.3."
+  - "Supabase in the primary stack -> SUPERSEDED: auxiliary-only (Vector Search / Realtime / isolated off-site backup-PITR vault), explicitly documented, never an ambiguous alternative or complement to the primary database."
+  - "'Laravel laravel 8.4' typo line (former Phase 5 prompt header) -> CORRECTED to Laravel 12 / PHP 8.4."
+  - "Project name variants ('ABD UNI Project' title-case, bare 'ABD UNI') -> UNIFIED to 'ABD UNI PROJECT' (display form) / 'abduniproject' (folder form)."
+  - "Application name variants (AUMED; AU Med / AU Deals / AU Serv / AU Invest / AU Business mixed-case; AU_DEALS / AU_SERV / AU_INVEST underscore identifiers) -> UNIFIED to space-form display + app_id values (AU MED, AU BUSINESS, AU DEALS, AU SERV, AU INVEST); PascalCase retained only for backend namespaces."
+  - "Arabic lam-alef ligature corruptions across the file (incl. the Final Test card) -> REPAIRED to proper ligatures."
+  - "Phase 0 registry, Module 9 agent matrix, Phase 3.1 card header + toggles, Phase 4.0 C-Suite drawer -> REWRITTEN to the canonical Table 1.3 registry."
+  - "Final Test Prompt 1 generic modules (former 'Users & Clients', 'Service Providers & B2B Entities', 'Bookings, Orders & Transactions' lines) -> REPLACED by project modules (Deals, Wallet, Escrow, EMR, Dispatch)."
+  - "Font pair drift 'Cairo/IBM Plex Sans' (Phases 4.0/6.0) -> UNIFIED to the Phase 3.0 token-set pair: Cairo / Tajawal (Arabic) + Inter (Latin/numerals)."
+  - "Embedded .arenarules (banner v2.1 + missing 'native Spatial' in the database line) -> UPDATED to v2.2 UNIFIED with the native Spatial mirror."
+  - "SCREEN 3 title 'SECURITY, DRM, DRM & POISON PILL VAULT' (duplicate DRM) -> CORRECTED to 'SECURITY, DRM & POISON PILL VAULT'."
+  - "Bare 'AES-256' in AU MED clinical lines -> UNIFIED to AES-256-GCM per Rule 6."
+  - "Undefined Reverb transport (no port/endpoint anywhere) -> DEFINED in B.10 (port 8080, wss://, BROADCAST_PORT) and added as a `reverb` container in the B.11 docker stack."
+  - "Historical notes preserved from the superseded registries: old Phase 0 Agent 2 (CSO) — the isolated 'Approve & Launch' UI action was '(formerly assigned to marketing optimization in early draft)'; old Phase 0 Agent 4 (CAA) — support ticket triage / routing / refund resolution was '(formerly referred to as customer support & workflow automation)' (functions now carried by Agent 5 - Customer Support Director). Former Phase 3.1 toggle names: Agent 2: Market Trend Analysis / Propose Regional Expansion (now on Agent 3); Agent 3: Audit Terms / Modify Terms of Service (now on Agent 7); Agent 4: Build n8n/Make Workflows / Deploy to Live Production (now 'Build n8n/Make Workflows' + 'Merge PR to Production' on Agent 11); Agent 5: Draft Ads / Execute Marketing Budget / Send External Emails / Draft Emails (now on Agent 3); Agent 7: Analyze Sales Conversions / Dispatch Guidance Briefs / Alter Vendor Tiers (now on Agent 4)."
+
+# CORRECTION LOG 2026-09-14 — MANDATORY GLOBAL CORRECTION 15→9 Modules
+# System canonical: 5 Applications (1 Core B2B AU BUSINESS + 4 B2C Spokes AU MED/AU DEALS/AU SERV/AU INVEST) | 13 Smart Agents | EXACTLY 9 MODULES (1-9)
+# Modules 10-15 (former Phase 2/4/5/6 infrastructure/frontend/backend/RBAC/Poison Pill/Test Suites) were NOT modules — they are Phase 2+ work packages / sub-systems under the 9 Modules, incorrectly counted.

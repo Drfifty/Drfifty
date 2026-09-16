@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="hybrid-obsidian-pearl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AU SERV — Dispatch Platform Preview — Arena Phase 3.6</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--obsidian:#09090b;--pearl:#FAFAFA;--pearl2:#F4F4F5;--border:#E4E4E7;--border-dark:#27272A;--emerald:#10B981;--cyan:#06B6D4;--amber:#F59E0B;--crimson:#EF4444}
+*{font-family:'Cairo','Tajawal','Inter',system-ui}
+.font-latin{font-family:'Inter',system-ui}
+.glass-obsidian-outer{background:rgba(9,9,11,.80);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(39,39,42,.9);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.glass-pearl-inner{background:rgba(250,250,250,.92);backdrop-filter:blur(12px);border:1px solid rgba(228,228,231,.95);box-shadow:0 6px 24px rgba(9,9,11,.08);color:#18181B}
+.glass-pearl-strong{background:rgba(250,250,250,.96);backdrop-filter:blur(16px);border:1px solid #E4E4E7}
+.metallic{position:relative;overflow:hidden}
+.metallic::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08),transparent 40%,transparent 62%,rgba(255,255,255,.04));pointer-events:none}
+.neon-cyan{box-shadow:0 0 16px rgba(6,182,212,.18)}
+.neon-amber{box-shadow:0 0 16px rgba(245,158,11,.18)}
+.neon-emerald{box-shadow:0 0 16px rgba(16,185,129,.18)}
+.neon-crimson{box-shadow:0 0 16px rgba(239,68,68,.18)}
+.prox{transition:all .18s}
+.prox:hover{transform:translateY(-1px)}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.float{animation:float 3.6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.shimmer{position:relative;overflow:hidden}
+.shimmer::before{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:shimmer 3.2s infinite}
+@keyframes shimmer{0%{left:-120%}60%{left:130%}100%{left:130%}}
+.axis-active{background:#FAFAFA;color:#09090b;border-color:#FAFAFA;box-shadow:0 4px 16px rgba(250,250,250,.25)}
+.axis-idle{background:transparent;border:1px solid rgba(250,250,250,.18);color:#A1A1AA}
+.axis-idle:hover{border-color:rgba(250,250,250,.45);color:#FAFAFA}
+.countdown-amber{color:#F59E0B;font-variant-numeric:tabular-nums}
+.countdown-crimson{color:#EF4444;font-variant-numeric:tabular-nums;animation:pulse 1s infinite}
+::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-thumb{background:#3F3F46;border-radius:99px}
+</style>
+</head>
+<body class="min-h-screen bg-[#09090b] text-[#FAFAFA] antialiased selection:bg-cyan-500/20">
+<canvas id="mesh" class="fixed inset-0 -z-10"></canvas>
+<div id="cursorGlow" class="pointer-events-none fixed inset-0 -z-10 opacity-30" style="background:radial-gradient(720px circle at var(--cx,50%) var(--cy,50%), rgba(6,182,212,.09), transparent 62%)"></div>
+
+<!-- Header -->
+<header class="sticky top-0 z-30">
+  <div class="bg-[#09090b]/88 backdrop-blur-md border-b border-[#27272A]">
+    <div class="max-w-[1280px] mx-auto px-4 lg:px-6 h-[64px] flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-[#FAFAFA] grid place-items-center font-black text-[#09090b] text-[11px] tracking-widest">AU SERV</div>
+      <div class="hidden sm:block">
+        <div class="text-[11px] tracking-[.14em] text-[#A1A1AA]">ABD UNI PROJECT — ARENA · FIELD SERVICES</div>
+        <div class="text-[14px] font-extrabold leading-none text-white">خدمات ميدانية <span class="font-latin text-[#A1A1AA] font-normal">· Spatial dispatch · 60s SOS · WebRTC</span></div>
+      </div>
+      <div class="ms-auto hidden lg:flex items-center gap-2">
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-emerald-500 text-white">مكتمل 1,240</span>
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-cyan-500 text-white">GIS حية</span>
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-amber-500 text-black">SOS 00:47</span>
+        <span class="text-[11px] px-2.5 py-1 rounded-full bg-[#FAFAFA] text-[#09090b] font-bold">ضمان 30d</span>
+      </div>
+      <button class="px-4 h-9 rounded-full bg-[#FAFAFA] text-[#09090b] text-[12px] font-bold hidden sm:inline-flex">لوحة الفني</button>
+    </div>
+  </div>
+  <div class="glass-obsidian-outer border-b border-[#27272A]/80">
+    <div class="max-w-[1280px] mx-auto px-4 lg:px-6 h-[54px] flex items-center gap-2 overflow-x-auto">
+      <span class="text-[11px] tracking-widest text-[#A1A1AA] whitespace-nowrap">4 مجالات</span>
+      <div id="axisSwitcher" class="flex gap-1.5 p-1 rounded-full bg-white/5 border border-white/10 ms-2">
+        <button data-axis="maintenance" class="axis-btn axis-active px-4 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap">صيانة وتشطيبات</button>
+        <button data-axis="education" class="axis-btn axis-idle px-4 py-1.5 rounded-full text-[12px] whitespace-nowrap">تعليم وكورسات</button>
+        <button data-axis="domestic" class="axis-btn axis-idle px-4 py-1.5 rounded-full text-[12px] whitespace-nowrap">خدمات منزلية</button>
+        <button data-axis="micro" class="axis-btn axis-idle px-4 py-1.5 rounded-full text-[12px] whitespace-nowrap">وظائف مصغرة</button>
+      </div>
+      <div class="ms-auto flex items-center gap-2">
+        <span class="hidden md:inline-flex items-center gap-1.5 rounded-full bg-white text-[#09090b] px-3 py-1.5 text-[11px] font-bold"><span class="w-2 h-2 rounded-full bg-emerald-500 pulse"></span> رادار حي 3-5km <span class="font-latin text-[#71717A]">ST_Distance_Sphere</span></span>
+        <button class="w-9 h-9 rounded-full bg-white text-[#09090b] grid place-items-center">🎯</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1280px] mx-auto px-4 lg:px-6 py-5 lg:py-6">
+  <!-- Outer obsidian container example -->
+  <section class="glass-obsidian-outer rounded-[18px] p-4 lg:p-5 metallic">
+    <div class="flex items-center gap-2 mb-3">
+      <h2 class="text-[13px] font-extrabold text-white">خريطة الإرسال الحية — رادار مكاني + حركة فنيين</h2>
+      <span class="ms-auto text-[11px] px-2.5 py-1 rounded-full bg-cyan-500 text-white neon-cyan">presence-serv.Cairo · 60s حلقة</span>
+    </div>
+    <!-- Inner pearl cards highlight -->
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12 lg:col-span-8 rounded-[16px] overflow-hidden border border-[#E4E4E7] bg-[#09090b] relative h-[320px]">
+        <div class="absolute inset-0 opacity-[0.08]" style="background: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px); background-size: 28px 28px"></div>
+        <!-- coverage geofence -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] rounded-full border border-cyan-500/25 bg-cyan-500/5"></div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full border border-emerald-500/25 bg-emerald-500/5"></div>
+        <!-- customer -->
+        <div class="absolute left-[54%] top-[52%] -translate-x-1/2 -translate-y-1/2">
+          <div class="w-10 h-10 rounded-full bg-amber-500 border-2 border-white grid place-items-center text-[11px] font-bold text-black">العميل</div>
+          <div class="text-[10px] text-amber-300 mt-1 font-latin text-center">job POINT 50m</div>
+        </div>
+        <!-- technicians -->
+        <div id="tech1" class="absolute w-8 h-8 rounded-full bg-cyan-500 border-2 border-white grid place-items-center text-[11px] shadow-[0_0_14px_rgba(6,182,212,.6)]" style="left:22%; top:22%">🔧</div>
+        <div id="tech2" class="absolute w-8 h-8 rounded-full bg-[#FAFAFA] border-2 border-cyan-500 grid place-items-center text-[11px]" style="left:72%; top:30%">🧹</div>
+        <div id="tech3" class="absolute w-8 h-8 rounded-full bg-emerald-500 border-2 border-white grid place-items-center text-[11px]" style="left:68%; top:68%">🎓</div>
+        <svg class="absolute inset-0 w-full h-full pointer-events-none"><path id="routePath" d="M 95 70 Q 180 110 235 145" stroke="#06B6D4" stroke-width="2" stroke-dasharray="6 6" fill="none" opacity=".9"/></svg>
+        <!-- geofence 50m indicator -->
+        <div class="absolute bottom-2 start-2 glass-pearl-inner rounded-full px-3 py-1.5 text-[11px] flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 pulse"></span> فني تكييف — <span id="etaText" class="font-latin text-emerald-700 font-bold">ETA 06:12</span> · Agent 8
+          <span id="geofenceBadge" class="ms-2 px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px]">50m ✓ وصول</span>
+        </div>
+        <div class="absolute top-2 end-2 glass-pearl-inner rounded-xl px-3 py-2 text-[11px]">
+          <div class="font-bold text-[#09090b]">طلب SOS طوارئ — سباكة</div>
+          <div class="font-latin text-[#71717A]">3.2km · 60s قبول</div>
+          <div class="mt-1 w-full h-1.5 rounded-full bg-[#F4F4F5] overflow-hidden"><div id="sosProgress" class="h-full bg-amber-500" style="width:78%"></div></div>
+        </div>
+        <!-- scanner line -->
+        <div id="scanner" class="absolute left-1/2 top-1/2 w-[50%] h-[1px] bg-gradient-to-r from-transparent to-cyan-400 origin-left" style="transform:rotate(15deg)"></div>
+      </div>
+      <!-- Right inner pearl panel: job lifecycle + two-tier -->
+      <div class="col-span-12 lg:col-span-4 space-y-3">
+        <div class="glass-pearl-inner rounded-[14px] p-3">
+          <div class="text-[12px] font-extrabold text-[#09090b]">دورة حياة الطلب — 7 حالات</div>
+          <div class="mt-2 grid grid-cols-7 gap-1 text-[9px] text-center">
+            <div class="rounded-lg bg-emerald-500 text-white p-1.5"><div>طلب</div><div>✓</div></div>
+            <div class="rounded-lg bg-emerald-500 text-white p-1.5"><div>تعيين</div><div>✓</div></div>
+            <div class="rounded-lg bg-cyan-500 text-white p-1.5 animate-pulse"><div>في الطريق</div><div>●</div></div>
+            <div class="rounded-lg bg-white border border-[#E4E4E7] p-1.5"><div>وصول</div><div class="text-[#71717A]">50m</div></div>
+            <div class="rounded-lg bg-white border p-1.5 opacity-60"><div>معاينة</div></div>
+            <div class="rounded-lg bg-white border p-1.5 opacity-60"><div>OTP</div></div>
+            <div class="rounded-lg bg-white border p-1.5 opacity-60"><div>مكتمل</div></div>
+          </div>
+          <div class="mt-2 flex gap-1.5">
+            <button class="flex-1 h-8 rounded-full bg-emerald-500 text-white text-[11px] font-bold">وصول — تحقق 50m</button>
+            <button class="px-3 h-8 rounded-full bg-white border border-[#E4E4E7] text-[11px]">إثبات وصول</button>
+          </div>
+          <div class="mt-1 text-[10px] font-latin text-[#71717A]">VerifyGeofenceProximity 50m ST_Distance_Sphere — Agent13 مكافحة انتحال</div>
+        </div>
+        <div class="glass-pearl-inner rounded-[14px] p-3 border-amber-500/20">
+          <div class="text-[12px] font-extrabold text-[#09090b]">اسكرو ثنائي المستوى — app_wallet</div>
+          <div class="mt-2 space-y-1.5 text-[11px]">
+            <div class="flex justify-between p-2 rounded-xl bg-[#F4F4F5] border border-[#E4E4E7]"><span>المستوى 1 — رسوم معاينة</span><span class="font-latin font-bold">500</span><span class="px-2 py-0.5 rounded-full bg-amber-500 text-black">محجوز</span></div>
+            <div class="flex justify-between p-2 rounded-xl bg-white border border-[#E4E4E7]"><span>المستوى 2 — إجمالي مقايسة (عمل+قطع)</span><span class="font-latin font-bold" id="tier2Val">2,200</span><span class="px-2 py-0.5 rounded-full bg-white border">بانتظار موافقة</span></div>
+            <div class="flex justify-between p-2 rounded-xl bg-emerald-500 text-white"><span>ضمان مصنعية 30 يوم 10%</span><span class="font-latin font-bold">220</span><span class="text-[10px]">30d</span></div>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-1.5">
+            <button class="h-8 rounded-full bg-[#09090b] text-white text-[11px] font-bold">عرض مقايسة — موافقة 24h</button>
+            <span class="text-[10px] px-2 py-1 rounded-full bg-white border text-center">EnforceServiceEscrowLock</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOS simulator + Calculator + Virtual classroom -->
+  <div class="grid grid-cols-12 gap-4 mt-4">
+    <section class="col-span-12 lg:col-span-4 glass-obsidian-outer rounded-[16px] p-4 metallic">
+      <h3 class="text-[13px] font-extrabold text-white flex items-center gap-2">محاكي طوارئ SOS — 60 ثانية <span class="w-2 h-2 rounded-full bg-amber-500 pulse"></span></h3>
+      <div class="mt-3 glass-pearl-inner rounded-[14px] p-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-crimson text-white grid place-items-center">🚨</div>
+          <div class="flex-1"><div class="text-[12px] font-bold">تسريب مياه — طوارئ</div><div class="text-[11px] font-latin text-[#71717A]">3.1km · 3 فنيين قريبين</div></div>
+          <div id="sosCountdown" class="font-latin font-extrabold text-[18px] countdown-amber">00:47</div>
+        </div>
+        <div class="mt-2 h-1.5 rounded-full bg-[#F4F4F5] overflow-hidden"><div id="sosBar" class="h-full bg-amber-500" style="width:78%"></div></div>
+        <div class="mt-2 grid grid-cols-3 gap-1.5 text-[11px]">
+          <div class="rounded-xl bg-white border border-[#E4E4E7] p-2 text-center"><div class="font-bold">فني 1</div><div class="font-latin text-[#71717A]">1.1km</div><div class="mt-1 w-full h-1 rounded-full bg-amber-500"></div><div class="text-[10px]">بانتظار</div></div>
+          <div class="rounded-xl bg-white border border-emerald-500 p-2 text-center"><div class="font-bold text-emerald-700">فني 2 ✓</div><div class="font-latin">1.4km ETA 5m</div><div class="mt-1 text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500 text-white">قبل</div></div>
+          <div class="rounded-xl bg-white border border-[#E4E4E7] p-2 text-center opacity-60"><div class="font-bold">فني 3</div><div class="font-latin">2.0km</div><div class="text-[10px]">إعادة توجيه</div></div>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <button id="acceptSos" class="flex-1 h-9 rounded-full bg-emerald-500 text-white text-[12px] font-bold">قبول — إرسال فني</button>
+          <button id="escalateSos" class="px-3 h-9 rounded-full bg-white border border-[#E4E4E7] text-[11px]">تصعيد 60s</button>
+        </div>
+        <div class="mt-1 text-[10px] font-latin text-[#71717A]">provider_reassignment_queues attempt 2/5 · Agent8 إعادة توجيه تلقائي</div>
+      </div>
+      <div class="mt-3 glass-pearl-inner rounded-[14px] p-3">
+        <div class="text-[12px] font-bold text-[#09090b]">تحقق وصول — سياج 50 متر</div>
+        <div class="mt-2 flex items-center gap-2">
+          <div class="flex-1 h-9 rounded-full bg-white border border-[#E4E4E7] flex items-center px-3 text-[11px]"><span>المسافة الحالية</span><span id="distVal" class="ms-auto font-latin font-bold text-emerald-600">32m ✓</span></div>
+          <span id="geofenceStatus" class="px-3 py-1.5 rounded-full bg-emerald-500 text-white text-[11px]">داخل السياج</span>
+        </div>
+        <div class="mt-1 text-[10px] font-latin text-[#71717A]">RequireJobProofUpload pre/post + ST_Within coverage_geofence</div>
+      </div>
+    </section>
+
+    <section class="col-span-12 lg:col-span-4 glass-obsidian-outer rounded-[16px] p-4 metallic">
+      <h3 class="text-[13px] font-extrabold text-white">حاسبة مقايسة ثنائية المستوى</h3>
+      <div class="mt-3 glass-pearl-inner rounded-[14px] p-3">
+        <div class="text-[11px] font-bold text-[#09090b]">معاينة + مقايسة عمل وقطع</div>
+        <div class="mt-2 space-y-2">
+          <div class="flex justify-between items-center p-2 rounded-xl bg-[#F4F4F5] border border-[#E4E4E7] text-[11px]"><span>رسوم معاينة (Tier1)</span>
+            <input id="inspectInput" type="number" value="500" class="w-20 h-7 rounded-full bg-white border border-[#E4E4E7] px-2 font-latin text-center text-[11px]"/>
+          </div>
+          <div class="rounded-xl bg-white border border-[#E4E4E7] p-2">
+            <div class="text-[11px] font-bold">بنود عمل</div>
+            <div class="mt-1 flex gap-1.5"><input id="laborDesc" value="تركيب خلاط" class="flex-1 h-8 rounded-full bg-[#F4F4F5] border px-3 text-[11px]"/><input id="laborPrice" type="number" value="800" class="w-20 h-8 rounded-full bg-white border px-2 font-latin text-[11px]"/><button id="addLabor" class="w-8 h-8 rounded-full bg-[#09090b] text-white">+</button></div>
+            <div id="laborList" class="mt-1 space-y-1 text-[11px] font-latin"><div class="flex justify-between bg-[#F4F4F5] p-1.5 rounded">تركيب خلاط — 800</div></div>
+          </div>
+          <div class="rounded-xl bg-white border border-[#E4E4E7] p-2">
+            <div class="text-[11px] font-bold">قطع غيار</div>
+            <div class="mt-1 flex gap-1.5"><input id="partDesc" value="خلاط جروهي" class="flex-1 h-8 rounded-full bg-[#F4F4F5] border px-3 text-[11px]"/><input id="partPrice" type="number" value="900" class="w-20 h-8 rounded-full bg-white border px-2 font-latin text-[11px]"/><button id="addPart" class="w-8 h-8 rounded-full bg-[#09090b] text-white">+</button></div>
+            <div id="partList" class="mt-1 space-y-1 text-[11px] font-latin"><div class="flex justify-between bg-[#F4F4F5] p-1.5 rounded">خلاط جروهي — 900</div></div>
+          </div>
+          <div class="p-2 rounded-xl bg-[#09090b] text-white flex justify-between text-[11px]"><span>إجمالي مقايسة Tier2</span><span class="font-latin font-bold text-amber-400" id="totalEstimate">2,200</span></div>
+          <div class="flex gap-2">
+            <button class="flex-1 h-9 rounded-full bg-amber-500 text-black text-[12px] font-bold">إرسال مقايسة — تنتهي 24h</button>
+            <span class="px-2 py-1 rounded-full bg-white border text-[10px] text-center">Agent1 94% عادل</span>
+          </div>
+          <div class="text-[10px] font-latin text-[#71717A]">Tier1 محجوز → Tier2 بعد موافقة العميل + EnforceServiceEscrowLock</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="col-span-12 lg:col-span-4 glass-obsidian-outer rounded-[16px] p-4 metallic">
+      <h3 class="text-[13px] font-extrabold text-white">فصل افتراضي WebRTC — سبورة</h3>
+      <div class="mt-3 glass-pearl-inner rounded-[14px] p-3">
+        <div class="rounded-xl overflow-hidden border border-[#E4E4E7] bg-[#09090b] h-[140px] grid grid-cols-2 gap-1 p-1">
+          <div class="rounded-lg bg-[#18181B] grid place-items-center text-white text-[11px]">المعلم<br/>🎥</div>
+          <div class="rounded-lg bg-white grid place-items-center text-[#09090b] text-[11px]">الطالب<br/>🎥</div>
+          <div class="col-span-2 rounded-lg bg-white h-[48px] flex items-center px-2 gap-1.5"><span class="w-6 h-6 rounded bg-[#09090b] text-white grid place-items-center text-[10px]">✏️</span><span class="text-[11px] font-bold">سبورة</span><span class="flex-1 h-1 rounded-full bg-[#F4F4F5]"></span><span class="w-6 h-6 rounded bg-cyan-500 text-white grid place-items-center">⎙</span><span class="w-6 h-6 rounded bg-crimson text-white grid place-items-center">●</span></div>
+        </div>
+        <div class="mt-2 flex gap-1.5">
+          <button class="flex-1 h-8 rounded-full bg-cyan-500 text-white text-[11px] font-bold">انضمام غرفة</button>
+          <button class="px-3 h-8 rounded-full bg-white border border-[#E4E4E7] text-[11px]">مشاركة شاشة</button>
+          <span class="px-2 py-1 rounded-full bg-[#F4F4F5] text-[11px]">presence-classroom</span>
+        </div>
+        <div class="mt-2 p-2 rounded-xl bg-[#F4F4F5] border border-[#E4E4E7] text-[11px]"><div class="font-bold">نسخ محفوظ تلقائي — خزنة الطالب</div><div class="font-latin text-[#71717A]">whiteboard_state JSON + transcription hash</div><div class="mt-1 h-1.5 rounded-full bg-white overflow-hidden"><div class="h-full w-[64%] bg-cyan-500"></div></div></div>
+        <div class="mt-1 text-[10px] font-latin text-[#71717A]">virtual_classroom_vaults reverb wss:// presence-classroom</div>
+      </div>
+      <div class="mt-3 glass-pearl-inner rounded-[14px] p-3">
+        <div class="text-[11px] font-bold text-[#09090b]">تحقق خلفية مقدم الخدمة — Agent 7</div>
+        <div class="mt-1 grid grid-cols-3 gap-1.5 text-[10px] text-center">
+          <div class="rounded-xl bg-emerald-500 text-white p-2"><div>فيش جنائي</div><div>✓</div></div>
+          <div class="rounded-xl bg-emerald-500 text-white p-2"><div>رخصة مهارة</div><div>✓</div></div>
+          <div class="rounded-xl bg-emerald-500 text-white p-2"><div>ضامن</div><div>✓</div></div>
+        </div>
+        <div class="mt-1 text-[10px] font-latin text-[#71717A]">Hard-blocked بدون موافقة Super Admin — Agent7</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Tutoring schedule + Agents -->
+  <div class="grid grid-cols-12 gap-4 mt-4">
+    <section class="col-span-12 lg:col-span-7 glass-obsidian-outer rounded-[16px] p-4">
+      <h3 class="text-[13px] font-extrabold text-white">جدولة دروس وكورسات — حضور/أونلاين + تتبع زمني</h3>
+      <div class="mt-3 grid grid-cols-7 gap-1.5 text-[11px] text-center">
+        <div class="rounded-xl bg-[#FAFAFA] text-[#09090b] p-2 font-bold">السبت<br/>10:00</div>
+        <div class="rounded-xl bg-white/10 border border-white/20 text-white p-2">الأحد<br/>14:00</div>
+        <div class="rounded-xl bg-cyan-500 text-white p-2">الإثنين<br/>16:00<br/>أونلاين</div>
+        <div class="rounded-xl bg-white/10 border border-white/20 text-white p-2">الثلاثاء<br/>10:00</div>
+        <div class="rounded-xl bg-white/10 border border-white/20 text-white p-2">الأربعاء<br/>15:00</div>
+        <div class="rounded-xl bg-amber-500 text-black p-2">الخميس<br/>11:00</div>
+        <div class="rounded-xl bg-white/10 border border-white/20 text-white p-2">الجمعة<br/>—</div>
+      </div>
+      <div class="mt-3 glass-pearl-inner rounded-[14px] p-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#09090b] text-white grid place-items-center">⏱️</div>
+        <div class="flex-1"><div class="text-[12px] font-bold">تتبع زمني بالساعة — درس خصوصي 90 د</div><div class="text-[11px] font-latin text-[#71717A]">service_time_tracking_logs start/stop GPS 15/hr</div></div>
+        <div class="font-latin font-extrabold text-[18px] text-[#09090b]" id="timerVal">01:23:44</div>
+        <button id="timerToggle" class="px-3 h-8 rounded-full bg-emerald-500 text-white text-[11px]">إيقاف مؤقت</button>
+      </div>
+    </section>
+    <section class="col-span-12 lg:col-span-5 glass-obsidian-outer rounded-[16px] p-4">
+      <h3 class="text-[13px] font-extrabold text-white">وكلاء AU SERV — مدمج</h3>
+      <div class="mt-3 grid grid-cols-2 gap-2 text-[11px]">
+        <div class="glass-pearl-inner rounded-xl p-2 border-cyan-500/20"><div class="font-bold text-cyan-700">● Agent 8 — Dispatch</div><div class="text-[#71717A] mt-1">توجيه مكاني + رادار + إعادة 60s</div></div>
+        <div class="glass-pearl-inner rounded-xl p-2 border-emerald-500/20"><div class="font-bold text-emerald-700">● Agent 1 — CFO</div><div class="text-[#71717A] mt-1">تسعير + اسكرو ثنائي + درع قبل/بعد</div></div>
+        <div class="glass-pearl-inner rounded-xl p-2 border-blue-500/20"><div class="font-bold text-blue-700">● Agent 7 — CLO</div><div class="text-[#71717A] mt-1">فحص جنائي + شارة مهارة</div></div>
+        <div class="glass-pearl-inner rounded-xl p-2 border-red-500/20"><div class="font-bold text-red-600">● Agent 13 — Fraud</div><div class="text-[#71717A] mt-1">Sybil + انتحال سياج 50m</div></div>
+      </div>
+      <div class="mt-2 p-2 rounded-xl bg-white border border-[#E4E4E7] text-[11px] flex items-center gap-2"><span>ضمان مصنعية 30 يوم 10%</span><span class="ms-auto font-latin font-bold">220 محجوز</span><span class="px-2 py-0.5 rounded-full bg-amber-500 text-black">30d</span></div>
+    </section>
+  </div>
+
+  <div class="mt-6 text-center text-[11px] text-[#A1A1AA] font-latin">Arena · Phase 3.6 AU SERV — Hybrid Obsidian-Pearl outer #09090b/80 + inner #FAFAFA/92 · particle grid 42 + proximity --cx/--cy · Reverb 8080</div>
+</main>
+
+<script>
+// mesh obsidian
+const c=document.getElementById('mesh'),x=c.getContext('2d'); let w,h,pts=[];
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+addEventListener('resize',resize);resize();
+pts=Array.from({length:42},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32}));
+(function loop(){ x.clearRect(0,0,w,h); x.strokeStyle='rgba(6,182,212,.07)'; x.fillStyle='rgba(250,250,250,.05)';
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy; if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1; x.beginPath();x.arc(p.x,p.y,1.2,0,Math.PI*2);x.fill();
+    pts.forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y); if(d<130){x.globalAlpha=.07*(1-d/130);x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke();x.globalAlpha=1}})
+  }); requestAnimationFrame(loop)})();
+addEventListener('mousemove',e=>{
+  document.documentElement.style.setProperty('--cx', e.clientX+'px');
+  document.documentElement.style.setProperty('--cy', e.clientY+'px');
+});
+// axis switch
+document.querySelectorAll('.axis-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.axis-btn').forEach(o=>{o.className='axis-btn axis-idle px-4 py-1.5 rounded-full text-[12px] whitespace-nowrap'});
+    b.className='axis-btn axis-active px-4 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap';
+  })
+});
+// SOS 60s
+let sosSec=47;
+const sosEl=document.getElementById('sosCountdown'), sosBar=document.getElementById('sosBar'), sosProg=document.getElementById('sosProgress');
+let sosTimer=setInterval(()=>{
+  sosSec--;
+  if(sosSec<0){ sosSec=0; clearInterval(sosTimer); }
+  const m=String(Math.floor(sosSec/60)).padStart(2,'0'), s=String(sosSec%60).padStart(2,'0');
+  if(sosEl) sosEl.textContent=`00:${m}:${s}`;
+  const pct=Math.round(sosSec/60*100);
+  if(sosBar) sosBar.style.width=pct+'%';
+  if(sosProg) sosProg.style.width=pct+'%';
+},1000);
+document.getElementById('acceptSos')?.addEventListener('click',()=>{
+  clearInterval(sosTimer);
+  document.getElementById('sosCountdown').textContent='تم القبول ✓';
+  document.getElementById('sosCountdown').className='font-latin font-extrabold text-[16px] text-emerald-500';
+});
+document.getElementById('escalateSos')?.addEventListener('click',()=>{
+  sosSec=60;
+  sosEl.textContent='00:60';
+  sosEl.className='font-latin font-extrabold text-[18px] countdown-amber';
+});
+// technician movement
+let t=0; setInterval(()=>{
+  t+=0.015;
+  const tech1=document.getElementById('tech1');
+  if(tech1){ tech1.style.left=(22 + Math.sin(t)*3 + t*0.6)%74 + '%'; tech1.style.top=(22 + Math.cos(t*0.9)*2)+'%'; }
+  const eta=document.getElementById('etaText');
+  if(eta){ const sec=372 - Math.floor(t*10)%180; const m=String(Math.floor(sec/60)).padStart(2,'0'), s=String(sec%60).padStart(2,'0'); eta.textContent=`ETA ${m}:${s}`; }
+  const dist=document.getElementById('distVal');
+  if(dist){ const d=Math.round(32 + Math.sin(t*1.2)*6); dist.textContent=d+'m '+(d<=50?'✓':'✗'); dist.className=d<=50?'ms-auto font-latin font-bold text-emerald-600':'ms-auto font-latin font-bold text-crimson'; document.getElementById('geofenceBadge').textContent=d<=50?'50m ✓ وصول':'50m ✗ خارج';
+    document.getElementById('geofenceBadge').className=d<=50?'ms-2 px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px]':'ms-2 px-2 py-0.5 rounded-full bg-crimson text-white text-[10px]';
+  }
+},80);
+// calculator
+function recalcTotal(){
+  const inspect=parseInt(document.getElementById('inspectInput').value)||0;
+  let laborSum=0, partSum=0;
+  document.querySelectorAll('#laborList div').forEach(d=>{ const m=d.textContent.match(/—\s*(\d+)/); if(m) laborSum+=parseInt(m[1]); });
+  document.querySelectorAll('#partList div').forEach(d=>{ const m=d.textContent.match(/—\s*(\d+)/); if(m) partSum+=parseInt(m[1]); });
+  const total=laborSum+partSum;
+  document.getElementById('totalEstimate').textContent=total.toLocaleString();
+  document.getElementById('tier2Val').textContent=total.toLocaleString();
+}
+document.getElementById('addLabor')?.addEventListener('click',()=>{
+  const desc=document.getElementById('laborDesc').value||'عمل';
+  const price=parseInt(document.getElementById('laborPrice').value)||0;
+  const div=document.createElement('div'); div.className='flex justify-between bg-[#F4F4F5] p-1.5 rounded'; div.textContent=desc+' — '+price;
+  document.getElementById('laborList').appendChild(div); recalcTotal();
+});
+document.getElementById('addPart')?.addEventListener('click',()=>{
+  const desc=document.getElementById('partDesc').value||'قطعة';
+  const price=parseInt(document.getElementById('partPrice').value)||0;
+  const div=document.createElement('div'); div.className='flex justify-between bg-[#F4F4F5] p-1.5 rounded'; div.textContent=desc+' — '+price;
+  document.getElementById('partList').appendChild(div); recalcTotal();
+});
+document.getElementById('inspectInput')?.addEventListener('input', recalcTotal);
+// scanner rotate
+let deg=15; setInterval(()=>{deg=(deg+1.1)%360; const sc=document.getElementById('scanner'); if(sc) sc.style.transform=`rotate(${deg}deg)`},30);
+// timer
+let tsec=5024, paused=false;
+setInterval(()=>{
+  if(!paused){ tsec++; const h=String(Math.floor(tsec/3600)).padStart(2,'0'), m=String(Math.floor(tsec%3600/60)).padStart(2,'0'), s=String(tsec%60).padStart(2,'0'); const el=document.getElementById('timerVal'); if(el) el.textContent=`${h}:${m}:${s}`; }
+},1000);
+document.getElementById('timerToggle')?.addEventListener('click',function(){
+  paused=!paused; this.textContent=paused?'استئناف':'إيقاف مؤقت'; this.className=paused?'px-3 h-8 rounded-full bg-amber-500 text-black text-[11px]':'px-3 h-8 rounded-full bg-emerald-500 text-white text-[11px]';
+});
+</script>
+</body>
+</html>

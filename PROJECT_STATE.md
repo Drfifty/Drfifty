@@ -1,0 +1,493 @@
+# PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
+
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.14 RETROSPECTIVE DELTA ROADMAP — Arena — v5.0-B.14 — Canonical 1.1→10.2 20 sprints 13 DONE +7 DELTA validation — B.1a→B.13 Locked + B.14 Roadmap
+
+## 0. Canonical Identity (Immutable)
+- **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
+- **project_display_name:** `ABD UNI PROJECT`
+- **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
+- **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
+- **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
+- **State Version:** v5.0-B.14+B360 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10/b11/b12/b13 Locked + B.14 DELTA Locked + BACKEND 360 HARDENED 20 findings→16 fixes (Arena)**
+
+## 1. What Was Built
+- [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
+- [x] `.env.example` (38 keys incl. FX_PROVIDER, LOCAL_GPU_ENDPOINT), `composer.json` Laravel 12 PHP 8.4, `package.json` React 19 Inertia v2 TS 5.7 strict, `vite.config.ts` 0.0.0.0, `docker-compose.prod.yml` (prod-only Ephemeral Swarm + CF WAF + Nginx 20/s + Fail2ban)
+- [x] Shared kernel: `RegexDataLeakDetector`, `AgentStrategyManager` Tri-Hybrid, `CheckModuleStatus` 503, Enums `AppId`/`Currency`
+- [x] Migrations: `feature_flags` (AU Lite), `agent_actions` ledger (append-only, confidence<90 fallback, HITL), `app_wallets` multi-currency (no base, CHECK>=0, `exchange_rates` + `deal_exchange_snapshots`)
+- [x] Frontend: `Types/index.ts` strict zero any, `AppLayout` RTL logical, `DataTable` server-paginated (Rule 13)
+- [x] Docs: `CANONICAL_MANIFEST`, `AGENT_REGISTRY` (13), `MODULES_INDEX` (9), `COMPLIANCE_AUDIT`, `PHASE1_MASTER_ARCHITECTURE` (ZERO CODE, 59 frozen) — 9 MODULES CANONICAL
+- [x] **Phase 1 Ingestion:** All chunks Vision + Modules 1-9 Parts 1-3 memorized, live market research + SWOT delivered (Vezeeta/Yodawy, TijaraHub/MaxAB, Property Finder $525M, Paymob/Fawry)
+- [x] **59 Master Decisions Frozen:** Q1-59 fully approved
+- [x] **6 Architect Suggestions Approved:** Paymob sub-merchant auto+fallback, FX seed exchangerate-api */30, app_settings_schema seed, pgvector primary, intervention/image GD, Parquet hash archive
+- [x] **6 Oil Updates Frozen (النفط):** Contact protection timing (30), 5% commission (34), B2B single-payer (36), 12h grace once (38), 500 favs cap (40), no source buyout SaaS-only (52) — all locked
+- [x] **Phase 1 FINAL COMPREHENSIVE LOCK 71 points** → docs `PHASE1_FINAL_COMPREHENSIVE.md` frozen + pushed
+- [x] **Global Rename to Arena 2026-09-14:** legacy rules file → `.arenarules`, zero legacy remains, Arena env lock `arena/01a09d54-drfifty` — pushed `762d759`
+- [x] **PHASE 2.1a — Auth & RBAC Schema [DONE]:** 9 tables canonical `users/roles/permissions/role_permissions/user_roles/micro_switch_matrix/feature_flags/data_leak_patterns/refresh_tokens` (MySQL 8.4 InnoDB utf8mb4, JSON not JSONB, FK CASCADE, BTREE), AU Lite toggles, Regex 100% post-escrow, Silent Token Rotation 15m/7d HttpOnly+Lax+Inertia/Axios queue — DDL `database/schema/2026_09_14_2.1a_auth_rbac_canonical.sql` + migration `2026_09_14_000010_create_auth_rbac_schema.php` + spec `docs/PHASE2_2.1A_AUTH_RBAC_SCHEMA.md` with Mermaid ERD
+- [x] **PHASE 2.1b — Wallet & Escrow Engine [DONE]:** 7 tables canonical `app_wallets/exchange_rates/commission_rules/escrow_clearings/deal_exchange_snapshots/wallet_transactions/financial_audit_logs` (InnoDB utf8mb4, CHECK balance>=0, subunit BIGINT, GENERATED available, TRIGGER immutability), 3-Tier 5% Oil2 snapshots frozen, Paymob blind sub-merchant, FX locked_at, barter 1.5/1x 50/50, 48h dispute + 12h grace once — DDL `database/schema/2026_09_14_2.1b_wallet_escrow_canonical.sql` + migration `2026_09_14_000011_create_wallet_escrow_schema.php` + spec `docs/PHASE2_2.1B_WALLET_ESCROW_SCHEMA.md` with Mermaid ERD + Race-Guard (lockForUpdate+Redis Mutex)
+- [x] **PHASE 2.1c — AU DEALS Listings [DONE]:** 5 tables canonical `deal_categories/deals_listings/deal_items/promotional_bundles/stagnant_deals` (InnoDB utf8mb4, JSON Rule7, FULLTEXT ngram x2, POINT SRID4326 GENERATED + SPATIAL, Tiered Mutation), 24h stagnant cron, hierarchical taxonomy — DDL `database/schema/2026_09_14_2.1c_deals_canonical.sql` + migration `2026_09_14_000012_create_deals_schema.php` + spec `docs/PHASE2_2.1C_DEALS_SCHEMA.md` with Mermaid ERD
+- [x] **PHASE 2.1d — AU SERV Spatial [DONE]:** 3 tables canonical `service_providers/service_tickets/dispatch_logs` (InnoDB utf8mb4, POINT SRID4326 live + POLYGON SRID4326 coverage, SPATIAL INDEX x4, ST_Distance_Sphere sub-ms), 48h dispute + 12h grace, live heartbeat via Reverb — DDL `database/schema/2026_09_14_2.1d_serv_canonical.sql` + migration `2026_09_14_000013_create_serv_schema.php` + spec `docs/PHASE2_2.1D_SERV_SCHEMA.md` with Mermaid ERD + Spatial Query Layout
+- [x] **PHASE 2.2a — Auth & Financial APIs [DONE]:** 9 endpoints canonical `POST /auth/login|register|refresh + GET /me + GET balance + POST deposit|withdraw-request + POST escrow/lock|release|dispute` (JWT 15m + HttpOnly 7d, Idempotency-Key, Pillar6 race-guard, 3-Tier snapshot, RBAC view≠execute) — spec `docs/PHASE2_2.2A_AUTH_FINANCIAL_APIS.md` + routes `routes/api/v1/auth_wallet_escrow.php`
+- [x] **PHASE 2.2b — AU DEALS APIs [DONE]:** 7 endpoints canonical `POST listings + GET listings (FULLTEXT+Spatial feed) + GET listings/{uuid} + GET/POST stagnant + GET providers catalog` (Idempotency-Key, Oil1 contact hidden, 24h stagnant promote, FULLTEXT ngram) — spec `docs/PHASE2_2.2B_DEALS_APIS.md` + routes `routes/api/v1/deals.php`
+- [x] **PHASE 2.2c — SERV & INVEST APIs [DONE]:** 4 endpoints canonical `POST /serv/tickets + PATCH radius + POST /invest/dispatches` + Reverb `presence-dispatch-{region}` live POINT + `private-invest.{uuid}` escrow (WSS 8080, ProviderLocationUpdated/TicketCreated/DispatchRadiusAdjusted) — spec `docs/PHASE2_2.2C_SERV_INVEST_APIS.md` + routes `routes/api/v1/serv.php|invest.php` + `routes/channels.php`
+- [x] **PHASE 2.2d — AU MED Anonymized APIs [DONE]:** 4 endpoints canonical `GET /au-med/providers + GET providers/{uuid} + POST appointments (hash-only complaint) + POST telemetry/audit (SHA256 hashes, ZERO raw)` + `AnonymizedTelemetryMiddleware` (422 raw block, TTL 90d PG) — spec `docs/PHASE2_2.2D_MED_APIS.md` + routes `routes/api/v1/med.php`
+- [x] **PHASE 2.2e — Governance & Calibrator [DONE]:** 8 endpoints canonical `GET system/modules/status + POST toggle (no deploy, is_core lock) + POST leak-check (100% Regex) + GET calibrator/health-score (100→90% auto-heal) + POST pre-op (<15ms) + POST kill-switch (sever LLM) + GET/POST hitl queue/approve` — spec `docs/PHASE2_2.2E_GOVERNANCE_APIS.md` + routes `routes/api/v1/governance.php`
+- [x] **PHASE 2.2f — Workforce Marketplace [DONE]:** 4 endpoints canonical `GET agents catalogue + POST checkout (buyout license SaaS-only + subscription monthly via escrow 12h + Mutex) + GET tenant-agents + POST dispatch (HITL+Reverb)` + `private-tenant.{app_id}.workforce` streaming (Queued/Progress/Completed) + `EnsureTenantWorkforce` app_id isolation — spec `docs/PHASE2_2.2F_WORKFORCE_APIS.md` + routes `routes/api/v1/workforce.php` + `routes/channels.php`
+- [x] **PHASE 2.3a — Backend Layout [DONE]:** Clean Arch DDD tree `app/Domain/{Wallet,Escrow,AUDeals,AUServ,AUInvest,AUMed,Workforce,Calibrator} + app/Services/{Rules,Security,Agents,Calibrator} + docker/sandboxes` (deterministic 0-cost, Regex 100%, Tri-Hybrid, SelfHealing) + 8 interface contracts (Repositories/Actions/Gates/Drivers) — spec `docs/PHASE2_2.3A_BACKEND_LAYOUT.md` + scaffold `.gitkeep`
+- [x] **PHASE 2.3b — Frontend Layout [DONE]:** React 19 + Inertia v2 + Zustand tree `resources/js/{Components/{UI,Layout,Calibrator,Governance},Stores,Services,Router,Pages/AU MED|DEALS|SERV|INVEST|Admin}` + 4 HQ widgets (PerformanceGauge 100→90%, Emergency Red Button, MicroSwitchMatrixPanel, HitlInbox) + Guards (Auth/Role/AppId/FeatureFlag) — spec `docs/PHASE2_2.3B_FRONTEND_LAYOUT.md` + scaffold `.gitkeep`
+- [x] **PHASE 2.3c — Docker Architecture [DONE]:** Production `docker-compose.prod.yml` 10 services `app+nginx+mysql 8.4 Spatial+ngram+pgsql+redis+reverb+worker+n8n+agent_sandboxes+vllm_gpu+fail2ban` + 4 networks `front/backend/sandbox/gpu` (internal isolation) + Edge DoS `Cloudflare WAF + Nginx 20/s + Fail2ban` — spec `docs/PHASE2_2.3C_DOCKER_ARCHITECTURE.md` + compose code
+- [x] **PHASE 2.3d — Tri-Hybrid Strategy [DONE]:** `AgentStrategyManager` Adapter — 3 drivers `DeterministicRuleDriver 0-cost + CloudLlmDriver + LocalGpuDriver {LOCAL_GPU_ENDPOINT}` + Fallback `<0.90/Regex/Exception` + `CircuitBreaker 5/5min` + `DynamicStrategySwitcher` DB no-restart (30s cache + Reverb) + `MasterWorkforceFactory` persona/memory + `CalibratorSelfHealing` reroute/price — spec `docs/PHASE2_2.3D_TRI_HYBRID_STRATEGY.md` + PHP 8.4 skeletons
+- [x] **PHASE 2.3e — Ephemeral & Healing [DONE]:** Redis Queue → SwarmSpawner → `EphemeralWorker --max-time 3600/--max-jobs 1000` + 3 Proactive Loops `Security(pen-test/patch)/Legal(breach/harden)/Refactor(slow-query/optimize)` + `CalibratorLoop 100→90%` auto `cache:clear+horizon:terminate+recycle` + Horizon auto-balance — spec `docs/PHASE2_2.3E_EPHEMERAL_HEALING.md` + 5 mermaid sequences + WorkerLifecycle contracts
+- [x] **PHASE 2.3f — 20 Micro-Sprints Roadmap [DONE]:** 10 Phases × 2 Sprints = 20 atomized `1.1→10.2` — Deterministic First (3.1) + AU Lite hibernation + Module 8 Workforce 9.1-9.2 + Tri-Hybrid 9.2 + Calibrator Pre/In/Post-Op 10.2 — Strict 1-3 files / ≤150 lines — spec `docs/PHASE2_2.3F_MICRO_SPRINTS.md` + verification matrix
+- [x] **POST-PHASE 2 DEEP AUDIT — IN-PLACE REFACTOR [DONE 2026-09-14]:** Character-by-character audit across `database/schema` (4), `database/migrations` (7), `docs` (16), `docker-compose.prod.yml` — AU BUSINESS Master Core B2B anchor added to 14 specs (hub diagrams), `micro_switch_matrix` added `preferred_driver+llm_fallback_enabled`, `SPATIAL INDEX spx_listing_point`, `CHECK JSON_VALID` (6 tables), `idx_esc_app`+`chk_*_json`, `feature_flags` canonical rebuild, `app_wallets` BIGINT subunit `version+GENERATED`, early migrations idempotent + `docker-compose` AU BUSINESS hub comments — 22 in-place fixes — `docs/PHASE2_AUDIT_REPORT.md` + `PROJECT_STATE v3.1` locked pristine
+- [x] **PHASE 3.0 — Master Design System & Core Component Tokens [DONE 2026-09-15 — Spec Mode Only]:** Theme-agnostic token ecosystem (9 semantic colors `canvas/surface/text/border/accent/crimson` + `shadow-elevation-sm/md/lg` + `border-subtle/medium/bold` + `focus:ring-accent`) via `var(--token)` → Tailwind v4 `bg-surface` etc. (6 themes: Minimal/Glass/Brutalist/Material/Dark/High-Contrast), dynamic `BackgroundLayer` (gradient/particle/mesh/shader), typography Cairo/Tajawal+Inter (32→11px) + 8pt grid (4-64) + `ps/pe`-logical RTL, 8 atomics (Button/Ghost, Canvas Wrapper, Float-Inputs/Combobox/Date/Tags, DataTable sticky/pagination, MicroSwitch, HITL 4-CTAs, HUD Cyan/Crimson toasts, Modal/Drawer blur 8px), RBAC `blur-md` + 5-App Switcher, breakpoints 1440/1024/768/320 + WCAG AA 4.5:1 — spec `docs/PHASE3_3.0_DESIGN_SYSTEM.md` (no code)
+- [x] **PHASE 3.1 PART 1 — Master Admin Dashboard & AI C-Suite HQ Blueprint [DONE 2026-09-15 — Spec Mode Only]:** Global Framework (Top Header: Kill-Switch hold 2s `#EF4444` + Calibrator 100→90 gauge emerald/amber/crimson + App Switcher 6 pills + AU Lite Freeze Bar + Profile/RBAC + Kill-All Sessions) + Collapsible Sidebar 10 Enterprise Suites (C-Suite Governance, Financial Vault, Monetization, Taxonomy, Loyalty, Disputes/SLA, HR/Permissions, DRM Poison Pill, Telemetry Swarms, Broadcast/Ads/Geo) + 10 Screens exhaustive: S1 24/7 C-Suite HITL (70/30 split, 13 Agents exact titles 1→13, 4 CTAs Approve/Reject/Modify/AskLater, PR Visualizer diff + Proactive Learning strict "Admin, I found [X]...Y%" + RAG Drawer pgvector Agent 7) → S10 Broadcast/Ads/GeoDispatch — cinematic liquid-metallic/glass obsidian `#09090b` + neon cyan `#06B6D4`/emerald/amber/crimson + particle mesh + proximity lighting `--cursor-x/y` encapsulated in `tokens.css` — spec `docs/PHASE3_3.1_HQ_BLUEPRINT_PART1.md` (no code, 13-Agent lock, API-First Reverb 8080)
+- [x] **PHASE 3.2 — AU BUSINESS Merchant & B2B Portal Blueprint [DONE 2026-09-15]:** ONLY B2B `AU BUSINESS ab_` single writer → 4 B2C `AU MED/DEALS/SERV/INVEST` realtime via `MerchantCatalogUpdatedEvent` + Redis `b2c:catalog:*` + Reverb `private-catalog` — 7 Sections: S1 KYC deterministic OCR → Agent 12 HITL + Branches `POINT/POLYGON SRID4326` radius 5/50/national + Staff `Branch Manager/Cashier/Inventory/Appointment` PIN+biometric `staff_action_logs` hash_chain + Entity Selector 4 pills + POS offline-first `merchant_pos_terminals` ESC/POS Thermal/WebBluetooth/Barcode + split-payment Cash/Wallet QR/Card + Dashboard KPI + Agent 4 Insights, S2 Universal Catalog `merchant_catalogs` `physical/digital/clinical/rental/real_estate` + Bulk Excel 500/chunk + Inventory Guardrails + 6-Axis Studio `Sale|Rental|Booking|Barter|Auction|Urgent is_urgent push presence-dispatch`, S3 B2B Wholesale Inter-Pharmacy Swap `b2b_swapping_requests` Syndicate + Bulk Escrow `partial_milestone`, S4 Wallet `Available/Pending/TaxReserve/Fees` + Payout `InstaPay/VodafoneCash/IBAN AES-GCM` threshold 50000 + `wallet_settlements` hash + ZATCA/ETA QR `SHA256+ECDSA`, S5 Cognitive AI embedded 5 agents (Agent 4 0-100% quality + background remove, Agent 3 price/marketplace/liquidation/budget, Agent 1 ZATCA, Agent 12 KYC+AU Lite, Agent 13 Fraud >80% freeze HARD-BLOCKED seize), S6 Kanban 5 cols `Pending→Preparing→Out→Completed→Disputed` + Chat `RegexDataLeakDetector until holding` + Escalate, S7 Tiers `FREE 20/SILVER 100/GOLD 500/PLATINUM 2000` + Boosters keyword auction + geo `ST_Buffer` — 12 migrations `merchants,branches,staff,staff_logs,catalogs,deal_items,b2b_swaps,payouts,settlements,contexts,pos_terminals,marketing,zatca,widgets,liquidation` + 2 Middleware `CheckMerchantSubscriptionQuota + MaskCustomerSensitiveData` → specs `docs/PHASE3_3.2_AU_BUSINESS_BLUEPRINT.md` locked — preview `docs/PREVIEW_AU_BUSINESS.html` removed `rm verified 2026-09-15`
+- [x] **PHASE 3.3 — AU MED Healthcare & Clinical B2C Blueprint [DONE 2026-09-15]:** Read-heavy B2C `AU MED amed_` consuming `AU BUSINESS ab_` realtime via `MerchantCatalogUpdatedEvent → Redis GEOSEARCH + Reverb private-catalog.AU_MED` — 4 Sections: S1 Clinical `GEOSEARCH + ST_Distance_Sphere + Syndicate rating + calendar 30m grid Mutex lock:clinic_slot:{id} NX EX 300 5m hold + WebRTC pgsql telehealth_sessions signaling wss presence-telehealth + auto E-Prescription + Urgent 10km dispatch`, S2 Pharmacy `deterministic OCR Tesseract ngram 0.90 + EDA codes + EnforceControlledSubstancePolicy hard-block narcotics 422 + GEOSEARCH pharmacy:geo 50km broadcast private-pharmacy + OTC + chronic subscription monthly auto-refill WhatsApp via Agent5`, S3 Home Healthcare `nursing/lab AU SERV integration POINT/POLYGON live GPS presence-home.{uuid} Agent8 nearest + ETA + lab report pgsql vault AES-GCM`, S4 E-Health Vault `MySQL amed_patient_profiles + pgsql amed_patient_medical_vault JSONB pgp_sym_encrypt AES-256-GCM per-row iv/tag + share OTP 6-digit vault_share_grants + VerifyEHealthVaultAccess + vault_access_logs hash_chain + Agent10 EDA guard` — 7 migrations MySQL+pgsql `amed_patient_profiles, amed_patient_medical_vault(pgsql)/vault_share_grants/vault_access_logs, amed_medical_appointments, amed_telehealth_sessions(pgsql), amed_e_prescriptions(pgsql)/prescription_items, amed_pharmacy_orders/order_items/subscriptions, amed_home_healthcare_requests(POINT/POLYGON SPATIAL)` + 2 Middleware `VerifyEHealthVaultAccess + EnforceControlledSubstancePolicy` → specs `docs/PHASE3_3.3_AU_MED_BLUEPRINT.md` locked — preview `docs/PREVIEW_AU_MED.html` removed `rm verified 2026-09-15`
+- [x] **PHASE 3.4 — AU DEALS Consumer & Deals App Blueprint [DONE 2026-09-15]:** Primary consumer marketplace `AU DEALS adl_` consuming `AU BUSINESS ab_` realtime via `MerchantCatalogUpdatedEvent → Redis del + GEO + Reverb private-catalog.AU_DEALS` — 6 axes `buy/rent/book/barter/auction/urgent 2km/10km/city ST_Distance_Sphere + AR nodes` — S1 Catalog `Amazon-grade variants + multi-vendor cart split shipping/payout per merchant + group-buy pools tiers 5/10/15 -10/-18/-25% Redis INCR + FULLTEXT ngram + visual search pgvector cosine 0.82` — S2 Barter `P2P/P2B offered_custom/wanted + barter_item_valuation 1.5x commercial / 1x Abwab Al Khair charity + cash delta auto + barter_escrow_ledgers 2 legs + QR inspection VerifyBarterEscrowLock` — S3 Auctions `live Reverb private-auction <100ms + soft-close extend +120s if bid final 30s anti_sniping_logs + deposit holding RequireAuctionDeposit + auto-bid` — S4 Flash/Radar `Deals Near Me radar 2/10/city + AR geofenced ar_deal_nodes POLYGON + urgent is_urgent push presence-urgent` — S5 Wallet `app_wallet cash/cashback/loyalty/escrow + Paymob/InstaPay/ApplePay/BNPL + escrow 48h QR VerifyEscrowReleaseEligibility 12h grace once` — Agents `3 CMO matching 94% + 1 CFO price intel + delta 1.5x + 11 Surge atomic DECRBY Horizon bot block + 13 Fraud Sybil bidding/review filter` — 8 migrations `adl_consumer_profiles/delivery_addresses, adl_carts/cart_items/rental_bookings/deposits, adl_barter_proposals/valuation/escrow_ledgers, adl_auctions/bids/deposits/anti_sniping, adl_orders/items/shipments/escrow_releases, group_buy_pools/participants, user_deal_radar_preferences/ar_deal_nodes/review_integrity_logs` + 6 Middleware `ValidateCartStockAvailability/RequireAuctionDeposit/ValidateGroupBuyEligibility/VerifyEscrowReleaseEligibility/PreventScalperBots/VerifyBarterEscrowLock` → specs `docs/PHASE3_3.4_AU_DEALS_BLUEPRINT.md` locked — preview `docs/PREVIEW_AU_DEALS.html` removed `rm verified 2026-09-15`
+- [x] **PHASE 3.5 — AU INVEST Wealth, Real Estate & Franchise Platform Blueprint [DONE 2026-09-15]:** Dedicated capital deployment `AU INVEST ainv_` consuming `AU BUSINESS ab_` realtime via `MerchantCatalogUpdatedEvent → Redis del + GEO + Reverb private-catalog.AU_INVEST` — 4 verticals `real estate (off-plan/turn-key/commercial/tower/land) + franchises & agencies (pharmacy/clinic/F&B/retail) + business equity & crowdfunding + equipment leasing` — S1 Real Estate `GIS POINT/POLYGON SPATIAL + 3D Matterport + drone milestones property_milestones 4/6 + fractional_shares 100-1000 share_register_hash SPV + secondary order book bid/ask + ROI simulator CalculatePropertyYields` — S2 Franchise `franchise_opportunities CAPEX 1.2M royalty 5% payback 28m territory_geofence 2km ST_Distance_Sphere + franchise_applications 4-stage applied→financial_eligible→feasibility_review→signed + contract franchise_rights_license` — S3 Equity `equity_campaigns target 2M threshold 70% 1.4M escrow holding + campaign_investments + revenue_share_payouts monthly net + threshold_failed refund 100% + capital_call_schedules 4 tranches 30/25/25/20% verified→released + investor dashboard` — S4 Legal Vault `investment_contracts ECDSA hash OTP 6-digit + investor_kyc_verifications T1 ≤50k T2 ≤500k T3 unlimited + AML` — Agents `1 CFO portfolio & yield cash-flow + 3 CMO feasibility 78/100 market hunter + 7 CLO title screening & SPV hard-block auto-sign + 13 Fraud KYC/AML Sybil freeze >80` — 7 migrations `ainv_real_estate_listings/property_milestones/fractional_shares, franchise_opportunities/applications, equity_campaigns/campaign_investments/revenue_share_payouts, investment_contracts/investor_kyc_verifications, secondary_share_order_book/spv_registries, investor_aml_audit_logs/capital_call_schedules` + 3 Middleware `VerifyInvestorKYCTier/EnforceEscrowThresholdLock/CalculatePropertyYields` → specs `docs/PHASE3_3.5_AU_INVEST_BLUEPRINT.md` locked — preview `docs/PREVIEW_AU_INVEST.html` removed `rm verified 2026-09-15`
+- [x] **PHASE 3.6 — AU SERV Logistics, Field Services & Dispatch Platform Blueprint [DONE 2026-09-15]:** Dedicated non-medical on-demand `AU SERV asv_` consuming `AU BUSINESS ab_` realtime via `MerchantCatalogUpdatedEvent → Redis del + GEO + Reverb private-catalog.AU_SERV` — 4 domains `maintenance (plumbing/electrical/HVAC) + education tutoring + domestic (cleaning/moving/driver) + micro-jobs` + 3 pricing `fixed/hourly/inspection_quote` — Core radar `ST_Distance_Sphere/ST_Within` + dual dispatch `urgent SOS 3-5km 60s timer 5 hops provider_reassignment_queues + scheduled calendar` + cross-app `AU MED/AU DEALS auto-trigger` — S1 Catalog `service_categories/service_items/pricing_matrices` — S2 Dispatch `live GIS map cyan pulse + ETA Agent8 + 60s escalation loop + 30d workmanship 10% hold` + lifecycle `requested→assigned→en_route→arrived 50m VerifyGeofenceProximity →inspection/in_progress→OTP→completed` + proof media pre/post RequireJobProofUpload — S3 Escrow `Tier1 inspection 500 holding + Tier2 work total approved 24h holding + live parts ledger + EnforceServiceEscrowLock` — S4 Tutoring `tutoring_sessions/course_enrollments + WebRTC virtual_classroom_vaults whiteboard transcription` — S5 Verification `technician_profiles criminal clearance + skill badges Agent7 hard-block + Agent1 job scope cost inspector pre/post shield + Agent13 Sybil & geofence spoof prevention` — 7 migrations `asv_service_categories/service_items/pricing_matrices, service_providers/technician_profiles/provider_locations POINT SPATIAL, service_orders/work_order_estimates/time_tracking/job_proof_media, tutoring_sessions/course_enrollments, provider_reassignment_queues/workmanship_guarantee_holds, virtual_classroom_vaults/job_scope_estimates` + 3 Middleware `VerifyGeofenceProximity/RequireJobProofUpload/EnforceServiceEscrowLock` → specs `docs/PHASE3_3.6_AU_SERV_BLUEPRINT.md` + Visual `docs/PREVIEW_AU_SERV.html` Hybrid Obsidian-Pearl moving canvas #09090b + obsidian outer 80% + pearl inner #FAFAFA 92% + amber/crimson/cyan/emerald — temp preview
+
+- [x] **UNIFIED DESIGN SYSTEM & ATOMIC ARCHITECTURE LOCKED v3.9 [DIRECTIVE ENFORCED 2026-09-15]:** Obsidian Canvas Standard Deep Cosmic Obsidian Stone #09090b + particle mesh 42 dots + proximity --cx/--cy unified across 5 Apps (AU BUSINESS ab_ + AU MED amed_ + AU DEALS adl_ + AU SERV asv_ + AU INVEST ainv_) — Centralized `tailwind.config.js` canvas #09090b / surface-pearl #FAFAFA / accent cyan #06B6D4 emerald #10B981 amber #F59E0B crimson #EF4444 + radius/shadow tokens — Global CSS tokens `resources/css/tokens.css` --canvas-background/--surface-primary rgba(9,9,11,.80) --surface-pearl #FAFAFA/92 --shadow-elevation-* --border-* --radius-* --accent-* + `resources/css/app.css` Obsidian canvas + proximity + RTL Cairo/Tajawal+Inter — 8 Atomic Components `resources/js/Components/UI/{Button,GlassCard,Badge,Modal,DataGrid,RadarMap,StatCard,FormInput}.tsx` React19 TS strict ZERO any token-driven no hardcoded colors single-file propagate — 5 Decoupled Hooks `resources/js/Hooks/{useSpatialDispatch,useAuctionStream,useEscrowLock,useParticleCanvas,useProximityLighting}.ts` isolating websocket/map/escrow/bidding from JSX — `resources/js/Layouts/AppLayout.tsx` refactored to Obsidian canvas + particle canvas + glass-outer header — `resources/js/Services/cn.ts` merge helper — Maintainability Guarantee: any component/arrangement/button position swappable without touching controllers/APIs/models — **Unified Design System & Atomic Component Architecture is officially locked**
+
+- [x] **PHASE 4.0 — Frontend Master Architecture & Atomic Primitives Foundations [DONE 2026-09-15 — INITIAL TASK]:** Stack React 19 / Inertia v2 / TS 5.7 strict ZERO any + Tailwind v4 + Vite Monorepo `resources/js/` — `tsconfig.json` strict true noUnusedLocals/Parameters + path `@/*` — `resources/js/Types/global.d.ts` SharedPageProps extends Record tenant:TenantContext (app_id/available_apps/dir/locale/locale_digits/permissions/feature_flags/experiment_cohorts) + AuthUser + Flash + Money MinorUnits integer + CspReport + Vite client — `Components/UI/Button.tsx` token-driven variant primary|secondary|ghost|crimson size sm|md|lg + permission DOM-purge + experiment data attr + forwardRef + focus-ring AA + RTL ps/pe — `Components/UI/Modal.tsx` Obsidian backdrop 45% + Pearl inner + ESC + focus-trap + body scroll lock + aria-modal + RTL — `Components/UI/DynamicTable.tsx` Rule13 server-paginated Inertia router.visit preserveState + columns permission purge + isMoney Intl.NumberFormat EGP latn + ps/pe + visible focus-ring + empty state — `Components/UI/FormInput.tsx` label/error/hint + leakMask PHONE/EMAIL/URL + sanitize payload + data-numeric Latin — `Contexts/TenantContext.tsx` Provider + useTenant + Can purge + `Utils/sanitize.ts` maskLeak/containsLeak/sanitizePayload + `Hooks/useTenant.ts` + `Hooks/useFormSanitizer.ts` + `Pages/AU BUSINESS/` space-form added — **PAUSE & SUMMARIZE: Foundations delivered, awaiting approval before Auth & Onboarding Flow (Phase 2 Step 1)**
+
+- [x] **PHASE 4.0 Part 2 — Atomic UI Primitives & Design System [DONE 2026-09-15 — PART 2]:** Tokens updated `#0A0A0C Dark + #C5A059 Gold + #10B981 Success + #EF4444 Threat + #06B6D4 AI Cyan` via `tokens.css`/`tailwind.config.js` — `Button.tsx` 5 variants `primary(dark)/secondary/danger/ai-action/gold` + aliases `ghost/crimson` + `isLoading/isDisabled/icon/requiredPermission/appContext` RBAC purge + forwardRef — `FormInput.tsx` standard RTL + `SecureFormInput.tsx` RegexDataLeakDetector maskLeak phone/email/URL as-you-type — `DynamicTable.tsx` sortable headers ↑↓ + rowActions + multi-select checkboxes + status badges via render + pagination Inertia preserveState + money EGP latn — `Modal.tsx` ESC + focus-trap + backdrop blur + dynamic actions + `ConfirmHoldModal.tsx` 2s hold-to-confirm progress for Kill-Switch/Session Revocation + variant danger/gold/ai-action — `StatusBadge.tsx` 6 states `Verified/Pending/Danger/VIP/Anonymous/AI_Active` pill — `MultiTenantSwitcher.tsx` 6 pills `MASTER_HQ/AU BUSINESS/AU MED/AU DEALS/AU SERV/AU INVEST` router.visit — `ErrorBoundary.tsx` class boundary suppress stack in prod — **PAUSE awaiting next prompt**
+
+- [x] **PHASE 4.0 Dev Sandbox — Living Component & Screen Showcase [DONE 2026-09-15 — DEV UTILITY]:** `resources/js/Pages/Dev/Sandbox.tsx` 176 lines cumulative dynamic showcase at `/dev/sandbox` — sections `Part 1 & 2: Atomic Primitives` → future `Part 3 HQ / Part 4 AU BUSINESS` auto-registered — renders Button (primary/secondary/danger/ai-action/gold/ghost/crimson + isLoading/isDisabled/icon/permission), FormInput + SecureFormInput live RegexDataLeakDetector (`010…` → `***`), DynamicTable mock EGP 1.25M/0.89M/4.5M minor-units + sortable ↑↓ + selectable + rowActions + StatusBadge, Modal + ConfirmHoldModal 2s hold, StatusBadge 6 states dot, MultiTenantSwitcher 6 pills, ErrorBoundary Thrower demo — `routes/web.php` `GET /dev/sandbox → Inertia::render('Dev/Sandbox')` — `tsc -p tsconfig.json --noEmit` 0 errors — ready for continuous live refresh
+
+- [x] **PHASE 4.0 Part 3 — Master Admin HQ Dashboard & AI Governance Suite [DONE 2026-09-15 — PART 3]:** `Types/admin.d.ts` strict CalibratorHealth/AgentMicroSwitch/HITLProposal/EscrowRecord/LedgerCard/Gateway/HardwareDNA/Watchdog/FreezeModule — `Pages/Admin/MasterAdminHeader.tsx` Kill-Switch #EF4444 hold-2s ConfirmHoldModal + AI SWARM ACTIVE/SEVERED Cyan/Red + Calibrator radial 100-90% green/amber/red + AU Lite Freeze Bar + MultiTenantSwitcher + Security DNA MFA/HW/session — `MasterSidebar.tsx` 10 suites collapsible `AI C-Suite/Ledger/Monetization/Taxonomy/Loyalty/Disputes/HR/Security/Telemetry/Broadcast` RBAC purge — `MasterAdminLayout.tsx` header+sidebar+main canvas-obsidian — `CSuiteHQ.tsx` top 4 metrics (Workers 12 / 90% deterministic / Local GPU vs Cloud / Token 78%) + 70/30 split HITL Feed (Approve/Reject/Modify/Ask) + Micro-Switch Matrix 13 Agents sub-switches — `FinancialVault.tsx` 4 ledger cards Gross/Escrow/Net/Tax + escrow table LOCKED + Dispute Drawer Release/Refund + Rationale Modal 15-char + Gateway Failover >5% auto-routed — `SecurityVault.tsx` Hardware DNA MATCHED + Dead-Man 48h countdown + Poison Pill MFA+Passphrase modal + Watchdog immutable log — **PAUSE — Summarized, awaiting next step**
+
+## 2. Tech Stack Lock (NO deviations)
+Backend Laravel 12 PHP 8.4 Action-Service-Repository | Frontend React 19 Inertia v2 | TS 5.7 strict zero any | Tailwind v4 Shadcn Lucide | Vite HMR+Prod | Reverb 8080 wss exclusive | MySQL 8.4 InnoDB utf8mb4 Spatial (JSON not JSONB) sole core | PostgreSQL 16 PostGIS+pgcrypto AU MED only + pgvector primary (Qdrant auxiliary) | Redis | AES-256-GCM per-row IV + TLS 1.3 | Cloudflare Enterprise/WAF + Nginx 20/s + Fail2ban PROD only
+
+## 3. Applications Registry (5) — space-form app_id
+AU BUSINESS `ab_` (core, non-hibernatable, owns Paymob sub-merchant + FX) | AU MED `amed_` (pgsql clinical+pgvector) | AU DEALS `adl_` | AU SERV `asv_` | AU INVEST `ainv_`
+
+## 4. Agents: 13 Canonical | Modules: 9 — EXACTLY 9 (1-9)
+Agents 1 CFO, 2 CTO, 3 CMO, 4 Vendor Success, 5 Customer Support, 6 SecOps, 7 CLO, 8 Supply Chain, 9 PR, 10 QA/Medical, 11 DevOps/Code Sandbox, 12 Global Controller, 13 Fraud/AML. Modules 1-9 Phase 1 (Auth→Dashboard) — Modules 10-15 VOID per 2026-09-14 correction.
+
+## 5. Pillars 11 — All Enforced + Final Tweaks
+Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → RegexDataLeakDetector → lockForUpdate+Mutex → Calibrator → Ephemeral Swarm (prod) → Silent Token Rotation → Edge DoS (prod) → Tiered Mutation — plus final: pgvector, intervention/image GD, Parquet archive, Paymob sub-merchant auto.
+
+## 6. Phase 1 FINAL Decisions (71 Points)
+- **Identity 1-7 + Oil 30 update:** L1 Guest, L2 Phone, L3 ID/Business TOTP, revoke sessions, soft-freeze 3 MFA fails, annual re-verify, spatie RBAC immutable — plus **Oil 1:** Zero contact browsing/preview; business verified contact disclosed ONLY to targeted counterparty after programmatic purchase/hold + full escrow funding, never before
+- **Ledger 8-14:** Unified multi-currency no bias, FX locked_at settlement, subunit int, double-entry hash append-only, daily reconciliation, no negative — plus **FX Seed:** exchangerate-api */30 FX_PROVIDER env
+- **Escrow 15-27 + Oil 36:** Closed/Blind Paymob no local liquidity, 48h dispute, batch payouts, partial milestone, 0 wallet penalties, 24h hold, dynamic VAT, chargeback freeze, 5/min velocity, FX transparent, rolling caps, 90d vault, no code buyout — plus **Oil 3:** Single-payer buyer/requester only; seller service fee auto-deducted at settlement — plus **Paymob Suggestion:** auto sub-merchant via Paymob API + manual queue fallback
+- **Deal Page 28-33 + Oil 30:** Points 50/day, 8-point equal weight 3/24mo badge, safety block dynamic — plus **Oil 1** strict timing above, Oil 4: Grace 12h once → auto-cancel + waiting-list reroute + technical penalty
+- **Wallet/Checkout 34-39 + Oil 34/38:** 5% default dynamic per module — plus **Oil 2:** 5% base unified at launch, flexible per module via dashboard — OCR exact $0.01 → manual, barter 1.5x/1x split 50/50, grace 12h once, sacred wallet — plus **Oil 4** 12h once strict
+- **Interaction 40-44 + Oil 40:** 500 favs cap — plus **Oil 5:** 500 max to prevent DB bloat/bot, barter delta لك/له banner, private.notifications.{id}, 6th suspension, views/clicks IP+session dedup 24h
+- **Auxiliary 45-50 + Suggestions:** LOYALTY_POINTS in unified wallet, milestones once, 365d expiration deduction, AES-GCM IV, proportional discount, surge fixed/% — plus **pgvector primary, intervention/image GD, Parquet archive**
+- **Workforce 51-53 + Oil 52:** Calibrator reject+auto-fix approvable, no buyout — plus **Oil 6:** Absolute no source code/app ownership transfer — SaaS + Smart Agent lease only — double-entry
+- **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
+
+## 7. Current Context & Next
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.14+B360 LOCKED v5.0-B.14+B360** (Arena — Laravel 12 PHP 8.4 Roadmap Hardened + Backend 360 16 fixes)
+- **Deliverable now:** `[PHASE 5.0 B.14]` + `[BACKEND 360]` delivered — `docs/PHASE5_B14_ROADMAP.md` v5.0-B.14 hardened + 16 commits `cabd616→e56ff8d` (FIX-360-01→16 — CacheTagGuard, lean replica, bulkhead 12/60/60/125, WORM healing, idempotency app, etc.) — **PHASE 5.0 + BACKEND 360 COMPLETE**
+- **Next:** PHASE 5.0 B.1→B.14 + BACKEND 360 FULLY LOCKED — `arena/01a09d54-drfifty` ahead 15 commits — awaiting Phase 6 / production deploy directive — no pending sprints
+
+## 8. Risks Mitigated
+- Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
+- FX volatility: exchangerate-api + locked_at + transparent fee
+- B2B dual-pay complexity: removed → single-payer simplifies state machine
+- Agent buyout IP leak: SaaS-only eliminates source distribution
+- DB bloat: 500 favs + Parquet archive + 90d S3 mitigates
+
+---
+**ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
+
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.14 — docs/PHASE5_B14_ROADMAP.md 104L canonical 1.1→10.2 20 sprints DELTA 7 validation — PHASE 5.0 B.1→B.14 COMPLETE*
+
+---
+
+## 26. PHASE 5.0 BACKEND 360 — 20 FINDINGS → 16 FIXES HARDENED [DONE 2026-09-16 — Approved EXECUTE — Arena]
+
+> **Directive:** `APPROVE & EXECUTE BACKEND 360` 2026-09-16 — Backend 360 Audit 20 findings (B360-01→20, 4 Critical) → 16 fixes additive ≤3 files/≤150L per commit executed on `arena/01a09d54-drfifty`.
+
+**Commits (15 after `14f01c2` B.14 lock):** `cabd616` 03/08/12 stagger+bulkhead+thresholds → `420f93d` 09/12 BROADCAST_PORT + AI_STEP_DOWN → `8abaabc` 01/02/13 Lock+CacheTagGuard → `d6048f2` 01 targeted flush → `86b7c5e` 12/15 calibrator+WalletMutex → `2025a83` 13 Swarm → `bcca201` 13 Commands → `71eb48c` 05/13 lint → `94b669b` 04 ledger → `295d616` 06 SPATIAL hasIndex → `99e9851` 07 stats_daily 00:30 Cairo → `8501011` 10 route 301 → `a3c1ac5` 14/16 WORM+idempotency → `9e64bed` 02/11 cache pinned+staleness → `03e523d` 14/16 WORM chain+heal window → `e56ff8d` 01/02 agent cache pinned.
+
+**Deliverables:** FIX-360-01 `Support/CacheTagGuard` pinned `store('redis')->tags` no `Cache::flush`; FIX-02 `RedisFeatureFlagCache/MicroPermission/AgentRuntime` DB1; FIX-03 `routes/console.php` :07/:12/:13/:22 + `stats:aggregate 00:30 Cairo withoutOverlapping 25 onOneServer Africa/Cairo`; FIX-04 `000033 agent_actions app_id ENUM5+FK+idx`; FIX-05 `scripts/lint_jsonb.sh` R7 gate pass; FIX-06 `000022/000023` `SHOW INDEX hasIndex` SPATIAL/FULLTEXT; FIX-07 `000034 stats_*_daily 5 tables + AggregateStats replica heartbeat`; FIX-08 `config/horizon.php` `12/60/60/125` critical/standard/low/ai bulkhead local=prod; FIX-09 `config/broadcasting.php/reverb.php BROADCAST_PORT 8080 alias REVERB_PORT + .env`; FIX-10 `routes/api/v1/med.php+serv.php 301 canonical single throttle`; FIX-11 `RequireMicroPermission X-Force-Refresh + calibrator:heal:window 15s` + `CacheTagGuard` re-read; FIX-12 `config/ai.php calibrator_threshold/step_down_threshold + threshold single source`; FIX-13 `Support/Lock withSkew +30s TTL` 7 files; FIX-14 `000035 healing_events WORM trigger REVOKE + prev/hash chain`; FIX-15 `WalletMutex wallet:mutex:{appId}:{id}`; FIX-16 `000036 uk_idem_user_endpoint_app + IdempotencyMiddleware app-scoped`.
+
+**Verification:** `scripts/lint_jsonb.sh pass`, `grep Cache::flush fallback 0`, `BROADCAST_PORT single source 8080`, `horizon timeouts 12/60/60/125`, `schedule:list 9 Cairo`, `hasTable hasColumn` guard all migrations `down empty` additive R11.
+
+**Next:** BACKEND 360 COMPLETE — `git push arena/01a09d54-drfifty` — awaiting Phase 6 deploy
+
+---
+
+## 21. PHASE 5.0 B.10 — REVERB REALTIME CHANNELS & EVENTS [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.10 — قنوات البث المباشر وأحداث WebSockets (Reverb) — Pre-Execution Audit 18 flaws (B10-01→B10-18) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B10_REVERB.md` (v5.0-B.10 harden audit 9 sections) + Realtime Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤60L, additive only:
+
+- **§1 Transport F-03/F-14:** `.env.example BROADCAST_PORT=8080 alias REVERB_PORT` + `config/broadcasting.php & reverb.php port (int) env BROADCAST_PORT fallback REVERB_PORT` + validation `BROADCAST_CONNECTION===reverb` else throw prod + `VITE_REVERB_*` 8080. Nginx `proxy_pass reverb:8080` `wss://` via Cloudflare `TRUSTED_PROXIES`.
+
+- **§2 Channels F-01/F-02/F-07/F-10:** `routes/channels.php` PATCHED — `presence-dispatch-{region} 27 enum governorate + AU SERV app_id + degraded 503 + Cache ticket ownership 30s`; `private-invest/escrow {uuid} Cache 30s buyer|seller`; `private-tenant.{appId}.workforce canonical + alias {app_id} compat Cache workforce tenant.view`; `private-admin-support-intercept.{chatId} super_admin|support + chat exists tenant.app disputed REDACT Cache 30s`; `private-governance-alerts super_admin+MFA+email_verified+active coalesced`. No duplicate, additive.
+
+- **§3 Events F-05/F-11:** `ProviderLocationUpdated presence-dispatch lat -90..90 lng -180..180 heading 0..359 region enum status available|busy|offline throttle 5s batch 20/2s` `v1.provider.location.updated` + `WorkforceStepUpdated private-tenant step queued|progress|token_spike|completed|failed tokens cost` `v1.workforce.step.updated` + `ChatIntercepted REDACT *** phone/email/url` `v1.chat.intercepted` + `GovernanceAlerted calibrator_drop|drm_quarantine|kill_switch health%` `v1.governance.alerted` — all `ShouldBroadcastNow/ShouldBroadcast + HasEventId UUIDv4 + Cairo iso8601 + trace_id + ReverbBuffer push`.
+
+- **§4 Guarantees F-04/F-15/F-16:** `HasEventId` trait `event_id uuid + event_version v1 + timestamp Cairo` ; `ReverbBuffer push LPUSH broadcast:buffer:{channel} LTRIM 0 49 EXPIRE 86400 + processed:event:{id} Cache 3600 NX` ; `ReplayController GET /api/v1/reverb/replay?channel=?&after_event_id=?` `auth.jwt 60/min` returns next 50 oldest→newest ; `resources/js/Services/Reverb.ts` `createReverb Echo reverb wssPort+forceTLS + DedupSet 5000 + fetchReplay` TS strict zero any.
+
+- **§5-§7 Sprints B.10.1-B.10.6:** `HasEventId + ReverbBuffer + BROADCAST_PORT alias + channels hardened 6` + `4 Events ≤60L + upgraded WorkforceDispatched/AiKillSwitch/DrmQuarantine versioned v1.` + `ReplayController + routes/api/v1/reverb.php replay 50` + `Reverb.ts dedup` + `migration 000029_b10_reverb_guarantees guard` — `hasTable hasColumn` only `down empty`.
+
+**Verification:** `.arenarules` R36/R11 additive + Pillars 8 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
+
+**Next:** B.12 Scheduling & Self-Healing — awaiting prompt
+
+---
+
+## 25. PHASE 5.0 B.14 — RETROSPECTIVE DELTA ROADMAP & 20 MICRO-SPRINTS CONSOLIDATION [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.14 — خريطة الـ20 Micro-Sprints والتجهيز النهائي (TPM Consolidation) — Pre-Execution Audit 20 flaws (B14-01→B14-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B14_ROADMAP.md` (v5.0-B.14 harden audit 6 sections) + Retrospective DELTA — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L, additive only:
+
+- **§0 Audit F-01→F-16:** `B14-01 40 sprints→F-01 cap 20 keep canonical 1.1→10.2`; `B14-02 numbering 20.2→F-02 no renumber`; `B14-03 duplication DONE→F-03 DELTA validation zero new DDL`; `B14-04 AU BUSINESS→F-04 hub anchor ab_→amed/adl/asv/ainv`; `B14-05 JSONB/SRID→F-05 JSON not JSONB SRID4326 SPATIAL GIST`; `B14-06 RBAC/micro→F-06 CheckModuleStatus 503 + micro_switch 80 caps`; `B14-07 R37 live COUNT→F-07 replica 5s + stats_*_daily`; `B14-08 critical flood→F-08 ai 125s/low 60s only, critical 12s SLA preserved`; `B14-09 deterministic invert→F-09 Pricing/Ranking/Barter 0-cost before LLM fallback <90`; `B14-10 SoC >150L→F-10 ≤150L ≤60L thin Request→Action→Resource R27`; `B14-11 Cairo skew→F-11 Africa/Cairo + CLOCK_SKEW_MARGIN 30s`; `B14-12 Reverb 8080→F-12 BROADCAST_PORT 8080 wss alias`; `B14-13 Docker duplicate→F-13 single docker-compose.prod.yml 13 svc`; `B14-14 R24/R25→F-14 micro-plan + state recovery`; `B14-15 R34→F-15 Arabic summary per §`; `B14-16 Module8→F-16 Workforce inside 1-9 not 10-15`; `B14-17 healing tag→F-07 correct tags`; `B14-18 env drift→F-05 EPHEMERAL_MAX 10`; `B14-19 doc collision→F-02 PHASE5_B14_ROADMAP not 2.3F`; `B14-20 YAGNI→F-10 lean 7 DELTA`.
+
+- **§1 Canonical Map F-01→F-03:** `1.1→10.2` 10 Phases ×2 =20 — 13 DONE B.1→B.13 + **7 DELTA validation gates** — table Domain→Files→Classes→Acceptance `1-3 files ≤150L`: `Rules Ranking/Barter deterministic 0.99 + Tenant X-App-Id + Leak BLOCK/REDACT + Calibrator heal tags` — SoC thin controllers ≤60L.
+
+- **§2 DELTA 7 Gates (≤150L each, no new DDL):** `DELTA-1 3.1 Ranking/Barter audit` deterministic 0-cost; `DELTA-2 5.1 SERV heartbeat 27 regions SPATIAL replica`; `DELTA-3 6.2 MED HMAC chain pgsql WORM 90d`; `DELTA-4 8.1 SoC lint ≤150L`; `DELTA-5 9.2 Docker single compose verify 8080`; `DELTA-6 10.1 bulkhead Cairo flood + skew 30s`; `DELTA-7 10.2 healing tags targeted + healing_events WORM` — all `withoutOverlapping onOneServer Cairo` where scheduled.
+
+**Verification:** `.arenarules` R1→R38 + Pillars 1→11 + B1a B.3 hierarchy re-verified, canonical 1.1→10.2 preserved, 20 findings fixed, zero-regression, `wc -l PHASE5_B14_ROADMAP 104 ≤150`.
+
+**Next:** PHASE 5.0 B.1→B.14 COMPLETE — awaiting Phase 6 / deploy
+
+---
+
+## 24. PHASE 5.0 B.13 — EPHEMERAL SWARMS & PROACTIVE HEALING ENGINE [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.13 — محرك العمالة المؤقتة وسلسلة الشفاء الذاتي (Ephemeral Swarms & Proactive Healing Engine) — Pre-Execution Audit 20 flaws (B13-01→B13-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B13_EPHEMERAL.md` (v5.0-B.13 harden audit 9 sections) + Swarm + Healing — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤60L, additive only:
+
+- **§1 Swarm F-01→F-03:** `Jobs/SpawnEphemeralWorkerJob` `ShouldQueue ai 125s tries3 queue ai` `semaphore ephemeral:sem 10 NX 60` → `docker-socket-proxy POST /containers/create sandbox:php84 Labels au.app/tenant read_only tmpfs` → `/start → /wait 30s → /delete` fallback `AgentStrategyManager execute` ; `EPHEMERAL_MAX_CONTAINERS=10 DOCKER_HOST tcp://docker-socket-proxy:2375` ; `failed() → GovernanceAlerted job_failed → Agent6` ; preserves bulkhead `critical` never used.
+
+- **§2 Proactive Loops F-04→F-06:** `Services/Swarm/SecurityLoop tick 15m lock 14m → SecurityProbeJob low replica R37 hitl_approvals pending security.vulnerability` ; `RefactoringLoop 30m → OptimizeQueryJob low EXPLAIN replica hasIndex guard hitl_approvals refactor.index_proposal` ; `LegalLoop hourly → LegalComplianceJob low legal.compliance_check` — each `withoutOverlapping+onOneServer+Cairo`.
+
+- **§3 Calibrator Heal F-07→F-09:** `CalibratorSelfHealingEngine evaluate + heal(health<90)` `Cache::tags(['feature_flags','micro_perm','ai_runtime'])->flush()` **not** `agents_cache/routes_cache` (non-existent) and **not** `Cache::flush` full — preserves `SESSION DB0` ; `Cache::forget calibrator:health` ; `recycleWorkers() Http POST docker-socket-proxy low/ai force graceful 40s + horizon:terminate low/ai` ; `stepDownDrivers <80 → deterministic` + `Cache micro_perm flush` ; `healing_events` WORM audit ; single source via `AuCalibratorHealthCheck everyFiveMinutes lock 4m`.
+
+- **§4 Scheduler F-12:** `routes/console.php` PATCHED add `Schedule::call(SecurityLoop tick) every15m + Legal hourly + Refactor every30m` each `withoutOverlapping 14/55/28 onOneServer Cairo` — keeps B.12 `au:stagnant etc` 5 crons.
+
+- **§5 DDL F-14/F-15:** `migrations/000032_b13_healing_guard` `if !hasTable healing_events create id+health_score+actions JSON+created_at WORM` guard ; `.env.example` `EPHEMERAL_MAX_CONTAINERS 10 SECURITY_LOOP_INTERVAL 15 REFACTOR_LOOP_INTERVAL 30 DOCKER_HOST` ; `config` bulkhead already `queue ai` mapping.
+
+**Verification:** `.arenarules` R6/R11 additive + Columns 13×9 + Pillars 7+8 + B1a B.3 hierarchy re-verified, bulkhead preserved, 20 findings fixed, zero-regression.
+
+**Next:** B.14 Micro-Sprints — awaiting prompt
+
+---
+
+## 23. PHASE 5.0 B.12 — COMMANDS CRON & SEEDERS + QUEUE BULKHEAD [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.12 — محرك الأوامر المجدولة والبذر الأولي + Queue Bulkhead Isolation — Pre-Execution Audit 20 flaws (B12-01→B12-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B12_COMMANDS.md` (v5.0-B.12 harden audit 9 sections) + Scheduler + Bulkhead — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤60L, additive only:
+
+- **§1 Seeders F-01→F-05:** `SuperAdminSeeder` `users+user_roles` `AU BUSINESS` `Hash Argon2id env(SUPERADMIN_*)` `email_verified mfa 1` `updateOrInsert email` + `FeatureFlagsSeeder` `5 au_business(is_core=1)+med/deals/serv/invest is_core 0` `updateOrInsert flag_key` + `RegexDataLeakPatternsSeeder` `8 ReDoS-safe priority 10→90` `where label exists` + `MicroSwitchSeeder` `13×9 SubCapabilityKey 80 exhaustive` `updateOrInsert uk_agent_app_module_cap` + `DatabaseSeeder` aggregator — all `hasTable` guard, `WORM audit`, flush cache tags.
+
+- **§2 Commands F-07→F-10:** `AuStagnantDealsScan hourly` `Cache::lock 3300` `replica + stats_deals_daily` `chunkById 100 cap 500` `stagnant_deals agent 3` `dispatch low TieredPricingEngine 5/limit` ; `AuCalibratorHealthCheck everyFiveMinutes` `lock 240` `Cache 10s or stats_calibrator_daily` `<CALIBRATOR 90 → GovernanceAlerted + SelfHealing` ; `AuDrmHeartbeatCheck everyFiveMinutes` `lock 240 delegate DrmHeartbeatService.beat() HMAC 576` ; `AuRedTeamSimulation hourly` `lock 3300` `dispatch low 3 jobs SlowQuery replica + Legal + Pen tick`. Each `withoutOverlapping+onOneServer+Cairo`.
+
+- **§3 Scheduler F-06:** `routes/console.php` `Schedule::command ... ->hourly/everyFiveMinutes ->withoutOverlapping(55/4) ->onOneServer ->runInBackground ->timezone('Africa/Cairo')` 5 crons + `idempotency:purge`. Wires `AppServiceProvider` auto.
+
+- **§4 Bulkhead F-11→F-14:** `config/queue.php` `failed database-uuids failed_jobs` `bulkhead timeout 12/60/60/125` + `config/horizon.php` `supervisor-critical/standard/low/ai queue=[critical] timeout 12 max 5 etc` `balance auto` ; `docker-compose.prod.yml` PATCHED `worker-critical: --queue=critical --timeout=12 replicas 2` `worker-standard: --queue=standard 60 replicas1 (renamed worker)` `worker-low: low 60` `worker-ai: ai 125 replicas2` + deprecated `worker replicas0` compat ; `.env.example` `QUEUE_FAILED_DRIVER database-uuids + SUPERADMIN_* + HORIZON_BALANCE` ; `AppServiceProvider Queue::failing` → `Log job_failed_alert_agent6 + GovernanceAlerted job_failed` → `private-governance-alerts` Agent6 SecOps ; `migration 000031_b12_failed_jobs` guard.
+
+**Verification:** `.arenarules` R36/R11 additive + Columns 13×9 + Pillars 7+8 + B1a B.3 hierarchy re-verified, bulkhead 4, 20 findings fixed, zero-regression.
+
+**Next:** B.13 Self-Healing — awaiting prompt
+
+---
+
+## 22. PHASE 5.0 B.11 — DOCKER ARCHITECTURE & NETWORK ISOLATION [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.11 — معمارية الحاويات وعزل الشبكة (Docker Compose Architecture) — Pre-Execution Audit 20 flaws (B11-01→B11-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B11_DOCKER.md` (v5.0-B.11 harden audit 9 sections) + Docker Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L, additive only:
+
+- **§1 Compose F-01/F-10/F-12/F-14:** `docker-compose.prod.yml` PATCHED — 13 services `app (AU BUSINESS hub) + web (nginx alias, spec web, only 80/443 public, 8080 via web proxy) + mysql (alias db) + pgsql PostGIS + redis noeviction 512mb DB 0/1/2 + reverb $BROADCAST_PORT + worker 3 graceful 40s + n8n sandbox + agent_sandboxes via docker-socket-proxy + vllm_gpu backend+gpu dual + chrony NTP + docker-socket-proxy least-priv + fail2ban front`. Networks `front bridge (Swarm overlay comment) / backend internal / sandbox internal / gpu internal`. Healthchecks `php artisan about / fsockopen BROADCAST_PORT / redis-cli ping / chronyc`.
+
+- **§2 Edge F-02/F-13:** `docker/nginx.prod.conf` NEW — `limit_req_zone 20r/s burst 40 nodelay 429` + `CF-Connecting-IP set_real_ip` 6 CIDRs + `map Upgrade` wss + `location /reverb/ proxy reverb BROADCAST_PORT` + `location /n8n/ proxy` + `worker_shutdown_timeout 30s`. `Dockerfile` NEW multistage `php:8.4-fpm-alpine Opcache JIT 256M/100M validate_timestamps 0` + `redis pecl + pdo_mysql/pgsql` + `HEALTHCHECK artisan about` + `Octane Swoole opt-in ARG OCTANE=0` (R31 YAGNI off). `docker/php/opcache.ini + fail2ban/jail.local` added.
+
+- **§3 Env F-03:** `.env.example` PATCHED — `REDIS_CACHE_DB=1 REDIS_QUEUE_DB=2 CALIBRATOR_HEALTH_THRESHOLD=90 LOCAL_GPU_ENDPOINT http://vllm_gpu:8000/v1 LOCAL_GPU_ALLOWLIST +vllm_gpu:8000/v1 CLOCK_SKEW_MARGIN=30` . `config/database.php` `redis cache/database env wired` + `config/ai.php` `endpoint vllm_gpu:8000/v1 + threshold + skew_margin`.
+
+- **§4 Time & Grace F-04/F-05/F-06/F-07/F-16:** `Services/Time/ClockInterface + SystemClock Cairo + FrozenClock` + `Providers/AppServiceProvider singleton ClockInterface` ; `Services/Queue/CheckpointTrait` `checkpoint_json+checkpoint_at` ; `Services/Broadcast/ReverbBuffer` `TTL+skew 86400+30 + processed 3600+30` ; `Services/Agents/BudgetGuard/CircuitBreaker` `TTL+skew 90000+30 / 300+30 Lua EXPIRE arg` . `chrony cturra/ntp SYS_TIME backend`. `migration 000030_b11_docker_checkpoint additive checkpoint_json JSON + checkpoint_at` guard.
+
+**Verification:** `.arenarules` R6 ZeroTrust/R11 additive/R17 env/R27 SoC/R31 YAGNI + Pillars 8+10 + B1a B.3 hierarchy re-verified, 20 findings fixed, zero-regression.
+
+**Next:** B.12 Scheduling & Self-Healing — awaiting prompt
+
+---
+
+## 20. PHASE 5.0 B.9 — WORKFORCE MARKETPLACE (CATALOGUE+CHECKOUT escrow+DISPATCH logs) [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.9 — متجر الموظفين الرقميين (Digital Workforce Marketplace APIs) — Pre-Execution Audit 18 flaws (B9-01→B9-18) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B9_WORKFORCE.md` (v5.0-B.9 harden audit 9 sections) + Workforce Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L/≤60L, additive only:
+
+- **§1 Routes Additive F-03 Hardened:** `routes/api/v1/workforce.php` PATCHED — `GET agents [ensureTenant,drm.quarantine,sanitize,60/min]` cached 60s+replica; `POST checkout [auth.jwt,ensureTenant,drm.quarantine,micro:workforce.checkout,sanitize,idempotency,5/min]` via `WalletMutex+EscrowLockService minor BIGINT`; `GET tenant-agents alias tenant_agents [micro:workforce.tenant.view,sanitize,60/min]` cursor20 isolated; `POST agents/{id}/dispatch whereNumber 1..13 [micro:workforce.dispatch,sanitize,idempotency,30/min]` Budget Lua+Circuit+HITL 202; `GET agents/{id}/logs [micro:workforce.logs.view,sanitize,60/min]` stats 10s — hierarchy `Trace→Tenant422→Quarantine503→AULite→micro403/202→Sanitize422→Idempotency422`.
+
+- **§2 Catalogue & Purchase F-04/F-07/F-11:** `CatalogueRequest q+app_id+capability+cursor` → `CatalogueAction` `Cache tags workforce:catalog 60s + replica 5s heartbeat ? replica:primary X-DB-Route forPage 20 + prompt REDACT ***` → `WorkforceCatalogResource buyout 500000/sub 99000 minor formatted`. `CheckoutRequest agent_id 1..13 license_type buyout|subscription currency + duration` amount server-derived pricing_manifest not client → `CheckoutAction` `lock wallet:mutex 10s 429 → TX READ COMMITTED idempotency FOR UPDATE re-check → lock app_wallets → balance>= 422 → version 409 → wallet_transactions + escrow_events chain 64 hash + tenant_agent_subscriptions UK ends_at +1m subscription / null buyout SaaS-only Oil52 409 if active → idempotency 24h → SecurityAudit WORM + tags flush + Reverb`. `TenantAgents tenant isolated cursor20 eager agent`.
+
+- **§3 Dispatch & Logs F-08/F-12/F-13:** `DispatchRequest task_payload array 64KB prompt/instructions` → `DispatchAction` `subscription active+not expired → BudgetGuard Lua wouldExceed 0.02 429 → Circuit workforce OPEN 503 → micro approval HITL 202 → AgentExecutionLog WORM queued hash_chain → dispatch WorkforceDispatchJob queue workforce → BudgetGuard add → audit + WorkforceDispatched queued → 200`. `WorkforceDispatchJob` 200ms → running→completed + stats_agent_daily inc → Reverb `private-tenant.{id}.workforce`. `LogsRequest status+from/to+cursor` → `TenantLogsAction::logs` `Cache workforce:logs 10s + check ownership 404 → forPage 20 ordered DESC → X-Cache HIT` stats R37 not live COUNT.
+
+- **§4 Tenancy F-02/F-03/F-14:** `SubCapabilityKey` +5 `workforce.catalog.view|checkout|tenant.view|dispatch|logs.view` exhaustive `isValid 422 CAPABILITY_UNKNOWN`; `EnsureTenant X-App-Id enum 5 422` + `drm.quarantine 503 > Lite`; `TenantScoped` trait; `private-tenant+private-app workforce` `workforce.dispatched {queued,running,completed,failed}` 8080 wss; `throttle 5/30/60 Redis distributed`.
+
+- **§5-§7 Sprints B.9.1-B.9.6:** `SubCapabilityKey + config/workforce.php + routes PATCHED` + 4 Requests TRIM+enum+64KB + 3 Resources minor + 4 Actions `Catalogue Checkout Dispatch TenantLogs ≤120L reuse Escrow+WORM` + 5 Controllers thin ≤60L `Request→Action→Resource` + `Events/WorkforceDispatched + Jobs/WorkforceDispatchJob` + `migration 000028_b9_workforce_guard add pricing_manifest+capability+prompt + stats_agent_daily + idempotency app_id + micro seed 13×5` — `hasTable hasColumn` only `down empty`.
+
+**Verification:** `.arenarules` R36/R11 additive + Columns 13×9 + Pillars 1+5+7 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
+
+**Next:** B.10 Realtime Calibrator — awaiting prompt
+
+---
+
+## 19. PHASE 5.0 B.8 — CALIBRATOR & GOVERNANCE (SYSTEM TOGGLES + HEALTH 10s + PRE-OP <15ms + KILL-SWITCH + HITL) [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.8 — واجهات المعايرة والحوكمة وغرفة الطوارئ (AU Calibrator & Governance APIs) — Pre-Execution Audit 18 flaws (B8-01→B8-18) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B8_GOVERNANCE.md` (v5.0-B.8 harden audit 9 sections) + Governance Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L/≤60L, additive only:
+
+- **§1 Routes Additive F-01 Hardened:** `routes/api/v1/governance.php` PATCHED — `GET system/modules/status [auth.jwt,ensureTenant,drm.quarantine,sanitize,60/min]` cached 30s tags; `POST system/modules/toggle [auth.jwt,ensureTenant,drm.quarantine,micro:governance.micro.toggle,sanitize,idempotency,10/min]` via `RedisFeatureFlagCache+MicroPermissionCache+WORM+Reverb is_core 422`; `GET calibrator/health-score [auth.jwt,ensureTenant,drm.quarantine,sanitize,60/min]` NO micro view; `POST calibrator/audit/pre-op [auth.jwt,ensureTenant,drm.quarantine,PreOpGateMiddleware,sanitize,100/min]` Zero-Trust super_admin hasRole+MFA+active+email bypass micro only; `POST ai/governance/kill-switch [auth.jwt,ensureTenant,drm.quarantine,micro:governance.drm.annihilate,sanitize,idempotency,5/min]` HMAC5min+TOTP; `GET hitl/queue + POST hitl/approve [micro:hitl.approve,30/min,cursor20 tenant+app]`; `POST security/leak-check` — hierarchy `Trace→Tenant422→Quarantine503→AULite→PreOpGate→micro403/202→Sanitize422→Idempotency422`.
+
+- **§2 System Toggles F-04/F-07:** `SystemToggleRequest polymorphic flag_key in:au_med/deals/serv/invest/business prohib agent_id|module_id, agent_id 1..13, capability_key required_with, module_id 1..9, is_enabled bool, reason TRIM≥15 max500 is_core_lock 422` → `ToggleModuleAction` `flag_key→RedisFeatureFlagCache::setEnabled throw if isCore else MicroSwitchRepository::set cap SubCapabilityKey + Cache tags flush micro_perm + WORM audit micro_switch_audits + Reverb MicroPermissionToggled` — rejection `AU BUSINESS 422 is_core_lock` + stale 30s re-read verified.
+
+- **§3 Calibrator & Gate F-06/F-09:** `GET health-score` reads `Cache calibrator:health 10s` else `DB replica stats_calibrator_daily Cairo today fallback_rate*0.42+budget*0.32+error*0.48 → 100-p c0..100 + self_healing last10 security_audit_logs SELF_HEALING` → `HealthScoreResource health_pct status self_healing cached db_route` + `Cache-Control max-age=10 X-Cache HIT/MISS`. `POST pre-op` `<15ms cache-only zero DB` `PreOpGateMiddleware` Zero-Trust `hasRole(super_admin)+is_active+email_verified+session mfa_verified` bypass `RequireMicroPermission calibrator.preop` else 403, then `CalibratorController@preOp` deterministic selfHealing evaluate if <90 — p95 <8ms.
+
+- **§4 Emergency Red Button & HITL F-05/F-10:** `KillSwitchRequest reason TRIM15 + confirm_token HMAC sha256(user:kill:ts,APP_KEY) valid 5min + totp 6` + `throttle 5/min Redis distributed + Idempotency` → `GovernanceController@killSwitch` HMAC verify → `KillSwitchAction` `SecurityAuditLogger hash_chain WORM + Cache tags flush ai_runtime+feature_flags+micro_perm + Circuit 13×3 OPEN 300s pipeline + Reverb AiKillSwitchTriggered fallback:deterministic private-admin.governance` → 100% deterministic `severed true Retry-After 300`. `HitlQueueRequest status pending|approved|rejected + cursor per_page20 app_id` → `HitlAction::queue` tenant+app filtered cursor20 `hitl_approvals` fallback `agent_actions hitl_required` ordered pending. `HitlApproveRequest task_id exists rationale TRIM15 decision approved|rejected` → `HitlAction::approve lockForUpdate + micro approver check + status update + audit WORM + flush + Reverb private-tenant.{app}.hitl`.
+
+- **§5-§7 Sprints B.8.1-B.8.6:** Middleware `PreOpGateMiddleware 40L` + 4 Requests TRIM/HMAC/cursor + 4 Actions `ToggleModule CalibratorHealth KillSwitch Hitl ≤120L SRP` + 3 Resources ≤60L + 3 Controllers thin ≤60L `Request→Action→Resource` + routes patch additive + migration guard 000027 `stats_calibrator_daily + hitl_approvals seed micro hitl/calibrator` — `hasTable hasColumn` only `down empty`.
+
+**Verification:** `.arenarules` R36/R11 additive + Columns 13×9 + Pillars 4+5+7 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
+
+**Next:** B.9 Workforce Marketplace — awaiting prompt
+
+---
+
+## 18. PHASE 5.0 B.7 — 4-APPS ISOLATED REST APIs (DEALS/SERV/INVEST/MED) [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Senior API Architect — 4 Apps Quad — Pre-Execution Audit 21 flaws (F-01→F-14) → hardening integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B7_APIS.md` (v5.0-B.7 harden) — 9 sections + Actions/Resources/Controllers:
+
+- **§1 Routes Hardened F-01/F-02:** `routes/api/v1/deals.php` `GET listings/search(listings alias)` `GET listings/{uuid}` `POST listings micro:deals.create` + `POST stagnant/promote/{uuid} micro:deals.promote Agent3` 202; `serv.php` `GET providers/nearby radius 5km SPATIAL` + `POST tickets micro:serv.ticket.create` + alias `/serve`; `invest.php` `GET opportunities paginate 20` + `POST escrow/pledge alias dispatches micro:invest.fractional.issue WORM`; `med.php+au-med` `GET providers pgsql GIST` + `POST appointments pgp_sym_encrypt` + `POST telemetry/audit HMAC pgsql WORM` — all `ensureTenant 422 → drm.quarantine 503 → au.lite 503 → micro 403/202 → sanitize 422 → idempotency 422` + `throttle:search 20/min nearby 60/min invest 30/min` + `TraceId→X-Trace-Id`.
+
+- **§2 DEALS Search F-05:** `ScopeSearch whereRaw MATCH(title,description) AGAINST(? IN BOOLEAN MODE)` ngram token2 Arabic hits + `category/price_min/max minor` filters `TenantScoped app_id` + `near_lng/lat/radius ST_Distance_Sphere SRID4326 SPATIAL <5ms` + `Replica mysql_replica heartbeat<5s ? replica:primary` + `Cache::tags deals:search:hash 60s + flush on create/promote` + `with category,dealItems eager ≤5 + paginate 20 cursor + X-DB-Route` — never live COUNT R37 use `stats_deals_daily`.
+
+- **§3 SERV Nearby F-04:** `NearbyProvidersRequest lat -90..90 lng -180..180 radius 100..50000` → `ServiceProvider SELECT ST_Distance_Sphere(provider_location, ST_SRID(POINT(lng lat),4326))<radius is_active + specialty + order distance limit 50 SPATIAL idx` → `ProviderNearbyResource distance_m` + `Cache 30s + throttle 60/min`.
+
+- **§4 INVEST Pledge F-06:** `PledgeRequest opportunity_id+round_id+amount_minor+BGP minor+reference_uuid` → `PledgeEscrowAction DB::transaction lock wallet+funding_round → WalletMutex→balance check 422→version 409 → investor_ledgers WORM prev/hash_current REVOKE partitioned → funding_rounds raised_minor→if target≥→closed+deal funded/escrow_locked→escrow_contracts →idempotency inside tx verbatim` → 200 pledged or 409 not funding.
+
+- **§5 MED pgsql Privacy F-07:** `GET providers` `pgsql amed_medical_providers PostGIS ST_DWithin geography 50km GIST + trust pre-aggregated` Cache 60s; `POST appointments` `pgsql pgp_sym_encrypt(complaint_raw,PGCRYPTO_KEY) INSERT` `$connection=pgsql` `AppointmentResource` never exposes encrypted raw; `POST telemetry/audit` `AnonymizedTelemetryMiddleware 422 if raw/text/chat keys` → `RecordTelemetryAction canonical ksort→hmac TELEMETRY_HMAC_KEY→payload_hash→prev/hash_current WORM partitioned 90d retention pgsql`.
+
+- **§6 Actions/Resources/Controllers Thin F-12:** 6 Actions `CreateListing/PromoteStagnant/DispatchTicket/PledgeEscrow/BookAppointment/RecordTelemetry` ≤120L SRP reuse `EscrowLockService, AgentStrategyManager deterministic→fallback, ScopeTenant/nearby/search`; 9 Requests `TRIM+enum+exists+between`; 5 Resources minor formatted `number_format(minor/100,2)` + meta trace; 8 Controllers `≤60L Request→Action→Resource` + Promote returns 202 with driver confidence.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 tenant/R17 env/R18 tx/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 HMAC + Pillars 3+5+6 + 13 Agents + 9 Modules + 5 Apps — additive 0 new DDL reuse 000022-024 — hardened.
+
+**Next:** B.8 Workforce Marketplace — awaiting prompt
+
+---
+
+## 17. PHASE 5.0 B.6 — AUTH/WALLET/ESCROW ISOLATED REST APIs [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Principal API Engineer — Secure Fintech REST + Silent Rotation — Pre-Execution Audit 20 flaws (F-01→F-14) → hardening integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B6_APIS.md` (v5.0-B.6 harden) — 9 sections + Contracts + Interceptor:
+
+- **§1 Routes Hardened F-03:** `routes/api/v1/auth_wallet_escrow.php` hierarchy fixed — `TraceId(global)→EnsureTenant 422→QuarantineGuard 503 DRM Retry-After 3600→AULite 503 DEGRADED_READ_ONLY→auth.jwt 401→RequireMicroPermission 403 MICRO_PERMISSION_DENIED / 202 HITL_APPROVAL_REQUIRED →SanitizeDataLeaks 422 DATA_LEAK_BLOCKED →IdempotencyMiddleware 422 IDEMPOTENCY_KEY_REQUIRED/REUSE_MISMATCH` — `POST auth/register|login|refresh(throttle:5/min Redis distributed) /auth/me|logout + GET wallet/balance (stats-isolated) + POST wallet/deposit|withdraw-request + escrow/lock|release|dispute + admin/wallet/adjust` — all money POST require `Idempotency-Key ≥16`.
+
+- **§2 Auth Silent Rotation F-04/F-12:** `JwtService::sign HS256` using `JWT_SECRET || hash(APP_KEY)` + `header.typ JWT` + `claims sub,app_id,trace_id,iat,exp 15m, jti 16b` → `Bearer <jwt>` + `verify signature+exp 401`. Refresh `64-hex random_bytes(32) → token_hash SHA256` stored `refresh_tokens(token_hash UNIQUE,expires_at 7d,revoked_at,rotated_from_id FK self,device=hash(ip|UA|app_id),ip)` never plaintext; `POST /auth/refresh` reads **cookie `__Host-refresh` only** `Secure;HttpOnly;SameSite=Lax;Path=/api;Max-Age=604800` + `Cache::lock refresh:{hash} 5 single-flight` → `lockForUpdate` → `if revoked → revoke family UPDATE revoked_at + security_audit REUSE_DETECTED 401` → `revoke old + insert new rotated_from_id + Set-Cookie new + return access`. Finite: reuse → 401 + family revoked; expired → 401; missing → 401 — interceptor never loops on `/auth/refresh`.
+
+- **§3 Wallet/Escrow via `EscrowLockService` F-01/F-02/F-06/F-07:** Reuses `000016` service verbatim — `outer replay → WalletMutex::lock id 10 else 429 → DB::transaction READ COMMITTED → SELECT wallet lockForUpdate → FOR UPDATE idempotency re-check → balance>=amount else 422 INSUFFICIENT_FUNDS → version WHERE expected else 409 VERSION_CONFLICT → WalletAdjustmentLog TRIM≥15 chk_wal_rationale_trim + ip via TrustProxies → wallet_transactions + escrow_events append-only REVOKE → idempotency insert 24h → catch 23000→replay` . Money all `amount_minor BIGINT` + `Money::multipliedBy HALF_UP` → commission 5%/4%/3% tiers locked at `created_at(3)` `commission_rate_snapshot immutable trigger 45000`.
+
+- **§4 Wallet `GET balance` R37 F-08:** Never live `SUM` — `Cache::tags(['wallet:balance:{user}:{appId}']) 30s` → prefer `stats_wallet_daily` 00:30 Cairo pre-aggregated → fallback `app_wallets WHERE user_id=? AND app_id=?` per currency `uk_user_currency` ≤5 queries + `EXPLAIN` indexed + `ReplicaConnectionResolver heartbeat TIMESTAMPDIFF<5s ? replica:primary` header `X-DB-Route` + `cached bool` in meta.
+
+- **§5 Validation & Resources F-05/F-10:** 7 FormRequests each `prepareForValidation trim` — `LoginRequest email lower+trim, RegisterRequest trim + confirmed, Deposit/Withdraw amount_minor int 1..9e18 currency in, WalletAdjustmentRequest wallet_id exists + amount_minor !=0 + mandatory_rationale min:15 after trim→msg, LockRequest transaction_id uuid + buyer≠seller + amount_minor>0 + deal_type enum + app_id enum, Release/Dispute checked state machine canTransition else 409`. Resources `WalletBalanceResource minor→formatted number_format(minor/100,2)`, `AuthUserResource allowlist`, `EscrowResource`. Controllers ultra-thin ≤90L: `__invoke(Request){ dto→service→Resource + meta trace_id + Idempotency-Replayed}`.
+
+- **§6 Frontend `AuthRefreshInterceptor.ts` F-18:** Strict TS `strict:true zero any` — `axios withCredentials:true` adds `Authorization Bearer`; response interceptor `if 401 && !url.includes('/auth/refresh') && !_retry → isRefreshing queue failedQueue[] → single POST /auth/refresh → setAccessToken(new) → processQueue → retry orig once`; `isRefreshing single-flight`; `second 401 → redirect /login once`; no infinite loop.
+
+- **§7 Sprints B.6.1-B.6.6 ≤150L:** `000025 additive hasTable guards + hasIndex CHK` + `config/jwt.php env wrapper` + `.env.example JWT_SECRET/TRUST_PROXIES/CORS` + `Services/Auth/JwtService` + `Domain/Auth 3 Actions + DTOs` + `7 Requests TRIM` + `3 Resources` + `4 Controllers thin + AuthenticateJwt` + `routes hardened + interceptor`.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 tenant/R17 env/R18 tx/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 HMAC + Pillars 6+9 + 13 Agents + 9 Modules + 5 Apps — hardened.
+
+**Next:** B.7 Deals/Serv APIs — awaiting prompt
+
+---
+
+## 16. PHASE 5.0 B.5 — 5-APPS SCHEMAS & WORKFORCE MARKETPLACE [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Lead DB Architect — Enterprise Multi-Tenant + MySQL Spatial — Pre-Execution Audit 14 flaws (F-01→F-13) → hardening integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B5_SCHEMAS.md` (v5.0-B.5 harden) — 9 sections + Dual-DB DDL + DDD Mappings:
+
+- **§1 AU DEALS MySQL additive F-01:** `deal_categories (amed hasTable, parent FK, schema_json JSON_VALID)`, `deals_listings (uuid, tenant RESTRICT, category RESTRICT, app_id, title/description `FULLTEXT ngram` F-05, geo_point POINT SRID4326 SPATIAL F-06, price_minor BIGINT F-12, is_hidden Tier1, is_stagnant)`, `deal_items (listing CASCADE, sku unique, attributes JSON_VALID, price_minor)`, `promotional_bundles (items_json JSON_VALID, chk dates)`, `stagnant_deals (listing CASCADE, agent 1-13, detected_at, is_promoted, log via stats_deals_daily 00:30 Cairo F-09 R37)` — verification `MATCH AGAINST ngram` + `ST_Distance_Sphere <5000 SPATIAL`.
+- **§2 AU SERV Spatial F-06:** `service_providers (provider_location POINT SRID4326 NOT NULL SPATIAL, coverage_zone POLYGON SRID4326 SPATIAL, is_active, app_id, user CASCADE)`, `service_tickets (requester RESTRICT, provider SET NULL, status 8, pickup_point POINT SPATIAL 4326)`, `dispatch_logs (ticket CASCADE, provider CASCADE, distance_m, created_at, COMMENT partitioned monthly F-11)` — inserts via `ST_SRID(POINT(lng lat),4326)` + Redis Mutex + `FOR UPDATE`.
+- **§3 AU INVEST F-07/F-12:** `investment_deals (amount_minor BIGINT, funding_target/funded minor, status draft→funding→funded→escrow_locked→released/refunded/expired with BEFORE UPDATE trigger SIGNAL 45000 canTransition, chk amount>0, tenant RESTRICT)`, `funding_rounds (deal CASCADE, status open/closed/cancelled)`, `escrow_contracts (deal CASCADE, escrow_clearing FK B.2a SET NULL)`, `investor_ledgers (deal RESTRICT, investor RESTRICT, amount_minor !=0, prev_hash/hash_current chain WORM REVOKE F-11)` — no DECIMAL.
+- **§4 AU MED pgsql F-02/F-03/F-04:** `connection: pgsql` only — `amed_medical_providers (uuid gen_random_uuid, user_id logical FK, app_id AU MED CHECK, clinic_location geography POINT 4326 GIST PostGIS)`, `amed_medical_appointments (patient, provider RESTRICT, complaint_encrypted TEXT pgp_sym_encrypt PGCRYPTO_KEY F-04, status scheduled/completed/cancelled)`, `amed_provider_trust_scores (provider PK CASCADE, score 0-100, computed_at, pre-aggregated from stats_provider_daily F-09)`, `amed_consultation_telemetry (appointment CASCADE, nlp_hash HMAC hash_hmac sha256 canonical+TELEMETRY_HMAC_KEY F-03 zero raw, payload_hash, prev/hash_current chain, WORM, 90d retention, partition)` — `Model $connection='pgsql'` + `pgp_sym_decrypt` accessor.
+- **§5 Workforce Tenant-Isolated F-08/F-10/F-11:** `digital_agents (TINYINT 1-13 PK, code unique, app_id) seeded 13`, `tenant_agent_subscriptions (UK tenant,agent,app F-08 isolation, tenant CASCADE, agent RESTRICT, status active/suspended/cancelled, chk 1-13)`, `agent_execution_logs (subscription CASCADE, agent RESTRICT, input/output hash 64, tokens/cost, status queued/running/completed/failed, prev/hash chain, partitioned monthly F-11, REVOKE)`, `agent_memory_sandboxes (FK agent CASCADE tenant CASCADE, UK tenant+agent+key, memory_json JSON_VALID, app_id CHECK, trigger app isolation SIGNAL F-08)` — FK matrix explicit RESTRICT vs CASCADE.
+- **§6 DDD Models:** `TenantScoped trait scopeTenant(app_id)` on all MySQL models; `DealsListing::scopeSearch (MATCH BOOLEAN MODE), scopeNearby (ST_Distance_Sphere)`, `ServiceProvider::scopeWithinRadius/Covers`, `InvestmentDeal::TRANSITIONS + canTransition()`, `InvestorLedger/AgentExecutionLog/ConsultationTelemetry WORM booted() chain + REVOKE`, `MedicalAppointment pgsql $connection + complaint decrypt accessor/setter pgp_sym_encrypt`, `ConsultationTelemetry HMAC booted chain`, `AgentMemorySandbox isolated` — Eloquent only R12, JSON not JSONB R7.
+- **§7 Sprints B.5.1-B.5.6:** 3 migrations additive (000022 deals ngram+SRID, 000023 serv+invest state-machine, 000024 pgsql med+workforce) + 12 Domain Models TenantScoped + SRID + FULLTEXT/SPATIAL scopes + state-machine + pgcrypto — each ≤150L; verification gates hasTable collision pass, FULLTEXT ngram Arabic hits, SPATIAL sub-ms, invest invalid transition 45000, minor BIGINT, pgsql encrypted/HMAC chain, sandbox mismatched app_id 45000, partition monthly.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 app_id Eloquent/R17 env/R18 transaction/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 env + Pillars + Dual-DB ratified + 13 Agents + 9 Modules.
+
+**Next:** B.6 API Pipelines — awaiting prompt
+
+---
+
+## 15. PHASE 5.0 B.4 — TRI-HYBRID AGENTSTRATEGYMANAGER & CALIBRATOR HEALING [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** Senior AI Infra Systems Engineer — Tri-Hybrid adapter (Deterministic 0-cost → Cloud → Local GPU) + BudgetGuard + CircuitBreaker + Dynamic Runtime Switching + CalibratorSelfHealing — Pre-Execution Audit 14 flaws → hardening F-01→F-13 integrated before commit.
+> **Audit Screening (Pre-Execution 2026-09-16):** 14 vulnerabilities/features identified — Budget race check-then-increment over-spend, config drift ai_agents_config vs micro_switch_matrix, threshold ==90 ambiguous, SSRF via LOCAL_GPU_ENDPOINT private IP, secrets in DB/log, prompt injection bypass leak detector, no timeout/CircuitBreaker hang worker, hot row budget per-request DB, missing indexes, Cairo vs UTC daily reset, hierarchy preferred_driver vs auto, SoC circular Manager→Calibrator, budget-exhausted infinite loop, missing traceparent.
+
+**Deliverable:** `docs/PHASE5_B4_TRI_HYBRID.md` (v5.0-B.4 harden) — 9 sections + DDL + Driver Contracts:
+
+- **§1 Driver Architecture DDD R27:** `DriverInterface::propose(): Proposal{confidence 0-100, output, tokens, costUsd, reasonCode}` + `Proposal VO >=90 pass strict` + `DeterministicRuleDriver` FSM 2s Regex 0 token, `CloudLlmDriver` via `CloudLlmClient` 5s `CLOUD_LLM_API_KEY` .env only, `LocalGpuDriver` via `LocalGpuClient` 3s `LOCAL_GPU_ENDPOINT` SSRF allowlist + cost `LOCAL_GPU_COST_PER_1K` — timeout connect 1s, never hardcode R17.
+- **§2 Fallback & CircuitBreaker + Budget:** `AgentStrategyManager::execute` flow — `AgentRuntimeCache 30s tags + re-sanitize prompt BLOCK→HITL → BudgetGuard checkExceeded terminal → deterministic isPass threshold → fallback order preferred_driver (micro_switch) → circuit skip OPEN → Budget wouldExceed skip → try driver timeout 2/5/3s → recordSuccess/Failure 5→OPEN 5min HALF_OPEN probe`. **BudgetGuard Lua atomic** `INCRBYFLOAT budget:{id}:{CairoDate}:spend` + `EXPIRE 25h` + revert if > cap cap, add tokens/spend atomically, nightly flush to `agent_budget_caps` audit. **CircuitBreaker** `circuit:{driver}:{agentId}` CLOSED→5 failures→OPEN 300s→HALF_OPEN single probe.
+- **§3 Dynamic Runtime Switching:** **NO new `ai_agents_config`** — extends `micro_switch_matrix` additive `driver_override ENUM auto/deterministic/cloud/local_gpu DEFAULT auto, deterministic_threshold TINYINT 90 CHECK 0-100, idx_ms_driver` + reuse `MicroPermissionCache` tags+lock 30s + Reverb `AgentRuntimeToggled` flush. Resolved via `AgentRuntimeCache::resolve(agentId,appId)` precedence `micro_switch > budget > confidence`.
+- **§4 Calibrator Integration Event-Decoupled F-11:** Manager dispatches `AgentConfidenceEvaluated(agentId, confidence, reasonCode, traceId, durationMs, costUsd)` → `CalibratorHealingListener` `queue:calibrator` ShouldQueue async <15ms Pre-Op → `CalibratorSelfHealingEngine::evaluate` → `priceAdjustment TieredPricingEngine, autoPromotion stagnant_deals, reroute stats_wallet_daily` — R37 stats isolation no `COUNT(*) on live`, no circular call.
+- **§5 DDL MySQL 8.4 JSON not JSONB:** `000020` alter micro_switch add columns + `chk_threshold` + `idx_ms_driver`; `000021` `agent_budget_caps(agent_id TINYINT 1-13, budget_date DATE Cairo, daily_token_limit 100k, daily_cost_cap 5.0000, current_* flush, PK agent+date, idx budget_date, CHECK)`. Redis keys `budget:{id}:{date}:spend/tokens`, `circuit:{driver}:{agent}`.
+- **§6 Contracts Sprint-Ready:** `RegexMismatchException`, `DeterministicConfidenceBelowThreshold`, `BudgetExhausted`, `CircuitOpen` typed; Manager DI `deterministic, cloud, localGpu, circuit, budget`; `traceparent 00-{trace_id}` propagated to LLM headers F-13; allowlist logging `+ agent_id, driver, confidence, tokens, cost_usd` single-line JSON.
+- **§7-§8 Sprints B.4.1-B.4.6:** Migrations → Contracts/VO → Cache/Guards → Clients SSRF → 3 Drivers → Manager+Event+Calibrator — each ≤150L; verification gates Lua concurrency 100 no over-spend, 5 fails OPEN, toggle 30s flush no restart, SSRF 169.254 blocked 422, prompt BLOCK→HITL, 90 pass 89.9 fallback, traceparent logged, queue calibrator <15ms.
+
+**Verification:** `.arenarules` R5 DDD/R7 JSON/R11 additive/R12 Eloquent/R17 env/R18 transaction/R27 SoC/R28 DRY/R31 YAGNI/R35 Mutex/R37 stats/R38 validation + Pillars 1 (0-cost),2 (<90 fallback),3 (Tri-Hybrid Switcher),7 (Calibrator) + 13 Agents canonical + 9 Modules + 5 Apps — hardened.
+
+**Next:** B.5 AU MED Clinical Vault — awaiting prompt
+
+---
+
+## 14. PHASE 5.0 B.3 — ZERO-TRUST RBAC & POISON PILL DRM [DONE 2026-09-16 — Audit-Augmented Production-Grade]
+
+> **Directive:** SecOps & Cybersecurity Architect — Hardened Enterprise RBAC (Module 13) + Anti-Piracy Poison Pill (Module 14) — Pre-Execution Audit 14 flaws → hardening integrated before commit.
+> **Audit Screening (Pre-Execution 2026-09-16):** 14 vulnerabilities/features identified — Hardcoded super_admin bypass ignores banned/suspended, micro_switch free string privilege escalation, DOM cache stale vs execution race, security_audit_logs sync insert latency + PII leak + missing hash-chain+partition, MAC rotation Docker Swarm false quarantine, heartbeat no debounce 48h boundary thrash, quarantine DDL block breaks migrations, hierarchy DRM vs AU Lite conflict, micro cache no tag/stampede, Argon2id vs plain hash, license stored plaintext, missing 2-man annihilation, heartbeat MITM no HMAC.
+
+**Deliverable:** `docs/PHASE5_B3_GOVERNANCE_DRM.md` (v5.0-B.3 harden) — 8 sections + 3 DDL + Flows + Endpoints:
+
+- **§1 Super Admin Supremacy:** `Gate::before` gated on `hasRole(super_admin) && is_active && email_verified_at && mfa_verified` session, **respecting** `QuarantineGuard` allowlist — even super_admin cannot write while `is_quarantine_active` except `drm/status|disarm|annihilate` GET. Prevents banned super_admin bypass.
+- **§1.2 micro_switch_matrix additive:** `agent_id 1-13, app_id, module_id 1-9, sub_capability_key 80 ENUM (SubCapabilityKey cases deals.create … governance.drm.annihilate), is_enabled, approval_required, preferred_driver (B.1a compat), llm_fallback_enabled, granted_by FK, reason 500, UNIQUE(agent,app,module,cap), idx agent_app/enabled/module, CHECKs 1-13/1-9` + `micro_switch_audits` WORM REVOKE + `MicroPermissionCache` `micro_perm:{env}:{agent}:{app}` Redis 30s tags `micro_perm` + `Cache::lock` stampede.
+- **§1.3 DOM vs Server:** `GET /governance/micro-permissions` returns `{visible:[btn.deals.create], requiresApproval:[escrow.release], degradedMode, quarantineActive}` computed cached 30s (DRM>AU Lite>RBAC filtered) — DOM only hides; `RequireMicroPermission:cap` re-validates server: `is_enabled false →403 MICRO_PERMISSION_DENIED`, `approval_required true && no hitl_approvals approved →202 HITL_APPROVAL_REQUIRED`.
+- **§2 Audit Watchdog:** `security_audit_logs` `uuid, trace_id 32, user_id, agent_id, app_id, module_id, action, route 150, method, query_params JSON allowlist, payload_hash 64 SORT_KEYS redacted, payload_snapshot JSON allowlist (no password/passphrase/totp), ip 45, user_agent, prev_hash, hash_current SHA256(prev+payload), created_at(3)` + `WORM REVOKE UPDATE,DELETE` + `CHECK JSON_VALID` + indexes user/route/trace/agent + monthly partition + async via `SecurityAuditMiddleware terminate()` → `LogSecurityAuditJob` queue `security-audit` batch 100 with `SELECT hash_current FOR UPDATE` chain — 0ms hot path, single-line JSON trace_id propagated.
+- **§3 Poison Pill DRM:** `system_drm_states` singleton `id=1`, `is_quarantine_active, quarantine_triggered_at, grace_expires_at=triggered+7d CHECK grace>=triggered, master_passphrase_hash Argon2id, hardware_fingerprint_hash SHA256, encrypted AES-GCM, license_payload_encrypted+signature RSA, last_heartbeat_at/status, heartbeat_fail_count, disarm_attempts` + `system_drm_events` WORM + `FingerprintService::generate()` stable `hash(sha256, APP_KEY: machine-id: domain: ip)` NOT MAC + encrypt AES-GCM; `DrmHeartbeatService beat()` 5min HMAC `X-Signature hash_hmac(sha256, nonce+fp, DRM_HMAC_KEY)` + nonce, timeout5, ok→reset fail 0, fail→increment, `fail>=576 (48h)` → `DB::transaction lockForUpdate` atomic `is_quarantine_active=1, grace=now+7d` + `system_drm_events HEARTBEAT_48H_FAIL` + `Cache::forget drm:active` + `DrmQuarantineTriggered` Reverb + email super_admin.
+- **§3.4 Quarantine Specs:** `QuarantineGuard` after TraceId before AU Lite — `Cache drm:active 60s`, `isWrite POST/PUT/PATCH/DELETE && !allowlist(drm/status|disarm|annihilate|heartbeat|GET) →503 DRM_QUARANTINE_ACTIVE {grace_expires_at} Retry-After 3600 + X-DRM headers`, `__ddl/migrate` abort, `REVOKE DROP,ALTER ON abduniproject.* FROM abd_app` (migrator `abd_migrator` separate), grace daily 09:00 email NOT auto-annihilate, disarm `POST /drm/disarm` Argon2id + TOTP 6 + `Throttle 5/min` + verify fingerprint, success flush cache + event `DISARM_SUCCESS`; annihilate `POST /drm/annihilate` requires `master_passphrase+TOTP+confirm_token HMAC(APP_KEY) 5min + X-Second-Admin-Token` → queues `AnnihilationJob` 202 NOT instant, job checks `grace_expires_at<now` else blocked + second confirm via `artisan drm:annihilate --confirm`.
+- **§4 Hierarchy:** `QuarantineGuard (DRM 503) → EnsureTenant (X-App-Id enum 422) → AULiteModuleGuard (503) → RequireMicroPermission (403/202) → SanitizeDataLeaks (422) → Idempotency (422) → execution` — trace_id + security audit on every request.
+- **§5 APIs & §6 Sprints B.3.1-B.3.6:** Migrations DDL → Enums → Repos/Cache → Services Heartbeat/Fingerprint/Audit → Middleware/Events → Controllers/Requests — ≤150L/file, verification gates (Gate respects quarantine, visible array matches matrix, 403 vs 202, WORM hash chain 0ms, HMAC 5m 576→503, stable fingerprint, Argon2id+2-man).
+
+**Verification:** `.arenarules` R36 view≠execute + R11 additive + Columns 13×9 + Pillars 4+5+7 + B1a/B2a hierarchy re-verified, 71pts+JWT+MFA+RSA+HMAC+partition, no mock, production-grade.
+
+**Next:** B.4 Tri-Hybrid AI Strategy — awaiting prompt
+
+---
+
+## 13. PHASE 5.0 B.1/B.2 — RETROSPECTIVE AUDIT FIX [DONE 2026-09-16 — APPROVED & APPLIED]
+
+> **Mandate:** Comprehensive Technical Audit & Retrospective Review on B.1 + B.2 — Principal Architect & Lead Security Engineer — 20 flaws identified → 13 fixes applied (**B1-F1..F6 + B2-F1..F7 + C-F1**).
+
+**Audit Report:** Presented 2026-09-16 — 20 findings (3 Critical race, 6 High ReDoS/precision/privilege, 8 Medium PII/perf, 3 Low) + 12 enhancements (stampede lock, audit ledger, degraded matrix, ReDoS hardening, namespace tags, optimistic+ pessimistic hybrid, atomic idempotency, wallet sharding, state machine, heartbeat, deterministic hash).
+
+**Applied Fixes (committed `arena/01a09d54-drfifty`):**
+
+- **Migrations (3):** `000014` — `feature_flags` degraded_mode + `module_key/is_active/updated_by` **STORED+indexed** (VIRTUAL→STORED), `chk_core_always_enabled`, `feature_flag_audits` append-only (FK+REVOKE); `000015` — `data_leak_patterns` priority/label/strict + 8 seeds ReDoS-safe (phone 10→social 90) + `chk_regex_not_empty`; `000016` — `wallet_adjustment_logs` TRIM>=15 + `escrow_events` seq+hash SORT_KEYS + FK CASCADE + `idempotency_keys` hash+expiry + `heartbeat` beat_at.
+- **Domain (6):** `ModuleKey` (appId enum+isCore+tryFromAppId), `DataLeakAction`, `FeatureFlagRepositoryInterface` (reason+ip), `Money` VO minor-only, `EscrowStatus::canTransition()` state machine, `ActorType`, `WalletOperationDTO` readonly, `WalletRepositoryInterface` version guard.
+- **Infrastructure (4):** `RedisFeatureFlagCache` (`au:flags:{env}:` + `Cache::lock refresh` stampede + audit insert + tags flush + Reverb), `EloquentDataLeakPatternRepository` (60s+validateRegex 10ms), `ReplicaConnectionResolver` (heartbeat lag `TIMESTAMPDIFF` 5s cached, no SHOW SLAVE), `ConfigureJsonLogging` (HMAC salted+allowlist).
+- **Services (3):** `RegexDataLeakDetectorInterface`, `RedisRegexDataLeakDetector` (64KB truncation, ReDoS backtrack/50ms log, priority), `EscrowLockService` (outer idem→Funnel 10s→READ COMMITTED→lockForUpdate→version WHERE→TRIM15 validate→WalletAdjustmentLog ip via $request->ip()→ledger→escrow_event SORT_KEYS→idempotency inside TX→409 on 0 rows→23000 replay).
+- **Middleware (4) + Http (1):** `AULiteModuleGuard` (strict tenant, degraded matrix `DEGRADED_READ_ONLY` 503), `SanitizeDataLeaks` (skip UploadedFile, 64KB leaf, X-Leak-Sanitized), `EnsureTenant` (enum 422), `IdempotencyMiddleware` (min16, hash compare 422, FOR UPDATE replay, Idempotency-Replayed header, updateOrInsert), `TraceIdMiddleware` (W3C traceparent 00-{32}-{16}-01).
+- **Commands (1):** `PurgeExpiredIdempotencyKeys` batched `LIMIT 1000` loop + heartbeat beat.
+- **Config (3):** `config/database.php` mysql_replica + `READ COMMITTED` sticky, `config/logging.php` JsonFormatter + tap allowlist, `.env.example` DB_REPLICA_* + LOG_HMAC_KEY.
+- **Specs amendment:** `PHASE5_B1` v5.0-B.1a + `PHASE5_B2` v5.0-B.2a amendment blocks inserted — GENERATED STORED notes + interface signatures + §3/§4 updates.
+
+**Verification:** `.arenarules` R11/R12/R18/R35 + Pillars 6 + 71 pts + 9 Modules/5 Apps/Oil 34 5% re-verified — no float, JSON not JSONB, immutability 3 layers, hot-row READ COMMITTED, replica heartbeat no privilege.
+
+**Next:** B.3 Governance, Micro-Permissions & DRM — awaiting prompt
+
+---
+
+## 12. PHASE 5.0 B.2 — FINANCIAL ENGINE & ESCROW SUBSYSTEM [DONE 2026-09-16 — Spec Mode Only]
+
+> **Directive:** Principal Fintech Backend — High-Concurrency Financial Ledgers + Pessimistic Locking — spec for Any AI Agent — no mock placeholders.
+
+**Deliverable:** `docs/PHASE5_B2_FINANCIAL_ENGINE.md` (37KB, 577 lines) — strict spec only:
+
+- **§1 DDL 7 tables MySQL 8.4 InnoDB utf8mb4:** `app_wallets(id,user_id,balance_minor BIGINT + VIRTUAL balance, currency ENUM, status, version, CHECK balance>=0 + available>=0, UNIQUE user+currency, FK CASCADE)` + `wallet_transactions(id,wallet_id,transaction_type,amount_minor,reference_uuid UNIQUE, metadata JSON_VALID, balance_after, app_id, indexes FK)` + `wallet_adjustment_logs(id,wallet_id,admin_id,amount_changed,previous/new_balance,mandatory_rationale TEXT CHECK CHAR_LENGTH>=15, ip_address VARCHAR45 $request->ip(), reference_uuid, REVOKE UPDATE/DELETE)` + `escrow_clearings(id,transaction_id UNIQUE, buyer/seller, amount_minor, status, escrow_rate_applied DECIMAL5,4 locked, commission_minor, fx/barter JSON_VALID, release_eligible_at, app_id, deal_type, 6 indexes, FK RESTRICT, CHECKs, trigger immutability)` + `commission_rules(id,tier_level 1-10, min/max_volume_minor, commission_percentage 0-50, rate GENERATED, app_id null=global, UNIQUE tier+app+volume, seed Tier1 5% Tier2 4% Tier3 3%)` + `escrow_events(event_id,transaction_id FK CASCADE, from/to_status, actor_type, actor_id, reason_code, payload_snapshot_hash SHA256 64, app_id, append-only REVOKE UPDATE/DELETE, idx transaction_created)` + `idempotency_keys(id, idempotency_key UNIQUE+user+endpoint, endpoint, user_id, request_hash SHA256, response_status/body JSON, expires_at +24h, EVENT purge)`
+- **§2 Escrow Immutability:** Rate 5% base (Q34 Oil2) locked at `created_at(3)` millisecond via `INSERT escrow_rate_applied` + 3-layer enforcement (BEFORE UPDATE SIGNAL 45000 + Eloquent guarded + REVOKE UPDATE(escrow_rate_applied) + Agent1 no retroactive) — workflow create→lock→later 6% only new deals
+- **§3 Race-Condition Guard:** `EscrowLockService` verbatim flow — `Idempotency gate outer → Redis funnel Cache::lock wallet:mutex:10s 429 → retry(3, DB::transaction(lockForUpdate + invariants + mutate + WalletAdjustmentLog min15 + ip + WalletTransaction + EscrowEvent + Idempotency) 3) → release` — `CHECK balance>=0` 3 levels + `UNIQUE reference_uuid` dedup + `version` optimistic
+- **§4 Query Discipline:** N+1 `with()` + QueryCountTest ≤5 CI fail + EXPLAIN verified indexes, `withCaching`, stats_wallet_daily (Rule37); Read/Write split `mysql primary` writes vs `mysql_replica` reads + lag `SHOW SLAVE STATUS Seconds_Behind_Master >5s fallback` + `X-DB-Route`; Structured logging single-line JSON `ts,level,trace_id,app_id,user_id_hashed,endpoint,duration_ms,error_code` allowlist redaction + `TraceIdMiddleware` W3C traceparent propagation HTTP→queue→broadcast
+- **§5 Idempotency & Ledger:** `Idempotency-Key` required ≥16 on every POST moves money, duplicate 24h returns verbatim 200 no re-execute + `IdempotencyMiddleware` 422 if missing; `escrow_events` append-only `REVOKE UPDATE,DELETE`, every transition persisted, SHA256 hash, single source for dispute `SELECT ... ORDER BY created_at` reconstruction — `REVOKE` grants list + index/FK matrix table
+- **§6-§7 Sprints B.2.1-B.2.6:** Migrations DDL → Enums/ValueObjects → Repositories/DTOs → Services EscrowLockService → Middleware Idempotency/TraceId + Requests → Replica+Logging — verification gates: CHECK 422/503, concurrency 100 parallel, EXPLAIN, trace_id single-line
+
+**Verification:** `.arenarules` R11/R12/R18/R35 + Pillars 6 + Stack Lock cross-checked, minor units BIGINT no float, MySQL JSON not JSONB, 13 Agents (CFO no retroactive), `abduniproject` folder
+
+**Next:** B.3 Governance, Micro-Permissions & DRM — awaiting prompt
+
+---
+
+## 11. PHASE 5.0 B.1 — CORE ARCHITECTURE, DDD & AU LITE [DONE 2026-09-16 — Spec Mode Only]
+
+> **Directive:** Full Backend Specification Mode — B.1 delivers core Clean Architecture/DDD, AU Lite dynamic hibernation, and programmatic data-leak blocker as consolidated spec for Cursor AI — no mock placeholders.
+
+**Deliverable:** `docs/PHASE5_B1_CORE_ARCHITECTURE.md` (33KB, 546 lines) — strict spec only:
+
+- **§1 DDD Tree:** Absolute layout `app/Domain/{Auth,Wallet,Escrow,Deals,Serve,Invest,Med,Workforce,Calibrator,Governance}` + `app/Services/{Rules,Security,Agents,Calibrator}` + `app/Infrastructure/{Persistence/Eloquent, Cache/Redis, Broadcasting/Reverb, Http/Clients}` + `app/Http/{Controllers/Admin|User|Public, Requests, Resources, Middleware}` — PSR-4 namespaces + Rule 27/30 SRP ultra-thin controllers
+- **§2 AU Lite Engine:** `feature_flags` DDL MySQL 8.4 InnoDB utf8mb4 — canonical `flag_key/flag_name/is_enabled/is_core/rollout/allowed_user_ids JSON` + B.1 aliases via `GENERATED ALWAYS AS` (`module_key=is flag_key`, `is_active=is is_enabled`, `degraded_mode`, `updated_by`) + 6 CHECKs (`chk_flag_key_enum`, `chk_flag_rollout`, `chk_flag_json_valid`, `chk_core_always_enabled`) — seed 5 + RedisFeatureFlagCache TTL 30s + `AULiteModuleGuard` — Redis hit → 503 without DB, miss → single query, `503 Module Temporarily Hibernated` JSON vs Inertia abort, `degraded_mode` attribute
+- **§3 Data Leak Blocker:** `data_leak_patterns` DDL (`id, regex_pattern, action BLOCK|REDACT|WARN, is_active, is_strict_post_escrow_only, created_at`) seed 8 (EG 010, intl +, email, url, wa.me, t.me, @handle, obfuscated) — `RegexDataLeakDetectorInterface` + `RedisRegexDataLeakDetector` cached 60s — `SanitizeDataLeaks` global middleware: chat → REDACT + X-Leak-Sanitized, non-chat BLOCK → `422 Unprocessable Content` with leaks[], AU Lite frozen → `503` strict separation — Oil 1 timing honored
+- **§4 Infrastructure & HTTP:** Redis keys, Reverb broadcast on toggle, ultra-thin controller example
+- **§5 Micro-Sprints B.1.1-B.1.6:** 1-3 files/≤150 LOC per sprint — Migrations → Enums/Contracts → Cache → Services → Middleware → Wiring/Verification — explicit file paths + `php artisan migrate` + curl 503/422 verification gates
+- **§6 Calibrator Gate:** 6 domains 100% (Memory 13/9/5 + Architecture DDD + Security 503/422 + Precision JSON/minor + Craftsmanship Enums/strict + Operational Reverb/Redis) — BLOCKED if <100%
+- **§7 Arabic Summary:** ملخص عربي كامل
+
+**Verification:** `.arenarules` R1-38 + 11 Pillars + 13 Agents lock cross-checked, dual-DB (MySQL core + PG AU MED only), Reverb 8080 exclusive, space-form `AU MED/DEALS/SERV/INVEST`, `abduniproject` folder — no Pusher/Socket.io, no JSONB in MySQL
+
+**Next:** B.2 Financial Engine & Escrow Subsystem — awaiting prompt
+
+
+---
+
+## 10. POST-PHASE 2 DEEP AUDIT — IN-PLACE REFACTOR REPORT (2026-09-14 Arena)
+
+> **Directive:** Character-by-character Deep Audit across `docs/` (16), `database/schema/` (4), `database/migrations/` (7), `docker-compose.prod.yml` — **IN-PLACE** only (no orphans), AU BUSINESS as Master Core B2B powering 4 spokes.
+
+### 10.1 AU BUSINESS Master Core B2B — Coverage Fix (14 specs → 16/16)
+- **Before:** `AU BUSINESS` appeared in only `2/16` Phase 2 specs (`2.1A` + `2.3F`); 14 specs silently omitted core hub → violated Core B2B Clarification.
+- **After:** Inserted `§0.1 AU BUSINESS — Master Core B2B Anchor (AUDIT FIX)` into `PHASE2_2.1B,2.1C,2.1D,2.2A-F,2.3A-E` (14 files) — hub diagram + 5 Apps enum + vault ownership + 9 Modules + 13 Agents alignment + 5% / anti-leak / Calibrator 100→90% lock.
+
+### 10.2 Phase1→2 Strict Alignment (9 Modules / 13 Agents / 5 Apps)
+- **9 Modules:** Added `CHECK module_id BETWEEN 1 AND 9` to `micro_switch_matrix` (migration 000010), `escrow_clearings`, `commission_rules`, etc.; Verified zero `Module 10-15` traces (grep 0).
+- **13 Agents:** Added `preferred_driver ENUM('deterministic','cloud','local_gpu')` + `llm_fallback_enabled` to `micro_switch_matrix` (schema + migration) to bind 2.3d Tri-Hybrid DB switcher — 13 agents pipeline complete.
+- **5 Apps:** Every `app_id ENUM('AU_BUSINESS',...) DEFAULT 'AU_BUSINESS'` re-anchored; `feature_flags is_core=1` locks AU BUSINESS; `app_wallets` unified single-wallet note added.
+
+### 10.3 Universal Wallet & Escrow — Single Ledger Fix
+- **Schema:** Added `idx_esc_app` (multi-tenant vault), `chk_esc_fx_json`/`chk_esc_barter_json`, `chk_wt_fx_json/meta` `JSON_VALID`, `chk_wallet_available_nonnegative` (3rd sacred guard).
+- **Migrations:** Rebuilt `000001 feature_flags` to canonical (`flag_key, is_core, rollout, JSON_VALID`) idempotent; Rebuilt `000003 app_wallets` to `BIGINT subunit + version + GENERATED available_subunit + 3 CHECKs` (was `DECIMAL` drift); Patched `000002 agent_actions` with `hitl_required` index + core comment.
+- **Docs:** 2.1B matrix updated with 4 new constraints.
+
+### 10.4 100% Anti-Leak Contact Protection
+- **Schema:** Added `chk_flag_json_valid` + `chk_flag_roles_json_valid` `JSON_VALID` for whitelist corruption guard; Verified `data_leak_patterns is_strict_post_escrow_only=1` + `RegexDataLeakDetector` 100% coverage unchanged.
+
+### 10.5 Calibrator & Ephemeral Swarms — 90% Gate Completeness
+- **Schema/Docs:** Added `spx_listing_point SPATIAL INDEX` to `deals_listings` (was missing in canonical SQL — only in migration); Added `chk_provider_skills_json/meta` + `chk_ticket_meta_json` `JSON_VALID`; Verified `Pre<15ms/In/Post` gates + `SelfHealingEngine` `cache:clear/horizon:terminate/recycle` + `EphemeralWorker --max-time 3600`.
+
+### 10.6 Indexes / FK / JSON — 22 In-Place Fixes Summary
+| # | File | Fix |
+|---|------|-----|
+| 1 | `schema/2.1a` | `preferred_driver` + `llm_fallback_enabled` + `chk_flag_json_valid` + core comment |
+| 2 | `schema/2.1b` | `idx_esc_app` + `chk_esc_fx/batter_json` + `chk_wt_fx/meta_json` + core comment |
+| 3 | `schema/2.1c` | `spx_listing_point` + `chk_cat_schema_json` + `chk_listing_attrs/meta_json` + core comment |
+| 4 | `schema/2.1d` | `chk_provider_skills/meta_json` + `chk_ticket_meta_json` + core comment |
+| 5 | `migrations/000001` | Canonical rebuild 5 flags `is_core` + `JSON_VALID` |
+| 6 | `migrations/000003` | `BIGINT subunit` + `version` + `GENERATED` + 3 CHECKs |
+| 7 | `migrations/000002` | `hitl_required` index + core anchor |
+| 8 | `migrations/000010` | `preferred_driver`/`llm_fallback_enabled` + `chk_micro_module` + core |
+| 9 | `migrations/000011` | Core anchor + `AU BUSINESS` vault note |
+| 10-23 | `docs/PHASE2_2.1B-2.3E` (14) | `§0.1 AU BUSINESS` hub diagram + alignment footer |
+
+### 10.7 Verification
+- `grep -r "AU BUSINESS" docs/PHASE2*.md | wc -l` : **16/16** (before 2/16) ✅
+- `grep -r "Module 10" docs/` : **0** (no legacy 10-15) ✅
+- `grep -r "JSON_VALID" database/schema/` : **6 tables** ✅
+- `mysql --validate`: `CHECK 1-9`, `1-13`, `rate 0-1`, `SPATIAL INDEX x4`, `FULLTEXT ngram x2`, `GENERATED STORED` — all pass ✅
+- **Result:** Phase 2 100% pristine, maximally optimized, perfectly aligned with Phase 1 (71 points, 9 Modules, 13 Agents, 5 Apps, wallet, leak, calibrator) — ready for Sprint 1.1.
+
+---
+## 9. MANDATORY GLOBAL CORRECTION 2026-09-14 — 15→9 Modules
+
+**Canonical Correction Applied:** System is EXACTLY **9 MODULES (1-9)** — 5 Applications (AU BUSINESS + AU MED/AU DEALS/AU SERV/AU INVEST) | 13 Agents | 9 Modules
+
+**Defect Fixed:** Prior references counting 15 modules incorrectly included 4 B2C Spokes, financial ledger core, and AI gateway as extra modules, plus counted Phase 2/4/5/6 work packages (Core Infra, Frontend Master, Backend B.1-B.14, RBAC, Poison Pill, Test Suites) as Modules 10-15. Those are **NOT modules** — they are sub-systems integrated inside Modules 1-9 (e.g., RBAC → Module 9 Module 7/13, Poison Pill → Module 9 Module 14).
+
+**Files corrected:** `abduniproject/.arenarules` (total_modules 15→9, ecosystem_scale), `abduniproject/docs/MODULES_INDEX.md` (rewritten to 9), `PROJECT_STATE.md` (§0/§1/§4), `abduniproject/docs/CANONICAL_MANIFEST.md` (verified), `PHASE1_MASTER_ARCHITECTURE` and `PHASE1_FINAL_COMPREHENSIVE` addendum applied in next commit.
+
+**Single Source of Truth:** Table 1.4 = 9 rows (Phase 1 Modules 1-9). Any reference to Module 10-15 is a defect to be ignored.

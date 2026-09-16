@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sandbox — Phase 4.0 Living Showcase — ABD UNI PROJECT</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas-background:#09090b; --canvas-dark:#0A0A0C; --surface-primary:rgba(9,9,11,.80); --surface-secondary:#18181b;
+  --surface-pearl:rgba(250,250,250,.92); --surface-pearl-strong:#FAFAFA; --text-primary:#FAFAFA; --text-secondary:#A1A1AA;
+  --text-on-accent:#fff; --text-on-pearl:#18181B; --border-main:#27272A; --border-pearl:#E4E4E7;
+  --accent-primary:#06B6D4; --accent-cyan:#06B6D4; --accent-emerald:#10B981; --accent-amber:#F59E0B;
+  --brand-crimson:#EF4444; --brand-gold:#C5A059; --overlay-backdrop:rgba(0,0,0,.45);
+  --shadow-elevation-sm:0 1px 2px rgba(0,0,0,.18),0 1px 3px rgba(0,0,0,.12);
+  --shadow-elevation-md:0 8px 32px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.16);
+  --shadow-elevation-lg:0 20px 60px rgba(0,0,0,.40),0 8px 24px rgba(0,0,0,.24);
+  --shadow-pearl-md:0 8px 32px rgba(9,9,11,.08); --radius-md:12px; --radius-lg:16px; --radius-pill:999px;
+  --motion-duration:180ms; --motion-ease:cubic-bezier(0.2,0.8,0.2,1); --cx:50%; --cy:50%;
+}
+*{box-sizing:border-box} html,body{margin:0;background:var(--canvas-background);color:var(--text-primary);font-family:"Cairo","Tajawal",system-ui,sans-serif}
+body{font-family:"Cairo","Tajawal",system-ui,sans-serif}
+[data-numeric="true"]{font-family:"Inter",sans-serif;font-variant-numeric:tabular-nums}
+.canvas-obsidian{position:relative;isolation:isolate;min-height:100vh}
+.canvas-obsidian::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(900px circle at var(--cx) var(--cy),rgba(6,182,212,.08),transparent 62%),radial-gradient(700px circle at 20% 80%,rgba(16,185,129,.04),transparent 60%),var(--canvas-background);pointer-events:none}
+.particle-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35}
+.glass-outer{background:rgba(9,9,11,.80);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(39,39,42,.9);box-shadow:var(--shadow-elevation-md);border-radius:var(--radius-lg)}
+.glass-inner{background:rgba(250,250,250,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(228,228,231,.95);box-shadow:var(--shadow-pearl-md);color:var(--text-on-pearl);border-radius:var(--radius-lg)}
+.focus-ring:focus-visible{outline:none;box-shadow:0 0 0 2px var(--canvas-background),0 0 0 4px var(--accent-primary)}
+.btn{inline-size:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:var(--radius-md);font-weight:600;transition:all var(--motion-duration) var(--motion-ease);cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.4;pointer-events:none}
+.btn-sm{height:32px;padding:0 12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.btn-md{height:36px;padding:0 16px;font-size:14px}
+.btn-lg{height:40px;padding:0 24px;font-size:18px}
+.btn-primary{background:var(--canvas-dark);color:#fff}
+.btn-secondary{background:var(--surface-pearl);color:var(--text-on-pearl);border-color:var(--border-pearl)}
+.btn-danger{background:var(--brand-crimson);color:#fff}
+.btn-ai{background:var(--accent-cyan);color:#fff}
+.btn-gold{background:var(--brand-gold);color:#000}
+.btn-ghost{background:transparent;color:var(--text-primary);border-color:transparent}
+.btn-ghost:hover{background:var(--surface-secondary)}
+.input{width:100%;border-radius:var(--radius-md);border:1px solid var(--border-pearl);background:var(--surface-pearl-strong);padding:10px 12px;font-size:14px;color:var(--text-on-pearl)}
+.input:focus{outline:none;box-shadow:0 0 0 2px var(--canvas-background),0 0 0 4px var(--accent-cyan);border-color:transparent}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-pill);border:1px solid transparent;padding:4px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.pill{border-radius:var(--radius-pill);padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid transparent}
+.table{width:100%;border-collapse:collapse}
+.table th, .table td{padding:12px 16px;text-align:start}
+.table thead{background:var(--surface-secondary);color:var(--text-secondary)}
+.table tbody tr{border-top:1px solid var(--border-pearl)}
+.table tbody tr:hover{background:var(--surface-pearl-strong)}
+.modal-backdrop{position:fixed;inset:0;background:var(--overlay-backdrop);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+</style>
+</head>
+<body class="canvas-obsidian">
+<canvas id="particles" class="particle-grid" aria-hidden></canvas>
+<div style="max-width:1120px;margin:0 auto;padding:24px">
+  <header class="glass-outer" style="padding:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div>
+      <h1 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-.015em">Sandbox — Phase 4.0 Living Showcase</h1>
+      <p style="margin:6px 0 0;color:var(--text-secondary);font-size:14px">عرض حي تراكمي — Part 1&2 Atomic + Part 3 HQ + Part 4 BUSINESS + Part 5 AU MED — <span style="color:var(--brand-gold)">v4.5</span> — <span style="font-family:Inter">E2B 3000 · iobfsuj98g9pphlkgxqqe</span></p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge" style="background:var(--brand-gold);color:#000">Part 1 & 2: Atomic ✓</span>
+      <span class="badge" style="background:var(--accent-emerald);color:#fff">Part 3: HQ ✓</span>
+      <span class="badge" style="background:var(--accent-cyan);color:#fff">Part 4: BUSINESS ✓</span>
+      <span class="badge" style="background:var(--accent-emerald);color:#fff;border:2px solid var(--accent-cyan)">Part 5: AU MED ✓ LIVE</span>
+    </div>
+  </header>
+
+  <!-- BUTTONS -->
+  <section class="glass-inner" style="margin-top:20px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">Button — كل الأنماط + الحالات</h2>
+    <p style="margin:6px 0 12px;color:var(--text-secondary);font-size:12px">Variants: primary #0A0A0C / secondary / danger #EF4444 / ai-action #06B6D4 / gold #C5A059 / ghost / crimson — isLoading / isDisabled / icon / requiredPermission / appContext</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="btn btn-md btn-primary">primary #0A0A0C</button>
+      <button class="btn btn-md btn-secondary">secondary</button>
+      <button class="btn btn-md btn-danger">danger #EF4444</button>
+      <button class="btn btn-md btn-ai">ai-action #06B6D4</button>
+      <button class="btn btn-md btn-gold">gold #C5A059</button>
+      <button class="btn btn-md btn-ghost">ghost</button>
+      <button class="btn btn-md" style="background:var(--brand-crimson);color:#fff">crimson</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <button class="btn btn-md btn-primary" id="btnLoading"><span id="btnLoadingSpin" style="display:none;width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite"></span><span>isLoading</span></button>
+      <button class="btn btn-md btn-secondary" disabled>isDisabled</button>
+      <button class="btn btn-md btn-ai">⚡ icon</button>
+      <button class="btn btn-md btn-ghost" style="border:1px dashed var(--border-pearl)">permission purge (مخفي إن بلا صلاحية)</button>
+      <button class="btn btn-md btn-secondary">appContext AU MED</button>
+    </div>
+  </section>
+
+  <!-- INPUTS -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px;display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div>
+      <h3 style="margin:0;font-size:18px;font-weight:600">FormInput — قياسي</h3>
+      <label for="in1" style="display:block;margin:12px 0 6px;font-size:14px;font-weight:500">البريد الإلكتروني</label>
+      <input id="in1" class="input" placeholder="name@domain.com" value="" oninput="document.getElementById('in1hint').textContent=this.value?'القيمة: '+this.value:'RTL + توكنات + رسالة مساعدة'"/>
+      <p id="in1hint" style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">RTL + توكنات + رسالة مساعدة</p>
+      <label style="display:block;margin:12px 0 6px;font-size:14px;font-weight:500">حقل بخطأ</label>
+      <input class="input" placeholder="خطأ" style="border-color:var(--brand-crimson)"/>
+      <p style="margin:6px 0 0;font-size:11px;color:var(--brand-crimson)">هذا الحقل مطلوب</p>
+    </div>
+    <div>
+      <h3 style="margin:0;font-size:18px;font-weight:600">SecureFormInput — RegexDataLeakDetector حي</h3>
+      <label for="secure" style="display:block;margin:12px 0 6px;font-size:14px;font-weight:500">هاتف / بريد / رابط — يُطمس تلقائياً</label>
+      <input id="secure" class="input" value="01012345678 test@example.com https://evil.com" autocomplete="off" spellcheck="false"/>
+      <p style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">جرّب: 01012345678 أو test@ex.com أو https://...</p>
+      <p style="margin:8px 0 0;font-size:11px;color:var(--text-secondary)">المخزن (مطمس): <span id="secureOut" dir="ltr" style="font-family:Inter;background:var(--surface-secondary);padding:2px 6px;border-radius:6px;color:var(--text-on-pearl)">010*** test@*** https://***</span></p>
+    </div>
+  </section>
+
+  <!-- TABLE -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">DynamicTable — EGP minor-units + فرز + تحديد + إجراءات + شارات</h2>
+    <p style="margin:6px 0 12px;color:var(--text-secondary);font-size:12px">125,000 قروش → 1,250.00 EGP (latn) — sortable ↑↓ — multi-select — rowActions</p>
+    <div style="overflow:auto;border:1px solid var(--border-main);border-radius:var(--radius-lg)">
+      <table class="table" id="dynTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="chkAll" onchange="toggleAll(this.checked)"/></th>
+            <th style="cursor:pointer" onclick="sortBy('name')">البيان <span id="sortName">↑</span></th>
+            <th style="cursor:pointer;text-align:end" onclick="sortBy('amount')">المبلغ (EGP) <span id="sortAmt">↕</span></th>
+            <th>الحالة</th>
+            <th style="text-align:end">إجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--border-pearl);flex-wrap:wrap;gap:8px">
+        <span style="font-size:11px;color:var(--text-secondary)">صفحة 1 من 2 · 3 إجمالي</span>
+        <div style="display:flex;gap:8px">
+          <button class="pill" style="background:var(--surface-pearl-strong);border-color:var(--border-pearl)" disabled>« السابق</button>
+          <button class="pill" style="background:var(--accent-primary);color:#fff">1</button>
+          <button class="pill" style="background:var(--surface-pearl-strong);border-color:var(--border-pearl)">2</button>
+          <button class="pill" style="background:var(--surface-pearl-strong);border-color:var(--border-pearl)">التالي »</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">Modal & ConfirmHoldModal — ESC + blur</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <button class="btn btn-md btn-primary" onclick="openModal('modal')">افتح Modal</button>
+      <button class="btn btn-md btn-danger" onclick="openModal('holdModal')">افتح ConfirmHold (2s)</button>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">StatusBadge — كل الحالات الست</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <span class="badge" style="background:var(--accent-emerald);color:#fff">● موثّق Verified</span>
+      <span class="badge" style="background:var(--accent-amber);color:#000">● قيد المراجعة Pending</span>
+      <span class="badge" style="background:var(--brand-crimson);color:#fff">● خطر Danger</span>
+      <span class="badge" style="background:var(--brand-gold);color:#000">● VIP</span>
+      <span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary);border-color:var(--border-main)">● مجهول Anonymous</span>
+      <span class="badge" style="background:var(--accent-cyan);color:#fff;box-shadow:var(--shadow-elevation-sm)">● AI نشط AI_Active</span>
+    </div>
+  </section>
+
+  <!-- SWITCHER -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">MultiTenantSwitcher — 6 سياقات</h2>
+    <div style="margin-top:12px;display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--surface-secondary);padding:4px;border-radius:var(--radius-pill)" id="switcher">
+      <button class="pill" data-v="MASTER_HQ" style="background:var(--brand-gold);color:#000">المركز الرئيسي HQ</button>
+      <button class="pill" data-v="AU BUSINESS">AU BUSINESS B2B</button>
+      <button class="pill" data-v="AU MED">AU MED</button>
+      <button class="pill" data-v="AU DEALS">AU DEALS</button>
+      <button class="pill" data-v="AU SERV">AU SERV</button>
+      <button class="pill" data-v="AU INVEST">AU INVEST</button>
+    </div>
+    <p style="margin:8px 0 0;font-size:11px;color:var(--text-secondary)">يبدّل app_id عبر router.visit — MASTER_HQ → /admin — البقية → /switch?app_id= — الحالي: <b id="curApp">MASTER_HQ</b></p>
+  </section>
+
+  <!-- ERROR BOUNDARY -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">ErrorBoundary — حماية الانهيار + إخفاء Stack</h2>
+    <div id="errBox" style="margin-top:12px;border:1px solid var(--border-pearl);background:var(--surface-pearl-strong);border-radius:var(--radius-md);padding:16px">
+      <p id="errText" style="margin:0;color:var(--text-secondary);font-size:14px">محتوى آمن — اضغط الزر لمحاكاة انهيار.</p>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-sm btn-secondary" onclick="toggleErr()">محاكاة انهيار</button>
+        <button class="btn btn-sm btn-ghost" onclick="resetErr()">إعادة تعيين</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 3 — MASTER ADMIN HQ -->
+  <section class="glass-inner" style="margin-top:20px;padding:20px;border:2px solid var(--brand-gold)">
+    <h2 style="margin:0;font-size:18px;font-weight:700;color:var(--text-on-pearl)">Part 3 — Master Admin HQ & AI Governance Suite <span style="background:var(--brand-gold);color:#000;padding:2px 8px;border-radius:999px;font-size:11px">NEW v4.3</span></h2>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:12px">Header + Sidebar + CSuiteHQ 70/30 + FinancialVault + SecurityVault — توكنات + RBAC + RTL</p>
+  </section>
+  <section class="glass-inner" style="margin-top:16px;padding:0;overflow:hidden">
+    <div style="background:rgba(9,9,11,.80);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-main);padding:12px 16px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-weight:700;color:var(--text-on-pearl)">ABD UNI — MASTER HQ</span><span id="aiBadge" style="background:var(--accent-cyan);color:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:700">AI SWARM: ACTIVE</span></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <svg id="gauge" width="44" height="44" viewBox="0 0 44 44" style="background:var(--surface-secondary);border-radius:50%"><circle cx="22" cy="22" r="18" fill="none" stroke="#27272A" stroke-width="4"/><circle id="gaugeArc" cx="22" cy="22" r="18" fill="none" stroke="var(--accent-emerald)" stroke-width="4" stroke-dasharray="108 113" stroke-linecap="round" transform="rotate(-90 22 22)"/><text x="22" y="26" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">96%</text></svg>
+        <span id="gaugeLabel" style="font-size:11px;font-weight:700;color:var(--accent-emerald)">سليم 96%</span>
+        <span style="background:var(--surface-secondary);padding:6px 10px;border-radius:999px;font-size:11px">MFA ✓</span><span style="background:var(--surface-secondary);padding:6px 10px;border-radius:999px;font-size:11px">DNA 🔒</span><span id="hdrTimer" style="font-family:Inter;font-size:11px;background:var(--surface-secondary);padding:6px 10px;border-radius:999px">60:00</span><button class="btn btn-sm btn-danger" onclick="triggerKill()">Kill-Switch #EF4444</button>
+      </div>
+    </div>
+    <div style="background:var(--accent-amber);padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px;color:#000"><span>AU Lite Freeze Bar — حِمل الخادم <span id="loadPct">71</span>%</span><button class="pill" style="background:#fff" onclick="toggleFreeze(this)">AU MED: ON</button><button class="pill" style="background:#fff" onclick="toggleFreeze(this)">AU DEALS: ON</button><button class="pill" style="background:#fff" onclick="toggleFreeze(this)">AU SERV: ON</button><button class="pill" style="background:rgba(0,0,0,.1)" onclick="toggleFreeze(this)">AU INVEST: FROZEN</button></div>
+    <div style="display:flex;min-height:180px"><aside id="sidebar" style="width:220px;background:rgba(9,9,11,.04);border-left:1px solid var(--border-pearl);padding:12px;transition:width .2s"><button onclick="toggleSidebar()" style="width:100%;border:1px solid var(--border-pearl);background:#fff;border-radius:8px;padding:6px;font-size:11px">« طي / توسيع</button><nav style="margin-top:12px;display:flex;flex-direction:column;gap:4px;font-size:12px"><a href="#" style="padding:8px 10px;border-radius:8px;background:var(--surface-secondary)">🤖 AI C-Suite & Swarm Governance</a><a href="#" style="padding:8px 10px;border-radius:8px">🏦 Consolidated Ledger, Escrow & Tax Vault</a><a href="#" style="padding:8px 10px;border-radius:8px">💳 Monetization, Paywall & Subscriptions</a><a href="#" style="padding:8px 10px;border-radius:8px">🗂️ Dynamic Taxonomy, Schema & Form Builder</a><a href="#" style="padding:8px 10px;border-radius:8px">🎁 Loyalty, Barter & Merchant HQ</a><a href="#" style="padding:8px 10px;border-radius:8px">⚖️ Disputes, SLA & Support HQ</a><a href="#" style="padding:8px 10px;border-radius:8px">👥 Enterprise HR, Micro-Permissions & Audit</a><a href="#" style="padding:8px 10px;border-radius:8px;background:var(--brand-gold);color:#000">🛡️ Security, DRM, Quarantine & Poison Pill Vault</a><a href="#" style="padding:8px 10px;border-radius:8px">📡 System Telemetry, Ephemeral Swarms & Failover</a><a href="#" style="padding:8px 10px;border-radius:8px">📢 Broadcast Studio, Ads & Geo-Dispatch</a></nav><p style="margin-top:12px;font-size:11px;color:var(--text-secondary)">10 Suites • RBAC purge • RTL</p></aside><div style="flex:1;padding:16px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:12px">MasterAdminLayout — Header ثابت + Sidebar قابل للطي + محتوى</div></div>
+  </section>
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">CSuiteHQ — 24/7 HITL Feed & 13-Agent Micro-Switch Matrix</h2>
+    <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-top:12px">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Ephemeral Workers</p><p style="margin:4px 0 0;font-weight:700">12 نشط</p></div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Deterministic vs LLM</p><p style="margin:4px 0 0;font-weight:700;font-size:12px">90% PHP 8.4 / 10% LLM</p><div style="height:6px;background:var(--surface-secondary);border-radius:999px;margin-top:6px"><div style="height:6px;width:90%;background:var(--accent-emerald);border-radius:999px"></div></div></div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Adapter</p><div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap"><span class="badge" style="background:var(--accent-cyan);color:#fff">Local GPU 127.0.0.1:8000</span><span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary)">Cloud API</span></div></div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Token / Latency Budget</p><p style="margin:4px 0 0;font-weight:700">78% — 42ms</p><div style="height:6px;background:var(--surface-secondary);border-radius:999px;margin-top:6px"><div style="height:6px;width:78%;background:var(--accent-amber);border-radius:999px"></div></div></div>
+    </div>
+    <div style="display:grid;gap:12px;grid-template-columns:1.6fr .9fr;margin-top:12px"><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px;font-weight:600">Central Suggestion Feed — HITL Queue</h3><div id="hitlFeed" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;max-height:360px;overflow:auto"><h3 style="margin:0;font-size:14px;font-weight:600">Micro-Switch Matrix — 13 Agents</h3><div id="matrix" style="margin-top:8px;display:flex;flex-direction:column;gap:6px"></div></div></div>
+  </section>
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">FinancialVault — Consolidated Ledger, Escrow & Tax Reserve</h2>
+    <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-top:12px"><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Gross Platform Liquidity</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">125,000.00 EGP</p></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Active Escrow Locked Pool</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">34,200.00 EGP</p></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Net Platform Earnings (3-Tier)</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">8,900.00 EGP</p></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Tax Reserve Ledger</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">2,100.00 EGP</p></div></div>
+    <div style="margin-top:12px;border:1px solid var(--border-pearl);border-radius:12px;overflow:hidden;background:#fff"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border-pearl)"><h3 style="margin:0;font-size:14px;font-weight:600">Escrow Immutability & Clearing Queue</h3><button class="btn btn-sm btn-danger" onclick="openModal('rationaleModal')">Manual Adjustment</button></div><table class="table"><thead><tr><th>journey / deal</th><th>المبلغ</th><th>Lock</th><th>إجراء</th></tr></thead><tbody><tr><td>j1 / d1 — Tier 1</td><td style="font-family:Inter">500.00 EGP</td><td><span class="badge" style="background:var(--accent-emerald);color:#fff">LOCKED</span></td><td><button class="btn btn-sm btn-secondary" onclick="alert('Dispute Drawer j1')">Dispute Drawer</button></td></tr><tr><td>j2 / d2 — Tier 2</td><td style="font-family:Inter">1,200.00 EGP</td><td><span class="badge" style="background:var(--accent-emerald);color:#fff">LOCKED</span></td><td><button class="btn btn-sm btn-secondary" onclick="alert('Dispute Drawer j2')">Dispute Drawer</button></td></tr></tbody></table></div>
+    <div style="margin-top:12px;border:1px solid var(--border-pearl);border-radius:12px;overflow:hidden;background:#fff"><div style="padding:12px 16px;border-bottom:1px solid var(--border-pearl)"><h3 style="margin:0;font-size:14px;font-weight:600">Gateway Failover Circuit & Payment Matrix</h3><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Auto-routing if failure &gt; 5% — circuit breaker</p></div><table class="table"><thead><tr><th>Gateway</th><th>Enabled</th><th>Failure</th><th>Routing</th></tr></thead><tbody><tr><td>Paymob</td><td>ON</td><td style="color:var(--accent-emerald)">1.2%</td><td>—</td></tr><tr><td>Fawry</td><td>ON</td><td style="color:var(--brand-crimson)">6.1%</td><td><span class="badge" style="background:var(--accent-cyan);color:#fff">AUTO-ROUTED</span></td></tr><tr><td>InstaPay</td><td>ON</td><td style="color:var(--accent-emerald)">0.8%</td><td>—</td></tr><tr><td>Vodafone Cash</td><td>OFF</td><td>2.4%</td><td>—</td></tr></tbody></table></div>
+  </section>
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <h2 style="margin:0;font-size:18px;font-weight:600">SecurityVault — Hardware DNA + Dead-Man + Poison Pill + Watchdog</h2>
+    <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:12px"><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px;font-weight:600">Hardware DNA Binding Status</h3><p style="margin:8px 0 0;font-size:13px;font-family:Inter">IP: 192.0.2.10 — Domain: abduni.com — MAC: AA:BB:CC:DD:EE:FF</p><span class="badge" style="background:var(--accent-emerald);color:#fff;margin-top:8px">ENVIRONMENT MATCHED / SECURE</span></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px;font-weight:600">Dead-Man's Switch — 48h Heartbeat</h3><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">يجب إرسال نبضة تشفير كل 48 ساعة</p><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span id="deadCount" style="font-family:Inter;font-weight:700;font-size:18px">48:00:00</span><button class="btn btn-sm btn-ai" onclick="resetDead()">إرسال نبضة الآن</button></div></div></div>
+    <div style="margin-top:12px;background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px;font-weight:600;color:var(--brand-crimson)">Poison Pill & Emergency Self-Destruct Panel</h3><p style="margin:4px 0 0;font-size:13px;color:var(--text-secondary)">يمسح قاعدة البيانات و .env عند اختراق مادي — يتطلب MFA + Master Passphrase</p><button class="btn btn-sm btn-danger" style="margin-top:8px" onclick="openModal('poisonModal')">تهيئة المسح الذاتي</button></div>
+    <div style="margin-top:12px;background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;overflow:auto"><h3 style="margin:0;font-size:14px;font-weight:600">Watchdog Immutable Audit Log — Read-only</h3><table class="table" style="margin-top:8px"><thead><tr><th>Time (ms)</th><th>Admin</th><th>Action</th><th>Params</th><th>AI Prompt</th></tr></thead><tbody><tr><td style="font-family:Inter;font-size:11px">2026-09-15T10:00:00Z</td><td>#1</td><td style="font-family:Inter">POST /api/v1/governance/kill-switch</td><td>{}</td><td>sever LLM</td></tr><tr><td style="font-family:Inter;font-size:11px">2026-09-15T10:02:00Z</td><td>#2</td><td style="font-family:Inter">GET /admin/ledger</td><td>app_id=AU MED</td><td>—</td></tr></tbody></table></div>
+  </section>
+
+  <!-- PART 4 — AU BUSINESS B2B ENTERPRISE HUB -->
+  <section class="glass-inner" style="margin-top:20px;padding:20px;border:2px solid var(--accent-cyan)">
+    <h2 style="margin:0;font-size:18px;font-weight:700;color:var(--text-on-pearl)">Part 4 — AU BUSINESS B2B Enterprise Hub <span style="background:var(--accent-cyan);color:#fff;padding:2px 8px;border-radius:999px;font-size:11px">NEW v4.4</span></h2>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:12px">Dashboard + Catalog Tiered + Calibrator Tri-Gate + Workforce Marketplace — app_id AU BUSINESS معزول — مقياس أعمال + Schema Engine + Regex Leak</p>
+  </section>
+
+  <!-- SCREEN 1 — DASHBOARD -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:18px;font-weight:600">AU BUSINESS Dashboard — ملخص المؤسسة</h2><span class="badge" style="background:var(--accent-emerald);color:#fff">TENANT ISOLATED ✓ AU BUSINESS</span></div>
+    <p style="margin:4px 0 0;color:var(--text-secondary);font-size:11px">Header: X-App-Id AU BUSINESS — مقياس: مصنع/مستورد/موزع — كل حمولة تحمل app_id</p>
+    <div style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-top:12px">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;border-top:3px solid var(--accent-emerald)"><p style="margin:0;font-size:11px;color:var(--text-secondary)">السيولة الجملية</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">2,450,000.00 EGP</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Wholesale Liquidity — minor units</p></div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;border-top:3px solid var(--accent-amber)"><p style="margin:0;font-size:11px;color:var(--text-secondary)">صفقات الضمان النشطة</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">7 — 342,000.00 EGP</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Active B2B Escrow</p></div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;border-top:3px solid var(--accent-cyan)"><p style="margin:0;font-size:11px;color:var(--text-secondary)">قيمة المخزون الجملي</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">1,890,000.00 EGP</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Bulk Inventory Value</p></div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;text-align:center"><p style="margin:0;font-size:11px;color:var(--text-secondary)">مؤشر أعمال Calibrator</p><svg width="72" height="72" viewBox="0 0 44 44" style="margin:8px auto;display:block"><circle cx="22" cy="22" r="18" fill="none" stroke="#27272A" stroke-width="4"/><circle cx="22" cy="22" r="18" fill="none" stroke="var(--accent-amber)" stroke-width="4" stroke-dasharray="104 113" stroke-linecap="round" transform="rotate(-90 22 22)"/><text x="22" y="27" text-anchor="middle" font-size="10" font-weight="700" fill="#18181B">92%</text></svg><p style="margin:0;font-size:11px;color:var(--accent-amber);font-weight:700">تحذير 92%</p></div>
+    </div>
+    <div style="margin-top:12px;background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+      <h3 style="margin:0;font-size:14px;font-weight:600">شريط العمليات السريعة — حدود مقياس الأعمال</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <button class="btn btn-sm btn-primary">Create B2B Bulk Offer</button>
+        <button class="btn btn-sm btn-secondary">Publish B2B Buying Tender</button>
+        <button class="btn btn-sm" style="background:var(--brand-gold);color:#000">Access Wholesale Catalog</button>
+        <button class="btn btn-sm btn-ai">Hire AI Digital Employee</button>
+        <span style="font-size:11px;color:var(--brand-crimson);align-self:center">مقيّد لمقياس Freelancer — ترقية مطلوبة (demo)</span>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge" style="background:var(--accent-cyan);color:#fff">مصنع: كل الأزرار</span><span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary)">مستقل: كتالوج فقط</span></div>
+    </div>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:1.6fr .9fr">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:14px;font-weight:600">Live Wholesale Feed — تيار الجملة الحي</h3><span style="font-size:11px;color:var(--accent-emerald)">● LIVE كل 6s</span></div>
+        <input id="bizQ" placeholder="ابحث — يُطهّر تلقائياً (RegexDataLeakDetector)" style="margin-top:8px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 12px;background:#fff"/>
+        <p id="bizQhint" style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)"></p>
+        <div id="bizFeed" style="margin-top:8px;display:flex;flex-direction:column;gap:8px;max-height:240px;overflow:auto"></div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px;font-weight:600">تنبيه العزل</h3><p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">السيولة والضمان معزولة داخل <b>app_id="AU BUSINESS"</b> — لا مشاركة مع AU MED/DEALS.</p><p style="margin:8px 0 0;font-size:11px;color:var(--accent-emerald)">Header: X-App-Id: AU BUSINESS على كل طلب</p><div style="margin-top:12px;display:flex;gap:6px"><button class="btn btn-sm btn-secondary">الكتالوج</button><button class="btn btn-sm btn-ai">AI Workforce</button></div></div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2 — INVENTORY -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:18px;font-weight:600">Inventory — الكتالوج المتدرج + Schema Engine</h2><div style="display:flex;gap:8px"><button class="btn btn-sm btn-secondary" onclick="openModal('importModal')">استيراد/تصدير CSV</button><button class="btn btn-sm" style="background:var(--brand-gold);color:#000">إنشاء عرض جملة</button></div></div>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:340px 1fr">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;overflow:hidden">
+        <div style="padding:12px;border-bottom:1px solid var(--border-pearl)"><input id="invFilter" placeholder="ابحث SKU / عنوان — يُطهّر" style="width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 12px"/><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">3 أصناف · AU BUSINESS</p></div>
+        <div id="invList" style="max-height:420px;overflow:auto"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div id="invDetail" style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"></div>
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:14px;font-weight:600">تبويب المواصفات — Dynamic Schema Engine</h3><span id="schemaBadge" class="badge" style="background:var(--accent-cyan);color:#fff">Schema: steel v1</span></div>
+          <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">مرتّب من الخادم — لا حقول مُصلّبة — شهادات/انتهاء/امتثال</p>
+          <div id="schemaForm" style="margin-top:12px;display:grid;gap:12px;grid-template-columns:1fr 1fr"></div>
+          <div style="margin-top:12px;display:flex;gap:8px"><button class="btn btn-sm btn-primary" onclick="saveSpec()">حفظ المواصفات</button><button class="btn btn-sm btn-secondary" onclick="resetSpec()">إلغاء</button><span style="margin-inline-start:auto;font-size:11px;color:var(--text-secondary);align-self:center">Payload يحمل <code>app_id=AU BUSINESS</code></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3 — CALIBRATOR -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:18px;font-weight:600">Calibrator Suite — بوابات ثلاثية</h2><span id="gateScore" class="badge" style="background:var(--accent-amber);color:#000">88% amber</span></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="pill" id="gPre" onclick="setGate('pre_op')" style="background:var(--canvas-dark);color:#fff">القَبْلية — قبل الالتزام 88%</button>
+      <button class="pill" id="gIn" onclick="setGate('in_op')" style="background:#fff;border:1px solid var(--border-pearl)">التشغيلية — أثناء 94%</button>
+      <button class="pill" id="gPost" onclick="setGate('post_op')" style="background:#fff;border:1px solid var(--border-pearl)">الختامية — بعد 81%</button>
+    </div>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:340px 1fr">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;text-align:center"><p id="gateTitleEn" style="margin:0;font-size:11px;color:var(--text-secondary)">Pre-Operation Gate · BEFORE wholesale commit</p><h3 id="gateTitleAr" style="margin:4px 0 0">البوابة القَبْلية — قبل الالتزام</h3><svg width="72" height="72" viewBox="0 0 44 44" style="margin:8px auto;display:block"><circle cx="22" cy="22" r="18" fill="none" stroke="#27272A" stroke-width="4"/><circle id="gateArc" cx="22" cy="22" r="18" fill="none" stroke="var(--accent-amber)" stroke-width="4" stroke-dasharray="104 113" stroke-linecap="round" transform="rotate(-90 22 22)"/><text id="gatePct" x="22" y="27" text-anchor="middle" font-size="10" font-weight="700" fill="#18181B">88%</text></svg><p id="gateRec" style="margin:0;color:var(--text-secondary);font-size:13px">ارفع الهامش إلى ≥ 18% قبل الالتزام</p></div>
+      <div id="gateMetrics" style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"></div>
+    </div>
+    <div id="postLedgers" style="display:none;margin-top:12px;grid-template-columns:1fr 1fr;gap:12px"><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px">تسوية قيود مزدوجة</h3><div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;font-size:13px"><div style="display:flex;justify-content:space-between;border:1px solid var(--border-pearl);border-radius:8px;padding:8px"><span style="font-family:Inter">j-884</span><span>استلام بضاعة — Steel Coil 1.2t</span><span style="font-family:Inter">125,000.00 EGP</span></div><div style="display:flex;justify-content:space-between;border:1px solid var(--border-pearl);border-radius:8px;padding:8px"><span style="font-family:Inter">j-885</span><span>عمولة منصة Tier 2</span><span style="font-family:Inter">8,900.00 EGP</span></div></div></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px"><h3 style="margin:0;font-size:14px">ROI ومشاعر</h3><div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px"><div style="border:1px solid var(--border-pearl);border-radius:8px;padding:8px;text-align:center"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Actual ROI</p><p style="margin:4px 0 0;font-weight:700">11.4%</p><p style="margin:0;font-size:11px;color:var(--accent-amber)">أقل من 12%</p></div><div style="border:1px solid var(--border-pearl);border-radius:8px;padding:8px;text-align:center"><p style="margin:0;font-size:11px;color:var(--text-secondary)">Sentiment</p><p style="margin:4px 0 0;font-weight:700">4.2 / 5</p><p style="margin:0;font-size:11px;color:var(--text-secondary)">23 مراجعة</p></div></div></div></div>
+  </section>
+
+  <!-- SCREEN 4 — WORKFORCE -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:18px;font-weight:600">Workforce Marketplace — سوق الموظفين الرقميين</h2><span class="badge" style="background:var(--accent-cyan);color:#fff">TENANT ISOLATED ✓</span></div>
+    <div style="margin-top:12px;background:#fff;border:1px solid var(--border-pearl);border-left:3px solid var(--accent-emerald);border-radius:12px;padding:12px"><p style="margin:0;font-weight:700;color:var(--accent-emerald)">🛡️ إشعار ضمان العزل المستأجري</p><p style="margin:4px 0 0;color:var(--text-secondary);font-size:13px">الوكلاء يعملون حصراً داخل <b>app_id = AU BUSINESS</b> — لا وصول متبادل مع AU MED/DEALS/SERV/INVEST. Payloads تُرسل مع <code>X-App-Id: AU BUSINESS</code>.</p></div>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))" id="personaGrid"></div>
+  </section>
+
+
+  <!-- PART 5 — AU MED ENCRYPTED MEDICAL ECOSYSTEM -->
+  <section class="glass-inner" style="margin-top:20px;padding:20px;border:2px solid var(--accent-emerald)">
+    <h2 style="margin:0;font-size:18px;font-weight:700;color:var(--text-on-pearl)">Part 5 — AU MED Encrypted Medical Ecosystem <span style="background:var(--accent-emerald);color:#fff;padding:2px 8px;border-radius:999px;font-size:11px">NEW v4.5</span></h2>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:12px">Virtual Hospital + Encrypted Vault AES-256-GCM + E-Prescription QR + Journey Bundle + Insurance Copay — app_id AU MED معزول — OTP 15m</p>
+  </section>
+
+  <!-- SCREEN 1 — HOSPITAL LANDING -->
+  <section class="glass-inner" style="margin-top:16px;padding:0;overflow:hidden">
+    <div style="background:linear-gradient(135deg, rgba(16,185,129,.18), rgba(6,182,212,.12));padding:20px;text-align:center;border-bottom:1px solid var(--border-pearl)">
+      <h2 style="margin:0;font-size:22px;font-weight:700;color:var(--text-on-pearl)">مستشفى العبد الإلكتروني</h2>
+      <p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">Virtual Hospital — AU MED · app_id="AU MED" — طب موثّق معزول</p>
+      <div style="margin-top:12px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
+        <span style="background:rgba(255,255,255,.9);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 10px;font-size:11px">🩺 العيادات 42</span>
+        <span style="background:rgba(255,255,255,.9);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 10px;font-size:11px">🩻 الأشعة 18</span>
+        <span style="background:rgba(255,255,255,.9);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 10px;font-size:11px">🧬 المختبرات 24</span>
+        <span style="background:rgba(255,255,255,.9);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 10px;font-size:11px">🚑 الطوارئ 12</span>
+        <span style="background:rgba(255,255,255,.9);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 10px;font-size:11px">🏠 التمريض 31</span>
+        <span style="background:rgba(255,255,255,.9);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 10px;font-size:11px">💊 الصيدلية 9</span>
+      </div>
+    </div>
+    <div style="padding:16px">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:space-between">
+        <h3 style="margin:0;font-size:16px;font-weight:600">البحث الطبي — Urgent vs Scheduled</h3>
+        <label style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border-pearl);border-radius:999px;padding:6px 12px;font-size:12px;cursor:pointer"><input type="checkbox" id="urgentSwitch" onchange="toggleUrgent(this.checked)"/> Urgent Dispatch (is_urgent=<span id="urgentVal">false</span>)</label>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <input id="medQ" placeholder="ابحث قسماً أو تخصصاً — يُطهّر تلقائياً" style="flex:1;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 12px;background:#fff"/>
+        <span style="background:var(--surface-secondary);border:1px solid var(--border-pearl);border-radius:999px;padding:6px 10px;font-size:11px;align-self:center">6 أقسام</span>
+      </div>
+      <p id="medQhint" style="margin:4px 0 0;font-size:11px;color:var(--brand-crimson)"></p>
+
+      <div id="urgentPanel" style="display:none;margin-top:12px;border:1px solid var(--brand-crimson);background:rgba(239,68,68,.06);border-radius:12px;padding:12px">
+        <h4 style="margin:0;color:var(--brand-crimson);font-size:13px">🚨 إرسال عاجل — Proximity Filter 2km → 5km → 10km</h4>
+        <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">نطاق حالي <span id="radiusVal" style="font-weight:700">2</span>km — lat 30.04 lng 31.23</p>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn btn-sm btn-danger" onclick="expandRadius()">توسيع النطاق → <span id="nextRadius">5km</span></button>
+          <button class="btn btn-sm btn-secondary" onclick="alert('إرسال فوري — app_id AU MED · radius '+document.getElementById('radiusVal').textContent+'km')">إرسال فوري</button>
+          <span class="badge" style="background:var(--brand-crimson);color:#fff"><span id="radiusBadge">2km</span></span>
+        </div>
+        <div id="proxList" style="margin-top:12px;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"></div>
+      </div>
+
+      <div id="schedPanel" style="margin-top:12px">
+        <h4 style="margin:0;font-size:13px;font-weight:600">Scheduled Slot Picker — تقويم المواعيد مع Mutex ضد الحجز المزدوج</h4>
+        <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">مقفول = محجوز مؤقتاً — يمنع double-booking أثناء الدفع</p>
+        <div id="slotGrid" style="margin-top:8px;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))"></div>
+      </div>
+
+      <div style="margin-top:16px;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;text-align:center"><span style="font-size:20px">🩺</span><p style="margin:4px 0 0;font-weight:600">العيادات التخصصية</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">Clinics · 42 مزوّد</p><span class="badge" style="background:var(--accent-emerald);color:#fff;margin-top:6px">موثّق</span></div>
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;text-align:center"><span style="font-size:20px">🩻</span><p style="margin:4px 0 0;font-weight:600">الأشعة</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">Radiology · 18</p><span class="badge" style="background:var(--accent-emerald);color:#fff;margin-top:6px">موثّق</span></div>
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;text-align:center"><span style="font-size:20px">🧬</span><p style="margin:4px 0 0;font-weight:600">المختبرات</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">Labs · 24</p><span class="badge" style="background:var(--accent-emerald);color:#fff;margin-top:6px">موثّق</span></div>
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;text-align:center"><span style="font-size:20px">🚑</span><p style="margin:4px 0 0;font-weight:600">الطوارئ</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">Emergency · 12</p><span class="badge" style="background:var(--accent-emerald);color:#fff;margin-top:6px">موثّق</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2 — VAULT -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:18px;font-weight:600">الخزينة الطبية المشفّرة — Vault & EMR Timeline</h2><span class="badge" style="background:var(--accent-emerald);color:#fff">AES-256-GCM · AU MED</span></div>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:1.7fr 1fr">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+        <h3 style="margin:0;font-size:14px;font-weight:600">سجل صحي زمني — EMR Timeline (مشفر ميدانياً)</h3>
+        <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">يُرسل مشفراً — الفك فقط عند access_grant_token سارٍ</p>
+        <div id="emrTimeline" style="margin-top:12px;border-inline-start:2px solid var(--border-pearl);padding-inline-start:12px;display:flex;flex-direction:column;gap:12px"></div>
+        <button class="btn btn-sm btn-ai" style="margin-top:12px" onclick="openOTP()">طلب وصول للطبيب — OTP</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+          <h3 style="margin:0;font-size:14px;font-weight:600">OTP Grant Management — جلسات الوصول</h3>
+          <div id="grantList" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-left:3px solid var(--accent-amber);border-radius:12px;padding:12px">
+          <h4 style="margin:0;font-size:13px;font-weight:600">تنبيه أمان</h4>
+          <p style="margin:4px 0 0;font-size:13px;color:var(--text-secondary)">Revoke يكتب فوراً في `medical_access_logs` — لا يمكن للطبيب فك التشفير بعدها.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3 — PRESCRIPTION -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:18px;font-weight:600">روشتة رقمية — E-Prescription</h2><span class="badge" style="background:var(--accent-emerald);color:#fff">QR Signed · sig_0x9a3f</span></div>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:380px 1fr">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:16px;text-align:center">
+        <h3 style="margin:0;font-size:14px;font-weight:600">QR Code Signature</h3>
+        <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">امسح في الصيدلية — يمنع التزوير</p>
+        <div style="margin:12px auto;width:140px;height:140px;border:2px solid var(--canvas-dark);border-radius:12px;background:#fff;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:2px;width:96px;height:96px"><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border:1px solid #000;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border:1px solid #ddd;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div><div style="background:#fff;border-radius:2px"></div><div style="background:#000;border-radius:2px"></div></div>
+          <span style="margin-top:4px;font-family:Inter;font-size:9px">abduni://rx/rx-8841…</span>
+        </div>
+        <p style="margin:6px 0 0;font-family:Inter;font-size:11px;word-break:break-all">sig_0x9a3f_eddsa</p>
+        <div style="margin-top:8px;display:flex;justify-content:center;gap:6px"><span class="badge" style="background:var(--brand-gold);color:#000">ICD-10 J02.9</span><span class="badge" style="background:var(--brand-gold);color:#000">ICD-10 K29.7</span></div>
+        <p style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">صادرة د. ليلى — تنتهي بعد 7 أيام</p>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+        <h3 style="margin:0;font-size:14px;font-weight:600">المكونات الفعالة وجدول الجرعات</h3>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid var(--border-pearl);border-radius:12px;padding:10px;display:flex;justify-content:space-between"><div><p style="margin:0;font-weight:600">Azithromycin — Zithromax</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">500mg · 3 أيام</p></div><span style="background:var(--surface-secondary);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 8px;font-size:11px">Qty 1</span></div>
+          <div style="border:1px solid var(--border-pearl);border-radius:12px;padding:10px;display:flex;justify-content:space-between"><div><p style="margin:0;font-weight:600">Omeprazole — Losec</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">20mg · 14 يوم</p></div><span style="background:var(--surface-secondary);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 8px;font-size:11px">Qty 1</span></div>
+        </div>
+        <p style="margin:8px 0 0;font-size:13px">جدول الجرعات: <b>Azithromycin 1× يومياً — Omeprazole صباحاً</b></p>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="badge" style="background:var(--accent-emerald);color:#fff">safe: آمن — لا تداخل</span><span class="badge" style="background:var(--accent-amber);color:#000">caution: حذر — مع مضاد حموضة</span></div>
+        <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">DDI Safety Badges — فحص تداخلات</p>
+      </div>
+    </div>
+    <div style="margin-top:12px;background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+      <h3 style="margin:0;font-size:14px;font-weight:600">Fulfillment Action Hub — صرف فوري</h3>
+      <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">يُوجَّه للأقرب على AU BUSINESS ويُرسل عبر AU SERV</p>
+      <div style="margin-top:8px;display:grid;gap:8px;grid-template-columns:1fr 1fr">
+        <button id="fulfillHome" onclick="selectFulfill('home')" style="border:2px solid var(--accent-cyan);background:rgba(6,182,212,.08);border-radius:12px;padding:12px;text-align:start"><p style="margin:0;font-weight:700">🚚 Instant Home Delivery</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">لأقرب صيدلية شريكة AU BUSINESS عبر AU SERV</p><p style="margin:6px 0 0;font-family:Inter;font-size:11px">pharmacy 1.2km · ETA 18m · via AU SERV</p></button>
+        <button id="fulfillPickup" onclick="selectFulfill('pickup')" style="border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:12px;text-align:start"><p style="margin:0;font-weight:700">🏪 In-Store QR Pickup</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">يحجز المخزون للمسح المادي للـ QR</p><p style="margin:6px 0 0;font-family:Inter;font-size:11px">lock qty · pickup 24h</p></button>
+      </div>
+      <p id="fulfillMsg" style="margin:8px 0 0;font-size:13px;color:var(--accent-emerald)"></p>
+      <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Headers: X-App-Id AU MED · dispatched_via AU SERV</p>
+    </div>
+  </section>
+
+  <!-- SCREEN 4 — JOURNEY CHECKOUT -->
+  <section class="glass-inner" style="margin-top:16px;padding:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><h2 style="margin:0;font-size:18px;font-weight:600">ملخص الرحلة العلاجية — Journey Checkout</h2><span class="badge" style="background:var(--accent-cyan);color:#fff">journey_id jour_8841</span></div>
+    <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Parent Journey jour_8841 → 4 Sub-Deals (deal_id) — Bundle Discount Calculator · Final = Gross − Discount</p>
+    <div style="margin-top:12px;display:grid;gap:12px;grid-template-columns:1.2fr .8fr">
+      <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+        <h3 style="margin:0;font-size:14px;font-weight:600">باقة علاجية — طبيب + تحليل + إسعاف + صيدلية</h3>
+        <p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">Bundle: Physician + Lab + Ambulance + Pharmacy</p>
+        <div style="margin-top:12px;border:1px solid var(--brand-gold);background:rgba(197,160,89,.08);border-radius:12px;padding:12px">
+          <h4 style="margin:0;font-size:13px;font-weight:700">Bundle Discount Calculator — حساب الحزمة</h4>
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:13px">
+            <div style="display:flex;justify-content:space-between"><span>Gross Journey Total</span><span style="font-family:Inter">5,800.00 EGP</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--accent-emerald)"><span>Bundle Discount — 13%</span><span style="font-family:Inter">- 800.00 EGP</span></div>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid var(--border-pearl);padding-top:6px;font-weight:700"><span>Final Amount = Gross − Discount</span><span style="font-family:Inter">5,000.00 EGP</span></div>
+          </div>
+          <p style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">Sub-Deals تنقسم تلقائياً — كل deal_id يُحجز في Escrow مستقل</p>
+        </div>
+        <h4 style="margin:12px 0 0;font-size:13px;font-weight:600">Sub-Deal Escrow Breakdown — توزيع الضمان</h4>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 10px;background:#fff"><div><p style="margin:0;font-weight:600;font-size:13px">كشف طبيب — د. أحمد</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">deal_doc · physician</p></div><div style="text-align:end"><p style="margin:0;font-family:Inter;font-size:13px">2,500.00 EGP</p><span class="badge" style="background:var(--accent-amber);color:#000">Escrow 2,500.00 EGP · held</span></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 10px;background:#fff"><div><p style="margin:0;font-weight:600;font-size:13px">تحليل دم — مختبر النيل</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">deal_lab · lab</p></div><div style="text-align:end"><p style="margin:0;font-family:Inter;font-size:13px">1,500.00 EGP</p><span class="badge" style="background:var(--accent-amber);color:#000">Escrow 1,500.00 EGP · held</span></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 10px;background:#fff"><div><p style="margin:0;font-weight:600;font-size:13px">إسعاف منزلي — AU SERV</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">deal_amb · ambulance</p></div><div style="text-align:end"><p style="margin:0;font-family:Inter;font-size:13px">800.00 EGP</p><span class="badge" style="background:var(--accent-amber);color:#000">Escrow 800.00 EGP · held</span></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-pearl);border-radius:12px;padding:8px 10px;background:#fff"><div><p style="margin:0;font-weight:600;font-size:13px">صيدلية — صيدلية النيل</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">deal_pharm · pharmacy</p></div><div style="text-align:end"><p style="margin:0;font-family:Inter;font-size:13px">1,000.00 EGP</p><span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary)">Escrow 200.00 EGP · pending</span></div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:12px">
+          <h3 style="margin:0;font-size:14px;font-weight:600">Insurance Network Gate — بوابة التأمين</h3>
+          <div style="margin-top:8px;display:grid;gap:6px;grid-template-columns:1fr 1fr">
+            <button class="pill" id="insAXA" onclick="setIns('AXA')" style="background:var(--accent-cyan);color:#fff;padding:8px">AXA</button>
+            <button class="pill" id="insMet" onclick="setIns('MetLife')" style="background:#fff;border:1px solid var(--border-pearl)">MetLife</button>
+            <button class="pill" id="insSyn" onclick="setIns('Syndicate')" style="background:#fff;border:1px solid var(--border-pearl)">Syndicate</button>
+            <button class="pill" id="insNone" onclick="setIns('None')" style="background:#fff;border:1px solid var(--border-pearl)">None</button>
+          </div>
+          <div style="margin-top:8px;background:var(--surface-secondary);border:1px solid var(--border-pearl);border-radius:12px;padding:8px">
+            <p style="margin:0;font-size:13px"><span id="insName">AXA</span> · <span id="insBadge" class="badge" style="background:var(--accent-emerald);color:#fff">eligible</span></p>
+            <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Expiry <span id="insExp">2027-06-01</span> · Coverage <span id="insCov">3,000.00 EGP</span> · Copay <span id="insCopay">20%</span></p>
+            <p style="margin:4px 0 0;font-family:Inter;font-size:11px">Eligibility check → app_id AU MED · instant</p>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--accent-cyan);border-radius:12px;padding:12px">
+          <h3 style="margin:0;font-size:14px;font-weight:600">Real-Time Copay Split Widget — المحفظة الطبية</h3>
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:13px">
+            <div style="display:flex;justify-content:space-between"><span>Gross Medical Cost (بعد الحزمة)</span><span style="font-family:Inter" id="copGross">5,000.00 EGP</span></div>
+            <div style="display:flex;justify-content:space-between;color:var(--accent-emerald)"><span>Approved Insurance Coverage</span><span style="font-family:Inter">- <span id="copCov">3,000.00 EGP</span></span></div>
+            <div style="display:flex;justify-content:space-between"><span>Copay <span id="copPct">20%</span></span><span style="font-family:Inter" id="copPct2">20%</span></div>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid var(--border-pearl);padding-top:6px;font-weight:700"><span>Net Payable Balance (app_wallet)</span><span style="font-family:Inter" id="copNet">2,000.00 EGP</span></div>
+          </div>
+          <div style="margin-top:8px;border:1px solid var(--border-pearl);border-radius:12px;padding:8px;background:var(--surface-pearl-strong)">
+            <p style="margin:0;font-size:13px;font-weight:600">Medical Wallet — 7,500.00 EGP متاح</p>
+            <p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">app_wallet · AU MED · محجوز 0.00 EGP</p>
+            <div style="margin-top:6px;height:6px;background:var(--surface-secondary);border-radius:999px"><div id="walletBar" style="height:6px;width:26%;background:var(--accent-emerald);border-radius:999px"></div></div>
+            <p id="walletMsg" style="margin:4px 0 0;font-size:11px;color:var(--accent-emerald)">✓ رصيد كافٍ</p>
+          </div>
+          <button class="btn btn-md btn-primary" style="margin-top:8px;width:100%" onclick="alert('ادفع عبر المحفظة — app_id AU MED · journey jour_8841')">ادفع عبر المحفظة — Pay <span id="payBtnAmt">2,000.00 EGP</span></button>
+          <p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Headers: X-App-Id AU MED · escrow per sub-deal</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p style="text-align:center;margin:20px 0 0;font-size:11px;color:var(--text-secondary)">Sandbox تراكمي — Part 3 HQ ✓ + Part 4 BUSINESS ✓ + Part 5 AU MED ✓ LIVE — Part 6 AU DEALS قادم — <span style="font-family:Inter">https://3000-iobfsuj98g9pphlkgxqqe.e2b.app/PREVIEW_SANDBOX.html</span></p>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px">
+  <div class="modal-backdrop" onclick="closeModal('modal')"></div>
+  <div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%">
+    <button onclick="closeModal('modal')" style="position:absolute;top:12px;left:12px;background:transparent;border:1px solid transparent;border-radius:8px;padding:6px 10px;cursor:pointer">✕</button>
+    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-on-pearl)">نافذة عادية</h3>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:14px">ESC أو الخلفية للإغلاق — blur 8px + قفل تمرير</p>
+    <p style="margin:12px 0 0;color:var(--text-secondary);font-size:14px">محتوى تجريبي — أزرار ديناميكية:</p>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button class="btn btn-md btn-secondary" onclick="closeModal('modal')">إغلاق</button>
+      <button class="btn btn-md btn-primary" onclick="closeModal('modal')">تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOLD MODAL -->
+<div id="holdModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px">
+  <div class="modal-backdrop" onclick="closeModal('holdModal')"></div>
+  <div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%">
+    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-on-pearl)">تأكيد عالي المخاطر</h3>
+    <p style="margin:6px 0 0;color:var(--text-secondary);font-size:14px">Kill-Switch / إلغاء جماعي — اضغط مطوّلاً 2 ثانية</p>
+    <p style="margin:8px 0 0;color:var(--text-secondary);font-size:14px">هذه العملية عالية المخاطر — لا يمكن التراجع. اضغط مطوّلاً لتأكيد التنفيذ.</p>
+    <div style="height:8px;background:var(--surface-secondary);border-radius:999px;overflow:hidden;margin-top:12px">
+      <div id="holdBar" style="height:100%;width:0;background:var(--brand-crimson);transition:width .05s linear"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button class="btn btn-md btn-secondary" onclick="closeModal('holdModal')">إلغاء</button>
+      <button class="btn btn-md btn-danger" id="holdBtn" onpointerdown="startHold(event)" onpointerup="stopHold()" onpointerleave="stopHold()" onpointercancel="stopHold()">اضغط مطوّلاً للتأكيد — 2 ثانية</button>
+    </div>
+  </div>
+</div>
+
+<!-- POISON + RATIONALE + IMPORT + WORKFORCE MODALS -->
+<div id="poisonModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px"><div class="modal-backdrop" onclick="closeModal('poisonModal')"></div><div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%"><h3 style="margin:0;font-size:18px;font-weight:600;color:var(--brand-crimson)">تأكيد Poison Pill — خطر</h3><p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">يتطلب Super Admin MFA + Master Passphrase — لا يمكن التراجع</p><label style="display:block;margin:12px 0 0;font-size:13px">MFA (6 أرقام)<input id="poisonMfa" placeholder="123456" style="margin-top:6px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:10px;background:#fff"/></label><label style="display:block;margin:8px 0 0;font-size:13px">Master Passphrase (≥12)<input id="poisonPass" type="password" placeholder="••••••••••••" style="margin-top:6px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:10px;background:#fff"/></label><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px"><button class="btn btn-md btn-secondary" onclick="closeModal('poisonModal')">إلغاء</button><button class="btn btn-md btn-danger" onclick="let m=document.getElementById('poisonMfa').value,p=document.getElementById('poisonPass').value;if(m.length===6&&p.length>=12){alert('Poison Pill confirmed ✓');closeModal('poisonModal')}else alert('MFA 6 digits + Passphrase ≥12 required')">تأكيد المسح</button></div></div></div>
+<div id="rationaleModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px"><div class="modal-backdrop" onclick="closeModal('rationaleModal')"></div><div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%"><h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-on-pearl)">Manual Ledger Adjustment — Rationale Required</h3><p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">يجب تسجيل السبب — يُحفظ في immutable audit logs</p><textarea id="rationaleText" placeholder="اكتب السبب التفصيلي (≥15 حرف)..." rows="4" style="margin-top:12px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;background:#fff"></textarea><div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="btn btn-md btn-secondary" onclick="closeModal('rationaleModal')">إلغاء</button><button class="btn btn-md btn-primary" onclick="let v=document.getElementById('rationaleText').value;if(v.trim().length>=15){alert('تم حفظ السبب ✓');closeModal('rationaleModal')}else alert('Rationale ≥15 chars') ">تأكيد التعديل</button></div></div></div>
+<div id="importModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px"><div class="modal-backdrop" onclick="closeModal('importModal')"></div><div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:560px;width:100%;max-height:85vh;overflow:auto"><h3 style="margin:0;font-size:18px;font-weight:600">استيراد/تصدير دفعي — CSV/Excel</h3><p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">ارفع ملف CSV — تعيين الأعمدة + overlay أخطاء المخطط</p><div style="margin-top:12px;border:2px dashed var(--border-pearl);border-radius:12px;padding:24px;text-align:center;background:#fff"><input type="file" accept=".csv,.xlsx" onchange="handleCsvMock(this.files[0])"/><p style="margin:8px 0 0;font-size:11px;color:var(--text-secondary)">يدعم تعيين الأعمدة + تحقق قبل الحفظ</p></div><div id="importErrors" style="margin-top:12px"></div><div style="margin-top:12px;display:flex;justify-content:space-between"><button class="btn btn-sm btn-secondary" onclick="alert('تصدير CSV')">تصدير CSV الحالي</button><div style="display:flex;gap:8px"><button class="btn btn-sm btn-secondary" onclick="closeModal('importModal')">إغلاق</button><button class="btn btn-sm btn-primary" onclick="closeModal('importModal')">تأكيد الاستيراد</button></div></div></div></div>
+<div id="workforceModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px"><div class="modal-backdrop" onclick="closeModal('workforceModal')"></div><div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:520px;width:100%"><h3 id="wfTitle" style="margin:0;font-size:18px;font-weight:600">نشر موظف AI</h3><div id="wfBody" style="margin-top:12px"></div></div></div>
+
+
+<!-- AU MED MODALS -->
+<div id="otpModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px"><div class="modal-backdrop" onclick="closeModal('otpModal')"></div><div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:480px;width:100%;text-align:center"><h3 style="margin:0;font-size:18px;font-weight:600">موافقة وصول EMR — OTP Authorization</h3><p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">طبيب من AU BUSINESS يطلب وصولاً لسجلك المشفر — 15 دقيقة فقط</p><p style="margin:12px 0 0;font-family:Inter;font-size:28px;font-weight:700" id="otpTimer">15:00</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">TTL 15:00 — سينتهي تلقائياً</p><div style="margin-top:16px;display:flex;justify-content:center;gap:8px"><button class="btn btn-md btn-secondary" onclick="closeModal('otpModal')">رفض</button><button class="btn btn-md btn-primary" onclick="grantOTP()">منح الوصول 15 دقيقة</button></div></div></div>
+<div id="dicomModal" style="display:none;position:fixed;inset:0;z-index:50;align-items:center;justify-content:center;padding:16px"><div class="modal-backdrop" onclick="closeModal('dicomModal')"></div><div style="position:relative;z-index:1;background:var(--surface-pearl-strong);border:1px solid var(--border-pearl);border-radius:var(--radius-lg);box-shadow:var(--shadow-elevation-lg);padding:24px;max-width:560px;width:100%"><h3 style="margin:0;font-size:18px;font-weight:600">عارض تشخيصي — DICOM</h3><div style="margin-top:12px;border:1px solid var(--border-pearl);background:var(--surface-secondary);border-radius:12px;padding:16px;text-align:center;position:relative;overflow:hidden"><p style="margin:0;font-family:Inter;font-size:13px">DICOM / PDF Preview — chest.dcm</p><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.08;transform:rotate(-20deg);font-size:18px;font-weight:700">ABD UNI · patient #7</div><div style="margin-top:12px;height:160px;background:#fff;border:1px solid var(--border-pearl);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary)">[ محاكاة صورة أشعة مع علامة مائية ديناميكية ]</div></div><p style="margin:8px 0 0;font-size:11px;color:var(--text-secondary)">Watermark protections — user_id + timestamp — يمنع التسريب</p><div style="margin-top:12px;display:flex;justify-content:flex-end"><button class="btn btn-md btn-secondary" onclick="closeModal('dicomModal')">إغلاق</button></div></div></div>
+
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+<script>
+// particles 42
+const c=document.getElementById('particles'), x=c.getContext('2d'); let w,h,dots=[];
+function resize(){w=c.width=c.offsetWidth*devicePixelRatio;h=c.height=c.offsetHeight*devicePixelRatio;x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+function init(){resize();dots=Array.from({length:42},()=>({x:Math.random()*c.offsetWidth,y:Math.random()*c.offsetHeight,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.1+.5}))}
+function tick(){x.clearRect(0,0,c.offsetWidth,c.offsetHeight); x.fillStyle='rgba(250,250,250,.22)';dots.forEach(d=>{d.x+=d.vx;d.y+=d.vy;if(d.x<0||d.x>c.offsetWidth)d.vx*=-1;if(d.y<0||d.y>c.offsetHeight)d.vy*=-1;x.beginPath();x.arc(d.x,d.y,d.r,0,Math.PI*2);x.fill()}); x.strokeStyle='rgba(250,250,250,.06)';x.lineWidth=.7;for(let i=0;i<dots.length;i++)for(let j=i+1;j<dots.length;j++){let dx=dots[i].x-dots[j].x, dy=dots[i].y-dots[j].y, dist=Math.hypot(dx,dy);if(dist<110){x.globalAlpha=1-dist/110;x.beginPath();x.moveTo(dots[i].x,dots[i].y);x.lineTo(dots[j].x,dots[j].y);x.stroke()}} x.globalAlpha=1;requestAnimationFrame(tick)}
+init(); tick(); addEventListener('resize',resize);
+addEventListener('mousemove',e=>{let X=e.clientX/innerWidth*100, Y=e.clientY/innerHeight*100; document.documentElement.style.setProperty('--cx',X+'%');document.documentElement.style.setProperty('--cy',Y+'%')},{passive:true});
+if(matchMedia('(prefers-reduced-motion: reduce)').matches) c.style.display='none';
+
+// secure input leak mask
+const PHONE_RE=/(\+?20)?0?1[0-2,5][0-9]{8}/g, EMAIL_RE=/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, URL_RE=/https?:\/\/\S+/gi;
+function maskLeak(v){return v.replace(PHONE_RE,'***-****').replace(EMAIL_RE,'***@***').replace(URL_RE,'***')}
+const sec=document.getElementById('secure'), out=document.getElementById('secureOut');
+function updSecure(){let m=maskLeak(sec.value); out.textContent=m; out.dir='ltr'}; sec.addEventListener('input',updSecure); updSecure();
+
+// btn loading demo
+document.getElementById('btnLoading').addEventListener('click',function(){let s=document.getElementById('btnLoadingSpin'); s.style.display='inline-block'; this.disabled=true; setTimeout(()=>{s.style.display='none'; this.disabled=false},1500)})
+
+// table
+let rows=[
+  {id:1,name:'فاتورة #001 — صيدلية',amount_minor:125000,status:'Verified',checked:true},
+  {id:2,name:'فاتورة #002 — معمل',amount_minor:89000,status:'Pending',checked:false},
+  {id:3,name:'فاتورة #003 — توريد',amount_minor:450000,status:'AI_Active',checked:false},
+];
+let sortKey='name', sortDir='asc';
+function fmtEGP(minor){return new Intl.NumberFormat('ar-EG',{style:'currency',currency:'EGP',numberingSystem:'latn'}).format(minor/100)}
+function badge(s){const m={Verified:['var(--accent-emerald)','#fff','موثّق'],Pending:['var(--accent-amber)','#000','قيد المراجعة'],Danger:['var(--brand-crimson)','#fff','خطر'],VIP:['var(--brand-gold)','#000','VIP'],Anonymous:['var(--surface-secondary)','var(--text-secondary)','مجهول'],AI_Active:['var(--accent-cyan)','#fff','AI نشط']};let [bg,c,l]=m[s]||m.Verified;return `<span class="badge" style="background:${bg};color:${c}">${l}</span>`}
+function render(){let tb=document.getElementById('tbody'); tb.innerHTML=''; let data=[...rows]; data.sort((a,b)=>{let av=a[sortKey], bv=b[sortKey]; if(typeof av==='number'&&typeof bv==='number') return sortDir==='asc'?av-bv:bv-av; return sortDir==='asc'? String(av).localeCompare(String(bv),'ar'):String(bv).localeCompare(String(av),'ar')}); data.forEach(r=>{let tr=document.createElement('tr'); tr.innerHTML=`<td><input type="checkbox" ${r.checked?'checked':''} onchange="toggleRow(${r.id},this.checked)"></td><td>${r.name}</td><td style="text-align:end;font-family:Inter" data-numeric="true">${fmtEGP(r.amount_minor)}</td><td>${badge(r.status)}</td><td style="text-align:end"><div style="display:flex;justify-content:flex-end;gap:4px"><button onclick="alert('عرض ${r.name}')" style="border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:4px 8px;font-size:11px;cursor:pointer">عرض</button><button onclick="alert('حذف ${r.id}')" style="border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:4px 8px;font-size:11px;cursor:pointer">حذف</button></div></td>`; tb.appendChild(tr)}); document.getElementById('sortName').textContent=sortKey==='name'?(sortDir==='asc'?'↑':'↓'):'↕'; document.getElementById('sortAmt').textContent=sortKey==='amount'?(sortDir==='asc'?'↑':'↓'):'↕'; document.getElementById('chkAll').checked=rows.every(r=>r.checked)}
+function sortBy(k){ let key=k==='amount'?'amount_minor':k; if(sortKey===key) sortDir=sortDir==='asc'?'desc':'asc'; else{sortKey=key; sortDir='asc'} render()}
+function toggleRow(id,ck){rows.find(r=>r.id===id).checked=ck; render()}
+function toggleAll(ck){rows.forEach(r=>r.checked=ck); render()}
+render();
+
+// switcher
+document.querySelectorAll('#switcher [data-v]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#switcher [data-v]').forEach(x=>{x.style.background='transparent';x.style.color='var(--text-secondary)'}); b.style.background='var(--brand-gold)';b.style.color='#000'; document.getElementById('curApp').textContent=b.dataset.v}))
+
+// modals
+function openModal(id){document.getElementById(id).style.display='flex'; document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).style.display='none'; document.body.style.overflow=''; stopHold()}
+addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('modal');closeModal('holdModal')}})
+
+// hold
+let holdTimer=null, holdStart=0, holdProg=0;
+function startHold(e){e.preventDefault(); holdStart=Date.now(); holdProg=0; holdTimer=setInterval(()=>{let el=Date.now()-holdStart, pct=Math.min(100,el/2000*100); document.getElementById('holdBar').style.width=pct+'%'; document.getElementById('holdBtn').textContent=Math.round(pct)+'%'; if(pct>=100){clearInterval(holdTimer); holdTimer=null; closeModal('holdModal'); document.getElementById('holdBar').style.width='0%'; document.getElementById('holdBtn').textContent='اضغط مطوّلاً للتأكيد — 2 ثانية'; alert('تم التأكيد بعد 2 ثانية ✓')} },16)}
+function stopHold(){if(holdTimer)clearInterval(holdTimer); holdTimer=null; document.getElementById('holdBar').style.width='0%'; document.getElementById('holdBtn').textContent='اضغط مطوّلاً للتأكيد — 2 ثانية'}
+
+// error boundary demo
+let errOn=false;
+function toggleErr(){errOn=!errOn;let box=document.getElementById('errBox'), txt=document.getElementById('errText'); if(errOn){box.style.borderColor='var(--brand-crimson)'; box.style.background='rgba(239,68,68,.08)'; txt.innerHTML='<b style="color:var(--brand-crimson)">💥 انهيار محاكى — ErrorBoundary التقط الخطأ ✓</b><br><span style="font-family:Inter;font-size:11px">Simulated crash — stack suppressed in prod</span>';} else resetErr()}
+function resetErr(){errOn=false;let box=document.getElementById('errBox'), txt=document.getElementById('errText'); box.style.borderColor='var(--border-pearl)'; box.style.background='var(--surface-pearl-strong)'; txt.textContent='محتوى آمن — اضغط الزر لمحاكاة انهيار.';}
+// ===== PART 3 HQ — header timer 60:00 + dead-man 48h + kill + freeze/sidebar + HITL/matrix
+let hdrSec=3600; setInterval(()=>{hdrSec=Math.max(0,hdrSec-1);let el=document.getElementById('hdrTimer'); if(el) el.textContent=String(Math.floor(hdrSec/60)).padStart(2,'0')+':'+String(hdrSec%60).padStart(2,'0')},1000);
+let deadDeadline=Date.now()+48*3600*1000; setInterval(()=>{let left=deadDeadline-Date.now();let h=Math.max(0,Math.floor(left/3600000)),m=Math.max(0,Math.floor((left%3600000)/60000)),s=Math.max(0,Math.floor((left%60000)/1000));let el=document.getElementById('deadCount'); if(el) el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')},1000);
+function resetDead(){deadDeadline=Date.now()+48*3600*1000}
+function triggerKill(){let b=document.getElementById('aiBadge'); if(!b) return; b.textContent='AI SWARM: SEVERED (MANUAL MODE)'; b.style.background='var(--brand-crimson)'; let g=document.getElementById('gaugeArc'); if(g){g.setAttribute('stroke','var(--brand-crimson)'); g.setAttribute('stroke-dasharray','90 113')} let t=document.querySelector('#gauge text'); if(t) t.textContent='88%'; let l=document.getElementById('gaugeLabel'); if(l){l.textContent='خطر 88%'; l.style.color='var(--brand-crimson)'}}
+function toggleFreeze(el){let on=el.textContent.includes('ON'); el.textContent=el.textContent.split(':')[0]+': '+(on?'FROZEN':'ON'); el.style.background=on?'rgba(0,0,0,.1)':'#fff'; let pct=document.getElementById('loadPct'); if(pct) pct.textContent=Math.floor(60+Math.random()*20)}
+function toggleSidebar(){let sb=document.getElementById('sidebar'); if(!sb) return; sb.style.width=sb.style.width==='64px'?'220px':'64px'}
+let hitlData=[{id:'p1',agent:3,title:'حملة إعلانية جديدة — رمضان',desc:'Agent 3 proposes 3 ad variants — budget 5k EGP',conf:87},{id:'p2',agent:11,title:'PR #42 — إصلاح تسريب',desc:'Agent 11 — diff +12 -3 — confidence 92%',conf:92},{id:'p3',agent:8,title:'توجيه إرسال — AU SERV',desc:'Agent 8 — nearest provider 1.2km ETA 6m',conf:89}];
+function renderHitl(){let c=document.getElementById('hitlFeed'); if(!c) return; c.innerHTML=''; hitlData.forEach(p=>{let d=document.createElement('div'); d.style.cssText='border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:12px'; d.innerHTML=`<div style="display:flex;justify-content:space-between"><span style="font-weight:600">Agent ${p.agent} — ${p.title}</span><span class="badge" style="background:${p.conf>=90?'var(--accent-emerald)':'var(--accent-amber)'};color:${p.conf>=90?'#fff':'#000'}">${p.conf}%</span></div><p style="margin:6px 0 0;color:var(--text-secondary);font-size:13px">${p.desc}</p><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-sm btn-primary" onclick="hitlAct('${p.id}','approved')">Approve</button><button class="btn btn-sm btn-secondary" onclick="hitlAct('${p.id}','rejected')">Reject</button><button class="btn btn-sm btn-secondary" onclick="hitlAct('${p.id}','modified')">Modify</button><button class="btn btn-sm btn-ghost" onclick="hitlAct('${p.id}','pending')">Ask Me Later</button></div>`; c.appendChild(d)})}
+function hitlAct(id,st){let p=hitlData.find(x=>x.id===id); if(p) p.title+=' ✓ '+st; renderHitl()}
+let agents=[{id:1,title:'CFO — Accounting & Profit',cap:'reconcile',drv:'deterministic'},{id:2,title:'CTO — Health & Security',cap:'scan',drv:'deterministic'},{id:3,title:'CMO — Growth & Campaigns',cap:'Draft Ads',drv:'cloud'},{id:4,title:'Vendor Success Officer',cap:'tier',drv:'deterministic'},{id:5,title:'Customer Support Director',cap:'triage',drv:'cloud'},{id:6,title:'SecOps & Self-Healing Guard',cap:'patch',drv:'local_gpu'},{id:7,title:'CLO — Legal & Compliance',cap:'audit terms',drv:'deterministic'},{id:8,title:'Supply Chain & Dispatch',cap:'dispatch',drv:'deterministic'},{id:9,title:'PR & Brand Reputation',cap:'press',drv:'cloud'},{id:10,title:'QA & Medical Compliance',cap:'clinical',drv:'deterministic'},{id:11,title:'Lead SWE & DevOps / Sandbox',cap:'deploy',drv:'local_gpu'},{id:12,title:'Global AI Controller & Proactive',cap:'learn',drv:'cloud'},{id:13,title:'Fraud Detector & AML Sentinel',cap:'aml',drv:'deterministic'}];
+function renderMatrix(){let c=document.getElementById('matrix'); if(!c) return; c.innerHTML=''; agents.forEach(a=>{let d=document.createElement('div'); d.style.cssText='border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:10px'; d.innerHTML=`<p style="margin:0;font-weight:600;font-size:13px">Agent ${a.id} — ${a.title}</p><p style="margin:2px 0 0;color:var(--text-secondary);font-size:11px">${a.cap} • ${a.drv}</p><div style="margin-top:6px;display:flex;justify-content:space-between"><label style="font-size:11px"><input type="checkbox" checked> ${a.cap}</label><label style="font-size:11px"><input type="checkbox"> Approval Required</label></div>`; c.appendChild(d)})}
+renderHitl(); renderMatrix();
+// ===== PART 4 AU BUSINESS — live feed + inventory tier + schema + calibrator + workforce
+let bizFeedData=[{id:'f1',title:'طلب جملة — لفائف صلب',company:'Delta Steel',qty:1200,amt:'980,000.00 EGP',type:'bulk_request',status:'Pending'},{id:'f2',title:'مطابقة مقايضة — زيت ↔ أسمنت',company:'Nile Barter',qty:500,amt:'420,000.00 EGP',type:'barter_match',status:'AI_Active'},{id:'f3',title:'عرض سعر مُعتمد — Q-8841',company:'Pharma Bulk',qty:2000,amt:'125,000.00 EGP',type:'quotation',status:'Verified'}];
+function renderBizFeed(){let c=document.getElementById('bizFeed'); if(!c) return; let q=(document.getElementById('bizQ')?.value||''); let qq=maskLeak(q).toLowerCase(); let list=bizFeedData.filter(f=> !qq || f.title.includes(qq) || f.company.toLowerCase().includes(qq)); c.innerHTML=''; list.forEach(f=>{let d=document.createElement('div'); d.style.cssText='border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:10px;display:flex;justify-content:space-between;align-items:center'; d.innerHTML=`<div><p style="margin:0;font-weight:600">${f.title} — ${f.company}</p><p style="margin:2px 0 0;color:var(--text-secondary);font-size:11px">${f.qty} وحدة · ${f.amt}</p></div><span class="badge" style="background:${f.status==='Verified'?'var(--accent-emerald)':f.status==='AI_Active'?'var(--accent-cyan)':'var(--accent-amber)'};color:${f.status==='AI_Active'&&false?'#000':'#fff'}">${f.type}</span>`; c.appendChild(d)}); if(list.length===0) c.innerHTML='<p style="text-align:center;color:var(--text-secondary);font-size:13px">لا نتائج</p>'}
+document.getElementById('bizQ')?.addEventListener('input',function(){let v=this.value, m=maskLeak(v); document.getElementById('bizQhint').textContent= v!==m ? 'تم الطمس: '+m : ''; renderBizFeed()});
+setInterval(()=>{let types=['bulk_request','barter_match','quotation'], nt={id:'live-'+Date.now(),title:'طلب جملة حي',company:'AutoFeed',qty:100+Math.floor(Math.random()*900),amt:(50+Math.floor(Math.random()*90))+'0,000.00 EGP',type:types[Math.floor(Math.random()*3)],status:'Pending'}; bizFeedData.unshift(nt); bizFeedData=bizFeedData.slice(0,6); renderBizFeed()},6000);
+renderBizFeed();
+// Inventory mock + schema engine
+let invItems=[{id:1,sku:'STL-A36-12',title:'لفائف صلب A36',cat:'معادن',stock:5400,res:400,tiers:[{label:'100–500',qty:'100–500',price:'1,250.00 EGP',disc:'0%'},{label:'501–2000',qty:'501–2000',price:'1,180.00 EGP',disc:'5.6%'},{label:'2000+',qty:'2000+',price:'1,120.00 EGP',disc:'10.4%'}],schema:'steel',vals:{grade:'A36',thickness:'12',origin:'TR-8841'}},{id:2,sku:'CHEM-ISO-9001',title:'مذيب صناعي 200ل',cat:'كيميائيات',stock:900,res:80,tiers:[{label:'50–200',qty:'50–200',price:'890.00 EGP',disc:'0%'},{label:'201–1000',qty:'201–1000',price:'820.00 EGP',disc:'7.9%'}],schema:'chem',vals:{origin:'EG-5521',expiry:'2027-06-01',comp:'ISO 9001'}},{id:3,sku:'CEM-42-5',title:'أسمنت 42.5',cat:'مواد بناء',stock:12000,res:1200,tiers:[{label:'500–2000',qty:'500–2000',price:'620.00 EGP',disc:'0%'}],schema:'chem',vals:{}}];
+let invSel=1; function renderInvList(){let c=document.getElementById('invList'); if(!c) return; let f=(document.getElementById('invFilter')?.value||''); let ff=maskLeak(f); c.innerHTML=''; invItems.filter(it=> !ff || it.title.includes(ff) || it.sku.includes(ff)).forEach(it=>{let d=document.createElement('div'); d.style.cssText=`padding:12px;border-bottom:1px solid var(--border-pearl);cursor:pointer;background:${it.id===invSel?'var(--surface-pearl-strong)':'#fff'};border-inline-start:${it.id===invSel?'3px solid var(--accent-cyan)':'none'}`; d.onclick=()=>{invSel=it.id; renderInvList(); renderInvDetail(); renderSchema()}; d.innerHTML=`<p style="margin:0;font-weight:600">${it.title} <span style="font-size:11px;color:var(--text-secondary)">· ${it.sku}</span></p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${it.cat} · مخزون ${it.stock} · محجوز ${it.res}</p><div style="margin-top:6px"><span class="badge" style="background:${it.id===1||it.id===2?'var(--accent-emerald)':'var(--accent-amber)'};color:${it.id===2?'#fff':'#000'}">${it.id===3?'draft':'active'}</span></div>`; c.appendChild(d)})}
+function renderInvDetail(){let cur=invItems.find(i=>i.id===invSel)||invItems[0]; let c=document.getElementById('invDetail'); if(!c) return; let rows=cur.tiers.map(t=>`<tr><td style="padding:8px 12px">${t.label}</td><td>${t.qty}</td><td style="text-align:end;font-family:Inter">${t.price}</td><td style="text-align:center"><span class="badge" style="background:${t.disc!=='0%'?'var(--accent-emerald)':'var(--surface-secondary)'};color:${t.disc!=='0%'?'#fff':'var(--text-secondary)'}">${t.disc}</span></td></tr>`).join(''); c.innerHTML=`<h3 style="margin:0">${cur.title} — ${cur.sku}</h3><p style="margin:4px 0 0;color:var(--text-secondary);font-size:13px">${cur.cat} · تحديث اليوم</p><p style="margin:8px 0 4px;font-size:11px;font-weight:700;color:var(--text-secondary)">هيكل التسعير المتدرج — خصومات الحجم</p><div style="border:1px solid var(--border-pearl);border-radius:12px;overflow:hidden;background:#fff"><table class="table"><thead><tr><th style="font-size:11px">الشريحة</th><th style="font-size:11px">الكمية</th><th style="text-align:end;font-size:11px">السعر / وحدة</th><th style="text-align:center;font-size:11px">خصم</th></tr></thead><tbody>${rows}</tbody></table></div><p style="margin:6px 0 0;font-size:11px;color:var(--text-secondary)">الأسعار بالوحدات الصغرى — قروش — minor/100 EGP latn</p>`}
+let curSchema='steel'; function renderSchema(){let cur=invItems.find(i=>i.id===invSel)||invItems[0]; curSchema=cur.schema; document.getElementById('schemaBadge').textContent='Schema: '+cur.schema+' v'+(cur.schema==='steel'?'1':'2'); let c=document.getElementById('schemaForm'); if(!c) return; c.innerHTML=''; let fields= cur.schema==='steel' ? [{k:'grade',l:'الدرجة',t:'select',o:['A36','S275','S355'],v:cur.vals.grade||''},{k:'thickness',l:'السُمك مم',t:'number',v:cur.vals.thickness||''},{k:'origin',l:'شهادة المنشأ',t:'text',v:cur.vals.origin||''}] : [{k:'origin',l:'شهادة المنشأ',t:'text',v:cur.vals.origin||''},{k:'expiry',l:'انتهاء الدفعة',t:'date',v:cur.vals.expiry||''},{k:'comp',l:'الامتثال',t:'select',o:['ISO 9001','GMP','HALAL'],v:cur.vals.comp||''},{k:'hazard',l:'فئة الخطورة',t:'select',o:['1','2','3','غير مصنف'],v:''}]; fields.forEach(f=>{let d=document.createElement('div'); d.innerHTML=`<label style="display:block;font-size:13px;font-weight:500">${f.l} ${f.t==='select' && f.k==='grade' || f.k==='origin' ? '<span style="color:var(--brand-crimson)">*</span>' : ''}</label>`+ (f.t==='select' ? `<select style="margin-top:6px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:8px;background:#fff"><option value="">اختر</option>${f.o.map(o=>`<option ${o===f.v?'selected':''}>${o}</option>`).join('')}</select>` : `<input value="${f.v}" placeholder="${f.l}" style="margin-top:6px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:8px;background:#fff">`); c.appendChild(d)}); c.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',e=>{e.target.value=maskLeak(e.target.value)}))}
+document.getElementById('invFilter')?.addEventListener('input',function(){this.value=maskLeak(this.value); renderInvList()});
+function saveSpec(){alert('حفظ المواصفات ✓ — payload app_id=AU BUSINESS');} function resetSpec(){renderSchema()}
+renderInvList(); renderInvDetail(); renderSchema();
+function handleCsvMock(f){let c=document.getElementById('importErrors'); if(!c) return; c.innerHTML=`<table class="table" style="margin-top:8px;background:#fff;border:1px solid var(--border-pearl);border-radius:12px;overflow:hidden"><thead><tr><th>صف</th><th>البيانات</th><th>الأخطاء</th></tr></thead><tbody><tr><td>1</td><td style="font-family:Inter">STL-NEW 300 1,180</td><td style="color:var(--accent-emerald)">✓ سليم</td></tr><tr style="background:rgba(239,68,68,.06)"><td>2</td><td style="font-family:Inter">— -5 abc</td><td style="color:var(--brand-crimson)">SKU مطلوب · الكمية &lt;0</td></tr></tbody></table>`}
+// Calibrator gates
+let gates={pre_op:{score:88,status:'amber',title:'البوابة القَبْلية — قبل الالتزام',en:'Pre-Operation Gate · BEFORE wholesale commit',rec:'ارفع الهامش إلى ≥ 18% قبل الالتزام',metrics:[{l:'هامش الربح',v:'15.2%',thr:'18%',s:'warn'},{l:'قدرة المخزون',v:'78%',thr:'70%',s:'pass'},{l:'درجة الملاءة',v:'62%',thr:'65%',s:'warn'}]},in_op:{score:94,status:'green',title:'البوابة التشغيلية — أثناء التنفيذ',en:'In-Operation Gate · DURING execution',rec:'السرعة على المسار — راقب التسريب',metrics:[{l:'الالتزام بالـ SLA',v:'97%',thr:'95%',s:'pass'},{l:'سلامة السعر',v:'99%',thr:'98%',s:'pass'},{l:'تسريب التكلفة',v:'1.1%',thr:'2%',s:'pass'}]},post_op:{score:81,status:'amber',title:'البوابة الختامية — بعد الإنجاز',en:'Post-Operation Gate · AFTER fulfillment',rec:'طابق قيدين مزدوجين + اجمع التغذية',metrics:[{l:'العائد الفعلي',v:'11.4%',thr:'12%',s:'warn'},{l:'دفاتر مطابقة',v:'92%',thr:'100%',s:'warn'},{l:'رضا العميل',v:'4.2/5',thr:'4.5/5',s:'warn'}]}};
+function setGate(k){let g=gates[k]; document.getElementById('gateTitleAr').textContent=g.title; document.getElementById('gateTitleEn').textContent=g.en; document.getElementById('gateRec').textContent=g.rec; document.getElementById('gatePct').textContent=g.score+'%'; document.getElementById('gateScore').textContent=g.score+'% '+g.status; document.getElementById('gateScore').style.background=g.status==='green'?'var(--accent-emerald)':g.status==='amber'?'var(--accent-amber)':'var(--brand-crimson)'; document.getElementById('gateScore').style.color=g.status==='amber'?'#000':'#fff'; document.getElementById('gateArc').setAttribute('stroke', g.status==='green'?'var(--accent-emerald)':g.status==='amber'?'var(--accent-amber)':'var(--brand-crimson)'); document.getElementById('gateArc').setAttribute('stroke-dasharray', Math.round(g.score/100*113)+' 113'); document.querySelectorAll('[id^=g]').forEach(b=>{b.style.background='#fff';b.style.color='var(--text-on-pearl)';b.style.border='1px solid var(--border-pearl)'}); document.getElementById(k==='pre_op'?'gPre':k==='in_op'?'gIn':'gPost').style.background='var(--canvas-dark)'; document.getElementById(k==='pre_op'?'gPre':k==='in_op'?'gIn':'gPost').style.color='#fff'; let m=document.getElementById('gateMetrics'); m.innerHTML=''; g.metrics.forEach(mm=>{let d=document.createElement('div'); d.style.cssText='border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:12px;margin-bottom:8px'; d.innerHTML=`<div style="display:flex;justify-content:space-between"><span style="font-weight:600">${mm.l}</span><span class="badge" style="background:${mm.s==='pass'?'var(--accent-emerald)':mm.s==='warn'?'var(--accent-amber)':'var(--brand-crimson)'};color:${mm.s==='warn'?'#000':'#fff'}">${mm.s}</span></div><div style="margin-top:8px;display:flex;gap:8px;align-items:baseline"><span style="font-weight:700;font-size:18px">${mm.v}</span><span style="font-size:11px;color:var(--text-secondary)">العتبة ${mm.thr}</span></div><div style="margin-top:8px;height:6px;background:var(--surface-secondary);border-radius:999px"><div style="height:6px;width:${mm.s==='pass'?'92':mm.s==='warn'?'78':'40'}%;background:${mm.s==='pass'?'var(--accent-emerald)':mm.s==='warn'?'var(--accent-amber)':'var(--brand-crimson)'};border-radius:999px"></div></div>`; m.appendChild(d)}); document.getElementById('postLedgers').style.display= k==='post_op'?'grid':'none';}
+setGate('pre_op');
+// Workforce grid
+let personas=[{id:'ai-proc',title:'أخصائي مشتريات B2B',en:'B2B Procurement Specialist',icon:'🧑‍💼',caps:['RFQ Automation','Supplier Vetting','Negotiation'],rate:'4.8 ★ 312 نشر',monthly:'4,900.00 EGP',buyout:'49,000.00 EGP',feat:true},{id:'ai-sales',title:'مدير مبيعات جملة',en:'Bulk Sales Manager',icon:'📈',caps:['Tiered Quotes','Barter Matching','Pipeline'],rate:'4.7 ★ 287 نشر',monthly:'5,500.00 EGP',buyout:'55,000.00 EGP',feat:false},{id:'ai-audit',title:'مدقق مخزون',en:'Inventory Auditor',icon:'🔍',caps:['Stock Reconcile','Expiry Alerts','Schema Validation'],rate:'4.9 ★ 198 نشر',monthly:'3,900.00 EGP',buyout:'39,000.00 EGP',feat:false},{id:'ai-finance',title:'مراقب مالية B2B',en:'B2B Finance Controller',icon:'💰',caps:['Ledger','Escrow','Tax Reserve'],rate:'4.6 ★ 143 نشر',monthly:'6,200.00 EGP',buyout:'62,000.00 EGP',feat:false}];
+function renderPersonas(){let c=document.getElementById('personaGrid'); if(!c) return; c.innerHTML=''; personas.forEach(p=>{let d=document.createElement('div'); d.style.cssText=`background:rgba(250,250,250,.92);border:1px solid var(--border-pearl);border-radius:12px;padding:16px;position:relative;${p.feat?'box-shadow:0 0 0 2px var(--brand-gold)':''}`; d.innerHTML=`${p.feat?'<span style="position:absolute;top:-8px;right:12px;background:var(--brand-gold);color:#000;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700">مميز</span>':''}<div style="display:flex;gap:12px"><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--border-pearl);border-radius:50%;font-size:20px">${p.icon}</span><div><p style="margin:0;font-weight:700">${p.title}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${p.en}</p><p style="margin:2px 0 0;font-size:11px;color:var(--accent-amber)">${p.rate}</p></div></div><div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">${p.caps.map(cap=>`<span style="background:var(--surface-secondary);border:1px solid var(--border-pearl);border-radius:999px;padding:4px 8px;font-size:11px">${cap}</span>`).join('')}</div><div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center"><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:8px;padding:8px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">شهري</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">${p.monthly}</p></div><div style="background:#fff;border:1px solid var(--border-pearl);border-radius:8px;padding:8px"><p style="margin:0;font-size:11px;color:var(--text-secondary)">شراء كامل</p><p style="margin:4px 0 0;font-weight:700;font-family:Inter">${p.buyout}</p></div></div><div style="margin-top:12px;display:flex;gap:8px"><button class="btn btn-sm btn-primary" style="flex:1" onclick="openWorkforce('${p.id}')">نشر — Deploy</button><button class="btn btn-sm btn-secondary" onclick="openWorkforce('${p.id}')">شراء</button></div><p style="margin:6px 0 0;font-size:11px;color:var(--accent-emerald)">✓ معزول: app_id=AU BUSINESS</p>`; c.appendChild(d)})}
+function openWorkforce(id){let p=personas.find(x=>x.id===id); if(!p) return; let b=document.getElementById('wfBody'); b.innerHTML=`<div style="display:flex;gap:12px;align-items:center;border:1px solid var(--border-pearl);border-radius:12px;padding:12px;background:#fff"><span style="font-size:24px">${p.icon}</span><div><p style="margin:0;font-weight:700">${p.title} — ${p.en}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${p.caps.join(' · ')}</p></div></div><div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px"><button id="wfM" onclick="selWf('m')" style="border:2px solid var(--accent-cyan);background:rgba(6,182,212,.08);border-radius:12px;padding:12px;text-align:start"><p style="margin:0;font-weight:700">Managed Monthly Salary</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">اشتراك شهري مُدار</p><p style="margin:8px 0 0;font-weight:700">${p.monthly} / شهر</p></button><button id="wfB" onclick="selWf('b')" style="border:1px solid var(--border-pearl);background:#fff;border-radius:12px;padding:12px;text-align:start"><p style="margin:0;font-weight:700">Outright Buyout</p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">شراء دائم</p><p style="margin:8px 0 0;font-weight:700">${p.buyout}</p></button></div><div style="margin-top:12px"><label style="font-size:13px">ملاحظة للنشر (تُطهّر تلقائياً)</label><textarea id="wfNote" rows="3" placeholder="مثال: نحتاج RFQ للصلب — لا تضف هاتف/بريد" style="margin-top:6px;width:100%;border:1px solid var(--border-pearl);border-radius:12px;padding:8px;background:#fff" oninput="this.value=maskLeak(this.value);document.getElementById('wfHint').textContent=this.value!==maskLeak(this.value)?'تم الطمس':''"></textarea><p id="wfHint" style="margin:4px 0 0;font-size:11px;color:var(--brand-crimson)"></p><p style="margin:4px 0 0;font-size:11px;color:var(--text-secondary)">Payload يُرسل مع app_id="AU BUSINESS" + note مطموسة</p></div><div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--accent-emerald);font-weight:700">Tenant Isolation Safeguard — AU BUSINESS ✓</span><div style="display:flex;gap:8px"><button class="btn btn-sm btn-secondary" onclick="closeModal('workforceModal')">إلغاء</button><button class="btn btn-sm btn-primary" onclick="alert('تم النشر ✓ — app_id AU BUSINESS');closeModal('workforceModal')">تأكيد</button></div></div>`; document.getElementById('wfTitle').textContent='نشر — '+p.title; openModal('workforceModal')}
+function selWf(which){document.getElementById('wfM').style.border= which==='m'?'2px solid var(--accent-cyan)':'1px solid var(--border-pearl)'; document.getElementById('wfM').style.background= which==='m'?'rgba(6,182,212,.08)':'#fff'; document.getElementById('wfB').style.border= which==='b'?'2px solid var(--brand-gold)':'1px solid var(--border-pearl)'; document.getElementById('wfB').style.background= which==='b'?'rgba(197,160,89,.12)':'#fff';}
+renderPersonas();
+
+// ===== PART 5 AU MED — Hospital urgent/scheduled + Vault AES + OTP + Prescription fulfill + Journey copay
+let urgentRadius=2;
+function toggleUrgent(on){document.getElementById('urgentVal').textContent=on;document.getElementById('urgentPanel').style.display=on?'block':'none';document.getElementById('schedPanel').style.display=on?'none':'block';if(on) renderProx();}
+function expandRadius(){urgentRadius= urgentRadius===2?5: urgentRadius===5?10:2; document.getElementById('radiusVal').textContent=urgentRadius; document.getElementById('radiusBadge').textContent=urgentRadius+'km'; document.getElementById('nextRadius').textContent= urgentRadius===2?'5km': urgentRadius===5?'10km':'2km'; renderProx();}
+function renderProx(){let c=document.getElementById('proxList'); if(!c) return; let list=[{name:'د. أحمد — باطنة',dist:1.2},{name:'ممرضة سارة',dist:2.8},{name:'د. ليلى — أطفال',dist:4.5}].filter(p=>p.dist<=urgentRadius); c.innerHTML=''; list.forEach(p=>{let d=document.createElement('div'); d.style.cssText='background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:8px;text-align:center'; d.innerHTML=`<p style="margin:0;font-weight:600">${p.name}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${p.dist}km · ETA ${Math.round(p.dist*4+2)}د</p>`; c.appendChild(d)}); if(list.length===0) c.innerHTML='<p style="font-size:11px;color:var(--text-secondary)">لا مزودين في هذا النطاق</p>'}
+document.getElementById('medQ')?.addEventListener('input',function(){let v=this.value,m=maskLeak(v); document.getElementById('medQhint').textContent= v!==m?'تم الطمس: '+m:'';});
+// scheduled slots 09:00-16:00 mutex
+let slotData=[{id:'s1',t:'09:00',dept:'العيادات',pid:101,locked:false},{id:'s2',t:'10:00',dept:'الأشعة',pid:102,locked:false},{id:'s3',t:'11:00',dept:'المختبرات',pid:103,locked:true},{id:'s4',t:'12:00',dept:'العيادات',pid:104,locked:false},{id:'s5',t:'13:00',dept:'الأشعة',pid:105,locked:false},{id:'s6',t:'14:00',dept:'المختبرات',pid:106,locked:true},{id:'s7',t:'15:00',dept:'العيادات',pid:107,locked:false},{id:'s8',t:'16:00',dept:'الأشعة',pid:108,locked:false}];
+function renderSlots(){let c=document.getElementById('slotGrid'); if(!c) return; c.innerHTML=''; slotData.forEach(s=>{let b=document.createElement('button'); b.disabled=s.locked; b.onclick=()=>{if(s.locked) return; s.locked=true; renderSlots(); alert('حجز '+s.t+' ✓ — mutex lock 10m — app_id AU MED')}; b.style.cssText=`border-radius:12px;padding:10px;text-align:start;border:1px solid var(--border-pearl);${s.locked?'background:var(--surface-secondary);color:var(--text-secondary);cursor:not-allowed':'background:#fff;cursor:pointer'}`; b.innerHTML=`<p style="margin:0;font-weight:600">${s.t}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${s.dept} · #${s.pid}</p>${s.locked?'<span style="margin-top:6px;display:inline-block;background:var(--brand-crimson);color:#fff;border-radius:999px;padding:2px 6px;font-size:11px">مقفول Mutex</span>':'<span style="margin-top:6px;display:inline-block;background:var(--accent-emerald);color:#fff;border-radius:999px;padding:2px 6px;font-size:11px">متاح</span>'}`; c.appendChild(b)});}
+renderSlots(); renderProx();
+// Vault AES + OTP
+let emrData=[{id:'r1',title:'استشارة باطنة — د. أحمد',d:'2026-09-10',type:'consultation',cipher:'abc==',note:'حمية + Omeprazole 20mg'},{id:'r2',title:'أشعة صدر — مركز الأشعة',d:'2026-09-11',type:'radiology',cipher:'xyz==',note:'لا ارتشاح — صدر سليم',attach:'chest.dcm'},{id:'r3',title:'روشتة — د. ليلى',d:'2026-09-12',type:'prescription',cipher:'qqq==',note:'Azithromycin 500mg',attach:'rx.pdf'}];
+let vaultToken=null, vaultExp=0;
+function renderTimeline(){let c=document.getElementById('emrTimeline'); if(!c) return; c.innerHTML=''; let unlocked= vaultToken && Date.now()<vaultExp; emrData.forEach(r=>{let d=document.createElement('div'); d.style.cssText='position:relative;background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:10px'; d.innerHTML=`<div style="position:absolute;inset-inline-start:-14px;top:12px;width:10px;height:10px;background:var(--accent-cyan);border:2px solid #fff;border-radius:50%"></div><div style="display:flex;justify-content:space-between"><p style="margin:0;font-weight:600">${r.title}</p><span class="badge" style="background:${r.type==='radiology'?'var(--accent-cyan)':r.type==='prescription'?'var(--brand-gold)':'var(--accent-emerald)'};color:${r.type==='prescription'?'#000':'#fff'}">${r.type}</span></div><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${r.d}</p><p style="margin:6px 0 0;font-size:13px;${unlocked?'color:var(--text-on-pearl)':'color:var(--brand-crimson);font-family:Inter'}">${unlocked? r.note : '🔒 مُشفّر — AES-256-GCM — ciphertext: '+r.cipher+' — يتطلب OTP'}</p>${r.attach?`<button onclick="openModal('dicomModal')" style="margin-top:6px;border:1px solid var(--border-pearl);background:var(--surface-pearl);border-radius:999px;padding:4px 8px;font-size:11px">عرض ${r.attach} © علامة مائية</button>`:''}<p style="margin:4px 0 0;font-family:Inter;font-size:10px;color:var(--text-secondary)">ciphertext: ${r.cipher} · iv:iv1 · AES-256-GCM</p>`; c.appendChild(d)});}
+let grantData=[{id:'g1',prov:'د. أحمد (AU BUSINESS)',status:'active',exp:Date.now()+12*60*1000},{id:'g2',prov:'مختبر النيل',status:'expired',exp:Date.now()-1000}];
+function renderGrants(){let c=document.getElementById('grantList'); if(!c) return; c.innerHTML=''; grantData.forEach(g=>{let left=Math.max(0,g.exp-Date.now()); let mm=String(Math.floor(left/60000)).padStart(2,'0'), ss=String(Math.floor((left%60000)/1000)).padStart(2,'0'); let d=document.createElement('div'); d.style.cssText='background:#fff;border:1px solid var(--border-pearl);border-radius:12px;padding:8px'; d.innerHTML=`<p style="margin:0;font-weight:600">${g.prov}</p><p style="margin:2px 0 0;font-size:11px;color:var(--text-secondary)">${g.status} · ${new Date(g.exp).toLocaleTimeString('ar-EG')}</p><div style="margin-top:6px;display:flex;gap:6px;align-items:center">${g.status==='active'?`<span class="badge" style="background:var(--accent-emerald);color:#fff">${g.status}</span><span style="font-family:Inter;font-size:11px">${mm}:${ss}</span><button class="btn btn-sm btn-danger" onclick="revokeGrant('${g.id}')">Revoke Now</button>`:`<span class="badge" style="background:var(--surface-secondary);color:var(--text-secondary)">${g.status}</span>`}</div><p style="margin:4px 0 0;font-family:Inter;font-size:10px;color:var(--text-secondary)">log → medical_access_logs · token ••••${g.id.slice(-2)}</p>`; c.appendChild(d)});}
+setInterval(()=>{renderGrants(); renderTimeline();},1000);
+renderTimeline(); renderGrants();
+let otpSec=900, otpTimer=null;
+function openOTP(){document.getElementById('otpTimer').textContent='15:00'; otpSec=900; openModal('otpModal'); if(otpTimer) clearInterval(otpTimer); otpTimer=setInterval(()=>{otpSec=Math.max(0,otpSec-1); let m=String(Math.floor(otpSec/60)).padStart(2,'0'), s=String(otpSec%60).padStart(2,'0'); let el=document.getElementById('otpTimer'); if(el) el.textContent=m+':'+s; if(otpSec===0){clearInterval(otpTimer); closeModal('otpModal')}},1000);}
+function grantOTP(){vaultToken='otp_'+Math.random().toString(36).slice(2,6); vaultExp=Date.now()+15*60*1000; grantData.unshift({id:'g'+Date.now(),prov:'د. من AU BUSINESS',status:'active',exp:vaultExp}); closeModal('otpModal'); alert('تم منح الوصول 15 دقيقة ✓ — app_id AU MED');}
+function revokeGrant(id){let g=grantData.find(x=>x.id===id); if(g){g.status='revoked'; vaultToken=null;} alert('Revoke كُتب في medical_access_logs ✓');}
+// Prescription fulfill
+function selectFulfill(which){document.getElementById('fulfillHome').style.border= which==='home'?'2px solid var(--accent-cyan)':'1px solid var(--border-pearl)'; document.getElementById('fulfillHome').style.background= which==='home'?'rgba(6,182,212,.08)':'#fff'; document.getElementById('fulfillPickup').style.border= which==='pickup'?'2px solid var(--brand-gold)':'1px solid var(--border-pearl)'; document.getElementById('fulfillPickup').style.background= which==='pickup'?'rgba(197,160,89,.12)':'#fff'; document.getElementById('fulfillMsg').textContent= which==='home'?'✓ تم التوجيه — توصيل منزلي · pharmacy 1.2km via AU SERV':'✓ تم الحجز — استلام QR · lock qty 24h';}
+// Journey copay insurance
+function setIns(p){document.querySelectorAll('[id^=ins]').forEach(b=>{b.style.background='#fff';b.style.color='var(--text-on-pearl)';b.style.border='1px solid var(--border-pearl)'}); let el=document.getElementById(p==='AXA'?'insAXA':p==='MetLife'?'insMet':p==='Syndicate'?'insSyn':'insNone'); if(el){el.style.background='var(--accent-cyan)';el.style.color='#fff';} let map={AXA:{e:'eligible',cov:'3,000.00 EGP',net:'2,000.00 EGP',bar:'26%'},MetLife:{e:'eligible',cov:'2,000.00 EGP',net:'3,000.00 EGP',bar:'40%'},Syndicate:{e:'pending',cov:'1,500.00 EGP',net:'3,500.00 EGP',bar:'46%'},None:{e:'ineligible',cov:'0.00 EGP',net:'5,000.00 EGP',bar:'66%'}}; let m=map[p]; document.getElementById('insName').textContent=p; document.getElementById('insBadge').textContent=m.e; document.getElementById('insBadge').style.background= m.e==='eligible'?'var(--accent-emerald)':m.e==='pending'?'var(--accent-amber)':'var(--brand-crimson)'; document.getElementById('insBadge').style.color= m.e==='pending'?'#000':'#fff'; document.getElementById('insCov').textContent=m.cov; document.getElementById('copCov').textContent=m.cov; document.getElementById('copNet').textContent=m.net; document.getElementById('payBtnAmt').textContent=m.net; document.getElementById('walletBar').style.width=m.bar; document.getElementById('walletMsg').textContent= p==='None'?'✗ رصيد غير كافٍ':'✓ رصيد كافٍ'; document.getElementById('walletMsg').style.color= p==='None'?'var(--brand-crimson)':'var(--accent-emerald)';}
+
+</script>
+</body>
+</html>
