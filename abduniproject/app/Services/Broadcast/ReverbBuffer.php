@@ -6,19 +6,21 @@ use Illuminate\Support\Facades\Redis; use Illuminate\Support\Facades\Cache;
 final class ReverbBuffer {
  private const MAX=50; private const TTL=86400;
  public static function key(string $channel): string { return "broadcast:buffer:{$channel}"; }
+ private static function ttl(): int { return (int) config('ai.clock_skew_margin', env('CLOCK_SKEW_MARGIN', 30)) + self::TTL; }
  public static function push(string $channel, array $payload): void {
-  $key=self::key($channel);
+  $key=self::key($channel); $ttl=self::ttl();
   try{
    $json=json_encode($payload, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
    Redis::lpush($key, $json);
    Redis::ltrim($key, 0, self::MAX-1);
-   Redis::expire($key, self::TTL);
+   Redis::expire($key, $ttl);
   } catch(\Throwable){
-   try{ Cache::put($key, json_encode($payload), self::TTL); }catch(\Throwable){}
+   try{ Cache::put($key, json_encode($payload), $ttl); }catch(\Throwable){}
   }
-  // dedup marker 1h
+  // dedup marker 1h + skew (F-16)
   if(isset($payload['event_id'])){
-   try{ Cache::add("processed:event:{$payload['event_id']}",1,3600); }catch(\Throwable){}
+   $skewTtl=3600 + (int) config('ai.clock_skew_margin', env('CLOCK_SKEW_MARGIN', 30));
+   try{ Cache::add("processed:event:{$payload['event_id']}",1,$skewTtl); }catch(\Throwable){}
   }
  }
  public static function replay(string $channel, ?string $afterEventId=null): array {
@@ -38,6 +40,7 @@ final class ReverbBuffer {
   try{ return (bool) Cache::has("processed:event:{$eventId}"); }catch(\Throwable){ return false; }
  }
  public static function markProcessed(string $eventId): void {
-  try{ Cache::add("processed:event:{$eventId}",1,3600); }catch(\Throwable){}
+  $ttl=3600 + (int) config('ai.clock_skew_margin', env('CLOCK_SKEW_MARGIN', 30));
+  try{ Cache::add("processed:event:{$eventId}",1,$ttl); }catch(\Throwable){}
  }
 }

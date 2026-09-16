@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.10 REVERB REALTIME (presence-dispatch+tenant.workforce+intercept+governance alerts) — Arena — v5.0-B.10 — 8080 wss BROADCAST_PORT + event_id UUID + last50 buffer + throttle 5s batch20 — B.1a/b2a/b3/b4/b5/b6/b7/b8/b9 Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.11 DOCKER ARCHITECTURE & NETWORK ISOLATION — Arena — v5.0-B.11 — 13 services bridge web 20/s wss + chrony Clock Cairo skew+30s + graceful 40s checkpoint — B.1a→B.10 Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v5.0-B.10 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9 Locked + B.10 Reverb Realtime (presence-dispatch+tenant.workforce+intercept+governance alerts) Locked (Arena)**
+- **State Version:** v5.0-B.11 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1a+b2a+b3+b4+b5/b6/b7/b8/b9/b10 Locked + B.11 Docker & Network Isolation (13 services bridge web 20/s wss + chrony Clock + graceful checkpoint) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.10 REVERB REALTIME LOCKED v5.0-B.10** (Arena — Laravel 12 PHP 8.4 Reverb Hardened)
-- **Deliverable now:** `[PHASE 5.0 B.10]` delivered — `docs/PHASE5_B10_REVERB.md` v5.0-B.10 hardened 9 sections (F-01 channel registry 6 channels presence+private, F-02 Zero-Trust presence 27 gov enum+chat intercept super_admin+support REDACT+governance super_admin MFA, F-03 BROADCAST_PORT alias 8080 validated, F-04 event_id UUID+Cairo+trace + last50 Redis buffer + replay, F-05 strict JSON schemas 4 payloads, F-06 GPS 5s throttle + batch 20/2s, F-07 channel auth Cache 30s, WORM hash_chain) + 4 Events ProviderLocationUpdated/WorkforceStepUpdated/ChatIntercepted/GovernanceAlerted ≤60L HasEventId+ReverbBuffer + ReplayController + routes/channels.php hardened + reverb 8080 wss + migration guard 000029 — **PAUSE before B.11**
-- **Next:** PAUSED — B.10 hardened with 18-flaw pre-audit (B10-01→B10-18 F-01→F-16) — Awaiting B.11 Docker & Edge next
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.11 DOCKER ARCHITECTURE LOCKED v5.0-B.11** (Arena — Laravel 12 PHP 8.4-FPM Opcache JIT Hardened)
+- **Deliverable now:** `[PHASE 5.0 B.11]` delivered — `docs/PHASE5_B11_DOCKER.md` v5.0-B.11 hardened 9 sections (F-01 13 services networks bridge front/backend/sandbox/gpu web only 80/443, F-02 nginx 20/s + CF + wss proxy + fail2ban, F-03 env complete REDIS_CACHE_DB=1 REDIS_QUEUE_DB=2 CALIBRATOR_HEALTH_THRESHOLD=90 LOCAL_GPU_ENDPOINT vllm_gpu:8000/v1 + CLOCK_SKEW_MARGIN 30, F-04 ClockInterface Africa/Cairo + FrozenClock + AppServiceProvider, F-05 chrony NTP + TTL+30s, F-06 graceful 40s SIGTERM drain, F-07 CheckpointTrait+DB checkpoint_json, F-08 vllm dual backend+gpu, F-09 redis noeviction 512mb) + Dockerfile Opcache JIT + compose 13 services + migration guard 000030 — **PAUSE before B.12**
+- **Next:** PAUSED — B.11 hardened with 20-flaw pre-audit (B11-01→B11-20 F-01→F-16) — Awaiting B.12 Scheduling next
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,7 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.10 — docs/PHASE5_B10_REVERB.md + 4 Events +HasEventId+ReverbBuffer+ReplayController+channels.php hardened+reverb 8080 wss + migration guard 000029 — PAUSE before B.11*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.11 — docs/PHASE5_B11_DOCKER.md + 13 services bridge web 20/s wss + chrony Clock Cairo skew+30s + checkpoint + Dockerfile Opcache + migration guard 000030 — PAUSE before B.12*
 
 ---
 
@@ -118,7 +118,27 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 
 **Verification:** `.arenarules` R36/R11 additive + Pillars 8 + B1a B.3 hierarchy re-verified, audit-first 18 findings fixed, zero-regression.
 
-**Next:** B.11 Docker & Edge — awaiting prompt
+**Next:** B.12 Scheduling & Self-Healing — awaiting prompt
+
+---
+
+## 22. PHASE 5.0 B.11 — DOCKER ARCHITECTURE & NETWORK ISOLATION [DONE 2026-09-16 — Audit-Hardened Production-Grade]
+
+> **Directive:** PROMPT B.11 — معمارية الحاويات وعزل الشبكة (Docker Compose Architecture) — Pre-Execution Audit 20 flaws (B11-01→B11-20) → hardening F-01→F-16 integrated before commit.
+
+**Deliverable:** `docs/PHASE5_B11_DOCKER.md` (v5.0-B.11 harden audit 9 sections) + Docker Stack — R1→R38 + 5 Apps/13 Agents/9 Modules, zero-regression, DDD ≤150L, additive only:
+
+- **§1 Compose F-01/F-10/F-12/F-14:** `docker-compose.prod.yml` PATCHED — 13 services `app (AU BUSINESS hub) + web (nginx alias, spec web, only 80/443 public, 8080 via web proxy) + mysql (alias db) + pgsql PostGIS + redis noeviction 512mb DB 0/1/2 + reverb $BROADCAST_PORT + worker 3 graceful 40s + n8n sandbox + agent_sandboxes via docker-socket-proxy + vllm_gpu backend+gpu dual + chrony NTP + docker-socket-proxy least-priv + fail2ban front`. Networks `front bridge (Swarm overlay comment) / backend internal / sandbox internal / gpu internal`. Healthchecks `php artisan about / fsockopen BROADCAST_PORT / redis-cli ping / chronyc`.
+
+- **§2 Edge F-02/F-13:** `docker/nginx.prod.conf` NEW — `limit_req_zone 20r/s burst 40 nodelay 429` + `CF-Connecting-IP set_real_ip` 6 CIDRs + `map Upgrade` wss + `location /reverb/ proxy reverb BROADCAST_PORT` + `location /n8n/ proxy` + `worker_shutdown_timeout 30s`. `Dockerfile` NEW multistage `php:8.4-fpm-alpine Opcache JIT 256M/100M validate_timestamps 0` + `redis pecl + pdo_mysql/pgsql` + `HEALTHCHECK artisan about` + `Octane Swoole opt-in ARG OCTANE=0` (R31 YAGNI off). `docker/php/opcache.ini + fail2ban/jail.local` added.
+
+- **§3 Env F-03:** `.env.example` PATCHED — `REDIS_CACHE_DB=1 REDIS_QUEUE_DB=2 CALIBRATOR_HEALTH_THRESHOLD=90 LOCAL_GPU_ENDPOINT http://vllm_gpu:8000/v1 LOCAL_GPU_ALLOWLIST +vllm_gpu:8000/v1 CLOCK_SKEW_MARGIN=30` . `config/database.php` `redis cache/database env wired` + `config/ai.php` `endpoint vllm_gpu:8000/v1 + threshold + skew_margin`.
+
+- **§4 Time & Grace F-04/F-05/F-06/F-07/F-16:** `Services/Time/ClockInterface + SystemClock Cairo + FrozenClock` + `Providers/AppServiceProvider singleton ClockInterface` ; `Services/Queue/CheckpointTrait` `checkpoint_json+checkpoint_at` ; `Services/Broadcast/ReverbBuffer` `TTL+skew 86400+30 + processed 3600+30` ; `Services/Agents/BudgetGuard/CircuitBreaker` `TTL+skew 90000+30 / 300+30 Lua EXPIRE arg` . `chrony cturra/ntp SYS_TIME backend`. `migration 000030_b11_docker_checkpoint additive checkpoint_json JSON + checkpoint_at` guard.
+
+**Verification:** `.arenarules` R6 ZeroTrust/R11 additive/R17 env/R27 SoC/R31 YAGNI + Pillars 8+10 + B1a B.3 hierarchy re-verified, 20 findings fixed, zero-regression.
+
+**Next:** B.12 Scheduling & Self-Healing — awaiting prompt
 
 ---
 
