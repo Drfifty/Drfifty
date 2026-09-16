@@ -23,15 +23,15 @@ export interface MultiTenantSwitcherProps {
 
 export default function MultiTenantSwitcher({ className, onSwitch }: MultiTenantSwitcherProps) {
   const { props } = usePage<SharedPageProps>();
-  const current: TenantOption = (props.app_id as TenantOption) ?? "MASTER_HQ";
+  const current: TenantOption = (props.tenant?.app_id as TenantOption) ?? (props.app_id as TenantOption) ?? "MASTER_HQ";
   const isMaster = current === "MASTER_HQ" || props.tenant?.app_id === undefined;
 
   const switchTo = (next: TenantOption): void => {
     if (next === current) return;
     onSwitch?.(next);
-    // حافة مسار موحّد — الخادم يضبط app_id عبر HandleInertiaRequests
+    // FIX-P1-03: canonical X-App-Id contract — POST /api/v1/tenant/switch + header (R12) preserves 422/503 handling
     if (next === "MASTER_HQ") router.visit("/admin", { preserveState: false });
-    else router.visit(`/switch?app_id=${encodeURIComponent(next)}`, { preserveState: false });
+    else router.post("/api/v1/tenant/switch", { app_id: next }, { headers: { "X-App-Id": next } as unknown as Record<string,string>, preserveScroll: false, onError: () => {}, onSuccess: () => {} } as unknown as Record<string, unknown>);
   };
 
   return (

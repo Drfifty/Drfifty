@@ -48,14 +48,20 @@ api.interceptors.response.use(
         return api(original);
       } catch (e) {
         processQueue(e, null);
-        // refresh expired/reuse — redirect once, clear token
+        // FIX-P1-05: Inertia redirect preserves flash, handles 503 DRM
         setAccessToken(null);
-        if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) window.location.href = '/login';
+        if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+          const status = (e as AxiosError)?.response?.status;
+          if (status === 503) { /* DRM quarantine — toast handled by caller */ }
+          try { const { router } = await import('@inertiajs/react'); router.visit('/login?expired=1', { replace: true }); } catch { window.location.href = '/login?expired=1'; }
+        }
         return Promise.reject(e);
       } finally {
         isRefreshing = false;
       }
     }
+    // FIX-P1-05: surface 503 drm quarantine passthrough
+    if (error.response?.status === 503) return Promise.reject(error);
     return Promise.reject(error);
   }
 );
