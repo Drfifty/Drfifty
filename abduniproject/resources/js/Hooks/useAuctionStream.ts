@@ -1,6 +1,6 @@
-// خطاف بث المزاد — يفصل Reverb/المزايدة عن JSX
-// الصفحات تعرض bids وtimeLeft فقط — لا websocket داخل المكون
+// خطاف بث المزاد — FIX-P1-02: Reverb service TTL dedup — يفصل Reverb عن JSX
 import { useEffect, useState, useCallback } from "react";
+import { createReverbFromEnv } from "@/Services/Reverb";
 
 interface Bid {
   id: number;
@@ -11,8 +11,10 @@ interface Bid {
 
 interface UseAuctionStreamOptions {
   auctionId: number;
-  channel?: string; // presence-auction.{id}
-  endsAt?: string; // ISO
+  channel?: string;
+  endsAt?: string;
+  token?: string; // FIX-P1-02 bearer for reconnect
+  appId?: string;
 }
 
 interface UseAuctionStreamReturn {
@@ -23,8 +25,8 @@ interface UseAuctionStreamReturn {
   isPlacing: boolean;
 }
 
-export function useAuctionStream({ auctionId, channel, endsAt }: UseAuctionStreamOptions): UseAuctionStreamReturn {
-  void auctionId; // FIX-P1-14 noUnusedParameters
+export function useAuctionStream({ auctionId, channel, endsAt, token, appId }: UseAuctionStreamOptions): UseAuctionStreamReturn {
+  void auctionId; // FIX-P1-14
   const [bids, setBids] = useState<Bid[]>([
     { id: 1, amount: 12400, bidderMasked: "Ah***12", at: new Date().toISOString() },
     { id: 2, amount: 13100, bidderMasked: "Mo***08", at: new Date().toISOString() },
@@ -43,13 +45,14 @@ export function useAuctionStream({ auctionId, channel, endsAt }: UseAuctionStrea
     return () => window.clearTimeout(t);
   }, [timeLeftSec]);
 
-  // اشتراك بث — معزول
+  // اشتراك بث — FIX-P1-02 fallback Reverb service
   useEffect(() => {
     if (!channel || typeof window === "undefined") return;
-    // @ts-expect-error Echo
-    const echo = window.Echo;
+    let echo: unknown = null;
+    try { echo = (window as unknown as { Echo?: unknown }).Echo; } catch {}
+    if (!echo && token) { try { echo = createReverbFromEnv(token, appId); } catch {} }
     if (!echo) return;
-    const sub = echo.join(channel);
+    const sub = (echo as { join:(c:string)=>{listen:(e:string,cb:(arg:{bid:Bid})=>void)=>unknown} }).join(channel);
     sub.listen("BidPlaced", (e: { bid: Bid }) => setBids((prev) => [e.bid, ...prev].slice(0, 50)));
     return () => {
       try {
@@ -58,7 +61,7 @@ export function useAuctionStream({ auctionId, channel, endsAt }: UseAuctionStrea
         // تنظيف
       }
     };
-  }, [channel]);
+  }, [channel, token, appId]);
 
   const placeBid = useCallback(async (amount: number) => {
     setIsPlacing(true);

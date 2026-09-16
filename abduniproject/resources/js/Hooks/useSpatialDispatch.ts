@@ -1,6 +1,6 @@
-// خطاف الإرسال المكاني — يفصل websocket/خريطة/إعادة التعيين عن JSX
-// يعزل ST_Distance_Sphere + Reverb عن العرض — الصفحات تستهلك حالة فقط
+// خطاف الإرسال المكاني — FIX-P1-02: Reverb service + channel X-App-Id — يفصل websocket/خريطة عن JSX
 import { useEffect, useState, useCallback } from "react";
+import { createReverbFromEnv } from "@/Services/Reverb";
 
 type Provider = { id: number; lat: number; lng: number; rating?: number; accent?: "cyan" | "emerald" | "amber" };
 type OrderStatus = "pending" | "accepted" | "reassigned" | "cancelled" | "completed";
@@ -10,8 +10,9 @@ interface UseSpatialDispatchOptions {
   customerLat: number;
   customerLng: number;
   radiusKm?: number;
-  // قناة Reverb — يمرّر الاسم فقط، المنطق هنا لا في الصفحة
   channel?: string; // presence-dispatch.{orderId}
+  token?: string; // FIX-P1-02 optional bearer for X-App-Id reconnect
+  appId?: string;
 }
 
 interface UseSpatialDispatchReturn {
@@ -39,6 +40,8 @@ export function useSpatialDispatch({
   customerLng,
   radiusKm = 5,
   channel,
+  token,
+  appId,
 }: UseSpatialDispatchOptions): UseSpatialDispatchReturn {
   void orderId; // FIX-P1-14 channel binding reserved
   const [providers] = useState<Provider[]>([
@@ -61,13 +64,14 @@ export function useSpatialDispatch({
     return () => window.clearTimeout(t);
   }, [status, countdownSec]);
 
-  // اشتراك Reverb — معزول عن JSX
+  // اشتراك Reverb — FIX-P1-02 injected Echo singleton + fallback createReverbFromEnv (8080)
   useEffect(() => {
     if (!channel || typeof window === "undefined") return;
-    // @ts-expect-error — Echo محقون عالمياً إن وجد
-    const echo = window.Echo;
+    let echo: unknown = null;
+    try { echo = (window as unknown as { Echo?: unknown }).Echo; } catch {}
+    if (!echo && token) { try { echo = createReverbFromEnv(token, appId); } catch {} }
     if (!echo) return;
-    const sub = echo.join(channel);
+    const sub = (echo as { join: (c:string)=>{ listen:(e:string,cb:()=>void)=>unknown } }).join(channel);
     sub.listen("ProviderAccepted", () => setStatus("accepted"));
     return () => {
       try {
@@ -76,7 +80,7 @@ export function useSpatialDispatch({
         // تجاهل عند التنظيف
       }
     };
-  }, [channel]);
+  }, [channel, token, appId]);
 
   const reassign = useCallback(() => {
     setStatus("reassigned");
