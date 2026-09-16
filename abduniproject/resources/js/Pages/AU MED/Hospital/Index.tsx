@@ -1,5 +1,5 @@
 // AU MED — Virtual Hospital Landing & Departments — app_id="AU MED" ENFORCED
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import AppLayout from "@/Layouts/AppLayout";
 import Button from "@/Components/UI/Button";
