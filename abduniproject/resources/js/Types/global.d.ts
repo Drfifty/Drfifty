@@ -37,11 +37,13 @@ export interface FlashMessages {
   info?: string;
 }
 
-// حمولة الصفحة المشتركة — تُحقن من HandleInertiaRequests — مع فهرس للتوافق مع Inertia PageProps
+// حمولة الصفحة المشتركة — FIX-P1-04: tenant single source — top-level aliases deprecated, use tenant.* (R25)
+// SharedPageProps canonical: tenant:TenantContext is source of truth — app_id/dir/locale/permissions are derived aliases
 export interface SharedPageProps extends Record<string, unknown> {
   auth: { user: AuthUser | null };
   tenant: TenantContext;
   flash: FlashMessages;
+  // @deprecated — use tenant.app_id — kept for compat with HandleInertiaRequests share
   app_id: AppId;
   locale: Locale;
   dir: Dir;

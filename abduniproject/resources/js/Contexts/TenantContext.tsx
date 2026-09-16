@@ -10,7 +10,18 @@ const Ctx = createContext<TenantContext | null>(null);
 
 export function TenantProvider({ children }: PropsWithChildren) {
   const { props } = usePage<SharedPageProps>();
-  return <Ctx.Provider value={props.tenant}>{children}</Ctx.Provider>;
+  // FIX-P1-04: hydrate tenant from props.tenant or fallback to top-level aliases (compat)
+  const tenant: TenantContext = props.tenant ?? {
+    app_id: props.app_id as TenantContext['app_id'],
+    available_apps: (props as unknown as { available_apps?: TenantContext['available_apps'] }).available_apps ?? [],
+    dir: (props.dir as Dir) ?? 'rtl',
+    locale: (props.locale as Locale) ?? 'ar',
+    locale_digits: 'latin',
+    permissions: props.permissions ?? [],
+    feature_flags: (props as unknown as { feature_flags?: Record<string,boolean> }).feature_flags ?? {},
+    experiment_cohorts: {},
+  };
+  return <Ctx.Provider value={tenant}>{children}</Ctx.Provider>;
 }
 
 export function useTenant(): TenantContext {
@@ -19,9 +30,15 @@ export function useTenant(): TenantContext {
   return ctx;
 }
 
-// حارس DOM — يحذف من DOM إن غابت الصلاحية (Rule 36)
+// FIX-P1-04: safe Can — returns null without throwing if outside provider (hydration race)
+export function useTenantSafe(): TenantContext | null {
+  try { return useContext(Ctx); } catch { return null; }
+}
+
+// حارس DOM — يحذف من DOM إن غابت الصلاحية (Rule 36) — FIX-P1-04 safe when no provider
 export function Can({ permission, children }: PropsWithChildren<{ permission: string }>) {
-  const { permissions } = useTenant();
-  if (!permissions.includes(permission)) return null;
+  const tenant = useTenantSafe();
+  if (!tenant) return null;
+  if (!tenant.permissions.includes(permission)) return null;
   return <>{children}</>;
 }
