@@ -1,6 +1,6 @@
 # PROJECT_STATE.md — ABD UNI PROJECT (abduniproject)
 
-> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-15 — PHASE 4.0 PART 3 MASTER HQ & AI GOVERNANCE LOCKED (Arena) — v4.3 — 71 Points + Phase 2 PRISTINE + 3.0/3.1 HQ + 3.2 B2B Locked + 3.3 Vault Locked + 3.4 Marketplace Locked + 3.5 Wealth Locked + 3.6 Field Services + 4.0 Foundations + 4.2 Sandbox + 4.3 HQ (CSuite/Financial/Security) Locked
+> **Anti-Amnesia State File** — Mandatory per Rule 20 & 25. Read FIRST at session start. Updated: 2026-09-16 — PHASE 5.0 B.1 CORE ARCHITECTURE & AU LITE + DATA LEAK — Arena — v5.0-B.1 — DDD Clean 9 Domains + Redis 503 + Regex 422 + 4.3 HQ Locked
 
 ## 0. Canonical Identity (Immutable)
 - **project_folder:** `abduniproject` — fixed, never changes — local approved: `D:\Project\Projects\abduniproject`
@@ -8,7 +8,7 @@
 - **Architecture:** Modular Monolith (`app/Modules/`) + DDD + Clean Architecture
 - **Branch:** `arena/01a09d54-drfifty` branched from `beb9215420a05210260296e488c0fee240887847` (main)
 - **.arenarules:** v2.2 UNIFIED — 38 Rules, 11 Pillars, 13 Agents, 9 Modules — loaded
-- **State Version:** v4.3 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV Field Services Platform (4 Domains + Dispatch + Tutoring) + Visual Preview Delivered + Unified Design System v3.9 Locked + PHASE 4.0 Foundations v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 (CSuite/Financial/Security) Locked (Arena)**
+- **State Version:** v5.0-B.1 — **Phase 1 LOCK 71 Points + Phase 2 PRISTINE v3.1 + PHASE 3.0 v3.2 + PHASE 3.1 v3.3 + PHASE 3.2 B2B v3.4 CLEAN + PHASE 3.3 B2C v3.5 CLEAN + PHASE 3.4 B2C v3.6 CLEAN + PHASE 3.5 B2B2C v3.7 CLEAN + PHASE 3.6 AU SERV v3.8 + Unified Design System v3.9 + PHASE 4.0 v4.0 + Part 2 Atomic v4.1 + Dev Sandbox v4.2 + Part 3 HQ v4.3 + PHASE 5.0 B.1 Core Architecture (DDD 9 Domains + AU Lite Redis 503 + Regex 422) Locked (Arena)**
 
 ## 1. What Was Built
 - [x] **Phase 0 Harmonized:** Scaffold `abduniproject/` Modular Monolith (6 modules × layered `Controllers/{Admin,User,Public}/Models/Actions/Services/Requests/Enums`), Shared kernel, dual DB configs, Reverb 8080 exclusive, Tailwind v4 RTL-first (Cairo/Tajawal+Inter)
@@ -82,9 +82,9 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 - **HQ 54-59 + Suggestion Seeds:** Non-hibernatable core, global free overrides, 7d DRM quarantine 503, 80% budget → local 0-cost, 15-char rationale, 90d hot → S3 — plus **app_settings_schema seed** (p2p_quota=2, commission 5%, etc.)
 
 ## 7. Current Context & Next
-- **Phase:** 4 FRONTEND MASTER ARCHITECTURE — **4.3 PART 3 MASTER HQ & AI GOVERNANCE LOCKED v4.3** (Arena — React 19/Inertia v2 TS Strict + 10 Suites + 13 Agents — Obsidian)
-- **Deliverable now:** `[PHASE 4.0 PART 3 HQ]` delivered — MasterAdminLayout/Header/Sidebar + CSuiteHQ (70/30) + FinancialVault (Split-Ledger/Gateway) + SecurityVault (DNA/Dead-Man/Poison) + admin.d.ts strict — **PAUSE — Summarized before next Part** (see `resources/js/Pages/Admin/{MasterAdminLayout,MasterAdminHeader,MasterSidebar,CSuiteHQ,FinancialVault,SecurityVault}.tsx` + `Types/admin.d.ts`)
-- **Next:** PAUSED — Part 3 HQ summarized — Next: AU BUSINESS / AU MED per workflow — awaiting prompt
+- **Phase:** 5 FULL BACKEND ARCHITECTURE — **B.1 CORE ARCHITECTURE, DDD & AU LITE LOCKED v5.0-B.1** (Arena — Laravel 12 PHP 8.4 Modular Monolith + DDD Clean 9 Domains + Redis + Regex)
+- **Deliverable now:** `[PHASE 5.0 B.1]` delivered — `docs/PHASE5_B1_CORE_ARCHITECTURE.md` (546 lines, DDD tree §1 + AU Lite feature_flags Redis 503 §2 + DataLeak Detector 422 §3 + Infrastructure §4 + 6 Micro-Sprints B.1.1-B.1.6 + Calibrator 100% gate) — **PAUSE before B.2** (spec mode only, no mock code)
+- **Next:** PAUSED — B.1 spec locked — Awaiting B.2 Financial Engine & Escrow Subsystem prompt (B.1 implementation via B.1.1-B.1.6 sprints on next prompt)
 
 ## 8. Risks Mitigated
 - Contact leak: Zero preview + post-escrow targeted disclosure only → eliminates scraping
@@ -96,7 +96,27 @@ Deterministic-First → Fallback <90% → Tri-Hybrid → CheckModuleStatus → R
 ---
 **ملخص عربي:** تم تثبيت 71 نقطة نهائية (59 + 6 مقترحات + 6 تحديثات جوهرية النفط) — اكتمال 100% للتحليل، جاهز للتنفيذ المجهري بدون افتراضات.
 
-*Last updated: 2026-09-15 — Rule 20 — Arena — PHASE 4.0 PART 3 HQ v4.3 — MasterAdminLayout/Header/Sidebar + CSuite/Financial/Security + admin.d.ts — PAUSE before next Part*
+*Last updated: 2026-09-16 — Rule 20 — Arena — PHASE 5.0 B.1 Core Architecture & AU Lite + Data Leak — docs/PHASE5_B1_CORE_ARCHITECTURE.md — DDD 9 Domains + Redis 503 + Regex 422 + Calibrator 100% — PAUSE before B.2*
+
+---
+
+## 11. PHASE 5.0 B.1 — CORE ARCHITECTURE, DDD & AU LITE [DONE 2026-09-16 — Spec Mode Only]
+
+> **Directive:** Full Backend Specification Mode — B.1 delivers core Clean Architecture/DDD, AU Lite dynamic hibernation, and programmatic data-leak blocker as consolidated spec for Cursor AI — no mock placeholders.
+
+**Deliverable:** `docs/PHASE5_B1_CORE_ARCHITECTURE.md` (33KB, 546 lines) — strict spec only:
+
+- **§1 DDD Tree:** Absolute layout `app/Domain/{Auth,Wallet,Escrow,Deals,Serve,Invest,Med,Workforce,Calibrator,Governance}` + `app/Services/{Rules,Security,Agents,Calibrator}` + `app/Infrastructure/{Persistence/Eloquent, Cache/Redis, Broadcasting/Reverb, Http/Clients}` + `app/Http/{Controllers/Admin|User|Public, Requests, Resources, Middleware}` — PSR-4 namespaces + Rule 27/30 SRP ultra-thin controllers
+- **§2 AU Lite Engine:** `feature_flags` DDL MySQL 8.4 InnoDB utf8mb4 — canonical `flag_key/flag_name/is_enabled/is_core/rollout/allowed_user_ids JSON` + B.1 aliases via `GENERATED ALWAYS AS` (`module_key=is flag_key`, `is_active=is is_enabled`, `degraded_mode`, `updated_by`) + 6 CHECKs (`chk_flag_key_enum`, `chk_flag_rollout`, `chk_flag_json_valid`, `chk_core_always_enabled`) — seed 5 + RedisFeatureFlagCache TTL 30s + `AULiteModuleGuard` — Redis hit → 503 without DB, miss → single query, `503 Module Temporarily Hibernated` JSON vs Inertia abort, `degraded_mode` attribute
+- **§3 Data Leak Blocker:** `data_leak_patterns` DDL (`id, regex_pattern, action BLOCK|REDACT|WARN, is_active, is_strict_post_escrow_only, created_at`) seed 8 (EG 010, intl +, email, url, wa.me, t.me, @handle, obfuscated) — `RegexDataLeakDetectorInterface` + `RedisRegexDataLeakDetector` cached 60s — `SanitizeDataLeaks` global middleware: chat → REDACT + X-Leak-Sanitized, non-chat BLOCK → `422 Unprocessable Content` with leaks[], AU Lite frozen → `503` strict separation — Oil 1 timing honored
+- **§4 Infrastructure & HTTP:** Redis keys, Reverb broadcast on toggle, ultra-thin controller example
+- **§5 Micro-Sprints B.1.1-B.1.6:** 1-3 files/≤150 LOC per sprint — Migrations → Enums/Contracts → Cache → Services → Middleware → Wiring/Verification — explicit file paths + `php artisan migrate` + curl 503/422 verification gates
+- **§6 Calibrator Gate:** 6 domains 100% (Memory 13/9/5 + Architecture DDD + Security 503/422 + Precision JSON/minor + Craftsmanship Enums/strict + Operational Reverb/Redis) — BLOCKED if <100%
+- **§7 Arabic Summary:** ملخص عربي كامل
+
+**Verification:** `.arenarules` R1-38 + 11 Pillars + 13 Agents lock cross-checked, dual-DB (MySQL core + PG AU MED only), Reverb 8080 exclusive, space-form `AU MED/DEALS/SERV/INVEST`, `abduniproject` folder — no Pusher/Socket.io, no JSONB in MySQL
+
+**Next:** B.2 Financial Engine & Escrow Subsystem — awaiting prompt
 
 
 ---
