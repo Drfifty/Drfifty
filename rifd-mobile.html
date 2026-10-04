@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#103c3b" />
+    <meta name="description" content="نموذج محلي لإدارة الطلبات التنفيذية ومصفوفة الأولويات في المستشفى." />
+    <title>رِفد | إدارة المستشفى</title>
+    <style>
+:root {
+  color-scheme: light;
+  --ink: #20363a;
+  --ink-soft: #52676a;
+  --muted: #788a8b;
+  --line: #e4ebe8;
+  --paper: #ffffff;
+  --canvas: #f4f7f5;
+  --teal-950: #103c3b;
+  --teal-900: #164a47;
+  --teal-800: #1c625b;
+  --teal-700: #28796e;
+  --teal-100: #e3f3ed;
+  --teal-50: #f1f8f5;
+  --coral-700: #ba5141;
+  --coral-100: #fff0eb;
+  --amber-700: #a76a1d;
+  --amber-100: #fff5df;
+  --blue-700: #456fa0;
+  --blue-100: #edf4fc;
+  --slate-100: #edf1ef;
+  --shadow: 0 14px 45px rgba(24, 55, 51, 0.08);
+  --shadow-soft: 0 4px 18px rgba(24, 55, 51, 0.055);
+  --radius-xl: 20px;
+  --radius-lg: 15px;
+  --radius-md: 11px;
+  --sidebar-width: 258px;
+  font-family: Tahoma, Arial, "Noto Sans Arabic", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; min-height: 100%; background: var(--canvas); }
+body { margin: 0; min-width: 320px; min-height: 100vh; color: var(--ink); background: var(--canvas); }
+button, input, select, textarea { font: inherit; }
+button, select { cursor: pointer; }
+button { color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 3px solid rgba(48, 139, 124, .28);
+  outline-offset: 2px;
+}
+button:disabled { cursor: not-allowed; opacity: .55; }
+svg { display: block; }
+
+.app-shell { min-height: 100vh; display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); direction: rtl; }
+.sidebar {
+  position: sticky; top: 0; height: 100vh; min-height: 620px; z-index: 20;
+  display: flex; flex-direction: column; padding: 26px 17px 18px;
+  color: #eef7f4; background: var(--teal-950);
+  background-image: radial-gradient(ellipse at 100% 0%, rgba(83, 154, 132, .18), transparent 48%);
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 9px 27px; }
+.brand-mark { width: 42px; height: 42px; flex: 0 0 42px; display: grid; place-items: center; border-radius: 14px; color: var(--teal-950); background: #e7f6ee; box-shadow: 0 5px 16px rgba(0,0,0,.12); }
+.brand-mark svg { width: 24px; height: 24px; }
+.brand-copy strong { display: block; font-size: 20px; line-height: 1.2; letter-spacing: -.5px; }
+.brand-copy span { display: block; margin-top: 5px; font-size: 11px; color: #afcbc1; letter-spacing: .1px; }
+.sidebar-label { margin: 2px 11px 9px; color: #83a89d; font-size: 10px; font-weight: 700; letter-spacing: .9px; }
+.nav-list { display: grid; gap: 5px; }
+.nav-item { width: 100%; min-height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 12px; border: 0; border-radius: 10px; background: transparent; color: #c5d9d2; text-align: right; font-size: 13px; transition: .16s ease; }
+.nav-item:hover { background: rgba(255,255,255,.075); color: #fff; }
+.nav-item.active { color: #fff; background: rgba(201, 238, 220, .15); box-shadow: inset -3px 0 #91d9b5; }
+.nav-item .nav-icon { width: 19px; height: 19px; opacity: .91; }
+.nav-item .nav-count { margin-right: auto; min-width: 21px; height: 20px; display: grid; place-items: center; padding: 0 5px; border-radius: 7px; background: rgba(236, 249, 242, .14); color: #fff; font-size: 10px; }
+.sidebar-spacer { flex: 1; }
+.sidebar-card { padding: 14px; border: 1px solid rgba(218, 245, 231, .13); border-radius: 14px; background: rgba(255,255,255,.055); }
+.sidebar-card-title { display: flex; align-items: center; gap: 8px; color: #e5f3ec; font-size: 11px; font-weight: 700; }
+.pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #78dfaa; box-shadow: 0 0 0 4px rgba(120,223,170,.13); }
+.sidebar-card p { margin: 8px 0 0; color: #a9c3ba; font-size: 10px; line-height: 1.8; }
+.sidebar-foot { display: flex; align-items: center; justify-content: space-between; padding: 16px 7px 0; color: #88a99f; font-size: 10px; }
+.sidebar-foot strong { color: #c9ddd5; font-size: 10px; }
+.menu-backdrop { display: none; }
+
+.main { min-width: 0; }
+.topbar { min-height: 76px; padding: 0 clamp(20px, 3vw, 43px); display: flex; align-items: center; justify-content: space-between; gap: 18px; border-bottom: 1px solid #e9efec; background: rgba(255,255,255,.82); }
+.topbar-start, .topbar-end { min-width: 0; display: flex; align-items: center; gap: 15px; }
+.topbar-title { min-width: 0; }
+.topbar-title strong { display: block; max-width: 45vw; overflow: hidden; color: var(--ink); font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.topbar-title span { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+.local-indicator { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; color: #4e7467; font-size: 10px; }
+.local-indicator .pulse-dot { width: 7px; height: 7px; box-shadow: none; }
+.topbar-divider { width: 1px; height: 31px; background: var(--line); }
+.role-select-wrap { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 10px; }
+.role-select-wrap select { max-width: 175px; padding: 8px 26px 8px 10px; border: 1px solid var(--line); border-radius: 9px; color: #37504e; background: #fff; font-size: 11px; }
+.avatar { width: 37px; height: 37px; flex: 0 0 37px; display: grid; place-items: center; border-radius: 12px; color: #216256; background: #e0f1e9; font-size: 12px; font-weight: 700; }
+.user-name { min-width: 0; }
+.user-name strong { display: block; max-width: 135px; overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.user-name span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+.icon-button { width: 37px; height: 37px; flex: 0 0 37px; position: relative; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 11px; color: #627574; background: #fff; transition: .15s ease; }
+.icon-button:hover { color: var(--teal-800); border-color: #bddbd0; background: var(--teal-50); }
+.icon-button svg { width: 18px; height: 18px; }
+.icon-button .notice-dot { width: 7px; height: 7px; position: absolute; top: 8px; left: 8px; border: 1.5px solid #fff; border-radius: 50%; background: #e36c55; }
+.mobile-menu { display: none; }
+
+.page-content { width: min(100%, 1550px); margin: 0 auto; padding: 29px clamp(20px, 3vw, 43px) 44px; }
+.page-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+.page-heading h1 { margin: 0; font-size: clamp(22px, 2vw, 28px); line-height: 1.35; letter-spacing: -.7px; }
+.page-heading p { margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.heading-actions { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.btn { min-height: 39px; padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 10px; font-size: 11px; font-weight: 700; transition: .16s ease; }
+.btn svg { width: 16px; height: 16px; }
+.btn-primary { color: #fff; background: var(--teal-800); box-shadow: 0 4px 11px rgba(28,98,91,.15); }
+.btn-primary:hover { background: var(--teal-900); transform: translateY(-1px); }
+.btn-secondary { color: #45615d; border-color: var(--line); background: #fff; }
+.btn-secondary:hover { color: var(--teal-800); border-color: #bcdacf; background: var(--teal-50); }
+.btn-quiet { color: var(--teal-800); background: transparent; }
+.btn-quiet:hover { background: var(--teal-50); }
+.btn-danger { color: #fff; background: #bf5949; }
+.btn-danger:hover { background: #a94335; }
+.btn-small { min-height: 31px; padding: 0 10px; border-radius: 8px; font-size: 10px; }
+.btn-block { width: 100%; }
+
+.demo-note { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 19px; padding: 11px 13px; border: 1px solid #d9e9e2; border-radius: 11px; color: #54716a; background: #f0f7f3; font-size: 10px; line-height: 1.8; }
+.demo-note svg { width: 17px; height: 17px; flex: 0 0 17px; margin-top: 1px; color: #428170; }
+.demo-note strong { color: #315d50; }
+.busy-banner { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 19px; padding: 13px 16px; border: 1px solid #f0dfb9; border-radius: 13px; background: #fff8e9; }
+.busy-banner-copy { display: flex; align-items: center; gap: 12px; }
+.busy-icon { width: 35px; height: 35px; display: grid; place-items: center; flex: 0 0 35px; border-radius: 11px; color: #9b681b; background: #ffedc9; }
+.busy-icon svg { width: 18px; height: 18px; }
+.busy-banner strong { display: block; color: #815717; font-size: 11px; }
+.busy-banner span { display: block; margin-top: 4px; color: #a07e46; font-size: 10px; }
+.busy-banner .btn { min-height: 32px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; margin-bottom: 19px; }
+.stat-card { min-width: 0; min-height: 112px; padding: 16px 17px 13px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; border: 1px solid #e8eeeb; border-radius: 15px; background: var(--paper); box-shadow: 0 2px 8px rgba(27,60,54,.025); }
+.stat-label { color: var(--muted); font-size: 10px; }
+.stat-value { margin-top: 9px; color: #203d3c; font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -.7px; }
+.stat-foot { margin-top: 9px; color: #94a19d; font-size: 9px; }
+.stat-foot .up { color: #32816c; font-weight: 700; }
+.stat-icon { width: 35px; height: 35px; flex: 0 0 35px; display: grid; place-items: center; border-radius: 11px; color: #478071; background: #ecf6f0; }
+.stat-icon svg { width: 18px; height: 18px; }
+.stat-card.urgent .stat-icon { color: #bf5a48; background: var(--coral-100); }
+.stat-card.waiting .stat-icon { color: #b47c2c; background: var(--amber-100); }
+.stat-card.deputy .stat-icon { color: #4d77a0; background: var(--blue-100); }
+
+.panel { min-width: 0; border: 1px solid #e7eeeb; border-radius: var(--radius-xl); background: var(--paper); box-shadow: 0 2px 9px rgba(25,61,54,.025); }
+.panel-head { min-height: 61px; padding: 0 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #edf1ef; }
+.panel-title { min-width: 0; display: flex; align-items: center; gap: 9px; }
+.panel-title h2, .panel-title h3 { margin: 0; color: #304846; font-size: 13px; }
+.panel-title p { margin: 4px 0 0; color: #92a09c; font-size: 9px; }
+.panel-title .title-icon { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 9px; color: #468070; background: #edf6f1; }
+.panel-title .title-icon svg { width: 15px; height: 15px; }
+.link-button { padding: 6px; display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 7px; color: #398071; background: transparent; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.link-button:hover { background: var(--teal-50); }
+.link-button svg { width: 14px; height: 14px; }
+
+.dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(265px, .86fr); align-items: start; gap: 16px; }
+.dashboard-main-column, .dashboard-side-column { min-width: 0; display: grid; align-content: start; gap: 16px; }
+.matrix-preview { padding: 16px; }
+.matrix-axis { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 11px; color: #8a9995; font-size: 9px; }
+.matrix-axis .axis-label { display: inline-flex; align-items: center; gap: 5px; }
+.axis-arrow { color: #a3b1ac; font-size: 12px; }
+.matrix-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.quadrant { min-width: 0; min-height: 198px; padding: 13px; border: 1px solid; border-radius: 14px; overflow: hidden; }
+.quadrant.q1 { color: #8e453b; border-color: #f2d6cf; background: #fff8f6; }
+.quadrant.q2 { color: #3a7161; border-color: #d6e9df; background: #f6fbf8; }
+.quadrant.q3 { color: #926627; border-color: #f0e1bd; background: #fffbf2; }
+.quadrant.q4 { color: #687875; border-color: #e0e7e4; background: #fafcfb; }
+.quadrant-head { display: flex; align-items: center; justify-content: space-between; gap: 7px; margin-bottom: 11px; }
+.quadrant-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.quadrant-mark { width: 27px; height: 27px; flex: 0 0 27px; display: grid; place-items: center; border-radius: 9px; background: rgba(255,255,255,.82); font-size: 11px; font-weight: 700; }
+.quadrant-title strong { display: block; color: inherit; font-size: 11px; }
+.quadrant-title span { display: block; margin-top: 3px; opacity: .76; font-size: 9px; }
+.quadrant-count { padding: 4px 7px; border-radius: 7px; color: inherit; background: rgba(255,255,255,.75); font-size: 9px; font-weight: 700; white-space: nowrap; }
+.task-list { display: grid; gap: 7px; }
+.task-row { min-width: 0; padding: 9px 9px 8px; border: 1px solid rgba(71,93,82,.09); border-radius: 10px; background: rgba(255,255,255,.86); text-align: right; transition: .15s ease; cursor: pointer; }
+.task-row:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(39,73,60,.07); }
+.task-row strong { display: block; overflow: hidden; color: #344c49; font-size: 10px; font-weight: 700; line-height: 1.6; text-overflow: ellipsis; white-space: nowrap; }
+.task-row-meta { margin-top: 5px; display: flex; align-items: center; justify-content: space-between; gap: 7px; color: #94a19d; font-size: 8px; }
+.task-row-meta span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task-actions { display: flex; align-items: center; justify-content: flex-end; margin-top: 3px; }
+.task-actions button { min-height: 23px; padding: 0 6px; border: 0; border-radius: 6px; color: #6f8980; background: transparent; font-size: 8px; }
+.task-actions button:hover { color: var(--teal-800); background: var(--teal-50); }
+.empty-in-quadrant { padding: 12px 5px; color: #a2aeaa; font-size: 9px; text-align: center; }
+
+.briefing-card { overflow: hidden; }
+.briefing-date { margin: 14px 17px 0; color: #8a9a95; font-size: 9px; }
+.briefing-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 13px 16px 15px; }
+.brief-kpi { padding: 11px; border-radius: 11px; background: #f6f9f7; }
+.brief-kpi span { display: block; color: #899a95; font-size: 9px; }
+.brief-kpi strong { display: block; margin-top: 6px; color: #38534e; font-size: 19px; }
+.brief-kpi.critical strong { color: #bd5545; }
+.briefing-progress { padding: 0 17px 16px; }
+.progress-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; color: #7e908a; font-size: 9px; }
+.progress-label strong { color: #43816f; }
+.progress-track { height: 6px; overflow: hidden; border-radius: 8px; background: #eaf0ec; }
+.progress-fill { width: 71%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #53a384, #2d786c); }
+.priority-feed { padding: 4px 16px 12px; }
+.priority-item { display: flex; align-items: flex-start; gap: 9px; padding: 11px 0; border-top: 1px solid #eef2f0; }
+.priority-item:first-child { border-top: 0; }
+.priority-dot { width: 7px; height: 7px; flex: 0 0 7px; margin-top: 5px; border-radius: 50%; background: #dd7866; }
+.priority-copy { min-width: 0; }
+.priority-copy strong { display: block; overflow: hidden; color: #4d605c; font-size: 9px; line-height: 1.6; text-overflow: ellipsis; white-space: nowrap; }
+.priority-copy span { display: block; margin-top: 3px; color: #9aa7a2; font-size: 8px; }
+.briefing-foot { display: flex; justify-content: space-between; padding: 13px 17px; border-top: 1px solid #edf1ef; color: #899a95; font-size: 9px; }
+.briefing-foot strong { color: #46796d; }
+.route-card { padding-bottom: 13px; }
+.route-list { padding: 5px 17px 0; }
+.route-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eef2f0; }
+.route-item:last-child { border-bottom: 0; }
+.route-person { min-width: 0; display: flex; align-items: center; gap: 9px; }
+.route-avatar { width: 30px; height: 30px; flex: 0 0 30px; display: grid; place-items: center; border-radius: 10px; color: #4b7c6f; background: #edf6f1; font-size: 9px; font-weight: 700; }
+.route-person strong { display: block; color: #4c615c; font-size: 9px; }
+.route-person span { display: block; margin-top: 3px; color: #99a5a1; font-size: 8px; }
+.route-number { color: #486a60; font-size: 13px; font-weight: 700; }
+.route-number small { display: block; margin-top: 3px; color: #9aa7a2; font-size: 8px; font-weight: 400; text-align: left; }
+
+.filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+.filter-search { width: min(100%, 300px); min-height: 39px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.filter-search svg { width: 16px; height: 16px; color: #8b9a96; flex: 0 0 16px; }
+.filter-search input { width: 100%; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 11px; }
+.filter-search input::placeholder { color: #a5b0ac; }
+.filter-select { min-height: 39px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; color: #59706a; background: #fff; font-size: 10px; }
+.table-wrap { overflow-x: auto; }
+.requests-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+.requests-table th { padding: 12px 16px; border-bottom: 1px solid #edf1ef; color: #8d9b97; background: #fbfcfb; font-size: 9px; font-weight: 700; text-align: right; white-space: nowrap; }
+.requests-table td { padding: 13px 16px; border-bottom: 1px solid #f0f3f1; color: #526560; font-size: 10px; vertical-align: middle; }
+.requests-table tr:last-child td { border-bottom: 0; }
+.requests-table tbody tr { transition: background .12s; }
+.requests-table tbody tr:hover { background: #f8fbf9; }
+.request-title-cell { display: flex; align-items: center; gap: 10px; min-width: 220px; }
+.request-type-icon { width: 31px; height: 31px; flex: 0 0 31px; display: grid; place-items: center; border-radius: 10px; color: #548174; background: #edf6f1; }
+.request-type-icon svg { width: 15px; height: 15px; }
+.request-title-cell strong { display: block; max-width: 300px; overflow: hidden; color: #334d48; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.request-title-cell span { display: block; margin-top: 4px; color: #a0aca8; font-size: 8px; }
+.pill { min-height: 23px; padding: 4px 8px; display: inline-flex; align-items: center; gap: 5px; border-radius: 7px; font-size: 8px; font-weight: 700; white-space: nowrap; }
+.pill::before { width: 5px; height: 5px; content: ""; border-radius: 50%; background: currentColor; }
+.pill-red { color: #b64f43; background: #fff0eb; }
+.pill-green { color: #3d816c; background: #eaf6ef; }
+.pill-amber { color: #a67529; background: #fff5df; }
+.pill-blue { color: #537aa2; background: #edf4fc; }
+.pill-gray { color: #778680; background: #eff3f1; }
+.status-text { color: #768782; font-size: 9px; white-space: nowrap; }
+.status-text::before { width: 6px; height: 6px; display: inline-block; margin-left: 6px; content: ""; border-radius: 50%; background: #aebcb7; }
+.status-text.status-new::before { background: #df765f; }
+.status-text.status-progress::before { background: #55927d; }
+.status-text.status-waiting::before { background: #d6a34f; }
+.status-text.status-done::before { background: #7d9690; }
+.row-menu { width: 29px; height: 29px; display: grid; place-items: center; border: 0; border-radius: 8px; color: #859590; background: transparent; }
+.row-menu:hover { color: var(--teal-800); background: #eff7f3; }
+.learning-label { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; color: #638e7d; font-size: 8px; }
+.learning-label svg { width: 12px; height: 12px; }
+
+.matrix-page-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+.matrix-page-grid .quadrant { min-height: 230px; padding: 16px; }
+.matrix-page-grid .task-row { padding: 12px; }
+.matrix-page-grid .task-row strong { white-space: normal; }
+.matrix-page-grid .task-row-meta { font-size: 9px; }
+.matrix-page-grid .task-actions button { font-size: 9px; }
+.learning-panel { margin-top: 16px; padding: 17px; display: flex; align-items: center; justify-content: space-between; gap: 18px; border: 1px solid #dcebe3; border-radius: 15px; background: #f2f8f4; }
+.learning-panel-copy { display: flex; align-items: flex-start; gap: 11px; }
+.learning-panel-icon { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border-radius: 11px; color: #418071; background: #deefe5; }
+.learning-panel-icon svg { width: 17px; height: 17px; }
+.learning-panel strong { display: block; color: #365a4f; font-size: 11px; }
+.learning-panel p { margin: 5px 0 0; color: #758e83; font-size: 9px; line-height: 1.75; }
+.learning-stat { min-width: 85px; color: #668479; text-align: center; }
+.learning-stat strong { display: block; color: #347968; font-size: 20px; }
+.learning-stat span { font-size: 8px; }
+
+.communication-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 15px; }
+.action-panel { min-height: 240px; padding-bottom: 17px; }
+.action-panel-body { padding: 16px 18px; }
+.action-description { margin: 0 0 14px; color: #7f918b; font-size: 10px; line-height: 1.8; }
+.action-big-icon { width: 37px; height: 37px; display: grid; place-items: center; border-radius: 12px; color: #a46a1e; background: #fff2d8; }
+.action-big-icon svg { width: 18px; height: 18px; }
+.action-big-icon.green { color: #46806e; background: #eaf5ef; }
+.action-big-icon.blue { color: #4d76a0; background: #edf4fb; }
+.action-big-icon.red { color: #b65647; background: #fff0eb; }
+.action-panel-head { display: flex; align-items: center; gap: 10px; padding: 17px 18px 0; }
+.action-panel-head strong { display: block; color: #405c55; font-size: 12px; }
+.action-panel-head span { display: block; margin-top: 4px; color: #94a39e; font-size: 9px; }
+.mini-form { display: grid; gap: 10px; }
+.field-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+.form-field { display: grid; gap: 6px; }
+.form-field label { color: #667b75; font-size: 9px; font-weight: 700; }
+.form-field input, .form-field select, .form-field textarea { width: 100%; min-height: 38px; padding: 9px 11px; border: 1px solid #e2eae6; border-radius: 9px; outline: 0; color: #39514b; background: #fff; font-size: 10px; }
+.form-field textarea { min-height: 78px; resize: vertical; line-height: 1.7; }
+.form-field input::placeholder, .form-field textarea::placeholder { color: #aab6b1; }
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: #8ebdad; box-shadow: 0 0 0 3px rgba(58,133,111,.09); }
+.helper-text { color: #94a49d; font-size: 8px; line-height: 1.7; }
+.broadcast-list { margin-top: 18px; }
+.broadcast-item { display: flex; justify-content: space-between; gap: 15px; padding: 13px 17px; border-top: 1px solid #edf1ef; }
+.broadcast-item strong { display: block; color: #50645e; font-size: 10px; }
+.broadcast-item p { margin: 5px 0 0; color: #8c9c96; font-size: 9px; line-height: 1.7; }
+.broadcast-item time { color: #9ba9a4; font-size: 8px; white-space: nowrap; }
+
+.secretary-grid { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(280px,.75fr); align-items: start; gap: 15px; }
+.queue-display { margin: 15px 17px; padding: 17px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 13px; color: #fff; background: linear-gradient(120deg, #174d49, #287669); }
+.queue-display small { display: block; color: #c2ded2; font-size: 9px; }
+.queue-display strong { display: block; margin-top: 6px; color: #fff; font-size: 30px; line-height: 1; }
+.queue-display p { margin: 6px 0 0; color: #d0e5dc; font-size: 9px; }
+.queue-next { text-align: left; }
+.queue-next span { display: block; color: #c5dfd5; font-size: 9px; }
+.queue-next strong { font-size: 18px; }
+.queue-list { padding: 0 17px 11px; }
+.queue-row { min-height: 51px; display: flex; align-items: center; gap: 11px; border-top: 1px solid #eef2f0; }
+.queue-number { width: 31px; height: 31px; flex: 0 0 31px; display: grid; place-items: center; border-radius: 9px; color: #547a6e; background: #edf5f0; font-size: 9px; font-weight: 700; }
+.queue-row.is-priority .queue-number { color: #aa6842; background: #fff2e7; }
+.queue-copy { min-width: 0; flex: 1; }
+.queue-copy strong { display: block; color: #51645f; font-size: 9px; }
+.queue-copy span { display: block; margin-top: 4px; color: #9ba8a3; font-size: 8px; }
+.queue-row time { color: #929f9a; font-size: 8px; }
+.calendar-body { padding: 15px 17px 18px; }
+.calendar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.calendar-head strong { color: #4e655f; font-size: 11px; }
+.calendar-head span { color: #9ba9a4; font-size: 8px; }
+.agenda-item { display: flex; gap: 11px; padding: 10px 0; border-top: 1px solid #eef2f0; }
+.agenda-time { min-width: 46px; color: #478070; font-size: 9px; font-weight: 700; }
+.agenda-event { padding-right: 10px; border-right: 2px solid #a9d5c0; }
+.agenda-event strong { display: block; color: #51655f; font-size: 9px; }
+.agenda-event span { display: block; margin-top: 4px; color: #9aa7a2; font-size: 8px; }
+.focus-card { margin-top: 14px; padding: 14px; border: 1px dashed #bddbce; border-radius: 12px; background: #f5faf7; }
+.focus-card strong { display: block; color: #477566; font-size: 10px; }
+.focus-card p { margin: 5px 0 11px; color: #82958c; font-size: 8px; line-height: 1.7; }
+.queue-actions { display: flex; gap: 8px; margin: 0 17px 16px; }
+
+.decisions-list { display: grid; gap: 0; }
+.decision-row { padding: 17px 19px; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 12px; border-top: 1px solid #eef2f0; }
+.decision-number { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 12px; color: #4a7c6d; background: #edf5f0; font-size: 9px; font-weight: 700; }
+.decision-copy { min-width: 0; }
+.decision-copy strong { display: block; color: #405a53; font-size: 11px; line-height: 1.7; }
+.decision-copy p { margin: 4px 0 0; color: #8e9c97; font-size: 9px; line-height: 1.7; }
+.decision-meta { display: flex; align-items: center; gap: 10px; color: #9aa8a2; font-size: 8px; white-space: nowrap; }
+
+.digest-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(270px,.8fr); gap: 15px; }
+.digest-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; padding: 16px; }
+.digest-summary-item { padding: 15px 12px; border-radius: 12px; background: #f6f9f7; text-align: center; }
+.digest-summary-item span { display: block; color: #889a93; font-size: 9px; }
+.digest-summary-item strong { display: block; margin-top: 7px; color: #3b5b50; font-size: 21px; }
+.digest-summary-item.critical strong { color: #c15a47; }
+.digest-list { padding: 4px 18px 15px; }
+.digest-line { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; border-top: 1px solid #eef2f0; }
+.digest-line:first-child { border-top: 0; }
+.digest-line-icon { width: 25px; height: 25px; flex: 0 0 25px; display: grid; place-items: center; border-radius: 8px; color: #528574; background: #edf5f0; }
+.digest-line-icon svg { width: 13px; height: 13px; }
+.digest-line strong { display: block; color: #52665f; font-size: 9px; }
+.digest-line span { display: block; margin-top: 4px; color: #97a49f; font-size: 8px; }
+.digest-quote { margin: 15px 17px; padding: 15px; border-radius: 12px; color: #527066; background: #f1f7f3; font-size: 10px; line-height: 1.85; }
+.digest-quote strong { display: block; margin-bottom: 7px; color: #396b5c; font-size: 10px; }
+
+.employee-wrap { width: min(100%, 720px); margin: 0 auto; }
+.employee-hero { position: relative; overflow: hidden; margin-bottom: 16px; padding: 22px; border-radius: 18px; color: #fff; background: linear-gradient(115deg,#12413f,#28776a); }
+.employee-hero::after { width: 200px; height: 200px; position: absolute; left: -70px; bottom: -120px; content: ""; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; box-shadow: 0 0 0 22px rgba(255,255,255,.035),0 0 0 46px rgba(255,255,255,.025); }
+.employee-hero h1 { position: relative; z-index: 1; margin: 0; font-size: 21px; }
+.employee-hero p { position: relative; z-index: 1; max-width: 550px; margin: 8px 0 0; color: #d1e4dc; font-size: 10px; line-height: 1.8; }
+.employee-status { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; padding: 7px 10px; border: 1px solid rgba(221,244,231,.2); border-radius: 8px; color: #ddf1e5; background: rgba(255,255,255,.08); font-size: 9px; }
+.employee-form-panel { padding: 19px; }
+.employee-form-heading { margin-bottom: 17px; }
+.employee-form-heading h2 { margin: 0; color: #3a554e; font-size: 14px; }
+.employee-form-heading p { margin: 6px 0 0; color: #899a94; font-size: 9px; line-height: 1.75; }
+.confidential-choice { display: flex; align-items: flex-start; gap: 9px; padding: 12px; border: 1px solid #e7ece9; border-radius: 10px; background: #fafcfb; }
+.confidential-choice input { margin: 2px 0 0; accent-color: var(--teal-700); }
+.confidential-choice strong { display: block; color: #526962; font-size: 9px; }
+.confidential-choice span { display: block; margin-top: 4px; color: #96a39e; font-size: 8px; line-height: 1.65; }
+.employee-submit { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 15px; }
+.employee-submit .helper-text { max-width: 330px; }
+.my-requests { margin-top: 16px; }
+.my-request-row { padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid #eef2f0; }
+.my-request-row strong { display: block; color: #50645e; font-size: 9px; }
+.my-request-row span { display: block; margin-top: 4px; color: #98a59f; font-size: 8px; }
+.blind-note { margin-top: 15px; padding: 12px; border-radius: 10px; color: #798f86; background: #f4f8f5; font-size: 8px; line-height: 1.8; }
+
+.waiting-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; color: #f2f8f5; background: radial-gradient(ellipse at 50% 30%,#246e61 0,#164e49 36%,#103c3b 78%); text-align: center; }
+.waiting-top { width: min(100%,1200px); position: absolute; top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.waiting-brand { display: flex; align-items: center; gap: 10px; color: #d9ebe3; font-size: 11px; }
+.waiting-brand .brand-mark { width: 34px; height: 34px; flex-basis: 34px; border-radius: 11px; }
+.waiting-brand .brand-mark svg { width: 20px; height: 20px; }
+.waiting-top .btn { color: #e0eee7; border-color: rgba(226,245,234,.2); background: rgba(255,255,255,.08); }
+.waiting-label { margin-top: 25px; color: #b3d0c5; font-size: 12px; letter-spacing: .2px; }
+.waiting-number { margin-top: 12px; color: #fff; font-size: clamp(74px, 16vw, 150px); font-weight: 700; line-height: .95; letter-spacing: -4px; text-shadow: 0 9px 40px rgba(0,0,0,.16); }
+.waiting-next { margin-top: 33px; padding: 17px 35px; border: 1px solid rgba(230,248,236,.14); border-radius: 14px; background: rgba(255,255,255,.065); }
+.waiting-next span { display: block; color: #b5d2c6; font-size: 10px; }
+.waiting-next strong { display: block; margin-top: 8px; color: #fff; font-size: 23px; }
+.waiting-message { margin-top: 33px; color: #a8c8bb; font-size: 11px; }
+.waiting-clock { position: absolute; bottom: 24px; color: #91b4a5; font-size: 10px; }
+
+.modal-backdrop { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 20px; background: rgba(13, 34, 32, .48); backdrop-filter: blur(3px); animation: fade-in .15s ease; }
+.modal { width: min(100%, 610px); max-height: min(88vh, 820px); display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(255,255,255,.4); border-radius: 18px; background: #fff; box-shadow: 0 26px 90px rgba(12,36,31,.24); animation: rise-in .18s ease; }
+.modal.modal-compact { width: min(100%, 475px); }
+.modal-header { min-height: 67px; padding: 15px 19px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #edf1ef; }
+.modal-header-copy { min-width: 0; }
+.modal-header h2 { margin: 0; color: #304b45; font-size: 14px; }
+.modal-header p { margin: 5px 0 0; color: #94a19c; font-size: 9px; }
+.modal-close { width: 32px; height: 32px; flex: 0 0 32px; display: grid; place-items: center; border: 0; border-radius: 9px; color: #83918c; background: #f4f7f5; }
+.modal-close:hover { color: #354f49; background: #eaf2ed; }
+.modal-close svg { width: 16px; height: 16px; }
+.modal-body { padding: 18px 20px; overflow-y: auto; }
+.modal-footer { padding: 13px 19px; display: flex; align-items: center; justify-content: flex-start; gap: 8px; border-top: 1px solid #edf1ef; background: #fcfdfc; }
+.modal-footer .spacer { flex: 1; }
+.form-stack { display: grid; gap: 13px; }
+.request-detail-header { margin-bottom: 15px; padding: 13px; border-radius: 12px; background: #f7faf8; }
+.request-detail-header h3 { margin: 0; color: #334d48; font-size: 13px; line-height: 1.65; }
+.request-detail-meta { display: flex; flex-wrap: wrap; gap: 8px 13px; margin-top: 8px; color: #8c9b96; font-size: 8px; }
+.request-detail-body { color: #61746e; font-size: 10px; line-height: 1.9; }
+.request-detail-body p { margin: 0 0 12px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+.detail-info { padding: 10px; border: 1px solid #edf1ef; border-radius: 9px; }
+.detail-info span { display: block; color: #9aa6a1; font-size: 8px; }
+.detail-info strong { display: block; margin-top: 5px; color: #4e665e; font-size: 9px; }
+.secret-warning { margin: 13px 0; padding: 11px; border: 1px solid #f2ddc4; border-radius: 10px; color: #927044; background: #fff9f0; font-size: 9px; line-height: 1.8; }
+.choice-list { display: grid; gap: 8px; }
+.choice-option { position: relative; display: flex; align-items: center; gap: 10px; padding: 11px; border: 1px solid #e7eeea; border-radius: 10px; cursor: pointer; transition: .14s ease; }
+.choice-option:hover { border-color: #a6cabc; background: #f7fbf8; }
+.choice-option input { accent-color: var(--teal-700); }
+.choice-option strong { display: block; color: #4c655c; font-size: 10px; }
+.choice-option span { display: block; margin-top: 4px; color: #96a49e; font-size: 8px; }
+.confidential { display: inline-flex; align-items: center; gap: 5px; color: #97713d; font-size: 8px; }
+.confidential svg { width: 13px; height: 13px; }
+.toast-region { position: fixed; left: 22px; bottom: 22px; z-index: 100; display: grid; gap: 8px; pointer-events: none; }
+.toast { max-width: min(380px, calc(100vw - 40px)); padding: 12px 15px; border: 1px solid #d7e9de; border-radius: 11px; color: #395f52; background: #f5fbf7; box-shadow: var(--shadow); font-size: 10px; line-height: 1.7; animation: rise-in .18s ease; }
+.toast.error { color: #984a3d; border-color: #f0d6cf; background: #fff6f3; }
+.no-results { padding: 38px 20px; color: #96a39e; font-size: 10px; text-align: center; }
+.footer-caption { margin-top: 15px; color: #9daaa5; font-size: 8px; text-align: center; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (min-width: 1450px) {
+  .page-content { padding-top: 35px; }
+  .quadrant { min-height: 210px; }
+}
+@media (max-width: 1120px) {
+  :root { --sidebar-width: 224px; }
+  .dashboard-grid { grid-template-columns: minmax(0,1.4fr) minmax(248px,.85fr); }
+  .stat-card { padding: 14px; }
+  .user-name { display: none; }
+  .role-select-wrap > span { display: none; }
+}
+@media (max-width: 900px) {
+  .dashboard-grid, .secretary-grid, .digest-grid { grid-template-columns: 1fr; }
+  .dashboard-side-column { grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; }
+  .stats-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .route-card { grid-column: span 2; }
+  .communication-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  :root { --sidebar-width: 0px; }
+  .app-shell { display: block; }
+  .sidebar { width: min(290px, 84vw); height: 100dvh; min-height: 0; position: fixed; top: 0; right: 0; z-index: 80; transform: translateX(105%); transition: transform .22s ease; box-shadow: -12px 0 45px rgba(12,35,31,.18); }
+  .sidebar.is-open { transform: translateX(0); }
+  .menu-backdrop.is-open { display: block; position: fixed; inset: 0; z-index: 70; background: rgba(11,30,28,.39); }
+  .topbar { min-height: 65px; padding: 0 15px; gap: 8px; }
+  .topbar-start, .topbar-end { gap: 8px; }
+  .mobile-menu { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 10px; color: #55716a; background: #fff; }
+  .mobile-menu svg { width: 18px; height: 18px; }
+  .topbar-title strong { max-width: 35vw; font-size: 12px; }
+  .topbar-title span { font-size: 8px; }
+  .local-indicator { gap: 5px; font-size: 0; }
+  .local-indicator .pulse-dot { width: 8px; height: 8px; }
+  .topbar-divider { display: none; }
+  .role-select-wrap select { max-width: 137px; min-height: 34px; padding: 6px 20px 6px 7px; font-size: 9px; }
+  .topbar-end > .icon-button { width: 34px; height: 34px; flex-basis: 34px; }
+  .topbar-end > .avatar { display: none; }
+  .page-content { padding: 22px 15px 35px; }
+  .page-heading { align-items: flex-start; margin-bottom: 17px; }
+  .page-heading h1 { font-size: 21px; }
+  .page-heading p { font-size: 10px; }
+  .heading-actions { justify-content: flex-end; }
+  .heading-actions .btn-secondary { display: none; }
+  .heading-actions .btn { min-height: 36px; padding: 0 10px; font-size: 9px; }
+  .demo-note { font-size: 9px; }
+  .stats-grid { gap: 9px; margin-bottom: 13px; }
+  .stat-card { min-height: 98px; padding: 12px; }
+  .stat-value { margin-top: 8px; font-size: 23px; }
+  .stat-label { font-size: 9px; }
+  .stat-foot { font-size: 8px; }
+  .stat-icon { width: 31px; height: 31px; flex-basis: 31px; }
+  .dashboard-grid { gap: 13px; }
+  .dashboard-main-column, .dashboard-side-column { gap: 13px; }
+  .dashboard-side-column { grid-template-columns: 1fr; }
+  .route-card { grid-column: auto; }
+  .panel { border-radius: 15px; }
+  .panel-head { min-height: 55px; padding: 0 13px; }
+  .panel-title h2 { font-size: 11px; }
+  .panel-title p { font-size: 8px; }
+  .matrix-preview { padding: 11px; }
+  .matrix-grid { gap: 7px; }
+  .quadrant { min-height: 180px; padding: 9px; border-radius: 12px; }
+  .quadrant-mark { width: 23px; height: 23px; flex-basis: 23px; border-radius: 7px; font-size: 9px; }
+  .quadrant-title { gap: 6px; }
+  .quadrant-title strong { font-size: 9px; }
+  .quadrant-title span { font-size: 7px; }
+  .quadrant-count { padding: 4px 5px; font-size: 8px; }
+  .task-row { padding: 7px; }
+  .task-row strong { font-size: 8px; }
+  .task-row-meta { font-size: 7px; }
+  .task-actions button { font-size: 7px; }
+  .matrix-axis { font-size: 8px; }
+  .communication-grid { grid-template-columns: 1fr; }
+  .matrix-page-grid { grid-template-columns: 1fr; }
+  .matrix-page-grid .quadrant { min-height: 0; }
+  .learning-panel { align-items: flex-start; padding: 13px; }
+  .learning-stat { min-width: 58px; }
+  .learning-stat strong { font-size: 17px; }
+  .learning-stat span { font-size: 7px; }
+  .filter-bar { align-items: stretch; flex-direction: column; }
+  .filter-search { width: 100%; }
+  .filter-select { width: 100%; }
+  .table-wrap { border-radius: 0 0 15px 15px; }
+  .requests-table th, .requests-table td { padding: 11px; }
+  .secretary-grid { gap: 13px; }
+  .digest-summary { padding: 11px; gap: 6px; }
+  .digest-summary-item { padding: 12px 6px; }
+  .digest-summary-item span { font-size: 8px; }
+  .digest-summary-item strong { font-size: 18px; }
+  .decision-row { padding: 13px; grid-template-columns: 35px minmax(0,1fr); gap: 9px; }
+  .decision-number { width: 33px; height: 33px; }
+  .decision-meta { grid-column: 2; }
+  .busy-banner { align-items: flex-start; padding: 11px; }
+  .busy-banner .btn { padding: 0 8px; font-size: 9px; }
+  .employee-form-panel { padding: 14px; }
+  .employee-hero { padding: 19px; }
+  .employee-submit { align-items: flex-start; flex-direction: column; }
+  .field-row { grid-template-columns: 1fr; }
+  .waiting-top { top: 15px; padding: 0 17px; }
+  .waiting-screen { padding: 20px; }
+  .waiting-number { font-size: clamp(70px, 23vw, 120px); }
+  .modal-backdrop { align-items: end; padding: 0; }
+  .modal, .modal.modal-compact { width: 100%; max-height: 92vh; border-radius: 18px 18px 0 0; }
+  .modal-header { min-height: 61px; padding: 13px 16px; }
+  .modal-body { padding: 15px 16px; }
+  .modal-footer { padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); }
+  .toast-region { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); }
+  .toast { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .role-select-wrap select { max-width: 115px; }
+  .topbar-title strong { max-width: 31vw; }
+  .stats-grid { gap: 7px; }
+  .stat-card { padding: 10px; }
+  .stat-icon { display: none; }
+  .matrix-grid { grid-template-columns: 1fr; }
+  .quadrant { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="app" aria-live="polite"></div>
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script>
+(() => {
+  "use strict";
+
+  const $app = document.getElementById("app");
+  const $toast = document.getElementById("toast-region");
+  const STORAGE = {
+    requests: "rifd-demo-requests-v1",
+    overrides: "rifd-demo-overrides-v1",
+    role: "rifd-demo-role-v1",
+    notices: "rifd-demo-notices-v1",
+    queue: "rifd-demo-queue-v1",
+    decisions: "rifd-demo-decisions-v1",
+    agenda: "rifd-demo-agenda-v1",
+    documents: "rifd-demo-documents-v1",
+    prefs: "rifd-demo-prefs-v1",
+  };
+
+  const ROLES = {
+    director: { label: "مدير المستشفى", person: "د. أحمد سالم", initials: "أح", short: "المدير" },
+    "deputy-med": { label: "النائب الأول · الشؤون الطبية", person: "د. ليلى منصور", initials: "لم", short: "النائب الأول" },
+    "deputy-admin": { label: "النائب الثاني · إدارية ومالية", person: "أ. كريم فؤاد", initials: "كف", short: "النائب الثاني" },
+    doctor: { label: "الطبيب المصرح · التوقيعات", person: "د. مريم عادل", initials: "مع", short: "الطبيب المصرح" },
+    secretary: { label: "السكرتير التنفيذي", person: "أ. ندى محمود", initials: "نم", short: "السكرتير" },
+    department: { label: "رئيس قسم", person: "د. ليلى منصور", initials: "لم", short: "رئيس قسم" },
+    waiting: { label: "شاشة صالة الانتظار", person: "شاشة العرض", initials: "ر", short: "العرض" },
+  };
+
+  const ROLE_IDS = ["director", "deputy-med", "deputy-admin", "doctor", "secretary", "department", "waiting"];
+  const QUADRANTS = [
+    { id: "q1", label: "هام وعاجل", action: "افعل الآن", hint: "تدخل فوري وأولوية قصوى", className: "q1", mark: "١", pill: "pill-red" },
+    { id: "q2", label: "هام وغير عاجل", action: "خطّط وجدول", hint: "عمل استراتيجي مجدول", className: "q2", mark: "٢", pill: "pill-green" },
+    { id: "q3", label: "غير هام وعاجل", action: "فوّض", hint: "إحالة للجهة المختصة", className: "q3", mark: "٣", pill: "pill-amber" },
+    { id: "q4", label: "غير هام وغير عاجل", action: "فلتر", hint: "مراجعة أو دمج أو استبعاد", className: "q4", mark: "٤", pill: "pill-gray" },
+  ];
+
+  const SEED_REQUESTS = [
+    { id: "RF-184", title: "تعطل جهاز أكسجين احتياطي في العناية المركزة", department: "العناية المركزة", requester: "د. ليلى منصور", time: "١٠:١٤ ص", date: "اليوم", quadrant: "q1", status: "جديد", assignee: "director", confidential: false, body: "تم رصد عطل في جهاز الأكسجين الاحتياطي. توجد وحدة بديلة واحدة متاحة، ونحتاج إلى تنسيق الصيانة العاجلة لضمان استمرارية الخدمة.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 12 },
+    { id: "RF-183", title: "إشعار بزيارة تفتيش مفاجئة من الوزارة", department: "مكتب الجودة", requester: "أ. سارة حسن", time: "٩:٥٢ ص", date: "اليوم", quadrant: "q1", status: "قيد المعالجة", assignee: "director", confidential: false, body: "ورد إشعار هاتفي بوصول فريق التفتيش خلال الفترة الصباحية. الملفات الأساسية جاهزة ويجري استكمال التنسيق مع الأقسام.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 34 },
+    { id: "RF-182", title: "انقطاع التيار في وحدة العمليات الثانية", department: "العمليات", requester: "د. سامح نجيب", time: "٩:٣٠ ص", date: "اليوم", quadrant: "q1", status: "قيد المعالجة", assignee: "director", confidential: true, body: "بلاغ عاجل بشأن انقطاع التيار في وحدة العمليات الثانية. توجد تفاصيل سرية مرتبطة بسلامة حالة داخل الوحدة؛ يرجى مناقشتها حضورياً.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 57 },
+    { id: "RF-181", title: "اعتماد ميزانية تحديث أجهزة المراقبة", department: "الإدارة المالية", requester: "أ. حازم مصطفى", time: "٩:١٥ ص", date: "اليوم", quadrant: "q2", status: "بانتظار القرار", assignee: "deputy-admin", confidential: false, body: "مقترح اعتماد ميزانية مرحلية لتحديث أجهزة المراقبة في ثلاثة أقسام. مرفق بالمذكرة جدول التكاليف والأولوية التشغيلية.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 72 },
+    { id: "RF-180", title: "خطة تحسين مسار التحويلات بين الأقسام", department: "الشؤون الطبية", requester: "د. مازن رياض", time: "٨:٥٨ ص", date: "اليوم", quadrant: "q2", status: "قيد المعالجة", assignee: "deputy-med", confidential: false, body: "خطة أولية لتقليل زمن التحويلات بين الأقسام الطبية، تتضمن مؤشرات أداء ومقترح تجربة لمدة شهر.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 91 },
+    { id: "RF-179", title: "تقييم الاحتياج التدريبي للتمريض", department: "التمريض", requester: "أ. منى سمير", time: "٨:٤٠ ص", date: "اليوم", quadrant: "q2", status: "جديد", assignee: "deputy-med", confidential: false, body: "يرجى مراجعة الاحتياج التدريبي للتمريض للربع القادم وجدولة البرامج المقترحة بالتنسيق مع التعليم المستمر.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 110 },
+    { id: "RF-178", title: "صيانة دورية لوحدة التكييف في المبنى الشرقي", department: "الخدمات الهندسية", requester: "م. عمرو لطفي", time: "٨:٢٥ ص", date: "اليوم", quadrant: "q3", status: "مُحال للنائب", assignee: "deputy-admin", confidential: false, body: "وحدة التكييف تعمل بكفاءة منخفضة. لا يوجد تأثير مباشر على الخدمة حالياً، ونقترح إدراجها في جدول الصيانة هذا الأسبوع.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 125 },
+    { id: "RF-177", title: "اعتماد إجازة سنوية لموظف بالقسم", department: "الموارد البشرية", requester: "أ. فادي نبيل", time: "٨:٠٣ ص", date: "اليوم", quadrant: "q3", status: "مُحال للنائب", assignee: "deputy-admin", confidential: false, body: "طلب اعتماد إجازة سنوية روتينية بعد استكمال موافقة رئيس القسم وتغطية جدول العمل.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 147 },
+    { id: "RF-176", title: "توقيع شهادة طبية روتينية", department: "العيادات الخارجية", requester: "أ. مها عادل", time: "٧:٤٥ ص", date: "اليوم", quadrant: "q3", status: "بانتظار التوقيع", assignee: "doctor", confidential: false, body: "شهادة طبية روتينية مكتملة البيانات وتنتظر مراجعة الطبيب المصرح والتوقيع.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 163 },
+    { id: "RF-175", title: "طلب مكرر بخصوص مستلزمات مكتبية", department: "شؤون العاملين", requester: "أ. وائل جابر", time: "أمس", date: "أمس", quadrant: "q4", status: "مراجعة", assignee: "secretary", confidential: false, body: "يبدو أن هذا الطلب مكرر مع معاملة RF-170. يرجى الدمج قبل الإحالة.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 60 * 25 },
+    { id: "RF-174", title: "طلب غير مستوفٍ للبيانات الأساسية", department: "المخازن", requester: "أ. خالد رجب", time: "أمس", date: "أمس", quadrant: "q4", status: "بانتظار الاستكمال", assignee: "secretary", confidential: false, body: "ينقص المعاملة تحديد الكمية ومبرر الاحتياج. تُعاد لمقدم الطلب للاستكمال قبل أي توجيه.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 60 * 27 },
+  ];
+
+  const SEED_NOTICES = [
+    { id: "N-1", type: "broadcast", title: "تذكير: ارفع طلبك عبر النظام أولاً", message: "لتسريع المتابعة، يرجى تسجيل الطلبات التشغيلية في التطبيق قبل التوجه إلى المكتب. للحالات الحرجة استخدم قناة الطوارئ المعتمدة.", target: "all", department: "", time: "٩:٠٠ ص", createdAt: Date.now() - 1000 * 60 * 80 },
+    { id: "N-2", type: "notice", title: "اجتماع لجنة التشغيل", message: "تبدأ جلسة لجنة التشغيل في قاعة الاجتماعات الساعة ١٢:٣٠ ظهراً.", target: "all", department: "", time: "٨:٣٥ ص", createdAt: Date.now() - 1000 * 60 * 105 },
+  ];
+  const SEED_QUEUE = [
+    { number: "و-١٢", name: "أ. محمد علي", department: "الصيانة", time: "١٠:٢٥ ص", priority: true },
+    { number: "و-١٣", name: "د. هبة عادل", department: "الشؤون الطبية", time: "١٠:٤٠ ص", priority: false },
+    { number: "و-١٤", name: "أ. سامي ناصر", department: "الموارد البشرية", time: "١١:٠٠ ص", priority: false },
+  ];
+  const SEED_DECISIONS = [
+    { id: "ق-٢٤١", title: "توحيد نموذج طلبات الصيانة الدورية", summary: "اعتماد نموذج موحد وتحديد مستوى الاستجابة بحسب تأثير العطل على الخدمة.", category: "تشغيل", date: "٢ أكتوبر ٢٠٢٦", owner: "مدير المستشفى" },
+    { id: "ق-٢٤٠", title: "تنظيم تغطية المناوبات خلال عطلة نهاية الأسبوع", summary: "تُرفع جداول التغطية قبل موعدها بأسبوع وتراجعها الشؤون الطبية.", category: "شؤون طبية", date: "١ أكتوبر ٢٠٢٦", owner: "النائب الأول" },
+    { id: "ق-٢٣٩", title: "إجراءات اعتماد التوريدات المكتبية", summary: "تُجمع الاحتياجات في طلب شهري واحد لتقليل المعاملات المتكررة.", category: "إدارية ومالية", date: "٢٩ سبتمبر ٢٠٢٦", owner: "النائب الثاني" },
+  ];
+  const SEED_AGENDA = [
+    { time: "١١:٠٠ ص", title: "مراجعة خطة تحسين العمليات", detail: "مع النائب الأول · قاعة الاجتماعات", focus: false },
+    { time: "١٢:٣٠ م", title: "لجنة التشغيل الأسبوعية", detail: "قاعة الاجتماعات الرئيسية", focus: false },
+    { time: "٠١:٣٠ م", title: "وقت تركيز محمي", detail: "مراجعة ملفات الميزانية والتطوير", focus: true },
+  ];
+  const SEED_DOCUMENTS = [
+    { id: "DOC-04", name: "تعميم تحديث جداول المناوبات.pdf", department: "الشؤون الطبية", status: "بانتظار التوقيع" },
+    { id: "DOC-03", name: "محضر لجنة التشغيل.pdf", department: "مكتب المدير", status: "موقّع تجريبياً" },
+  ];
+
+  const read = (key, fallback) => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw === null ? fallback : JSON.parse(raw);
+    } catch (_) { return fallback; }
+  };
+  const clone = (value) => JSON.parse(JSON.stringify(value));
+  const pref = read(STORAGE.prefs, {});
+  const state = {
+    role: ROLE_IDS.includes(read(STORAGE.role, "director")) ? read(STORAGE.role, "director") : "director",
+    view: "dashboard",
+    modal: null,
+    menuOpen: false,
+    requestSearch: "",
+    requestFilter: "all",
+    decisionSearch: "",
+    overrides: read(STORAGE.overrides, []),
+    requests: read(STORAGE.requests, null) || clone(SEED_REQUESTS),
+    notices: read(STORAGE.notices, null) || clone(SEED_NOTICES),
+    queue: read(STORAGE.queue, null) || clone(SEED_QUEUE),
+    currentTicket: read("rifd-demo-current-ticket-v1", "و-١١"),
+    decisions: read(STORAGE.decisions, null) || clone(SEED_DECISIONS),
+    agenda: read(STORAGE.agenda, null) || clone(SEED_AGENDA),
+    documents: read(STORAGE.documents, null) || clone(SEED_DOCUMENTS),
+    busyUntil: read("rifd-demo-busy-until-v1", null),
+    busyReason: read("rifd-demo-busy-reason-v1", ""),
+    soundAlerts: !!pref.soundAlerts,
+    department: pref.department || "العناية المركزة",
+    savedRole: null,
+  };
+  if (state.role === "department") state.view = "employee";
+  if (state.role === "waiting") state.view = "waiting";
+
+  const ICONS = {
+    brand: '<path d="M12 3v18M3 12h18" stroke-width="2.5" stroke-linecap="round"/>',
+    dashboard: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="11" width="7" height="10" rx="2"/><rect x="3" y="14" width="8" height="7" rx="2"/>',
+    grid: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>',
+    inbox: '<path d="M4 4h16v16H4z"/><path d="M4 13h4l2 3h4l2-3h4"/>',
+    message: '<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+    archive: '<path d="M4 4h16v4H4zM6 8v12h12V8M10 12h4"/>',
+    report: '<path d="M5 3h10l4 4v14H5z"/><path d="M14 3v5h5M8 13h8M8 17h8"/>',
+    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+    bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    shield: '<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/>',
+    spark: '<path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14ZM5 2l1.1 2.9L9 6 6.1 7.1 5 10 3.9 7.1 1 6l2.9-1.1L5 2Z"/>',
+    arrow: '<path d="M19 12H5M12 19l-7-7 7-7"/>',
+    chevron: '<path d="m9 18 6-6-6-6"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    x: '<path d="m18 6-12 12M6 6l12 12"/>',
+    menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+    more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+    send: '<path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/>',
+    phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3.1a2 2 0 0 1-.6 1.7L7.1 10.4a16 16 0 0 0 6 6l1.9-1.9a2 2 0 0 1 1.7-.6l3.1.5a2 2 0 0 1 2.2 2.5z"/>',
+    check: '<path d="m5 12 4 4L19 6"/>',
+    lock: '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3M12 14v3"/>',
+    arrowUp: '<path d="M12 19V5M5 12l7-7 7 7"/>',
+    bellRing: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4M2 8a10 10 0 0 1 2-5M22 8a10 10 0 0 0-2-5"/>',
+    file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+    sound: '<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
+    refresh: '<path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 2M4 16l2 2a7 7 0 0 0 12.4-3"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    laptop: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M2 21h20M8 17l-1 4M16 17l1 4"/>',
+  };
+  const icon = (name, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ICONS.file}</svg>`;
+  const esc = (value = "") => String(value).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const qInfo = (id) => QUADRANTS.find((q) => q.id === id) || QUADRANTS[1];
+  const roleName = (id) => ROLES[id]?.label || "غير محدد";
+  const roleShort = (id) => ROLES[id]?.short || "غير محدد";
+  const statusClass = (status) => {
+    if (["جديد", "عاجل"].includes(status)) return "status-new";
+    if (["قيد المعالجة", "مُحال للنائب", "موعد مقابلة"].includes(status)) return "status-progress";
+    if (["بانتظار القرار", "بانتظار التوقيع", "بانتظار الاستكمال", "بانتظار القسم"].includes(status)) return "status-waiting";
+    return "status-done";
+  };
+  const timeNow = () => new Intl.DateTimeFormat("ar-EG", { hour: "2-digit", minute: "2-digit" }).format(new Date());
+  const dateLong = () => new Intl.DateTimeFormat("ar-EG", { weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(new Date());
+  const toArabicNumber = (value) => new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 }).format(value);
+  const nowTimeStamp = () => new Date().toISOString();
+  const localDateTimeValue = (offsetMinutes = 60) => {
+    const d = new Date(Date.now() + offsetMinutes * 60000);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16);
+  };
+  const formatDateTime = (value) => {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "";
+    return new Intl.DateTimeFormat("ar-EG", { hour: "2-digit", minute: "2-digit" }).format(d);
+  };
+  const normalizeArabic = (value) => String(value || "")
+    .toLowerCase()
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي")
+    .replace(/[ًٌٍَُِّْـ]/g, "")
+    .replace(/[^\p{L}\p{N}\s-]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const keywords = (value) => {
+    const stop = new Set(["الذي", "التي", "على", "الى", "في", "من", "عن", "هذا", "هذه", "طلب", "يرجى", "نرجو", "بشأن", "قسم", "قسمنا", "اليوم", "مطلوب", "مراجعه", "اعتماد", "الرجاء", "مع", "لدى", "بعد", "قبل", "لـ", "تم", "يوجد", "وجود", "بسبب"]);
+    return [...new Set(normalizeArabic(value).split(" ").filter((word) => word.length >= 4 && !stop.has(word)))].slice(0, 9);
+  };
+  const visibleRequests = () => {
+    if (state.role === "director" || state.role === "secretary") return state.requests;
+    if (state.role === "department") return state.requests.filter((r) => r.authorRole === "department" && r.department === state.department);
+    return state.requests.filter((r) => r.assignee === state.role);
+  };
+  const save = () => {
+    try {
+      localStorage.setItem(STORAGE.requests, JSON.stringify(state.requests));
+      localStorage.setItem(STORAGE.overrides, JSON.stringify(state.overrides));
+      localStorage.setItem(STORAGE.role, JSON.stringify(state.role));
+      localStorage.setItem(STORAGE.notices, JSON.stringify(state.notices));
+      localStorage.setItem(STORAGE.queue, JSON.stringify(state.queue));
+      localStorage.setItem("rifd-demo-current-ticket-v1", JSON.stringify(state.currentTicket));
+      localStorage.setItem(STORAGE.decisions, JSON.stringify(state.decisions));
+      localStorage.setItem(STORAGE.agenda, JSON.stringify(state.agenda));
+      localStorage.setItem(STORAGE.documents, JSON.stringify(state.documents));
+      localStorage.setItem("rifd-demo-busy-until-v1", JSON.stringify(state.busyUntil));
+      localStorage.setItem("rifd-demo-busy-reason-v1", JSON.stringify(state.busyReason));
+      localStorage.setItem(STORAGE.prefs, JSON.stringify({ soundAlerts: state.soundAlerts, department: state.department }));
+    } catch (_) { showToast("تعذر حفظ البيانات محلياً. تحقق من مساحة التخزين في المتصفح.", true); }
+  };
+
+  function showToast(message, error = false) {
+    const el = document.createElement("div");
+    el.className = `toast${error ? " error" : ""}`;
+    el.textContent = message;
+    $toast.appendChild(el);
+    window.setTimeout(() => el.remove(), 3700);
+  }
+
+  function playUrgentTone() {
+    if (!state.soundAlerts) return;
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      const context = new AudioContextClass();
+      [0, 0.2].forEach((delay, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = index ? 920 : 760;
+        gain.gain.setValueAtTime(0.0001, context.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.16, context.currentTime + delay + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + delay + 0.13);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start(context.currentTime + delay);
+        oscillator.stop(context.currentTime + delay + 0.14);
+      });
+      window.setTimeout(() => context.close(), 700);
+    } catch (_) { /* صوت اختياري فقط */ }
+  }
+
+  function classifyRequest(data) {
+    const allText = `${data.title || ""} ${data.details || ""}`;
+    const keys = keywords(allText);
+    const normalized = normalizeArabic(allText);
+    const overrides = [...state.overrides].reverse();
+    for (const item of overrides) {
+      if (item.department !== data.department) continue;
+      const previousKeys = Array.isArray(item.keywords) ? item.keywords : [];
+      const overlap = keys.filter((word) => previousKeys.includes(word)).length;
+      if (overlap > 0) return { quadrant: item.to, learned: true };
+    }
+
+    const urgent = data.urgency === "urgent" || /(وفاه|وفاة|اكسجين|حريق|انقطاع تيار|انقطاع الكهرباء|كهرباء|اشتباه اعلامي|تصعيد اعلامي|تفتيش مفاجئ|توقف نظام|خطر علي|خطر على)/.test(normalized);
+    const unimportant = data.importance === "low" || /(اجازه روتينيه|اجازة روتينية|اجازات|اجازة|ورقيات|طلب مكرر|مكرر|غير مستوف|غير مكتمل|استثناء مخالف)/.test(normalized);
+    const important = data.importance === "high" || /(ميزانيه|ميزانية|تطوير|خطه|خطة|تقييم|مؤشرات|اداء|أداء|خطة|استراتيجي|سلامه المرضي|سلامة المرضى)/.test(normalized);
+    const signature = /(توقيع|توقيعات|شهاده طبيه|شهادة طبية|روشته|روشتة|تقرير طبي روتيني)/.test(normalized);
+    const routineUrgent = /(صيانه|صيانة|اجازه|إجازة|توريد|مستلزمات|توقيع|مستندات)/.test(normalized);
+
+    if (urgent) return { quadrant: unimportant ? "q3" : "q1", learned: false };
+    if (unimportant && !important) return { quadrant: routineUrgent ? "q3" : "q4", learned: false };
+    if (routineUrgent && !important) return { quadrant: "q3", learned: false };
+    if (signature) return { quadrant: "q3", learned: false };
+    if (important || data.importance === "high") return { quadrant: "q2", learned: false };
+    return { quadrant: "q2", learned: false };
+  }
+
+  function suggestedAssignee(data, quadrant) {
+    const text = normalizeArabic(`${data.title || ""} ${data.details || ""} ${data.department || ""}`);
+    if (quadrant === "q1") return "director";
+    if (/(توقيع|شهاده طبيه|شهادة طبية|روشته|روشتة)/.test(text)) return "doctor";
+    if (/(طبيب|اطباء|أطباء|شيفت|مناوبه|مناوبة|تمريض|عمليات|تحويلات|مرضى|مرضى|رعايه|رعاية)/.test(text)) return "deputy-med";
+    if (/(صيانه|صيانة|مباني|مبان|اجازه|إجازة|توريد|مستلزمات|مالي|ميزانيه|ميزانية|المخازن|هندسيه|هندسية)/.test(text)) return "deputy-admin";
+    if (quadrant === "q3") return "deputy-admin";
+    return "director";
+  }
+
+  function pushNotice(notice) {
+    state.notices.unshift({ id: `N-${Date.now()}`, time: timeNow(), createdAt: Date.now(), ...notice });
+    save();
+  }
+
+  function setView(view) {
+    state.view = view;
+    state.menuOpen = false;
+    state.modal = null;
+    render();
+  }
+
+  const VIEW_INFO = {
+    dashboard: ["لوحة المتابعة", "صورة تنفيذية سريعة لما يحتاج انتباهك اليوم."],
+    matrix: ["مصفوفة الأولويات", "فرز واضح للطلبات بحسب الأهمية والاستعجال."],
+    requests: ["سجل الطلبات", "متابعة الطلبات والتوجيهات والحالات من مكان واحد."],
+    communications: ["التواصل والاستدعاء", "إدارة حالة الانشغال والنداءات والتعاميم المحلية."],
+    secretary: ["إدارة المكتب", "طابور الزيارة، الأجندة، وأوراق التوقيع."],
+    decisions: ["سجل القرارات", "أرشيف قابل للبحث للقرارات والتوجيهات السابقة."],
+    daily: ["الموجز اليومي", "ملخص ما أُنجز وما يحتاج متابعة قبل نهاية اليوم."],
+    employee: ["إرسال طلب", "ارفع احتياج قسمك وتابع رقم المعاملة."],
+    "my-requests": ["طلباتي والردود", "حالة الطلبات والتنبيهات التي تخص قسمك."],
+  };
+
+  function navigationFor(role) {
+    if (role === "department") return [
+      { id: "employee", label: "إرسال طلب", icon: "send" },
+      { id: "my-requests", label: "طلباتي والردود", icon: "inbox", count: state.requests.filter((r) => r.authorRole === "department" && r.department === state.department && ["جديد", "قيد المعالجة", "موعد مقابلة"].includes(r.status)).length || null },
+    ];
+    if (role === "secretary") return [
+      { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
+      { id: "secretary", label: "إدارة المكتب والطابور", icon: "calendar" },
+      { id: "requests", label: "سجل الطلبات", icon: "inbox" },
+      { id: "decisions", label: "سجل القرارات", icon: "archive" },
+      { id: "daily", label: "الموجز اليومي", icon: "report" },
+    ];
+    if (role === "doctor") return [
+      { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
+      { id: "requests", label: "المعاملات الموجّهة إليّ", icon: "inbox" },
+      { id: "daily", label: "الموجز اليومي", icon: "report" },
+    ];
+    if (role === "deputy-med" || role === "deputy-admin") return [
+      { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
+      { id: "matrix", label: "مصفوفة مهامي", icon: "grid" },
+      { id: "requests", label: "المعاملات الموجّهة إليّ", icon: "inbox" },
+      { id: "communications", label: "التواصل", icon: "message" },
+      { id: "daily", label: "الموجز اليومي", icon: "report" },
+    ];
+    return [
+      { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
+      { id: "matrix", label: "مصفوفة الأولويات", icon: "grid" },
+      { id: "requests", label: "سجل الطلبات", icon: "inbox", count: state.requests.filter((r) => r.status === "جديد").length || null },
+      { id: "communications", label: "التواصل والاستدعاء", icon: "message" },
+      { id: "secretary", label: "إدارة المكتب", icon: "calendar" },
+      { id: "decisions", label: "سجل القرارات", icon: "archive" },
+      { id: "daily", label: "الموجز اليومي", icon: "report" },
+    ];
+  }
+
+  function renderSidebar() {
+    const nav = navigationFor(state.role);
+    const urgentCount = visibleRequests().filter((r) => r.quadrant === "q1" && r.status !== "مكتمل").length;
+    return `
+      <aside class="sidebar${state.menuOpen ? " is-open" : ""}" aria-label="التنقل الرئيسي">
+        <div class="brand">
+          <div class="brand-mark">${icon("brand")}</div>
+          <div class="brand-copy"><strong>رِفد</strong><span>إدارة العمل التنفيذي</span></div>
+        </div>
+        <div class="sidebar-label">مساحة العمل</div>
+        <nav class="nav-list">
+          ${nav.map((item) => `<button class="nav-item${state.view === item.id ? " active" : ""}" data-view="${item.id}" type="button">${icon(item.icon, "nav-icon")}<span>${esc(item.label)}</span>${item.count ? `<span class="nav-count">${toArabicNumber(item.count)}</span>` : ""}</button>`).join("")}
+        </nav>
+        ${state.role !== "department" ? `<div class="sidebar-label" style="margin-top:25px">وصول سريع</div><nav class="nav-list"><button class="nav-item" data-action="open-summon" type="button">${icon("phone", "nav-icon")}<span>نداء مباشر</span></button><button class="nav-item" data-action="open-new-request" type="button">${icon("plus", "nav-icon")}<span>إضافة معاملة</span></button></nav>` : ""}
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-card"><div class="sidebar-card-title"><span class="pulse-dot"></span> شبكة المستشفى المحلية</div><p>التطبيق يعمل في وضع العرض المحلي. البيانات التجريبية محفوظة على هذا المتصفح.</p></div>
+        <div class="sidebar-foot"><span>نسخة توضيحية</span><strong>${urgentCount ? `${toArabicNumber(urgentCount)} عاجل` : "النظام جاهز"}</strong></div>
+      </aside>
+      <button class="menu-backdrop${state.menuOpen ? " is-open" : ""}" aria-label="إغلاق القائمة" data-action="close-menu" type="button"></button>`;
+  }
+
+  function renderHeader() {
+    const meta = VIEW_INFO[state.view] || VIEW_INFO.dashboard;
+    const role = ROLES[state.role] || ROLES.director;
+    const busy = isBusy();
+    return `<header class="topbar">
+      <div class="topbar-start">
+        <button class="mobile-menu" data-action="menu-toggle" aria-label="فتح القائمة" type="button">${icon("menu")}</button>
+        <div class="topbar-title"><strong>${esc(meta[0])}</strong><span>مستشفى النور التخصصي · مساحة العمل التنفيذية</span></div>
+      </div>
+      <div class="topbar-end">
+        <span class="local-indicator" title="واجهة محلية تجريبية"><span class="pulse-dot"></span>محلي</span>
+        <span class="topbar-divider"></span>
+        <label class="role-select-wrap"><span>عرض الدور</span><select id="role-select" aria-label="تغيير الدور التجريبي">${ROLE_IDS.filter((id) => id !== "waiting").map((id) => `<option value="${id}"${id === state.role ? " selected" : ""}>${esc(ROLES[id].label)}</option>`).join("")}</select></label>
+        <button class="icon-button" data-action="open-communications" aria-label="الإشعارات" title="الإشعارات">${icon("bell")}${state.notices.length ? '<span class="notice-dot"></span>' : ""}</button>
+        <span class="avatar" aria-hidden="true">${esc(role.initials)}</span>
+        <div class="user-name"><strong>${esc(role.person)}</strong><span>${busy && state.role === "director" ? "غير متفرغ" : esc(role.short)}</span></div>
+      </div>
+    </header>`;
+  }
+
+  function renderDemoNote() {
+    if (state.role === "department") return `<div class="demo-note">${icon("shield")}<span><strong>نموذج تجريبي:</strong> إخفاء جهة الإحالة هنا تمثيل للواجهة فقط. لا ترسل بيانات مرضى أو معلومات حقيقية؛ العزل وRLS يتطلبان خادماً موثوقاً ومصادقة فعلية.</span></div>`;
+    return `<div class="demo-note">${icon("shield")}<span><strong>بيئة عرض توضيحي:</strong> البيانات والأدوار محفوظة في هذا المتصفح فقط. لا تطبق هذه الواجهة مصادقة أو عزل قواعد بيانات (RLS)، ولا تستخدم بيانات مرضى حقيقية.</span></div>`;
+  }
+
+  function isBusy() {
+    return !!state.busyUntil && new Date(state.busyUntil).getTime() > Date.now();
+  }
+
+  function renderBusyBanner() {
+    if (!isBusy()) return "";
+    const time = formatDateTime(state.busyUntil);
+    return `<section class="busy-banner"><div class="busy-banner-copy"><div class="busy-icon">${icon("clock")}</div><div><strong>المدير غير متفرغ${state.busyReason ? ` · ${esc(state.busyReason)}` : ""}</strong><span>الوقت المتوقع للعودة: ${esc(time)} · يظهر هذا المؤشر ضمن المحاكاة المحلية فقط.</span></div></div>${state.role === "director" ? `<button class="btn btn-secondary btn-small" data-action="set-available" type="button">إنهاء الانشغال</button>` : ""}</section>`;
+  }
+
+  function heading(title, description, actions = "") {
+    return `<div class="page-heading"><div><h1>${title}</h1><p>${description}</p></div>${actions ? `<div class="heading-actions">${actions}</div>` : ""}</div>`;
+  }
+
+  function pageWrap(inner, includeNote = true) {
+    return `<div class="page-content">${includeNote ? renderDemoNote() : ""}${renderBusyBanner()}${inner}</div>`;
+  }
+
+  function renderDashboard() {
+    const requests = visibleRequests();
+    const urgent = requests.filter((r) => r.quadrant === "q1" && r.status !== "مكتمل").length;
+    const active = requests.filter((r) => !["مكتمل", "مرفوض"].includes(r.status)).length;
+    const withDeputies = state.requests.filter((r) => ["deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل").length;
+    const q1List = requests.filter((r) => r.quadrant === "q1" && r.status !== "مكتمل").slice(0, 3);
+    const pendingDecisions = requests.filter((r) => ["بانتظار القرار", "جديد"].includes(r.status)).length;
+    const actions = state.role === "department"
+      ? `<button class="btn btn-primary" data-action="new-request" type="button">${icon("plus")} إرسال طلب جديد</button>`
+      : `<button class="btn btn-secondary" data-action="open-busy" type="button">${icon("clock")} ${isBusy() ? "تعديل وقت الانشغال" : "تحديد عدم التفرغ"}</button><button class="btn btn-primary" data-action="open-new-request" type="button">${icon("plus")} معاملة جديدة</button>`;
+    const title = state.role === "director" ? `صباح الخير، ${esc(ROLES.director.person)}` : `مرحباً، ${esc(ROLES[state.role].person)}`;
+    const desc = `${dateLong()} · هذه نظرة سريعة على ما يحتاج انتباهك.`;
+    return pageWrap(`${heading(title, desc, actions)}
+      <div class="stats-grid">
+        <article class="stat-card urgent"><div><div class="stat-label">هام وعاجل</div><div class="stat-value">${toArabicNumber(urgent)}</div><div class="stat-foot"><span class="up">يتطلب متابعة فورية</span></div></div><div class="stat-icon">${icon("bellRing")}</div></article>
+        <article class="stat-card deputy"><div><div class="stat-label">لدى النواب والجهات</div><div class="stat-value">${toArabicNumber(state.role === "director" ? withDeputies : requests.filter((r) => r.status === "قيد المعالجة" || r.status === "مُحال للنائب").length)}</div><div class="stat-foot">معاملات قيد التنفيذ</div></div><div class="stat-icon">${icon("users")}</div></article>
+        <article class="stat-card waiting"><div><div class="stat-label">بانتظار قرار</div><div class="stat-value">${toArabicNumber(pendingDecisions)}</div><div class="stat-foot">جديد أو بحاجة لاعتماد</div></div><div class="stat-icon">${icon("clock")}</div></article>
+        <article class="stat-card"><div><div class="stat-label">طلبات نشطة</div><div class="stat-value">${toArabicNumber(active)}</div><div class="stat-foot"><span class="up">${toArabicNumber(state.requests.filter((r) => r.status === "مكتمل").length)} مكتملة</span> في سجل العرض</div></div><div class="stat-icon">${icon("check")}</div></article>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dashboard-main-column">
+          ${renderMatrixPanel(requests)}
+          ${renderRecentRequests(requests)}
+        </div>
+        <div class="dashboard-side-column">
+          ${renderBriefingCard(urgent, requests)}
+          ${state.role === "director" ? renderRoutingCard() : renderLocalNoticeCard()}
+        </div>
+      </div>`, true);
+  }
+
+  function renderMatrixPanel(requests) {
+    return `<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("grid")}</span><div><h2>${state.role === "director" ? "مصفوفة آيزنهاور" : "مصفوفة مهامي"}</h2><p>التصنيف المقترح · اسحب للمراجعة من تفاصيل المعاملة</p></div></div><button class="link-button" data-view="matrix" type="button">عرض المصفوفة ${icon("chevron")}</button></div>
+      <div class="matrix-preview"><div class="matrix-axis"><span class="axis-label">${icon("arrowUp")} مهم</span><span class="axis-label">عاجل <span class="axis-arrow">←</span> غير عاجل</span></div><div class="matrix-grid">${QUADRANTS.map((q) => renderQuadrant(q, requests.filter((r) => r.quadrant === q.id).slice(0, 2), true)).join("")}</div></div></section>`;
+  }
+
+  function renderQuadrant(q, items, preview = false) {
+    return `<section class="quadrant ${q.className}"><div class="quadrant-head"><div class="quadrant-title"><span class="quadrant-mark">${q.mark}</span><div><strong>${q.label}</strong><span>${q.action}</span></div></div><span class="quadrant-count">${toArabicNumber(items.length)} طلب</span></div><div class="task-list">${items.length ? items.map((request) => renderTaskRow(request, preview)).join("") : `<div class="empty-in-quadrant">لا توجد معاملات في هذا المربع</div>`}</div></section>`;
+  }
+
+  function renderTaskRow(request, compact = false) {
+    const info = qInfo(request.quadrant);
+    const learned = request.learned ? `<span class="learning-label">${icon("spark")} تصنيف وفق تفضيلات سابقة</span>` : "";
+    return `<div class="task-row" role="button" tabindex="0" data-open-request="${esc(request.id)}" aria-label="تفاصيل ${esc(request.title)}"><strong>${esc(request.title)}</strong><div class="task-row-meta"><span>${esc(request.department)}</span><span>${esc(request.time || request.date || "اليوم")}</span></div>${learned}${compact ? `<div class="task-actions"><button type="button" data-action="move-request" data-request-id="${esc(request.id)}" aria-label="تغيير تصنيف الطلب">نقل المربع</button></div>` : ""}</div>`;
+  }
+
+  function renderBriefingCard(urgent, requests) {
+    const handled = state.requests.filter((r) => r.status === "مكتمل").length;
+    const totalToday = Math.max(1, state.requests.length);
+    const progress = Math.min(100, Math.round(((handled + Math.max(2, Math.round(totalToday * .52))) / totalToday) * 100));
+    const urgentList = requests.filter((r) => r.quadrant === "q1").slice(0, 2);
+    return `<section class="panel briefing-card"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("report")}</span><div><h2>موجز اليوم</h2><p>ملخص تنفيذي حتى الآن</p></div></div><span class="pill pill-green">${toArabicNumber(handled)} مكتمل</span></div>
+      <div class="briefing-date">${dateLong()} · تحديث ${timeNow()}</div>
+      <div class="briefing-kpis"><div class="brief-kpi critical"><span>حالات عاجلة</span><strong>${toArabicNumber(urgent)}</strong></div><div class="brief-kpi"><span>بانتظار المتابعة</span><strong>${toArabicNumber(requests.filter((r) => r.status !== "مكتمل").length)}</strong></div></div>
+      <div class="briefing-progress"><div class="progress-label"><span>إنجاز مهام العرض</span><strong>${toArabicNumber(progress)}٪</strong></div><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>
+      ${urgentList.length ? `<div class="priority-feed">${urgentList.map((r) => `<div class="priority-item"><span class="priority-dot"></span><div class="priority-copy"><strong>${esc(r.title)}</strong><span>${esc(r.department)} · ${esc(r.time)}</span></div></div>`).join("")}</div>` : ""}
+      <div class="briefing-foot"><span>المعاملات المعروضة</span><strong>${toArabicNumber(requests.length)} سجل</strong></div>
+    </section>`;
+  }
+
+  function renderRoutingCard() {
+    const routes = [
+      { id: "deputy-med", icon: "مع", name: "النائب الأول", subtitle: "الشؤون الطبية", count: state.requests.filter((r) => r.assignee === "deputy-med" && r.status !== "مكتمل").length },
+      { id: "deputy-admin", icon: "إم", name: "النائب الثاني", subtitle: "الإدارية والمالية", count: state.requests.filter((r) => r.assignee === "deputy-admin" && r.status !== "مكتمل").length },
+      { id: "doctor", icon: "ط", name: "الطبيب المصرح", subtitle: "التوقيعات الروتينية", count: state.requests.filter((r) => r.assignee === "doctor" && r.status !== "مكتمل").length },
+    ];
+    return `<section class="panel route-card"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>التوجيه للنواب</h2><p>توزيع المهام حسب الاختصاص</p></div></div></div><div class="route-list">${routes.map((r) => `<div class="route-item"><div class="route-person"><span class="route-avatar">${r.icon}</span><div><strong>${r.name}</strong><span>${r.subtitle}</span></div></div><div class="route-number">${toArabicNumber(r.count)}<small>نشطة</small></div></div>`).join("")}</div><div class="briefing-foot"><span>آخر مراجعة</span><strong>اليوم · ${timeNow()}</strong></div></section>`;
+  }
+
+  function renderLocalNoticeCard() {
+    const items = state.notices.filter((n) => n.target === "all").slice(0, 2);
+    return `<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("bell")}</span><div><h2>التنبيهات</h2><p>آخر التحديثات للمستخدمين</p></div></div><button class="link-button" data-view="communications" type="button">إدارة ${icon("chevron")}</button></div>${items.length ? items.map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time)}</time></div>`).join("") : `<div class="no-results">لا توجد تنبيهات جديدة.</div>`}</section>`;
+  }
+
+  function renderRecentRequests(requests) {
+    const list = [...requests].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+    return `<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>أحدث المعاملات</h2><p>آخر ما ورد إلى مساحة العمل</p></div></div><button class="link-button" data-view="requests" type="button">سجل الطلبات ${icon("chevron")}</button></div>${list.length ? `<div class="table-wrap"><table class="requests-table"><thead><tr><th>المعاملة</th><th>القسم</th><th>الأولوية</th><th>الحالة</th></tr></thead><tbody>${list.map((r) => `<tr data-open-request="${esc(r.id)}" tabindex="0"><td><div class="request-title-cell"><span class="request-type-icon">${icon(r.confidential ? "lock" : "file")}</span><div><strong>${esc(r.title)}</strong><span>${esc(r.id)} · ${esc(r.time)}</span></div></div></td><td>${esc(r.department)}</td><td><span class="pill ${qInfo(r.quadrant).pill}">${qInfo(r.quadrant).label}</span></td><td><span class="status-text ${statusClass(r.status)}">${esc(r.status)}</span></td></tr>`).join("")}</tbody></table></div>` : `<div class="no-results">لا توجد معاملات ظاهرة لهذا الدور.</div>`}</section>`;
+  }
+
+  function renderMatrixPage() {
+    const requests = visibleRequests();
+    const actions = `<button class="btn btn-secondary" data-action="export-requests" type="button">${icon("file")} تصدير CSV</button>`;
+    return pageWrap(`${heading("مصفوفة آيزنهاور", "حرّك المعاملة يدوياً عند الحاجة؛ سيُحفظ هذا التعديل كقاعدة محلية للمقترحات المشابهة.", actions)}
+      <div class="matrix-page-grid">${QUADRANTS.map((q) => renderQuadrant(q, requests.filter((r) => r.quadrant === q.id), false)).join("")}</div>
+      <section class="learning-panel"><div class="learning-panel-copy"><span class="learning-panel-icon">${icon("spark")}</span><div><strong>محرك التعلّم من التعديلات</strong><p>عند نقل معاملة، تُحفظ كلمات مفتاحية والقسم والمربع الجديد على هذا المتصفح. عند ورود طلب مشابه من القسم نفسه يقترح النظام التصنيف المحفوظ، ويمكنك تغييره مجدداً.</p></div></div><div class="learning-stat"><strong>${toArabicNumber(state.overrides.length)}</strong><span>قاعدة محفوظة</span></div></section>
+      <div class="footer-caption">قواعد التعلّم هنا تجريبية ومخزنة في المتصفح فقط؛ لا تستبدل سياسة تصنيف أو سجل تدقيق معتمداً.</div>`, true);
+  }
+
+  function renderRequestsPage() {
+    const requests = [...visibleRequests()].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const filtered = requests.filter((r) => {
+      const query = normalizeArabic(state.requestSearch);
+      const matchesQuery = !query || normalizeArabic(`${r.id} ${r.title} ${r.department} ${r.requester} ${r.status}`).includes(query);
+      const matchesFilter = state.requestFilter === "all" || r.quadrant === state.requestFilter || (state.requestFilter === "open" && r.status !== "مكتمل");
+      return matchesQuery && matchesFilter;
+    });
+    return pageWrap(`${heading(state.role === "director" || state.role === "secretary" ? "سجل الطلبات" : "المعاملات الموجّهة إليّ", "ابحث بالرقم أو القسم أو الكلمات المفتاحية، ثم افتح الطلب للإجراء." , `<button class="btn btn-primary" data-action="open-new-request" type="button">${icon("plus")} إضافة معاملة</button>`)}
+      <div class="filter-bar"><label class="filter-search">${icon("search")}<input id="request-search" type="search" placeholder="ابحث في الطلبات..." value="${esc(state.requestSearch)}" autocomplete="off" /></label><select class="filter-select" id="request-filter" aria-label="تصفية الطلبات"><option value="all"${state.requestFilter === "all" ? " selected" : ""}>كل الطلبات</option><option value="open"${state.requestFilter === "open" ? " selected" : ""}>غير مكتملة</option>${QUADRANTS.map((q) => `<option value="${q.id}"${state.requestFilter === q.id ? " selected" : ""}>${q.label}</option>`).join("")}</select></div>
+      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة المعاملات</h2><p>${toArabicNumber(filtered.length)} معاملة معروضة</p></div></div><span class="pill pill-gray">${toArabicNumber(requests.length)} في النطاق</span></div>${filtered.length ? `<div class="table-wrap"><table class="requests-table"><thead><tr><th>المعاملة</th><th>القسم</th><th>الإحالة</th><th>الأولوية</th><th>الحالة</th><th></th></tr></thead><tbody>${filtered.map((r) => `<tr data-open-request="${esc(r.id)}" tabindex="0"><td><div class="request-title-cell"><span class="request-type-icon">${icon(r.confidential ? "lock" : "file")}</span><div><strong>${esc(r.title)}${r.confidential ? ` <span class="confidential">${icon("lock")} سرية</span>` : ""}</strong><span>${esc(r.id)} · ${esc(r.time || r.date || "اليوم")} · ${esc(r.requester)}</span></div></div></td><td>${esc(r.department)}</td><td>${esc(roleShort(r.assignee))}</td><td><span class="pill ${qInfo(r.quadrant).pill}">${qInfo(r.quadrant).label}</span>${r.learned ? `<span class="learning-label">${icon("spark")} تعلم</span>` : ""}</td><td><span class="status-text ${statusClass(r.status)}">${esc(r.status)}</span></td><td><button class="row-menu" data-action="open-request" data-request-id="${esc(r.id)}" aria-label="فتح تفاصيل المعاملة">${icon("more")}</button></td></tr>`).join("")}</tbody></table></div>` : `<div class="no-results">لا توجد نتائج مطابقة.</div>`}</section>`, true);
+  }
+
+  function renderCommunications() {
+    const notices = state.notices.slice(0, 8);
+    const directorBusy = isBusy();
+    return pageWrap(`${heading("التواصل والاستدعاء", "إشعارات وتنسيق داخل الشبكة المحلية — في هذا النموذج لا تُرسل رسائل فعلية إلى أجهزة أخرى.", `<button class="btn btn-primary" data-action="open-broadcast" type="button">${icon("send")} تعميم جديد</button>`)}
+      <div class="communication-grid">
+          <section class="panel action-panel"><div class="action-panel-head"><span class="action-big-icon ${directorBusy ? "" : "green"}">${icon("clock")}</span><div><strong>حالة التفرغ</strong><span>تظهر مؤقتاً في لوحات العرض</span></div></div><div class="action-panel-body"><p class="action-description">${directorBusy ? `المدير غير متفرغ حتى ${esc(formatDateTime(state.busyUntil))}${state.busyReason ? ` بسبب: ${esc(state.busyReason)}` : ""}.` : "حدّد مدة الانشغال قبل الاجتماع؛ يلزم إدخال وقت نهاية واضح."}</p>${state.role === "director" ? `<button class="btn ${directorBusy ? "btn-secondary" : "btn-primary"}" data-action="${directorBusy ? "set-available" : "open-busy"}" type="button">${icon(directorBusy ? "check" : "clock")}${directorBusy ? "إنهاء حالة الانشغال" : "تحديد وقت عدم التفرغ"}</button>` : "<span class=\"helper-text\">تُدار هذه الحالة من لوحة المدير.</span>"}</div></section>
+        <section class="panel action-panel"><div class="action-panel-head"><span class="action-big-icon blue">${icon("phone")}</span><div><strong>نداء مباشر</strong><span>استدعاء موظف أو نائب للمكتب</span></div></div><div class="action-panel-body"><p class="action-description">إرسال نداء تجريبي إلى شخص محدد أو إلى رئيس قسم. لا يصل إلى هاتف حقيقي في هذه النسخة.</p><button class="btn btn-secondary" data-action="open-summon" type="button">${icon("phone")} إنشاء نداء</button></div></section>
+      </div>
+      <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("bell")}</span><div><h2>التعاميم والتنبيهات</h2><p>سجل الرسائل المحفوظة محلياً</p></div></div><span class="pill pill-gray">${toArabicNumber(notices.length)} رسالة</span></div>${notices.length ? notices.map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}${n.target === "all" ? ` <span class="pill pill-blue">لكل الأقسام</span>` : ` <span class="pill pill-gray">${esc(n.department || n.target)}</span>`}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time || "الآن")}</time></div>`).join("") : `<div class="no-results">لا توجد تعاميم بعد.</div>`}<div style="padding:0 17px 16px"><button class="btn btn-secondary btn-small" data-action="open-broadcast" type="button">${icon("plus")} إضافة تعميم</button></div></section>
+      <div class="demo-note" style="margin-top:15px;margin-bottom:0">${icon("shield")}<span>للتنفيذ الحقيقي على عدة أجهزة يلزم خادم محلي وقناة WebSocket موثوقة مع مصادقة وصلاحيات. تحديث localStorage لا يرسل إشعارات إلى أجهزة الشبكة.</span></div>`, true);
+  }
+
+  function renderSecretary() {
+    const waiting = state.queue.length;
+    const next = state.queue[0];
+    const appointments = [...state.agenda];
+    const unsigned = state.documents.filter((d) => d.status === "بانتظار التوقيع");
+    return pageWrap(`${heading("إدارة المكتب", "طابور منظم للزوار، أجندة المدير، ومستندات جاهزة للمراجعة.", `<button class="btn btn-secondary" data-action="show-waiting" type="button">${icon("laptop")} شاشة صالة الانتظار</button><button class="btn btn-primary" data-action="open-queue-add" type="button">${icon("plus")} حجز موعد</button>`)}
+      <div class="secretary-grid">
+        <div style="display:grid;gap:15px">
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>طابور المكتب</h2><p>عرض الرقم الحالي فقط على شاشة الانتظار</p></div></div><span class="pill pill-green">${toArabicNumber(waiting)} بانتظار الدخول</span></div>
+            <div class="queue-display"><div><small>الرقم الحالي</small><strong>${esc(state.currentTicket)}</strong><p>تتم إدارة تفاصيل الزائر داخل المكتب فقط</p></div><div class="queue-next"><span>التالي</span><strong>${esc(next ? next.number : "—")}</strong></div></div>
+            <div class="queue-actions"><button class="btn btn-primary btn-small" data-action="call-next" type="button">${icon("arrow")} استدعاء التالي</button><button class="btn btn-secondary btn-small" data-action="show-waiting" type="button">فتح شاشة العرض</button></div>
+            <div class="queue-list">${state.queue.length ? state.queue.slice(0, 5).map((q) => `<div class="queue-row${q.priority ? " is-priority" : ""}"><span class="queue-number">${esc(q.number)}</span><div class="queue-copy"><strong>${esc(q.name)}</strong><span>${esc(q.department)}${q.priority ? " · أولوية" : ""}</span></div><time>${esc(q.time)}</time></div>`).join("") : `<div class="no-results">الطابور فارغ حالياً.</div>`}</div>
+          </section>
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("file")}</span><div><h2>مسار التوقيعات</h2><p>محاكاة لحالة المستندات فقط — لا توقيع رقمي فعلي</p></div></div><span class="pill pill-amber">${toArabicNumber(unsigned.length)} بانتظار المراجعة</span></div><div class="queue-list">${state.documents.map((d) => `<div class="queue-row"><span class="request-type-icon">${icon("file")}</span><div class="queue-copy"><strong>${esc(d.name)}</strong><span>${esc(d.department)} · ${esc(d.status)}</span></div>${d.status === "بانتظار التوقيع" ? `<button class="btn btn-secondary btn-small" data-action="demo-sign" data-document-id="${esc(d.id)}" type="button">اعتماد تجريبي</button>` : `<span class="pill pill-green">تم</span>`}</div>`).join("")}</div><div class="blind-note" style="margin:0 17px 15px">الإقرار هنا يغيّر حالة العرض فقط؛ لا ينشئ توقيع PDF معتمداً أو ختمًا رقمياً.</div></section>
+        </div>
+        <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("calendar")}</span><div><h2>أجندة اليوم</h2><p>${dateLong()}</p></div></div><button class="link-button" data-action="open-appointment" type="button">إضافة ${icon("plus")}</button></div><div class="calendar-body"><div class="calendar-head"><strong>المواعيد القادمة</strong><span>${toArabicNumber(appointments.length)} بنود</span></div>${appointments.map((item) => `<div class="agenda-item"><div class="agenda-time">${esc(item.time)}</div><div class="agenda-event" style="border-color:${item.focus ? "#dfbd72" : "#a9d5c0"}"><strong>${esc(item.title)}</strong><span>${esc(item.detail)}</span></div></div>`).join("")}<div class="focus-card"><strong>${icon("target")} وقت تركيز محمي</strong><p>احجز فترة بلا مقاطعات للمهام المهمة وغير العاجلة.</p><button class="btn btn-secondary btn-small" data-action="open-focus" type="button">${icon("clock")} حجز وقت تركيز</button></div></div></section>
+      </div>
+      <div class="footer-caption">هذه الأدوات تحفظ عيّنات بيانات محلياً. الجدولة الفعلية وتوقيع المستندات تتطلب تكاملات خادمية معتمدة.</div>`, true);
+  }
+
+  function renderDecisions() {
+    const query = normalizeArabic(state.decisionSearch);
+    const decisions = state.decisions.filter((d) => !query || normalizeArabic(`${d.id} ${d.title} ${d.summary} ${d.category} ${d.owner}`).includes(query));
+    return pageWrap(`${heading("سجل القرارات", "أرشيف تجريبي قابل للبحث للرجوع إلى القرارات السابقة ومنع التضارب.", `<button class="btn btn-primary" data-action="open-decision" type="button">${icon("plus")} تسجيل قرار</button>`)}
+      <label class="filter-search" style="margin-bottom:14px">${icon("search")}<input id="decision-search" type="search" placeholder="ابحث عن قرار أو موضوع..." value="${esc(state.decisionSearch)}" autocomplete="off" /></label>
+      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("archive")}</span><div><h2>القرارات المحفوظة</h2><p>${toArabicNumber(decisions.length)} نتيجة</p></div></div><span class="pill pill-gray">تخزين محلي توضيحي</span></div><div class="decisions-list">${decisions.length ? decisions.map((d) => `<article class="decision-row"><div class="decision-number">${esc(d.id)}</div><div class="decision-copy"><strong>${esc(d.title)}</strong><p>${esc(d.summary)}</p></div><div class="decision-meta"><span class="pill pill-blue">${esc(d.category)}</span><span>${esc(d.date)}</span></div></article>`).join("") : `<div class="no-results">لا توجد قرارات مطابقة.</div>`}</div></section>`, true);
+  }
+
+  function renderDaily() {
+    const open = state.requests.filter((r) => r.status !== "مكتمل");
+    const urgent = open.filter((r) => r.quadrant === "q1");
+    const completed = state.requests.filter((r) => r.status === "مكتمل");
+    const signed = state.documents.filter((d) => d.status !== "بانتظار التوقيع");
+    const deputyPending = state.requests.filter((r) => ["deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل");
+    return pageWrap(`${heading("الموجز اليومي", "ملخص تنفيذي من بيانات العرض الحالية. اطبع الصفحة أو راجع عناصر المتابعة.", `<button class="btn btn-secondary" data-action="print-page" type="button">${icon("file")} طباعة الموجز</button>`)}
+      <div class="digest-grid">
+        <div style="display:grid;gap:15px">
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("report")}</span><div><h2>ملخص الحالة</h2><p>${dateLong()} · ${timeNow()}</p></div></div><span class="pill pill-green">محدّث الآن</span></div><div class="digest-summary"><div class="digest-summary-item critical"><span>أزمات عاجلة</span><strong>${toArabicNumber(urgent.length)}</strong></div><div class="digest-summary-item"><span>مكتملة</span><strong>${toArabicNumber(completed.length)}</strong></div><div class="digest-summary-item"><span>معلّقة</span><strong>${toArabicNumber(open.length)}</strong></div></div><div class="digest-list"><div class="digest-line"><span class="digest-line-icon">${icon("bellRing")}</span><div><strong>الأزمات العاجلة</strong><span>${urgent.length ? urgent.map((r) => esc(r.title)).join(" · ") : "لا توجد حالات عاجلة ظاهرة."}</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("users")}</span><div><strong>مهام لدى النواب</strong><span>${toArabicNumber(deputyPending.length)} معاملة لا تزال مفتوحة لدى النواب أو الطبيب المصرح.</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("file")}</span><div><strong>الأوراق الموقعة</strong><span>${toArabicNumber(signed.length)} مستند بحالة موقّع تجريبياً أو مكتمل في بيانات العرض.</span></div></div></div></section>
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة المتابعة قبل نهاية اليوم</h2><p>الأولوية للطلبات العاجلة ثم المعلّقة</p></div></div></div><div class="decisions-list">${open.slice(0, 6).map((r) => `<div class="digest-line" style="padding:13px 18px;cursor:pointer" data-open-request="${esc(r.id)}"><span class="digest-line-icon">${icon(r.quadrant === "q1" ? "bellRing" : "file")}</span><div><strong>${esc(r.title)}</strong><span>${esc(r.department)} · ${esc(r.status)} · ${esc(roleShort(r.assignee))}</span></div></div>`).join("") || `<div class="no-results">لا توجد مهام مفتوحة.</div>`}</div></section>
+        </div>
+        <div style="display:grid;align-content:start;gap:15px">
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("sound")}</span><div><h2>تنبيهات صوتية محلية</h2><p>للمربع الأول فقط عند إضافة طلب عاجل</p></div></div></div><div class="action-panel-body"><p class="action-description">الصوت يعمل بعد تفعيل يدوي في هذا المتصفح. لا يرسل بيانات أو تنبيهاً إلى أجهزة أخرى.</p><button class="btn ${state.soundAlerts ? "btn-primary" : "btn-secondary"}" data-action="toggle-sound" type="button">${icon(state.soundAlerts ? "check" : "sound")}${state.soundAlerts ? "التنبيهات مفعّلة" : "تفعيل الصوت"}</button>${state.soundAlerts ? `<button class="btn btn-quiet btn-small" style="margin-right:8px" data-action="test-sound" type="button">تجربة</button>` : ""}</div></section>
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("spark")}</span><div><h2>ملخص نهاية اليوم</h2><p>صياغة آلية مبسطة من العينة</p></div></div></div><div class="digest-quote"><strong>للاطلاع التنفيذي</strong>تحتوي بيانات العرض على ${toArabicNumber(urgent.length)} معاملة عاجلة مفتوحة و${toArabicNumber(deputyPending.length)} لدى النواب. راجع المعاملات المرتبطة بسلامة الخدمة، ثم اعتمد ما يلزم أو حدّد موعد متابعة واضحاً.</div></section>
+        </div>
+      </div>`, true);
+  }
+
+  function renderEmployee() {
+    const notices = state.notices.filter((n) => n.target === "all" || n.department === state.department).slice(0, 3);
+    return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}<div class="employee-hero"><h1>بوابة رئيس القسم</h1><p>سجّل المشكلة أو الاحتياج مرة واحدة، واحتفظ برقم متابعة. لا تعرض هذه الواجهة مسار الإحالة في نموذج العرض.</p><span class="employee-status"><span class="pulse-dot"></span>${isBusy() ? `المدير غير متفرغ حتى ${esc(formatDateTime(state.busyUntil))}` : "استقبلنا الطلبات عبر النظام"}</span></div>
+      <section class="panel employee-form-panel"><div class="employee-form-heading"><h2>تسجيل طلب جديد</h2><p>أدخل المعلومات الضرورية فقط. لا ترفع بيانات تعريفية للمرضى في هذه النسخة التجريبية.</p></div><form class="form-stack" data-form="new-request"><div class="field-row"><div class="form-field"><label for="employee-department">القسم</label><select id="employee-department" name="department" required>${["العناية المركزة", "العمليات", "الطوارئ", "التمريض", "الشؤون الطبية", "الخدمات الهندسية", "الموارد البشرية", "الإدارة المالية", "المخازن", "مكتب الجودة", "العيادات الخارجية"].map((dep) => `<option${state.department === dep ? " selected" : ""}>${dep}</option>`).join("")}</select></div><div class="form-field"><label for="employee-requester">مقدم الطلب</label><input id="employee-requester" name="requester" value="${esc(ROLES.department.person)}" required /></div></div><div class="form-field"><label for="employee-title">عنوان الطلب</label><input id="employee-title" name="title" maxlength="120" placeholder="مثال: عطل يؤثر على تقديم الخدمة" required /></div><div class="form-field"><label for="employee-details">التفاصيل</label><textarea id="employee-details" name="details" maxlength="1500" placeholder="اكتب ملخصاً واضحاً، دون بيانات مرضى أو معلومات لا تلزم لمعالجة الطلب." required></textarea></div><div class="field-row"><div class="form-field"><label for="employee-importance">الأهمية</label><select id="employee-importance" name="importance"><option value="auto">يحددها النظام مبدئياً</option><option value="high">هام</option><option value="low">غير هام</option></select></div><div class="form-field"><label for="employee-urgency">الاستعجال</label><select id="employee-urgency" name="urgency"><option value="normal">عادي</option><option value="urgent">عاجل / يؤثر على سلامة الخدمة</option></select></div></div><label class="confidential-choice"><input type="checkbox" name="confidential" value="yes" /><span><strong>يتطلب مناقشة سرية أو حضوراً شخصياً</strong><span>سيُمنع الرد الكتابي في المحاكاة ويُقترح استدعاء شخصي؛ هذا لا يضمن منع التصوير أو التسريب في نظام ويب حقيقي.</span></span></label><div class="employee-submit"><span class="helper-text">لن يظهر لك مسؤول الإحالة في هذه الواجهة. رقم المتابعة لا يعني أن بياناتك معزولة خادمياً.</span><button class="btn btn-primary" type="submit">${icon("send")} إرسال الطلب</button></div></form></section>
+      ${notices.length ? `<section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("bell")}</span><div><h2>تنبيهات المكتب</h2><p>رسائل عامة في نموذج العرض</p></div></div></div>${notices.map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time)}</time></div>`).join("")}</section>` : ""}
+      <div class="footer-caption">النسخة الحالية لا تنفذ المصادقة أو سياسات العزل على مستوى قاعدة البيانات.</div></div></div>`;
+  }
+
+  function renderMyRequests() {
+    const list = visibleRequests().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}${heading("طلباتي والردود", `قسم ${esc(state.department)} · يمكنك متابعة الحالة ورسائل المكتب.`, `<button class="btn btn-primary" data-view="employee" type="button">${icon("plus")} طلب جديد</button>`)}
+      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>معاملاتي</h2><p>${toArabicNumber(list.length)} طلب مسجل</p></div></div></div>${list.length ? list.map((r) => `<div class="my-request-row"><div><strong>${esc(r.title)}</strong><span>${esc(r.id)} · ${esc(r.time || r.date)} · ${r.confidential ? "مناقشة شخصية" : "متابعة رقمية"}</span></div><span class="status-text ${statusClass(r.status)}">${esc(r.status)}</span></div>`).join("") : `<div class="no-results">لا توجد طلبات بعد. ابدأ بتسجيل طلب جديد.</div>`}</section>
+      <div class="blind-note">${icon("shield")} إذا استدعى الطلب مقابلة شخصية، سيظهر لك موعد المراجعة فقط دون رد كتابي. يرجى عدم استخدام بيانات حقيقية داخل هذا النموذج التوضيحي.</div>
+      <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("message")}</span><div><h2>رسائل المكتب</h2><p>التعاميم والاستدعاءات الظاهرة لهذا القسم</p></div></div></div>${state.notices.filter((n) => n.target === "all" || n.department === state.department).map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time)}</time></div>`).join("") || `<div class="no-results">لا توجد رسائل حالياً.</div>`}</section></div></div>`;
+  }
+
+  function renderWaiting() {
+    const next = state.queue[0];
+    return `<main class="waiting-screen"><div class="waiting-top"><div class="waiting-brand"><span class="brand-mark">${icon("brand")}</span><strong>مستشفى النور التخصصي · صالة الانتظار</strong></div><button class="btn" data-action="exit-waiting" type="button">${icon("x")} إنهاء العرض</button></div><div class="waiting-label">الرقم الحالي</div><div class="waiting-number">${esc(state.currentTicket)}</div><div class="waiting-next"><span>يرجى الاستعداد · الرقم التالي</span><strong>${esc(next ? next.number : "—")}</strong></div><div class="waiting-message">يرجى متابعة الشاشة والتوجه إلى المكتب عند ظهور رقمك.</div><div class="waiting-clock">${dateLong()} · ${timeNow()}</div></main>`;
+  }
+
+  function renderModal() {
+    if (!state.modal) return "";
+    const { type } = state.modal;
+    let content = "";
+    let compact = false;
+    if (type === "new-request") content = modalNewRequest();
+    else if (type === "move-request") content = modalMoveRequest();
+    else if (type === "request-details") content = modalRequestDetails();
+    else if (type === "busy") { compact = true; content = modalBusy(); }
+    else if (type === "summon") { compact = true; content = modalSummon(); }
+    else if (type === "broadcast") { compact = true; content = modalBroadcast(); }
+    else if (type === "queue-add") { compact = true; content = modalQueueAdd(); }
+    else if (type === "decision") content = modalDecision();
+    else if (type === "appointment") { compact = true; content = modalAppointment(false); }
+    else if (type === "focus") { compact = true; content = modalAppointment(true); }
+    if (!content) return "";
+    return `<div class="modal-backdrop" data-action="backdrop-close"><section class="modal${compact ? " modal-compact" : ""}" role="dialog" aria-modal="true" aria-labelledby="modal-title">${content}</section></div>`;
+  }
+
+  function modalHeader(title, sub = "") {
+    return `<div class="modal-header"><div class="modal-header-copy"><h2 id="modal-title">${title}</h2>${sub ? `<p>${sub}</p>` : ""}</div><button class="modal-close" data-action="close-modal" type="button" aria-label="إغلاق">${icon("x")}</button></div>`;
+  }
+
+  function modalNewRequest() {
+    const deptOptions = ["العناية المركزة", "العمليات", "الطوارئ", "التمريض", "الشؤون الطبية", "الخدمات الهندسية", "الموارد البشرية", "الإدارة المالية", "المخازن", "مكتب الجودة", "العيادات الخارجية"];
+    return `${modalHeader("إضافة معاملة", "بيانات عرض تجريبي — لا ترفق معلومات مرضى.")}<form data-form="new-request"><div class="modal-body"><div class="form-stack"><div class="field-row"><div class="form-field"><label for="new-department">القسم</label><select id="new-department" name="department" required>${deptOptions.map((d) => `<option${(state.role === "department" ? state.department : "العناية المركزة") === d ? " selected" : ""}>${d}</option>`).join("")}</select></div><div class="form-field"><label for="new-requester">مقدم الطلب</label><input id="new-requester" name="requester" value="${esc(ROLES[state.role].person)}" required /></div></div><div class="form-field"><label for="new-title">عنوان الطلب</label><input id="new-title" name="title" maxlength="120" placeholder="اكتب عنواناً مختصراً وواضحاً" required /></div><div class="form-field"><label for="new-details">التفاصيل</label><textarea id="new-details" name="details" maxlength="1500" placeholder="اشرح الحالة والإجراء المطلوب، دون معلومات تعريفية للمرضى." required></textarea></div><div class="field-row"><div class="form-field"><label for="new-importance">الأهمية</label><select id="new-importance" name="importance"><option value="auto">تحديد تلقائي مبدئي</option><option value="high">هام</option><option value="low">غير هام</option></select></div><div class="form-field"><label for="new-urgency">الاستعجال</label><select id="new-urgency" name="urgency"><option value="normal">عادي</option><option value="urgent">عاجل / يؤثر على سلامة الخدمة</option></select></div></div><label class="confidential-choice"><input type="checkbox" name="confidential" value="yes" /><span><strong>معاملة سرية — تتطلب مقابلة شخصية</strong><span>لن يظهر الرد الكتابي أو المرفقات في العرض؛ ميزة إخفاء البيانات ليست حماية فعلية.</span></span></label></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("send")} حفظ المعاملة</button></div></form>`;
+  }
+
+  function modalMoveRequest() {
+    const request = state.requests.find((r) => r.id === state.modal.requestId);
+    if (!request) return "";
+    const current = qInfo(request.quadrant);
+    return `${modalHeader("تعديل تصنيف المعاملة", "سيُحفظ النقل اليدوي كتفضيل محلي للطلبات المشابهة.")}<form data-form="move-request" data-request-id="${esc(request.id)}"><div class="modal-body"><div class="request-detail-header"><h3>${esc(request.title)}</h3><div class="request-detail-meta"><span>${esc(request.id)}</span><span>${esc(request.department)}</span><span>التصنيف الحالي: ${current.label}</span></div></div><div class="choice-list">${QUADRANTS.map((q) => `<label class="choice-option"><input type="radio" name="quadrant" value="${q.id}"${request.quadrant === q.id ? " checked" : ""} /><span><strong>${q.mark} · ${q.label}</strong><span>${q.action} — ${q.hint}</span></span></label>`).join("")}</div><div class="secret-warning">سيتعلم النموذج من كلمات الطلب والقسم على هذا الجهاز فقط. هذه القاعدة ليست نموذج تعلم مدققاً ولا تنتقل بين الأجهزة.</div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} حفظ التعديل</button></div></form>`;
+  }
+
+  function modalRequestDetails() {
+    const request = state.requests.find((r) => r.id === state.modal.requestId);
+    if (!request) return `${modalHeader("المعاملة غير موجودة")}<div class="modal-body"><div class="no-results">تعذر العثور على هذه المعاملة في بيانات العرض.</div></div>`;
+    const q = qInfo(request.quadrant);
+    const isDepartment = state.role === "department";
+    const isSecretary = state.role === "secretary";
+    const canManage = state.role === "director" || state.role === request.assignee;
+    const showBody = !isSecretary || !request.confidential;
+    const isConfidential = request.confidential;
+    const detailMessage = showBody ? `<p>${esc(request.body || "لا توجد تفاصيل إضافية مسجلة.")}</p>` : `<p>المعاملة سرية. تُخفى التفاصيل عن دور السكرتارية في هذا النموذج.</p>`;
+    const canChange = canManage && !isDepartment;
+    return `${modalHeader("تفاصيل المعاملة", `${esc(request.id)} · ${esc(request.department)}`)}<div class="modal-body"><div class="request-detail-header"><h3>${esc(request.title)}</h3><div class="request-detail-meta"><span>${esc(request.requester)}</span><span>${esc(request.time || request.date || "اليوم")}</span><span class="pill ${q.pill}">${q.label}</span>${isConfidential ? `<span class="confidential">${icon("lock")} سرية</span>` : ""}</div></div><div class="request-detail-body">${detailMessage}</div><div class="detail-grid"><div class="detail-info"><span>الحالة</span><strong>${esc(request.status)}</strong></div><div class="detail-info"><span>جهة المتابعة</span><strong>${esc(roleName(request.assignee))}</strong></div></div>${request.learned ? `<div class="learning-label">${icon("spark")} تم اقتراح التصنيف بناءً على تعديل سابق</div>` : ""}${isConfidential ? `<div class="secret-warning">${icon("lock")} معاملة حساسة: يمنع هذا النموذج عرض الرد الكتابي أو الملفات. استخدم الاستدعاء الشخصي. لا يمكن لواجهة ويب منع لقطات الشاشة أو ضمان السرية.</div>` : ""}${canChange ? `<div class="form-stack" style="margin-top:15px"><div class="field-row"><button class="btn btn-secondary" data-action="move-request" data-request-id="${esc(request.id)}" type="button">${icon("grid")} تغيير المربع</button><form data-form="assign-request" data-request-id="${esc(request.id)}" style="display:flex;gap:7px"><select class="filter-select" name="assignee" aria-label="جهة الإحالة">${["director", "deputy-med", "deputy-admin", "doctor", "secretary"].map((id) => `<option value="${id}"${request.assignee === id ? " selected" : ""}>${esc(roleName(id))}</option>`).join("")}</select><button class="btn btn-secondary btn-small" type="submit">إحالة</button></form></div></div>` : ""}${isConfidential && canChange && request.status !== "مكتمل" ? `<div style="margin-top:14px"><button class="btn btn-danger btn-block" data-action="summon-request" data-request-id="${esc(request.id)}" type="button">${icon("phone")} استدعاء شخصي — بلا رد كتابي</button></div>` : ""}${!isConfidential && canManage && request.status !== "مكتمل" ? `<form data-form="reply-request" data-request-id="${esc(request.id)}" class="form-stack" style="margin-top:15px"><div class="form-field"><label for="reply-text">رد أو ملاحظة المتابعة</label><textarea id="reply-text" name="reply" maxlength="900" placeholder="اكتب ملخص الإجراء أو المطلوب من القسم..." required></textarea></div><button class="btn btn-primary" type="submit">${icon("send")} إرسال الرد وتحديث الحالة</button></form>` : ""}${request.response ? `<div class="digest-quote" style="margin:15px 0 0"><strong>آخر رد مسجل</strong>${esc(request.response)}</div>` : ""}</div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إغلاق</button></div>`;
+  }
+
+  function modalBusy() {
+    return `${modalHeader("تحديد حالة عدم التفرغ", "يلزم تحديد وقت نهاية واضح حتى يظهر للموظفين.")}<form data-form="busy"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="busy-end">وقت العودة المتوقع</label><input id="busy-end" name="until" type="datetime-local" min="${localDateTimeValue(0)}" value="${localDateTimeValue(120)}" required /></div><div class="form-field"><label for="busy-reason">السبب (اختياري)</label><input id="busy-reason" name="reason" maxlength="100" placeholder="مثال: اجتماع لجنة التشغيل" value="${esc(state.busyReason)}" /></div><span class="helper-text">في النظام الإنتاجي يجب بث التغيير فورياً إلى الأجهزة عبر قناة موثوقة. هذه النسخة تحفظه في المتصفح فقط.</span></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("clock")} تفعيل حتى وقت العودة</button></div></form>`;
+  }
+
+  function modalSummon() {
+    const request = state.modal.requestId ? state.requests.find((r) => r.id === state.modal.requestId) : null;
+    return `${modalHeader(request ? "استدعاء صاحب المعاملة" : "نداء مباشر", request ? `معاملة ${esc(request.id)} · لا ترسل تفاصيل مكتوبة` : "اختر شخصاً أو قسماً للحضور إلى المكتب.")}<form data-form="summon" data-request-id="${request ? esc(request.id) : ""}"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="summon-target">المستلم</label><select id="summon-target" name="target" required><option value="رئيس قسم العناية المركزة"${request?.department === "العناية المركزة" ? " selected" : ""}>رئيس قسم العناية المركزة</option><option value="رئيس قسم العمليات"${request?.department === "العمليات" ? " selected" : ""}>رئيس قسم العمليات</option><option value="رئيس قسم الطوارئ">رئيس قسم الطوارئ</option><option value="النائب الأول للشؤون الطبية">النائب الأول للشؤون الطبية</option><option value="النائب الثاني للشؤون الإدارية">النائب الثاني للشؤون الإدارية</option><option value="الطبيب المصرح">الطبيب المصرح</option><option value="السكرتير التنفيذي">السكرتير التنفيذي</option></select></div><div class="form-field"><label for="summon-time">موعد الحضور</label><select id="summon-time" name="time"><option value="فوراً">فوراً</option><option value="خلال ١٥ دقيقة">خلال ١٥ دقيقة</option><option value="خلال ٣٠ دقيقة">خلال ٣٠ دقيقة</option><option value="عند مراجعة السكرتارية">عند مراجعة السكرتارية</option></select></div><div class="form-field"><label for="summon-message">نص الاستدعاء</label><textarea id="summon-message" name="message" maxlength="250" required>${request ? "يرجى الحضور إلى المكتب لمناقشة المعاملة بسرية. لا تُرسل تفاصيل عبر التطبيق." : "يرجى الحضور إلى مكتب الإدارة."}</textarea></div><div class="secret-warning">لن تُرسل رسالة فعلية على الهاتف في هذا النموذج. لا تُدرج معلومات طبية أو سرية في نص الاستدعاء.</div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("phone")} تسجيل الاستدعاء</button></div></form>`;
+  }
+
+  function modalBroadcast() {
+    return `${modalHeader("تعميم أو تنبيه", "سيظهر في سجل هذا المتصفح فقط، وليس على أجهزة الأقسام.")}<form data-form="broadcast"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="broadcast-title">عنوان التنبيه</label><input id="broadcast-title" name="title" maxlength="100" required placeholder="عنوان واضح ومختصر" /></div><div class="form-field"><label for="broadcast-message">نص الرسالة</label><textarea id="broadcast-message" name="message" maxlength="700" required placeholder="تجنب إدراج معلومات سرية أو بيانات مرضى."></textarea></div><div class="form-field"><label for="broadcast-target">المستلمون</label><select id="broadcast-target" name="department"><option value="all">كل رؤساء الأقسام</option>${["العناية المركزة", "العمليات", "الطوارئ", "التمريض", "الشؤون الطبية", "الخدمات الهندسية", "الموارد البشرية", "الإدارة المالية", "المخازن", "مكتب الجودة"].map((d) => `<option>${d}</option>`).join("")}</select></div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("send")} حفظ التعميم</button></div></form>`;
+  }
+
+  function modalQueueAdd() {
+    return `${modalHeader("إضافة موعد إلى الطابور", "يعرض التلفزيون رقم الانتظار فقط دون تفاصيل شخصية.")}<form data-form="queue-add"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="queue-name">اسم الزائر داخل لوحة السكرتارية</label><input id="queue-name" name="name" maxlength="80" required /></div><div class="form-field"><label for="queue-department">القسم أو الجهة</label><input id="queue-department" name="department" maxlength="70" required /></div><label class="confidential-choice"><input type="checkbox" name="priority" value="yes" /><span><strong>أولوية زيارة</strong><span>تظهر الأولوية لموظف السكرتارية فقط.</span></span></label></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("plus")} إضافة للطابور</button></div></form>`;
+  }
+
+  function modalDecision() {
+    return `${modalHeader("تسجيل قرار", "أضف ملخصاً قابلاً للبحث دون تخزين معلومات سرية.")}<form data-form="decision"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="decision-title">عنوان القرار</label><input id="decision-title" name="title" maxlength="130" required /></div><div class="form-field"><label for="decision-summary">الملخص أو التوجيه</label><textarea id="decision-summary" name="summary" maxlength="800" required></textarea></div><div class="field-row"><div class="form-field"><label for="decision-category">التصنيف</label><select id="decision-category" name="category"><option>تشغيل</option><option>شؤون طبية</option><option>إدارية ومالية</option><option>موارد بشرية</option><option>جودة</option></select></div><div class="form-field"><label for="decision-owner">صاحب القرار</label><input id="decision-owner" name="owner" value="${esc(ROLES[state.role].person)}" required /></div></div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} حفظ القرار</button></div></form>`;
+  }
+
+  function modalAppointment(focus) {
+    return `${modalHeader(focus ? "حجز وقت تركيز" : "إضافة موعد", focus ? "احمِ وقتاً للعمل العميق دون اجتماعات." : "أضف بنداً إلى أجندة العرض المحلية.")}<form data-form="appointment" data-focus="${focus ? "yes" : "no"}"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="appointment-title">${focus ? "عنوان المهمة" : "عنوان الموعد"}</label><input id="appointment-title" name="title" maxlength="100" value="${focus ? "وقت تركيز محمي" : ""}" required /></div><div class="field-row"><div class="form-field"><label for="appointment-time">الوقت</label><input id="appointment-time" name="time" type="time" required /></div><div class="form-field"><label for="appointment-detail">المكان أو التفاصيل</label><input id="appointment-detail" name="detail" maxlength="100" placeholder="قاعة الاجتماعات" /></div></div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("calendar")} حفظ في الأجندة</button></div></form>`;
+  }
+
+  function render() {
+    if (state.role === "waiting" || state.view === "waiting") {
+      $app.innerHTML = renderWaiting();
+      return;
+    }
+    const view = state.view;
+    let content;
+    if (view === "matrix") content = renderMatrixPage();
+    else if (view === "requests") content = renderRequestsPage();
+    else if (view === "communications") content = renderCommunications();
+    else if (view === "secretary") content = renderSecretary();
+    else if (view === "decisions") content = renderDecisions();
+    else if (view === "daily") content = renderDaily();
+    else if (view === "employee") content = renderEmployee();
+    else if (view === "my-requests") content = renderMyRequests();
+    else content = renderDashboard();
+    $app.innerHTML = `<div class="app-shell">${renderSidebar()}<main class="main">${renderHeader()}${content}</main></div>${renderModal()}`;
+    if (state.menuOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+  }
+
+  function openRequest(requestId) {
+    if (!state.requests.some((r) => r.id === requestId)) return;
+    state.modal = { type: "request-details", requestId };
+    render();
+  }
+
+  function openMove(requestId) {
+    state.modal = { type: "move-request", requestId };
+    render();
+  }
+
+  function createNewRequest(formData) {
+    const department = String(formData.get("department") || state.department).trim();
+    const title = String(formData.get("title") || "").trim();
+    const details = String(formData.get("details") || "").trim();
+    if (!title || !details) return showToast("أدخل عنوان الطلب وتفاصيله.", true);
+    const data = {
+      department,
+      title,
+      details,
+      importance: String(formData.get("importance") || "auto"),
+      urgency: String(formData.get("urgency") || "normal"),
+    };
+    const classification = classifyRequest(data);
+    const idNumber = Math.max(185, ...state.requests.map((r) => Number((r.id.match(/\d+/) || ["0"])[0]) + 1));
+    const request = {
+      id: `RF-${idNumber}`,
+      title,
+      department,
+      requester: String(formData.get("requester") || ROLES[state.role].person).trim(),
+      time: timeNow(),
+      date: "اليوم",
+      quadrant: classification.quadrant,
+      status: "جديد",
+      assignee: suggestedAssignee(data, classification.quadrant),
+      confidential: formData.get("confidential") === "yes",
+      body: details,
+      authorRole: state.role === "department" ? "department" : state.role,
+      learned: classification.learned,
+      createdAt: Date.now(),
+    };
+    state.requests.unshift(request);
+    if (state.role === "department") state.department = department;
+    save();
+    state.modal = null;
+    if (state.role === "department") state.view = "my-requests";
+    render();
+    showToast(`تم تسجيل الطلب ${request.id} · ${request.confidential ? "بانتظار ترتيب مقابلة شخصية" : `تصنيف أولي: ${qInfo(request.quadrant).label}`}`);
+    if (request.quadrant === "q1") playUrgentTone();
+  }
+
+  function handleFormSubmit(form) {
+    const data = new FormData(form);
+    const kind = form.dataset.form;
+    if (kind === "new-request") {
+      createNewRequest(data);
+      return;
+    }
+    if (kind === "move-request") {
+      const request = state.requests.find((r) => r.id === form.dataset.requestId);
+      const newQuadrant = String(data.get("quadrant") || "");
+      if (!request || !QUADRANTS.some((q) => q.id === newQuadrant)) return;
+      if (request.quadrant !== newQuadrant) {
+        const before = request.quadrant;
+        const keyWords = keywords(`${request.title} ${request.body || ""}`);
+        state.overrides.push({ department: request.department, keywords: keyWords, from: before, to: newQuadrant, createdAt: Date.now() });
+        request.quadrant = newQuadrant;
+        request.learned = false;
+        request.updatedAt = Date.now();
+        save();
+        state.modal = null;
+        render();
+        showToast(`حُفظ التعديل. الطلبات المشابهة من ${request.department} ستقترح «${qInfo(newQuadrant).label}».`);
+      } else {
+        state.modal = null;
+        render();
+        showToast("التصنيف لم يتغير.");
+      }
+      return;
+    }
+    if (kind === "assign-request") {
+      const request = state.requests.find((r) => r.id === form.dataset.requestId);
+      if (!request) return;
+      request.assignee = String(data.get("assignee") || request.assignee);
+      request.status = request.status === "جديد" ? "مُحال للنائب" : request.status;
+      save();
+      state.modal = null;
+      render();
+      showToast(`تم تحديث جهة المتابعة للمعاملة ${request.id}.`);
+      return;
+    }
+    if (kind === "reply-request") {
+      const request = state.requests.find((r) => r.id === form.dataset.requestId);
+      if (!request || request.confidential) return showToast("المعاملات السرية لا تقبل رداً كتابياً.", true);
+      request.response = String(data.get("reply") || "").trim();
+      request.status = "بانتظار القسم";
+      request.respondedAt = Date.now();
+      pushNotice({ type: "reply", title: `رد على المعاملة ${request.id}`, message: request.response, target: "department", department: request.department });
+      state.modal = null;
+      render();
+      showToast("تم حفظ الرد وتحديث حالة الطلب في المحاكاة.");
+      return;
+    }
+    if (kind === "busy") {
+      const endValue = String(data.get("until") || "");
+      const end = new Date(endValue);
+      if (!endValue || Number.isNaN(end.getTime()) || end.getTime() <= Date.now()) return showToast("اختر وقت عودة لاحقاً للوقت الحالي.", true);
+      state.busyUntil = end.toISOString();
+      state.busyReason = String(data.get("reason") || "").trim();
+      save();
+      state.modal = null;
+      render();
+      showToast(`تم ضبط حالة عدم التفرغ حتى ${formatDateTime(state.busyUntil)} في هذا العرض.`);
+      return;
+    }
+    if (kind === "summon") {
+      const target = String(data.get("target") || "");
+      const when = String(data.get("time") || "فوراً");
+      const message = String(data.get("message") || "").trim();
+      const requestId = form.dataset.requestId;
+      const request = requestId ? state.requests.find((r) => r.id === requestId) : null;
+      if (request) request.status = "موعد مقابلة";
+      pushNotice({ type: "summon", title: `استدعاء شخصي${request ? ` · ${request.id}` : ""}`, message: `${message} الموعد: ${when}.`, target, department: request?.department || "", confidential: !!request?.confidential });
+      state.modal = null;
+      render();
+      showToast(`سُجّل استدعاء ${target} في بيانات العرض. لم يُرسل إشعار فعلي.`);
+      return;
+    }
+    if (kind === "broadcast") {
+      const title = String(data.get("title") || "").trim();
+      const message = String(data.get("message") || "").trim();
+      const department = String(data.get("department") || "all");
+      pushNotice({ type: "broadcast", title, message, target: department === "all" ? "all" : "department", department: department === "all" ? "" : department });
+      state.modal = null;
+      render();
+      showToast("تم حفظ التعميم في المتصفح. لا يوجد إرسال متعدد الأجهزة في هذه النسخة.");
+      return;
+    }
+    if (kind === "queue-add") {
+      const serials = state.queue.map((q) => Number((q.number.match(/\d+/) || ["10"])[0]));
+      const nextNo = Math.max(10, ...serials) + 1;
+      state.queue.push({ number: `و-${new Intl.NumberFormat("ar-EG").format(nextNo)}`, name: String(data.get("name") || "").trim(), department: String(data.get("department") || "").trim(), time: timeNow(), priority: data.get("priority") === "yes" });
+      save();
+      state.modal = null;
+      render();
+      showToast("أضيف الموعد إلى طابور العرض.");
+      return;
+    }
+    if (kind === "decision") {
+      const next = Math.max(1, ...state.decisions.map((d) => Number((d.id.match(/\d+/) || ["0"])[0]) + 1));
+      state.decisions.unshift({ id: `ق-${next}`, title: String(data.get("title") || "").trim(), summary: String(data.get("summary") || "").trim(), category: String(data.get("category") || "تشغيل"), date: dateLong(), owner: String(data.get("owner") || ROLES[state.role].person).trim() });
+      save();
+      state.modal = null;
+      render();
+      showToast("حُفظ القرار في الأرشيف المحلي.");
+      return;
+    }
+    if (kind === "appointment") {
+      const rawTime = String(data.get("time") || "");
+      const [hh, mm] = rawTime.split(":").map(Number);
+      const time = Number.isFinite(hh) ? new Intl.DateTimeFormat("ar-EG", { hour: "2-digit", minute: "2-digit" }).format(new Date(2000, 0, 1, hh, mm || 0)) : rawTime;
+      const focus = form.dataset.focus === "yes";
+      state.agenda.push({ time, title: String(data.get("title") || "").trim(), detail: String(data.get("detail") || (focus ? "وقت تركيز محمي" : "موعد مكتبي")).trim(), focus });
+      state.agenda.sort((a, b) => a.time.localeCompare(b.time, "ar"));
+      save();
+      state.modal = null;
+      render();
+      showToast(focus ? "حُجز وقت تركيز في الأجندة المحلية." : "أضيف الموعد إلى الأجندة المحلية.");
+    }
+  }
+
+  function handleAction(action, element) {
+    const requestId = element.dataset.requestId;
+    if (action === "menu-toggle") { state.menuOpen = !state.menuOpen; render(); }
+    else if (action === "close-menu") { state.menuOpen = false; render(); }
+    else if (action === "open-new-request" || action === "new-request") {
+      if (state.role === "department") setView("employee");
+      else { state.modal = { type: "new-request" }; render(); }
+    }
+    else if (action === "open-busy") { state.modal = { type: "busy" }; render(); }
+    else if (action === "set-available") { state.busyUntil = null; state.busyReason = ""; save(); state.modal = null; render(); showToast("تم إنهاء حالة عدم التفرغ في هذا العرض."); }
+    else if (action === "open-summon") { state.modal = { type: "summon" }; render(); }
+    else if (action === "summon-request") { state.modal = { type: "summon", requestId }; render(); }
+    else if (action === "open-broadcast") { state.modal = { type: "broadcast" }; render(); }
+    else if (action === "open-communications") setView(state.role === "department" ? "my-requests" : "communications");
+    else if (action === "move-request") openMove(requestId);
+    else if (action === "open-request") openRequest(requestId);
+    else if (action === "close-modal") { state.modal = null; render(); }
+    else if (action === "backdrop-close" && element.classList.contains("modal-backdrop")) { state.modal = null; render(); }
+    else if (action === "open-queue-add") { state.modal = { type: "queue-add" }; render(); }
+    else if (action === "call-next") {
+      if (!state.queue.length) return showToast("لا يوجد زوار في الطابور.");
+      const next = state.queue.shift();
+      state.currentTicket = next.number;
+      save(); render(); showToast(`تم استدعاء الرقم ${next.number} إلى المكتب.`);
+    }
+    else if (action === "show-waiting") { state.savedRole = state.role; state.role = "waiting"; save(); render(); }
+    else if (action === "exit-waiting") { state.role = ROLE_IDS.includes(state.savedRole) && state.savedRole !== "waiting" ? state.savedRole : "secretary"; state.savedRole = null; state.view = state.role === "department" ? "employee" : "secretary"; save(); render(); }
+    else if (action === "open-decision") { state.modal = { type: "decision" }; render(); }
+    else if (action === "open-appointment") { state.modal = { type: "appointment" }; render(); }
+    else if (action === "open-focus") { state.modal = { type: "focus" }; render(); }
+    else if (action === "demo-sign") {
+      const doc = state.documents.find((d) => d.id === element.dataset.documentId);
+      if (doc) { doc.status = "موقّع تجريبياً"; save(); render(); showToast("تم تغيير حالة العرض فقط؛ لم ينشأ توقيع رقمي معتمد."); }
+    }
+    else if (action === "toggle-sound") { state.soundAlerts = !state.soundAlerts; save(); render(); showToast(state.soundAlerts ? "فُعّلت التنبيهات الصوتية في هذا المتصفح." : "أُوقفت التنبيهات الصوتية."); if (state.soundAlerts) playUrgentTone(); }
+    else if (action === "test-sound") { playUrgentTone(); showToast("هذا اختبار صوت محلي فقط."); }
+    else if (action === "export-requests") exportRequests();
+    else if (action === "print-page") window.print();
+  }
+
+  function exportRequests() {
+    const rows = visibleRequests();
+    const fields = ["id", "title", "department", "requester", "quadrant", "status", "assignee", "confidential"];
+    const csv = [fields.join(","), ...rows.map((r) => fields.map((key) => `"${String(key === "assignee" ? roleName(r[key]) : r[key] ?? "").replace(/"/g, '""')}"`).join(","))].join("\r\n");
+    const blob = new Blob(["\ufeff", csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a"); link.href = url; link.download = "rifd-demo-requests.csv"; link.click(); URL.revokeObjectURL(url);
+    showToast("تم تنزيل سجل العرض بصيغة CSV.");
+  }
+
+  document.addEventListener("click", (event) => {
+    const viewTarget = event.target.closest("[data-view]");
+    if (viewTarget) { setView(viewTarget.dataset.view); return; }
+    const actionTarget = event.target.closest("[data-action]");
+    if (actionTarget) {
+      if (actionTarget.dataset.action === "backdrop-close" && event.target !== actionTarget) return;
+      handleAction(actionTarget.dataset.action, actionTarget);
+      return;
+    }
+    const requestTarget = event.target.closest("[data-open-request]");
+    if (requestTarget) { openRequest(requestTarget.dataset.openRequest); }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (state.modal) { state.modal = null; render(); }
+      else if (state.menuOpen) { state.menuOpen = false; render(); }
+    }
+    const target = event.target;
+    if ((event.key === "Enter" || event.key === " ") && target instanceof HTMLElement && target.matches("[data-open-request][role='button'], tr[data-open-request]")) {
+      event.preventDefault(); openRequest(target.dataset.openRequest);
+    }
+  });
+
+  document.addEventListener("submit", (event) => {
+    const form = event.target.closest("form[data-form]");
+    if (!form) return;
+    event.preventDefault();
+    handleFormSubmit(form);
+  });
+
+  document.addEventListener("change", (event) => {
+    if (event.target.id === "role-select") {
+      state.role = event.target.value;
+      state.view = state.role === "department" ? "employee" : "dashboard";
+      state.modal = null;
+      save(); render();
+      showToast(`تم تفعيل عرض الدور: ${roleName(state.role)}. التبديل تمثيلي وليس مصادقة حقيقية.`);
+    }
+    if (event.target.id === "request-filter") {
+      state.requestFilter = event.target.value;
+      render();
+    }
+  });
+
+  document.addEventListener("input", (event) => {
+    if (event.target.id === "request-search") {
+      state.requestSearch = event.target.value;
+      const query = normalizeArabic(state.requestSearch);
+      document.querySelectorAll("tbody tr[data-open-request]").forEach((row) => {
+        row.style.display = !query || normalizeArabic(row.textContent).includes(query) ? "" : "none";
+      });
+    }
+    if (event.target.id === "decision-search") {
+      state.decisionSearch = event.target.value;
+      const start = event.target.selectionStart;
+      const end = event.target.selectionEnd;
+      render();
+      const replacement = document.getElementById("decision-search");
+      if (replacement) { replacement.focus(); replacement.setSelectionRange(start, end); }
+    }
+  });
+
+  window.addEventListener("storage", (event) => {
+    if (!event.key || Object.values(STORAGE).includes(event.key) || event.key.startsWith("rifd-demo-")) {
+      state.requests = read(STORAGE.requests, clone(SEED_REQUESTS));
+      state.overrides = read(STORAGE.overrides, []);
+      state.notices = read(STORAGE.notices, clone(SEED_NOTICES));
+      state.queue = read(STORAGE.queue, clone(SEED_QUEUE));
+      state.currentTicket = read("rifd-demo-current-ticket-v1", "و-١١");
+      state.busyUntil = read("rifd-demo-busy-until-v1", null);
+      state.busyReason = read("rifd-demo-busy-reason-v1", "");
+      render();
+    }
+  });
+
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+  }
+
+  render();
+})();
+
+    </script>
+  </body>
+</html>
