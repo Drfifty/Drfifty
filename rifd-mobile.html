@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#103c3b" />
-    <meta name="description" content="نموذج محلي لإدارة الطلبات التنفيذية ومصفوفة الأولويات في المستشفى." />
+    <meta name="description" content="نموذج محلي لإدارة العمل التنفيذي وتواجد الموظفين وخطة الغد والأسبوع في المستشفى." />
     <title>رِفد | إدارة المستشفى</title>
     <style>
 :root {
@@ -512,7 +512,7 @@ svg { display: block; }
 .planner-rules strong { color: #466e5e; }
 .planner-day-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; }
 .plan-day-card { min-width: 0; padding: 14px; border: 1px solid #e5ece8; border-radius: 15px; background: #fff; box-shadow: 0 2px 8px rgba(32,67,56,.025); }
-.plan-day-card.is-today { border-color: #bfded0; box-shadow: 0 5px 17px rgba(34,113,89,.075); }
+.plan-day-card.is-tomorrow { border-color: #bfded0; box-shadow: 0 5px 17px rgba(34,113,89,.075); }
 .plan-day-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
 .plan-day-head > div { display: grid; gap: 4px; }
 .plan-day-date { color: #47806d; font-size: 9px; font-weight: 700; }
@@ -521,8 +521,11 @@ svg { display: block; }
 .plan-day-card .progress-fill { background: linear-gradient(90deg,#72bd9a,#30806d); }
 .plan-day-workload { display: flex; justify-content: space-between; gap: 8px; margin-top: 7px; color: #8d9d95; font-size: 8px; }
 .plan-task-list { display: grid; gap: 6px; margin-top: 12px; }
-.plan-task-item { min-width: 0; padding: 8px; display: grid; grid-template-columns: 57px minmax(0,1fr) 59px; align-items: center; gap: 8px; border: 1px solid #edf1ef; border-radius: 9px; background: #fcfdfc; }
+.plan-task-item { min-width: 0; padding: 8px; display: grid; grid-template-columns: 57px minmax(0,1fr) 85px; align-items: center; gap: 8px; border: 1px solid #edf1ef; border-radius: 9px; background: #fcfdfc; }
 .plan-task-actions { display: flex; align-items: center; gap: 4px; }
+.plan-edit { width: 25px; height: 25px; display: grid; place-items: center; border: 1px solid #e2eae6; border-radius: 7px; color: #6d8a7b; background: #fff; }
+.plan-edit:hover { color: #fff; background: #4d826c; }
+.plan-edit svg { width: 13px; height: 13px; }
 .plan-estimate { width: 25px; height: 25px; display: grid; place-items: center; border: 1px solid #e2eae6; border-radius: 7px; color: #7d9188; background: #fff; }
 .plan-estimate:hover { color: #4f7d6d; background: #f2f8f4; }
 .plan-estimate svg { width: 13px; height: 13px; }
@@ -706,11 +709,76 @@ svg { display: block; }
   .planner-rules > span { padding: 8px 7px; font-size: 7px; line-height: 1.5; }
   .planner-day-grid { grid-template-columns: 1fr; gap: 8px; }
   .plan-day-card { padding: 12px; }
-  .plan-task-item { grid-template-columns: 50px minmax(0,1fr) 55px; gap: 6px; }
+  .plan-task-item { grid-template-columns: 50px minmax(0,1fr) 85px; gap: 6px; }
   .plan-day-workload { font-size: 7px; }
   .backlog-item { padding: 10px 13px; }
   .availability-strip-heading .link-button svg { width: 11px; height: 11px; }
 }
+.daily-planner-panel { margin: 0 0 16px; overflow: hidden; }
+.daily-planner-panel > .panel-head { min-height: 0; padding: 14px 18px; align-items: flex-start; flex-wrap: wrap; }
+.daily-planner-panel .panel-title { align-items: flex-start; }
+.daily-planner-panel .panel-title h2 { font-size: 13px; }
+.daily-planner-panel .panel-title p { max-width: 520px; line-height: 1.6; }
+.daily-planner-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.daily-plan-callout { margin: 13px 15px 0; padding: 12px 13px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #dcece2; border-radius: 11px; background: #f5faf6; }
+.daily-plan-callout > div { min-width: 0; display: grid; gap: 4px; }
+.daily-plan-callout strong { color: #426b58; font-size: 10px; }
+.daily-plan-callout span { color: #83958a; font-size: 9px; line-height: 1.6; }
+.daily-plan-days { display: grid; grid-template-columns: repeat(7, minmax(160px, 1fr)); gap: 8px; overflow-x: auto; padding: 13px 15px 15px; scrollbar-width: thin; }
+.daily-plan-day { min-width: 0; padding: 10px; border: 1px solid #e7eeea; border-radius: 11px; background: #fff; }
+.daily-plan-day.is-tomorrow { border-color: #afd4c0; background: #f8fcf9; box-shadow: 0 3px 10px rgba(34, 113, 89, .055); }
+.daily-plan-day-head { display: flex; align-items: center; justify-content: space-between; gap: 7px; margin-bottom: 8px; }
+.daily-plan-day-head > div { min-width: 0; display: grid; gap: 3px; }
+.daily-plan-day-head span { color: #47806d; font-size: 8px; font-weight: 700; }
+.daily-plan-day-head strong { color: #60746a; font-size: 8px; }
+.daily-plan-day-head > b { color: #657a70; font-size: 8px; white-space: nowrap; }
+.daily-plan-day .progress-track { height: 5px; }
+.daily-plan-day .progress-fill { background: linear-gradient(90deg,#72bd9a,#30806d); }
+.daily-plan-items { min-height: 90px; display: grid; align-content: start; gap: 6px; margin-top: 8px; }
+.daily-plan-item { min-width: 0; display: grid; gap: 3px; padding-bottom: 5px; border-bottom: 1px solid #f0f3f1; }
+.daily-plan-item strong { overflow: hidden; color: #50665c; font-size: 8px; line-height: 1.5; text-overflow: ellipsis; }
+.daily-plan-item span { color: #93a198; font-size: 7px; }
+.daily-plan-more { color: #46816a; font-size: 7px; font-weight: 700; }
+.daily-plan-empty { padding: 12px 2px; color: #9aa8a1; font-size: 8px; line-height: 1.6; }
+.daily-plan-buffer { display: grid; gap: 4px; margin-top: 7px; padding-top: 7px; border-top: 1px dashed #e2eae5; color: #83958a; font-size: 7px; }
+.daily-plan-buffer strong { color: #55806a; font-size: 7px; }
+.daily-plan-backlog { margin: 0 15px 10px; padding: 10px 12px; border: 1px solid #f0dfbd; border-radius: 9px; color: #896b36; background: #fffaf0; font-size: 8px; line-height: 1.7; }
+.daily-plan-footnote { padding: 0 15px 13px; color: #9aa7a1; font-size: 8px; line-height: 1.7; }
+.plan-day-card.is-tomorrow .plan-day-date { color: #2d8067; }
+.my-presence-details { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.coverage-chip { margin-top: 7px; padding: 6px 7px; display: flex; align-items: center; gap: 6px; border-radius: 7px; color: #47765f; background: #f0f8f2; font-size: 8px; line-height: 1.5; }
+.coverage-chip.is-pending { color: #9a6c24; background: #fff7e7; }
+.coverage-chip svg { width: 12px; height: 12px; flex: 0 0 12px; }
+.coverage-handoff { margin-top: 4px; color: #84928c; font-size: 8px; line-height: 1.6; }
+.coverage-escalations, .coverage-inbox { margin-top: 15px; overflow: hidden; }
+.coverage-escalations .panel-head, .coverage-inbox .panel-head { min-height: 0; padding-top: 12px; padding-bottom: 12px; }
+.coverage-exception-row { padding: 12px 17px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid #edf1ef; }
+.coverage-exception-row > div { min-width: 0; display: grid; gap: 5px; }
+.coverage-exception-row strong { color: #4b6358; font-size: 9px; }
+.coverage-exception-row > div > span { color: #8b9a93; font-size: 8px; line-height: 1.7; }
+.coverage-fallback-note { padding: 11px 17px; color: #866c3d; background: #fffaf0; font-size: 8px; line-height: 1.8; }
+.coverage-handover-fields { margin-top: 12px; padding: 12px; display: grid; gap: 11px; border: 1px solid #e5eee8; border-radius: 11px; background: #f8fbf9; }
+.coverage-handover-fields[hidden] { display: none; }
+.coverage-handover-fields textarea { min-height: 72px; }
+@media (max-width: 900px) {
+  .my-presence-details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .daily-planner-panel > .panel-head { padding: 12px; }
+  .daily-planner-panel .panel-title { width: 100%; }
+  .daily-planner-actions { width: 100%; }
+  .daily-planner-actions .btn { flex: 1; justify-content: center; }
+  .daily-plan-callout { align-items: stretch; flex-direction: column; margin: 10px 10px 0; padding: 10px; }
+  .daily-plan-callout .btn { width: 100%; justify-content: center; }
+  .daily-plan-days { padding: 10px; grid-template-columns: repeat(7, minmax(190px, 1fr)); }
+  .daily-plan-items { min-height: 86px; }
+  .daily-plan-backlog { margin-right: 10px; margin-left: 10px; }
+  .daily-plan-footnote { padding-right: 10px; padding-left: 10px; }
+  .coverage-exception-row { align-items: flex-start; flex-direction: column; padding: 11px 13px; }
+  .coverage-exception-row .link-button { align-self: flex-start; }
+  .my-presence-details { grid-template-columns: 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
@@ -810,6 +878,8 @@ svg { display: block; }
     { id: "EMP-004", name: "أ. وائل جابر", position: "أخصائي موارد بشرية", department: "الموارد البشرية", initials: "وج" },
     { id: "EMP-005", name: "د. ليلى منصور", position: "رئيس قسم", department: "العناية المركزة", initials: "لم" },
     { id: "EMP-006", name: "أ. ندى محمود", position: "السكرتير التنفيذي", department: "مكتب المدير", initials: "نم" },
+    { id: "EMP-007", name: "أ. إبراهيم فوزي", position: "فني صيانة مناوب", department: "الخدمات الهندسية", initials: "إف", coverEligible: true },
+    { id: "EMP-008", name: "أ. هاجر سامي", position: "مشرفة تمريض مناوبة", department: "التمريض", initials: "هـس", coverEligible: true },
   ];
   const SEED_AVAILABILITY = {
     director: { status: "available", place: "مكتب المدير", returnAt: null, note: "متاح للمتابعة" },
@@ -817,11 +887,14 @@ svg { display: block; }
     "deputy-admin": { status: "available", place: "مكتب الشؤون الإدارية", returnAt: null, note: "" },
     doctor: { status: "offsite", place: "العيادات الخارجية", returnAt: new Date(Date.now() + 55 * 60000).toISOString(), note: "" },
     "EMP-001": { status: "available", place: "ورشة الصيانة", returnAt: null, note: "" },
-    "EMP-002": { status: "away", place: "المخزن الرئيسي", returnAt: new Date(Date.now() + 25 * 60000).toISOString(), note: "" },
-    "EMP-003": { status: "offsite", place: "مبنى العيادات", returnAt: new Date(Date.now() + 70 * 60000).toISOString(), note: "" },
+    "EMP-002": { status: "away", place: "المخزن الرئيسي", returnAt: new Date(Date.now() + 25 * 60000).toISOString(), note: "", coverMode: "person", coverId: "EMP-008", handoff: "متابعة احتياج التمريض وتسليم الملاحظة عند العودة" },
+    "EMP-003": { status: "offsite", place: "مبنى العيادات", returnAt: new Date(Date.now() + 70 * 60000).toISOString(), note: "", coverMode: "team", coverId: null, handoff: "استكمال مراجعة نموذج الجودة؛ العاجل فقط" },
+
     "EMP-004": { status: "remote", place: "عن بُعد · خارج المستشفى", returnAt: new Date(Date.now() + 3 * 60 * 60000).toISOString(), note: "متاح عبر التطبيق" },
     "EMP-005": { status: "available", place: "العناية المركزة", returnAt: null, note: "" },
     "EMP-006": { status: "available", place: "مكتب السكرتارية", returnAt: null, note: "" },
+    "EMP-007": { status: "available", place: "ورشة الصيانة", returnAt: null, note: "" },
+    "EMP-008": { status: "available", place: "مكتب التمريض", returnAt: null, note: "" },
   };
 
   const read = (key, fallback) => {
@@ -861,6 +934,8 @@ svg { display: block; }
     staffId: pref.staffId || "EMP-001",
     savedRole: null,
   };
+  SEED_STAFF.forEach((person) => { if (!state.staff.some((existing) => existing.id === person.id)) state.staff.push(clone(person)); });
+  ["EMP-007", "EMP-008"].forEach((id) => { if (!state.availability[id]) state.availability[id] = clone(SEED_AVAILABILITY[id]); });
   if (!state.staff.some((person) => person.id === state.staffId)) state.staffId = state.staff[0]?.id || "EMP-001";
   if (state.role === "department") state.view = "employee";
   if (state.role === "employee") state.view = "my-presence";
@@ -887,6 +962,7 @@ svg { display: block; }
     x: '<path d="m18 6-12 12M6 6l12 12"/>',
     menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
     more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+    edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>',
     send: '<path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/>',
     phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3.1a2 2 0 0 1-.6 1.7L7.1 10.4a16 16 0 0 0 6 6l1.9-1.9a2 2 0 0 1 1.7-.6l3.1.5a2 2 0 0 1 2.2 2.5z"/>',
     check: '<path d="m5 12 4 4L19 6"/>',
@@ -1054,8 +1130,8 @@ svg { display: block; }
     communications: ["التواصل والاستدعاء", "إدارة حالة الانشغال والنداءات والتعاميم المحلية."],
     secretary: ["إدارة المكتب", "طابور الزيارة، الأجندة، وأوراق التوقيع."],
     decisions: ["سجل القرارات", "أرشيف قابل للبحث للقرارات والتوجيهات السابقة."],
-    daily: ["الموجز اليومي", "ملخص ما أُنجز وما يحتاج متابعة قبل نهاية اليوم."],
-    planner: ["خطة الوقت", "قسّم يوم العمل إلى وحدات واضحة واترك مساحة للطوارئ."],
+    daily: ["الموجز اليومي", "ملخص اليوم وخطة الغد والأيام الستة التالية قبل مغادرة المكتب."],
+    planner: ["خطة الوقت", "رتّب مهام الغد والأسبوع القادم واترك مساحة للطوارئ."],
     presence: ["تواجد الموظفين", "اعرف من هو موجود قبل مغادرة مكتبك، واطلب المعلومة من داخل التطبيق."],
     "my-presence": ["تواجدي والطلبات الواردة", "حدّث مكان عملك المتوقع ومدة غيابك واستقبل طلبات الإدارة."],
     "staff-inbox": ["طلبات الإدارة لي", "تابع طلبات المعلومات والمستندات الواردة إليك."],
@@ -1188,6 +1264,29 @@ svg { display: block; }
     return `العودة ${day}${formatDateTime(presence.returnAt)}`;
   }
 
+  function eligibleCoverageStaff(person) {
+    const now = Date.now();
+    return state.staff.filter((candidate) => {
+      if (candidate.id === person.id || candidate.department !== person.department || candidate.coverEligible !== true) return false;
+      if (presenceFor(candidate.id).status !== "available") return false;
+      return !Object.entries(state.availability).some(([ownerId, availability]) => ownerId !== person.id && availability.coverMode === "person" && availability.coverId === candidate.id && ["away", "offsite"].includes(availability.status) && (!availability.returnAt || new Date(availability.returnAt).getTime() > now));
+    });
+  }
+
+  function coverageIsCovered(presence) {
+    const candidate = state.staff.find((person) => person.id === presence.coverId);
+    return presence.coverMode === "person" && !!candidate && candidate.coverEligible === true && presenceFor(candidate.id).status === "available";
+  }
+
+  function coverageLabel(presence) {
+    if (presence.coverMode === "person" && presence.coverId) {
+      const name = personById("staff", presence.coverId)?.name || presence.coverId;
+      return coverageIsCovered(presence) ? `البديل المعيّن: ${name}` : `البديل ${name} يحتاج مراجعة الأهلية أو التواجد`;
+    }
+    if (presence.coverMode === "team") return "قائمة مهام الفريق · بانتظار توزيع المشرف";
+    return "لم تُسجّل تغطية بعد";
+  }
+
   function incomingStaffRequests() {
     const person = currentPerson();
     if (!person) return [];
@@ -1200,7 +1299,7 @@ svg { display: block; }
     if (!person) return "";
     const presence = presenceFor(id);
     const isSelf = currentPerson()?.id === id;
-    return `<article class="presence-chip"><div class="presence-chip-top"><div class="presence-person"><span class="presence-avatar">${esc(person.initials || person.name.slice(0, 1))}</span><div><strong>${esc(person.name)}</strong><span>${esc(person.position || person.department)}</span></div></div><span class="presence-pill status-${esc(presence.status)}"><span></span>${presenceLabel(presence.status)}</span></div><div class="presence-location">${icon("target")}<span>${esc(presence.place || "مكان العمل غير محدد")}</span><small>${esc(presenceTime(presence))}</small></div><div class="presence-chip-actions">${isSelf ? `<button class="link-button" data-action="update-presence" type="button">تحديث تواجدي</button>` : `<button class="link-button" data-action="contact-person" data-person-kind="${kind}" data-person-id="${esc(id)}" type="button">${icon("message")} ${kind === "leader" && ["employee", "department"].includes(state.role) ? "مراسلة" : "إرسال طلب"}</button>`}</div></article>`;
+    return `<article class="presence-chip"><div class="presence-chip-top"><div class="presence-person"><span class="presence-avatar">${esc(person.initials || person.name.slice(0, 1))}</span><div><strong>${esc(person.name)}</strong><span>${esc(person.position || person.department)}</span></div></div><span class="presence-pill status-${esc(presence.status)}"><span></span>${presenceLabel(presence.status)}</span></div><div class="presence-location">${icon("target")}<span>${esc(presence.place || "مكان العمل غير محدد")}</span><small>${esc(presenceTime(presence))}</small></div>${kind === "staff" && ["away", "offsite"].includes(presence.status) ? `<div class="coverage-chip ${!coverageIsCovered(presence) ? "is-pending" : ""}">${icon("users")}<span>${esc(coverageLabel(presence))}</span></div>${presence.handoff ? `<div class="coverage-handoff">التسليم: ${esc(presence.handoff)}</div>` : ""}` : ""}<div class="presence-chip-actions">${isSelf ? `<button class="link-button" data-action="update-presence" type="button">تحديث تواجدي</button>` : `<button class="link-button" data-action="contact-person" data-person-kind="${kind}" data-person-id="${esc(id)}" type="button">${icon("message")} ${kind === "leader" && ["employee", "department"].includes(state.role) ? "مراسلة" : "إرسال طلب"}</button>`}</div></article>`;
   }
 
   function renderAvailabilityStrip() {
@@ -1353,11 +1452,16 @@ svg { display: block; }
     const current = currentPerson();
     const sent = state.staffRequests.filter((item) => item.requesterId === current?.id).slice(0, 5);
     const received = state.staffRequests.filter((item) => item.recipientKind === (current?.kind || "staff") && item.recipientId === current?.id).slice(0, 5);
+    const coveragePending = state.staff.filter((person) => {
+      const coverage = presenceFor(person.id);
+      return ["away", "offsite"].includes(coverage.status) && !coverageIsCovered(coverage);
+    });
     return pageWrap(`${heading("تواجد الموظفين", "قبل ما تغادر مكتبك، اعرف مين موجود أو خارج المكتب ومتى يرجع. لو غايب ابعت له طلب معلومة أو مستند من هنا.", `<button class="btn btn-secondary" data-action="update-presence" type="button">${icon("clock")} تحديث تواجدي</button>`)}
       <div class="stats-grid presence-stats"><article class="stat-card"><div><div class="stat-label">المدير والنواب</div><div class="stat-value">${toArabicNumber(LEADER_IDS.filter((id) => presenceFor(id).status === "available").length)} / ${toArabicNumber(LEADER_IDS.length)}</div><div class="stat-foot">متاحون الآن</div></div><div class="stat-icon">${icon("users")}</div></article><article class="stat-card waiting"><div><div class="stat-label">خارج المكان المعتاد</div><div class="stat-value">${toArabicNumber(awayCount)}</div><div class="stat-foot">مع وقت عودة متوقع</div></div><div class="stat-icon">${icon("clock")}</div></article><article class="stat-card deputy"><div><div class="stat-label">طلبات اتصال مفتوحة</div><div class="stat-value">${toArabicNumber(state.staffRequests.filter((item) => item.status !== "مكتمل").length)}</div><div class="stat-foot">معلومات أو مستندات</div></div><div class="stat-icon">${icon("message")}</div></article><article class="stat-card"><div><div class="stat-label">آخر تحديث</div><div class="stat-value" style="font-size:18px">${timeNow()}</div><div class="stat-foot">حالة تجريبية محلية</div></div><div class="stat-icon">${icon("refresh")}</div></article></div>
       <div class="presence-section-head"><div><h2>المدير والنواب</h2><p>الحالة ظاهرة في الشريط أعلى كل صفحة</p></div><span class="pill pill-blue">${toArabicNumber(LEADER_IDS.length)} أشخاص</span></div><div class="presence-grid">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div>
       <div class="presence-section-head" style="margin-top:20px"><div><h2>الطبيب المصرح</h2><p>حالة الدور المسؤول عن التوقيعات الروتينية في النموذج</p></div><span class="pill pill-gray">دور مساند</span></div><div class="presence-grid">${renderAvailabilityCard("leader", "doctor")}</div>
       <div class="presence-section-head" style="margin-top:20px"><div><h2>موظفو الأقسام</h2><p>مكان عمل عام ووقت عودة تقريبي؛ لا نعرض عناوين منزلية أو إحداثيات GPS</p></div><span class="pill pill-gray">${toArabicNumber(state.staff.length)} موظفين</span></div><div class="presence-grid">${state.staff.map((person) => renderAvailabilityCard("staff", person.id)).join("")}</div>
+      ${coveragePending.length ? `<section class="panel coverage-escalations"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>تغطية تحتاج توزيعاً من المشرف</h2><p>لا يوجد بديل مؤهل متاح حالياً أو أن البديل المرشح غير متاح؛ راجع المهام ووزّع الضروري أو صعّده للمسؤول المناوب.</p></div></div><span class="pill pill-amber">${toArabicNumber(coveragePending.length)} حالات</span></div>${coveragePending.map((person) => { const coverage = presenceFor(person.id); return `<div class="coverage-exception-row"><div><strong>${esc(person.name)} · ${esc(person.department)}</strong><span>العودة ${esc(coverage.returnAt ? formatDateTime(coverage.returnAt) : "غير محددة")} · ${esc(coverage.handoff || "لم تسجل ملاحظة تسليم")}</span></div><button class="link-button" data-view="planner" type="button">مراجعة الخطة ${icon("chevron")}</button></div>`; }).join("")}<div class="coverage-fallback-note">المسار الاحتياطي: المشرف يوزّع المهام على موظفين مؤهلين؛ إن لم يتوفر أحد، تُرحّل غير الحرجة ويُصعّد العاجل إلى المسؤول المناوب أو قناة التغطية الرسمية.</div></section>` : ""}
       ${received.length ? `<section class="panel received-staff-requests"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>طلبات وصلتني</h2><p>طلبات أرسلها الموظفون إلى دورك</p></div></div><span class="pill pill-blue">${toArabicNumber(received.length)}</span></div>${received.map((item) => renderStaffRequestCard(item)).join("")}</section>` : ""}
       <section class="panel sent-staff-requests"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("message")}</span><div><h2>طلبات أرسلتها</h2><p>طلب معلومة أو ورقة دون البحث عن الموظف في أرجاء المستشفى</p></div></div><span class="pill pill-gray">${toArabicNumber(sent.length)} حديثة</span></div>${sent.length ? sent.map((item) => `<div class="broadcast-item"><div><strong>${esc(item.title)} <span class="pill ${item.status === "مكتمل" ? "pill-green" : "pill-amber"}">${esc(item.status)}</span></strong><p>إلى ${esc(personById(item.recipientKind, item.recipientId)?.name || item.recipientId)} · ${esc(item.message)}</p>${item.response ? `<p><strong>الرد:</strong> ${esc(item.response)}</p>` : ""}</div><time>${esc(item.time)}</time></div>`).join("") : `<div class="no-results">لم ترسل طلبات اتصال بعد.</div>`}</section>
       <div class="demo-note remote-access-note">${icon("shield")}<span><strong>مهم للوصول من المنزل:</strong> النظام المحلي لا يصل إلى هاتف خارج شبكة المستشفى تلقائياً. يلزم VPN مستشفى مُدار ومصادقة قوية (أو بوابة وصول معتمدة)؛ لا تفتحوا الخادم مباشرة على الإنترنت. المكان هنا وصف عمل عام اختياري، وليس تتبع GPS.</span></div>`, true);
@@ -1369,9 +1473,14 @@ svg { display: block; }
     const allIncoming = state.staffRequests.filter((item) => item.recipientKind === (person.kind || "staff") && item.recipientId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     const incoming = allIncoming.filter((item) => item.status !== "مكتمل");
     const sent = state.staffRequests.filter((item) => item.requesterId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+    const coveringAssignments = state.staff.filter((member) => {
+      const handover = presenceFor(member.id);
+      return ["away", "offsite"].includes(handover.status) && handover.coverMode === "person" && handover.coverId === person.id;
+    });
     return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}${heading("تواجدي والطلبات الواردة", "حدّث حالتك قبل ما تترك مكانك، وخلي المدير يعرف إمتى يتواصل معك أو أين يجدك داخل المستشفى.", `<button class="btn btn-primary" data-action="update-presence" type="button">${icon("clock")} تحديث حالتي</button>`)}
       ${state.role === "employee" ? `<div class="staff-identity-picker"><label for="staff-select">اختَر حساب الموظف في هذا العرض</label><select id="staff-select">${state.staff.map((member) => `<option value="${esc(member.id)}"${member.id === state.staffId ? " selected" : ""}>${esc(member.name)} · ${esc(member.position)}</option>`).join("")}</select><span>التبديل للتجربة فقط؛ النظام الحقيقي يربط الموظف بحسابه بعد تسجيل الدخول.</span></div>` : ""}
-      <section class="panel my-presence-card"><div class="my-presence-top"><span class="presence-avatar large">${esc(person.initials || "م")}</span><div><strong>${esc(person.name)}</strong><span>${esc(person.position || person.department)}</span></div><span class="presence-pill status-${esc(presence.status)}"><span></span>${presenceLabel(presence.status)}</span></div><div class="my-presence-details"><div><span>مكان العمل / وصف عام</span><strong>${esc(presence.place || "غير محدد")}</strong></div><div><span>وقت العودة المتوقع</span><strong>${esc(presence.returnAt ? formatDateTime(presence.returnAt) : "متاح دون موعد عودة")}</strong></div><div><span>ملاحظة</span><strong>${esc(presence.note || "لا توجد")}</strong></div></div><div class="blind-note">اختَر مكاناً عاماً مثل «مخزن الدور الثاني» أو «خارج المستشفى». لا تكتب عنوان المنزل ولا تشارك موقع GPS دائم.</div></section>
+      <section class="panel my-presence-card"><div class="my-presence-top"><span class="presence-avatar large">${esc(person.initials || "م")}</span><div><strong>${esc(person.name)}</strong><span>${esc(person.position || person.department)}</span></div><span class="presence-pill status-${esc(presence.status)}"><span></span>${presenceLabel(presence.status)}</span></div><div class="my-presence-details"><div><span>مكان العمل / وصف عام</span><strong>${esc(presence.place || "غير محدد")}</strong></div><div><span>وقت العودة المتوقع</span><strong>${esc(presence.returnAt ? formatDateTime(presence.returnAt) : "متاح دون موعد عودة")}</strong></div><div><span>ملاحظة</span><strong>${esc(presence.note || "لا توجد")}</strong></div><div><span>تغطية عملي عند الغياب</span><strong>${esc(["away", "offsite"].includes(presence.status) ? coverageLabel(presence) : "لا يلزم أثناء التواجد")}</strong></div></div><div class="blind-note">اختَر مكاناً عاماً مثل «مخزن الدور الثاني» أو «خارج المستشفى». لا تكتب عنوان المنزل ولا تشارك موقع GPS دائم.</div></section>
+      ${coveringAssignments.length ? `<section class="panel coverage-inbox"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>تسليمات زملاء أُرشّح لتغطيتها</h2><p>راجع المهام والمواعيد مع المشرف قبل قبول التكليف في العمل الفعلي.</p></div></div><span class="pill pill-blue">${toArabicNumber(coveringAssignments.length)}</span></div>${coveringAssignments.map((member) => { const handover = presenceFor(member.id); return `<div class="coverage-exception-row"><div><strong>${esc(member.name)} · ${esc(member.department)}</strong><span>${esc(handover.handoff || "لا توجد ملاحظة تسليم")}${handover.returnAt ? ` · العودة ${esc(formatDateTime(handover.returnAt))}` : ""}</span></div><span class="pill pill-amber">مرشح للتغطية</span></div>`; }).join("")}<div class="coverage-fallback-note">في النموذج التجريبي لا يرسل هذا الترشيح إشعاراً إلى هاتف زميلك؛ التنبيه والتأكيد يحتاجان خدمة فعلية.</div></section>` : ""}
       <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("message")}</span><div><h2>طلبات المدير أو السكرتارية</h2><p>تظهر لك هنا طلبات المعلومات والمستندات</p></div></div><span class="pill pill-amber">${toArabicNumber(incoming.length)} مفتوح</span></div>${allIncoming.length ? allIncoming.slice(0, 4).map((item) => renderStaffRequestCard(item)).join("") : `<div class="no-results">لا توجد طلبات واردة حالياً.</div>`}</section>
       ${sent.length ? `<section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("send")}</span><div><h2>مراسلاتي إلى المدير أو النواب</h2><p>تظهر حالة الرسالة أو الرد عندما يفتحه الطرف الآخر</p></div></div><span class="pill pill-gray">${toArabicNumber(sent.length)}</span></div>${sent.map((item) => `<div class="broadcast-item"><div><strong>إلى ${esc(item.recipient)} · ${esc(item.title)} <span class="pill ${item.status === "مكتمل" ? "pill-green" : "pill-amber"}">${esc(item.status)}</span></strong><p>${esc(item.message)}</p>${item.response ? `<p><strong>الرد:</strong> ${esc(item.response)}</p>` : ""}</div><time>${esc(item.time)}</time></div>`).join("")}</section>` : ""}
       <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>حالة المدير والنواب</h2><p>تظهر أيضاً في شريط أعلى الصفحات</p></div></div></div><div class="presence-grid compact-presence">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div></section>
@@ -1393,6 +1502,12 @@ svg { display: block; }
   function localDayKey(date = new Date()) {
     const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+  function nextPlanningDayKey() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return localDayKey(tomorrow);
   }
 
   function dayFromKey(key) {
@@ -1428,7 +1543,7 @@ svg { display: block; }
       title: request.title,
       quadrant: request.quadrant,
       units: Math.max(1, Math.min(6, Number(request.estimatedUnits) || (request.quadrant === "q1" ? 2 : request.quadrant === "q3" ? 1 : 2))),
-      dueDate: request.planDate || localDayKey(),
+      dueDate: request.planDate || nextPlanningDayKey(),
       createdAt: request.createdAt || 0,
       sourceType: "request",
       requestId: request.id,
@@ -1436,7 +1551,7 @@ svg { display: block; }
     const manualTasks = state.plannerTasks.filter((task) => task.status !== "مكتمل").map((task) => ({
       ...task,
       units: Math.max(1, Math.min(6, Number(task.units) || 1)),
-      dueDate: task.dueDate || localDayKey(),
+      dueDate: task.dueDate || nextPlanningDayKey(),
       createdAt: task.createdAt || 0,
       sourceType: "manual",
     }));
@@ -1450,7 +1565,7 @@ svg { display: block; }
     const tasks = plannerTasks().sort((a, b) => plannerPriority(a.quadrant) - plannerPriority(b.quadrant) || Number(!!b.urgent) - Number(!!a.urgent) || (a.createdAt || 0) - (b.createdAt || 0));
     const assigned = new Set();
     const days = [];
-    for (let offset = 0; offset <= 7; offset += 1) {
+    for (let offset = 1; offset <= 7; offset += 1) {
       const date = new Date();
       date.setDate(date.getDate() + offset);
       const key = localDayKey(date);
@@ -1470,7 +1585,7 @@ svg { display: block; }
       days.push({ offset, date: key, label: plannerDayLabel(offset, key), totalUnits, bufferUnits, usedUnits: used, items });
     }
     const backlog = tasks.filter((task) => !assigned.has(task.id));
-    return { generatedAt: Date.now(), baseDate: localDayKey(), workdayHours, totalUnits, bufferUnits, days, backlog };
+    return { generatedAt: Date.now(), baseDate: localDayKey(), horizonStart: "tomorrow", workdayHours, totalUnits, bufferUnits, days, backlog };
   }
 
   function refreshWeekPlan() {
@@ -1481,21 +1596,21 @@ svg { display: block; }
     const reserveUsed = Math.max(0, day.usedUnits - (day.totalUnits - day.bufferUnits));
     const reserveLeft = Math.max(0, day.bufferUnits - reserveUsed);
     const fill = Math.min(100, Math.round(day.usedUnits / day.totalUnits * 100));
-    return `<article class="plan-day-card${day.offset === 0 ? " is-today" : ""}"><div class="plan-day-head"><div><span class="plan-day-date">${esc(day.label)}</span><strong>${esc(new Intl.DateTimeFormat("ar-EG", { day: "numeric", month: "long" }).format(dayFromKey(day.date)))}</strong></div><span class="pill ${day.offset === 0 ? "pill-blue" : "pill-gray"}">${toArabicNumber(day.usedUnits)} / ${toArabicNumber(day.totalUnits)} وحدة</span></div><div class="progress-track"><div class="progress-fill" style="width:${fill}%"></div></div><div class="plan-day-workload"><span>المستخدم ${toArabicNumber(day.usedUnits)} وحدة · ${plannerDuration(day.usedUnits)}</span><span>المتبقي ${toArabicNumber(day.totalUnits - day.usedUnits)} وحدة</span></div><div class="plan-task-list">${day.items.length ? day.items.map((item) => `<div class="plan-task-item"><div class="plan-task-time">${plannerClock(item.startUnit)}<span>إلى ${plannerClock(item.startUnit + item.units)}</span></div><div class="plan-task-copy"><strong>${esc(item.title)}</strong><span class="pill ${qInfo(item.quadrant).pill}">${qInfo(item.quadrant).label} · ${toArabicNumber(item.units)} وحدات</span></div><div class="plan-task-actions"><button class="plan-estimate" data-action="estimate-plan-task" data-task-id="${esc(item.taskId)}" data-source-type="${item.sourceType}" aria-label="تعديل وقت ${esc(item.title)}" type="button">${icon("clock")}</button><button class="plan-complete" data-action="complete-plan-task" data-task-id="${esc(item.taskId)}" data-source-type="${item.sourceType}" aria-label="إنجاز ${esc(item.title)}" type="button">${icon("check")}</button></div></div>`).join("") : `<div class="plan-empty">لا توجد مهام مثبتة. تبقّى وقت للخطة أو للطوارئ.</div>`}</div><div class="plan-buffer-card">${icon("spark")}<span><strong>احتياطي الطوارئ:</strong> ${toArabicNumber(reserveLeft)} من ${toArabicNumber(day.bufferUnits)} وحدة · الوقت المفتوح ${toArabicNumber(day.totalUnits - day.usedUnits)} وحدة</span></div></article>`;
+    return `<article class="plan-day-card${day.offset === 1 ? " is-tomorrow" : ""}"><div class="plan-day-head"><div><span class="plan-day-date">${esc(day.label)}</span><strong>${esc(new Intl.DateTimeFormat("ar-EG", { day: "numeric", month: "long" }).format(dayFromKey(day.date)))}</strong></div><span class="pill ${day.offset === 1 ? "pill-blue" : "pill-gray"}">${toArabicNumber(day.usedUnits)} / ${toArabicNumber(day.totalUnits)} وحدة</span></div><div class="progress-track"><div class="progress-fill" style="width:${fill}%"></div></div><div class="plan-day-workload"><span>المستخدم ${toArabicNumber(day.usedUnits)} وحدة · ${plannerDuration(day.usedUnits)}</span><span>المتبقي ${toArabicNumber(day.totalUnits - day.usedUnits)} وحدة</span></div><div class="plan-task-list">${day.items.length ? day.items.map((item) => `<div class="plan-task-item"><div class="plan-task-time">${plannerClock(item.startUnit)}<span>إلى ${plannerClock(item.startUnit + item.units)}</span></div><div class="plan-task-copy"><strong>${esc(item.title)}</strong><span class="pill ${qInfo(item.quadrant).pill}">${qInfo(item.quadrant).label} · ${toArabicNumber(item.units)} وحدات</span></div><div class="plan-task-actions">${item.sourceType === "manual" ? `<button class="plan-edit" data-action="edit-plan-task" data-task-id="${esc(item.taskId)}" aria-label="تعديل تفاصيل ${esc(item.title)}" type="button">${icon("edit")}</button>` : ""}<button class="plan-estimate" data-action="estimate-plan-task" data-task-id="${esc(item.taskId)}" data-source-type="${item.sourceType}" aria-label="تعديل وقت ${esc(item.title)}" type="button">${icon("clock")}</button><button class="plan-complete" data-action="complete-plan-task" data-task-id="${esc(item.taskId)}" data-source-type="${item.sourceType}" aria-label="إنجاز ${esc(item.title)}" type="button">${icon("check")}</button></div></div>`).join("") : `<div class="plan-empty">لا توجد مهام مثبتة. تبقّى وقت للخطة أو للطوارئ.</div>`}</div><div class="plan-buffer-card">${icon("spark")}<span><strong>احتياطي الطوارئ:</strong> ${toArabicNumber(reserveLeft)} من ${toArabicNumber(day.bufferUnits)} وحدة · الوقت المفتوح ${toArabicNumber(day.totalUnits - day.usedUnits)} وحدة</span></div></article>`;
   }
 
   function renderPlanner() {
-    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey()) {
+    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey() || state.weekPlan.horizonStart !== "tomorrow") {
       refreshWeekPlan();
       save();
     }
     const plan = state.weekPlan;
     const prefs = state.plannerPrefs;
-    return pageWrap(`${heading("خطة الوقت: اليوم والأسبوع", "رتّب العمل قبل نهاية اليوم. الوحدة ٣٠ دقيقة؛ الطلب العاجل يدخل أولاً، وتبقى وحدات احتياط حتى لا تبتلع المفاجآت اليوم كله.", `<button class="btn btn-quiet" data-action="refresh-plan" type="button">${icon("refresh")} إعادة ترتيب الخطة</button><button class="btn btn-quiet" data-action="open-planner-task" type="button">${icon("plus")} مهمة مخططة</button><button class="btn btn-primary" data-action="open-unexpected-task" type="button">${icon("bellRing")} مهمة طارئة</button>`)}
+    return pageWrap(`${heading("خطة الغد والأسبوع القادم", "قبل مغادرة المكتب، رتّب مهام الغد والأيام الستة التالية. كل وحدة ٣٠ دقيقة مع وقت محجوز للطوارئ.", `<button class="btn btn-quiet" data-action="refresh-plan" type="button">${icon("refresh")} إعادة ترتيب الخطة</button><button class="btn btn-quiet" data-action="open-planner-task" type="button">${icon("plus")} مهمة مخططة</button><button class="btn btn-primary" data-action="open-unexpected-task" type="button">${icon("bellRing")} مهمة طارئة</button>`)}
       <section class="planner-settings panel"><div class="planner-settings-title"><span class="title-icon">${icon("clock")}</span><div><strong>إعداد يوم العمل</strong><span>${toArabicNumber(plan.totalUnits)} وحدة × ٣٠ دقيقة = ${toArabicNumber(plan.workdayHours)} ساعات · تبدأ الفترة ${esc(prefs.startTime)}</span></div></div><form class="planner-settings-form" data-form="planner-prefs"><label>ساعات العمل<select name="workdayHours">${[4, 5, 6, 7, 8, 9, 10, 12].map((hours) => `<option value="${hours}"${Number(prefs.workdayHours) === hours ? " selected" : ""}>${toArabicNumber(hours)} ساعات</option>`).join("")}</select></label><label>احتياطي المفاجآت<select name="bufferUnits">${[1, 2, 3, 4].map((units) => `<option value="${units}"${Number(prefs.bufferUnits) === units ? " selected" : ""}>${toArabicNumber(units)} وحدة · ${toArabicNumber(units * 30)} دقيقة</option>`).join("")}</select></label><label>بداية الدوام<input name="startTime" type="time" value="${esc(prefs.startTime || "09:00")}" required /></label><button class="btn btn-primary btn-small" type="submit">تحديث الخطة</button></form></section>
       <div class="planner-rules"><span>${icon("bellRing")} <strong>١.</strong> هام وعاجل أولاً</span><span>${icon("send")} <strong>٢.</strong> غير هام وعاجل بعده</span><span>${icon("calendar")} <strong>٣.</strong> المهم غير العاجل في المساحة المتبقية</span><span>${icon("spark")} <strong>٤.</strong> المربع الرابع لا يستهلك وقت الجدول</span></div>
-      <div class="planner-days-heading"><div><h2>خطة اليوم + السبعة أيام القادمة</h2><p>عند إضافة طارئ، يعاد ترتيب المهام الأقل أولوية إلى الأيام التالية.</p></div><span class="pill pill-green">${toArabicNumber(plan.days.length)} أيام</span></div><div class="planner-day-grid">${plan.days.map((day) => renderPlannerDay(day)).join("")}</div>
-      ${plan.backlog.length ? `<section class="panel planner-backlog"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة ما بعد الأسبوع</h2><p>مهام لم تتسع لها الوحدات المحجوزة خلال الأيام الثمانية المعروضة</p></div></div><span class="pill pill-amber">${toArabicNumber(plan.backlog.length)} مهام</span></div><div class="backlog-list">${plan.backlog.map((task) => `<div class="backlog-item"><strong>${esc(task.title)}</strong><span class="pill ${qInfo(task.quadrant).pill}">${qInfo(task.quadrant).label} · ${toArabicNumber(task.units)} وحدات</span></div>`).join("")}</div></section>` : ""}
+      <div class="planner-days-heading"><div><h2>خطة الغد والأيام الستة التالية</h2><p>أضف المهام غير العاجلة مقدماً. عند إضافة طارئ، يعاد ترتيب الأقل أولوية تلقائياً.</p></div><span class="pill pill-green">${toArabicNumber(plan.days.length)} أيام</span></div><div class="planner-day-grid">${plan.days.map((day) => renderPlannerDay(day)).join("")}</div>
+      ${plan.backlog.length ? `<section class="panel planner-backlog"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة ما بعد الأسبوع</h2><p>مهام لم تتسع لها الوحدات خلال الأيام السبعة المخططة</p></div></div><span class="pill pill-amber">${toArabicNumber(plan.backlog.length)} مهام</span></div><div class="backlog-list">${plan.backlog.map((task) => `<div class="backlog-item"><strong>${esc(task.title)}</strong><span class="pill ${qInfo(task.quadrant).pill}">${qInfo(task.quadrant).label} · ${toArabicNumber(task.units)} وحدات</span></div>`).join("")}</div></section>` : ""}
       <div class="demo-note remote-access-note">${icon("shield")}<span>هذه خطة عرض تجريبية مبنية على الأولوية والتقدير اليدوي، وليست تكاملاً مع تقويم حقيقي. المدير يستطيع تعديل الوحدات والاحتياطي؛ كل نصف ساعة وحدة واحدة، والمهام غير المنجزة يعاد ترتيبها لا حذفها.</span></div>`, true);
   }
 
@@ -1527,13 +1642,31 @@ svg { display: block; }
       <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("archive")}</span><div><h2>القرارات المحفوظة</h2><p>${toArabicNumber(decisions.length)} نتيجة</p></div></div><span class="pill pill-gray">تخزين محلي توضيحي</span></div><div class="decisions-list">${decisions.length ? decisions.map((d) => `<article class="decision-row"><div class="decision-number">${esc(d.id)}</div><div class="decision-copy"><strong>${esc(d.title)}</strong><p>${esc(d.summary)}</p></div><div class="decision-meta"><span class="pill pill-blue">${esc(d.category)}</span><span>${esc(d.date)}</span></div></article>`).join("") : `<div class="no-results">لا توجد قرارات مطابقة.</div>`}</div></section>`, true);
   }
 
+  function renderDailyPlanDay(day) {
+    const reserveUsed = Math.max(0, day.usedUnits - (day.totalUnits - day.bufferUnits));
+    const reserveLeft = Math.max(0, day.bufferUnits - reserveUsed);
+    const fill = Math.min(100, Math.round(day.usedUnits / day.totalUnits * 100));
+    return `<article class="daily-plan-day${day.offset === 1 ? " is-tomorrow" : ""}"><div class="daily-plan-day-head"><div><span>${esc(day.label)}</span><strong>${esc(new Intl.DateTimeFormat("ar-EG", { day: "numeric", month: "short" }).format(dayFromKey(day.date)))}</strong></div><b>${toArabicNumber(day.usedUnits)} / ${toArabicNumber(day.totalUnits)}</b></div><div class="progress-track"><div class="progress-fill" style="width:${fill}%"></div></div><div class="daily-plan-items">${day.items.length ? day.items.slice(0, 3).map((item) => `<div class="daily-plan-item"><strong>${esc(item.title)}</strong><span>${plannerClock(item.startUnit)} · ${plannerDuration(item.units)} · ${qInfo(item.quadrant).label}</span></div>`).join("") + (day.items.length > 3 ? `<span class="daily-plan-more">+ ${toArabicNumber(day.items.length - 3)} مهام أخرى</span>` : "") : `<div class="daily-plan-empty">لا توجد مهام مجدولة بعد.</div>`}</div><div class="daily-plan-buffer"><span>متبقٍ ${toArabicNumber(day.totalUnits - day.usedUnits)} وحدة</span><strong>احتياطي الطوارئ ${toArabicNumber(reserveLeft)} / ${toArabicNumber(day.bufferUnits)}</strong></div></article>`;
+  }
+
+  function renderDailyPlanWeek() {
+    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey() || state.weekPlan.horizonStart !== "tomorrow") {
+      refreshWeekPlan();
+      save();
+    }
+    const plan = state.weekPlan;
+    const tomorrow = plan.days[0];
+    return `<section class="panel daily-planner-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("calendar")}</span><div><h2>قبل مغادرة المكتب: خطة الغد والأسبوع</h2><p>${toArabicNumber(plan.workdayHours)} ساعات عمل = ${toArabicNumber(plan.totalUnits)} وحدة نصف ساعة · احتياطي يومي ${toArabicNumber(plan.bufferUnits)} وحدة</p></div></div><div class="daily-planner-actions"><button class="btn btn-secondary btn-small" data-view="planner" type="button">فتح الخطة كاملة</button><button class="btn btn-quiet btn-small" data-action="open-planner-task" type="button">${icon("plus")} مهمة مخططة</button></div></div><div class="daily-plan-callout"><div><strong>موعد المراجعة: خطة الغد أولاً</strong><span>${tomorrow.items.length ? `غداً: ${toArabicNumber(tomorrow.items.length)} مهام، واستخدام ${toArabicNumber(tomorrow.usedUnits)} من ${toArabicNumber(tomorrow.totalUnits)} وحدة.` : "غداً لا توجد مهام مثبتة بعد؛ أضف مهامك قبل إنهاء اليوم."}</span></div><button class="btn btn-primary btn-small" data-action="open-unexpected-task" type="button">${icon("bellRing")} أضف مهمة عاجلة</button></div><div class="daily-plan-days">${plan.days.map((day) => renderDailyPlanDay(day)).join("")}</div>${plan.backlog.length ? `<div class="daily-plan-backlog">هناك ${toArabicNumber(plan.backlog.length)} مهام لم تتسع لها الأيام السبعة. راجعها في الخطة كاملة وقرّر تفويضها أو ترحيلها.</div>` : ""}<div class="daily-plan-footnote">رتّب المهم والعاجل أولاً، ثم الأعمال العاجلة القابلة للتفويض، واترك الاحتياطي للطوارئ. الخطة في هذا النموذج تجريبية ومحفوظة على هذا المتصفح فقط.</div></section>`;
+  }
+
   function renderDaily() {
     const open = state.requests.filter((r) => r.status !== "مكتمل");
     const urgent = open.filter((r) => r.quadrant === "q1");
     const completed = state.requests.filter((r) => r.status === "مكتمل");
     const signed = state.documents.filter((d) => d.status !== "بانتظار التوقيع");
     const deputyPending = state.requests.filter((r) => ["deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل");
-    return pageWrap(`${heading("الموجز اليومي", "ملخص تنفيذي من بيانات العرض الحالية. اطبع الصفحة أو راجع عناصر المتابعة.", `<button class="btn btn-secondary" data-action="print-page" type="button">${icon("file")} طباعة الموجز</button>`)}
+    return pageWrap(`${heading("الموجز اليومي", "ملخص تنفيذي لليوم، ومعه خطة الغد والأيام الستة التالية قبل مغادرة المكتب.", `<button class="btn btn-secondary" data-action="print-page" type="button">${icon("file")} طباعة الموجز</button>`)}
+      ${renderDailyPlanWeek()}
       <div class="digest-grid">
         <div style="display:grid;gap:15px">
           <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("report")}</span><div><h2>ملخص الحالة</h2><p>${dateLong()} · ${timeNow()}</p></div></div><span class="pill pill-green">محدّث الآن</span></div><div class="digest-summary"><div class="digest-summary-item critical"><span>أزمات عاجلة</span><strong>${toArabicNumber(urgent.length)}</strong></div><div class="digest-summary-item"><span>مكتملة</span><strong>${toArabicNumber(completed.length)}</strong></div><div class="digest-summary-item"><span>معلّقة</span><strong>${toArabicNumber(open.length)}</strong></div></div><div class="digest-list"><div class="digest-line"><span class="digest-line-icon">${icon("bellRing")}</span><div><strong>الأزمات العاجلة</strong><span>${urgent.length ? urgent.map((r) => esc(r.title)).join(" · ") : "لا توجد حالات عاجلة ظاهرة."}</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("users")}</span><div><strong>مهام لدى النواب</strong><span>${toArabicNumber(deputyPending.length)} معاملة لا تزال مفتوحة لدى النواب أو الطبيب المصرح.</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("file")}</span><div><strong>الأوراق الموقعة</strong><span>${toArabicNumber(signed.length)} مستند بحالة موقّع تجريبياً أو مكتمل في بيانات العرض.</span></div></div></div></section>
@@ -1624,7 +1757,10 @@ svg { display: block; }
   function modalAvailability() {
     const person = currentPerson();
     const presence = presenceFor(person.id);
-    return `${modalHeader("تحديث حالة التواجد", "اختر مدة الغياب ومكان عمل عام حتى لا يتحرك أحد لمكانك دون داعٍ.")}<form data-form="availability"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="presence-status">حالتي</label><select id="presence-status" name="status"><option value="available"${presence.status === "available" ? " selected" : ""}>متاح في مكان العمل</option><option value="away"${presence.status === "away" ? " selected" : ""}>غائب مؤقتاً عن مكتبي</option><option value="offsite"${presence.status === "offsite" ? " selected" : ""}>في قسم أو موقع آخر</option><option value="remote"${presence.status === "remote" ? " selected" : ""}>متاح عن بُعد</option></select></div><div class="form-field"><label for="presence-place">مكان العمل العام (لا تكتب عنوان المنزل)</label><input id="presence-place" name="place" maxlength="90" value="${esc(presence.place || "")}" placeholder="مثال: مخزن الدور الثاني أو خارج المستشفى" required /></div><div class="form-field"><label for="presence-return">وقت العودة المتوقع عند الغياب</label><input id="presence-return" name="returnAt" type="datetime-local" min="${localDateTimeValue(0)}" value="${presence.returnAt ? esc(toLocalDateTimeInput(presence.returnAt)) : localDateTimeValue(45)}" /></div><div class="form-field"><label for="presence-note">ملاحظة اختيارية</label><input id="presence-note" name="note" maxlength="100" value="${esc(presence.note || "")}" placeholder="مثال: متاح عبر التطبيق" /></div><div class="secret-warning">إذا اخترت الغياب أو الخروج، يجب إدخال وقت عودة. مشاركة المكان اختيارية ومقصورة على وصف العمل، دون تتبع GPS.</div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} حفظ التواجد</button></div></form>`;
+    const requiresCoverage = ["employee", "department"].includes(state.role);
+    const candidates = eligibleCoverageStaff(person);
+    const selectedCoverage = presence.coverMode === "team" ? "team" : presence.coverMode === "person" ? presence.coverId : "";
+    return `${modalHeader("تحديث حالة التواجد", "اختر مدة الغياب ومكان عمل عام حتى لا يتحرك أحد لمكانك دون داعٍ.")}<form data-form="availability"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="presence-status">حالتي</label><select id="presence-status" name="status"><option value="available"${presence.status === "available" ? " selected" : ""}>متاح في مكان العمل</option><option value="away"${presence.status === "away" ? " selected" : ""}>غائب مؤقتاً عن مكتبي</option><option value="offsite"${presence.status === "offsite" ? " selected" : ""}>في قسم أو موقع آخر</option><option value="remote"${presence.status === "remote" ? " selected" : ""}>متاح عن بُعد</option></select></div><div class="form-field"><label for="presence-place">مكان العمل العام (لا تكتب عنوان المنزل)</label><input id="presence-place" name="place" maxlength="90" value="${esc(presence.place || "")}" placeholder="مثال: مخزن الدور الثاني أو خارج المستشفى" required /></div><div class="form-field"><label for="presence-return">وقت العودة المتوقع عند الغياب</label><input id="presence-return" name="returnAt" type="datetime-local" min="${localDateTimeValue(0)}" value="${presence.returnAt ? esc(toLocalDateTimeInput(presence.returnAt)) : localDateTimeValue(45)}"${presence.status !== "available" ? " required" : ""} /></div><div class="form-field"><label for="presence-note">ملاحظة اختيارية</label><input id="presence-note" name="note" maxlength="100" value="${esc(presence.note || "")}" placeholder="مثال: متاح عبر التطبيق" /></div>${requiresCoverage ? `<div id="coverage-handover-fields" class="coverage-handover-fields"${["away", "offsite"].includes(presence.status) ? "" : " hidden"}><div class="form-field"><label for="coverage-choice">من سيغطي عملك إذا كنت غائباً؟</label><select id="coverage-choice" name="coverageChoice"${["away", "offsite"].includes(presence.status) ? " required" : ""}><option value="">اختر بديلاً مؤهلاً أو مساراً بديلاً</option>${candidates.map((candidate) => `<option value="${esc(candidate.id)}"${selectedCoverage === candidate.id ? " selected" : ""}>${esc(candidate.name)} · ${esc(candidate.position)}</option>`).join("")}<option value="team"${selectedCoverage === "team" ? " selected" : ""}>لا يوجد بديل مؤهل — أرسل المهام لمشرف القسم لتوزيعها</option></select><span class="helper-text">عند اختيار «غائب» أو «في قسم آخر» اختر بديل القسم المسجّل كمؤهل ومتاح، أو أحِل التوزيع للمشرف.</span></div><div class="form-field"><label for="presence-handoff">ما المهام أو الملاحظات التي يجب تسليمها؟</label><textarea id="presence-handoff" name="handoff" maxlength="300"${["away", "offsite"].includes(presence.status) ? " required" : ""} placeholder="اكتب المهام المفتوحة والموعد والخطوة التالية؛ أو اكتب: لا توجد مهام معلقة">${esc(presence.handoff || "")}</textarea></div></div>` : ""}<div class="secret-warning">عند اختيار الغياب أو الخروج يلزم وقت عودة، وللموظف يلزم تحديد البديل أو إحالة المشرف. اكتب وصف مكان عمل عاماً فقط؛ لا يوجد تتبع GPS أو طلب لعنوان المنزل.</div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} حفظ التواجد</button></div></form>`;
   }
 
   function toLocalDateTimeInput(value) {
@@ -1646,16 +1782,13 @@ svg { display: block; }
   }
 
   function modalPlannerTask() {
-    const selectedDate = state.weekPlan?.days?.[1]?.date || localDayKey(new Date(Date.now() + 86400000));
-    return `${modalHeader("إضافة مهمة إلى الخطة", "قدّر حجمها بوحدات نصف ساعة، واختر أول يوم يسمح ببدئها.")}<form data-form="planner-task"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="plan-task-title">اسم المهمة</label><input id="plan-task-title" name="title" maxlength="120" required placeholder="مثال: مراجعة خطة تطوير قسم العمليات" /></div><div class="field-row"><div class="form-field"><label for="plan-task-quadrant">الأولوية</label><select id="plan-task-quadrant" name="quadrant"><option value="q1">هام وعاجل</option><option value="q3">غير هام وعاجل · يفوّض</option><option value="q2" selected>هام وغير عاجل</option></select></div><div class="form-field"><label for="plan-task-units">الحجم (وحدات ٣٠ دقيقة)</label><select id="plan-task-units" name="units">${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}"${n === 2 ? " selected" : ""}>${toArabicNumber(n)} · ${toArabicNumber(n * 30)} دقيقة</option>`).join("")}</select></div></div><div class="form-field"><label for="plan-task-date">يبدأ في</label><select id="plan-task-date" name="dueDate">${(state.weekPlan?.days || []).slice(0, 8).map((day) => `<option value="${day.date}"${day.date === selectedDate ? " selected" : ""}>${esc(day.label)} · ${esc(new Intl.DateTimeFormat("ar-EG", { day: "numeric", month: "short" }).format(dayFromKey(day.date)))}</option>`).join("")}</select></div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("calendar")} إضافة للخطة</button></div></form>`;
-  }
-
-  function modalPlannerEstimate() {
-    const { taskId, sourceType } = state.modal || {};
-    const task = sourceType === "request" ? state.requests.find((item) => item.id === taskId) : state.plannerTasks.find((item) => item.id === taskId);
-    if (!task) return `${modalHeader("المهمة غير موجودة")}<div class="modal-body"><div class="no-results">تعذر العثور على المهمة.</div></div>`;
-    const units = Number(task.estimatedUnits || task.units) || plannerTasks().find((candidate) => candidate.id === taskId)?.units || 2;
-    return `${modalHeader("تعديل وقت المهمة", esc(task.title))}<form data-form="planner-estimate" data-task-id="${esc(taskId)}" data-source-type="${sourceType}"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="estimate-units">التقدير بوحدات نصف ساعة</label><select id="estimate-units" name="units">${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}"${units === n ? " selected" : ""}>${toArabicNumber(n)} وحدة · ${plannerDuration(n)}</option>`).join("")}</select></div><div class="secret-warning">غيّر التقدير إذا احتاجت المهمة وقتاً أكثر أو أقل. سيُعاد توزيع المهام الأخرى تلقائياً حسب الأولوية.</div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("clock")} تحديث التقدير</button></div></form>`;
+    const taskId = state.modal?.taskId || "";
+    const task = state.plannerTasks.find((item) => item.id === taskId);
+    const selectedDate = task?.dueDate || state.weekPlan?.days?.[0]?.date || nextPlanningDayKey();
+    const dates = state.weekPlan?.days || [];
+    const dateOptions = dates.map((day) => `<option value="${day.date}"${day.date === selectedDate ? " selected" : ""}>${esc(day.label)} · ${esc(new Intl.DateTimeFormat("ar-EG", { day: "numeric", month: "short" }).format(dayFromKey(day.date)))}</option>`).join("");
+    const extraDate = task && !dates.some((day) => day.date === selectedDate) ? `<option value="${esc(selectedDate)}" selected>${esc(new Intl.DateTimeFormat("ar-EG", { day: "numeric", month: "short", year: "numeric" }).format(dayFromKey(selectedDate)))} · الموعد الحالي</option>` : "";
+    return `${modalHeader(task ? "تعديل مهمة الخطة" : "إضافة مهمة إلى الخطة", task ? "عدّل اسم المهمة أو أولويتها أو موعدها أو تقدير وقتها." : "قدّر حجمها بوحدات نصف ساعة، واختر أول يوم يسمح ببدئها.")}<form data-form="planner-task"${task ? ` data-task-id="${esc(task.id)}"` : ""}><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="plan-task-title">اسم المهمة</label><input id="plan-task-title" name="title" maxlength="120" value="${esc(task?.title || "")}" required placeholder="مثال: مراجعة خطة تطوير قسم العمليات" /></div><div class="field-row"><div class="form-field"><label for="plan-task-quadrant">الأولوية</label><select id="plan-task-quadrant" name="quadrant"><option value="q1"${task?.quadrant === "q1" ? " selected" : ""}>هام وعاجل</option><option value="q3"${task?.quadrant === "q3" ? " selected" : ""}>غير هام وعاجل · يفوّض</option><option value="q2"${!task || task.quadrant === "q2" ? " selected" : ""}>هام وغير عاجل</option></select></div><div class="form-field"><label for="plan-task-units">الحجم (وحدات ٣٠ دقيقة)</label><select id="plan-task-units" name="units">${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}"${Number(task?.units || 2) === n ? " selected" : ""}>${toArabicNumber(n)} · ${toArabicNumber(n * 30)} دقيقة</option>`).join("")}</select></div></div><div class="form-field"><label for="plan-task-date">يبدأ في</label><select id="plan-task-date" name="dueDate">${extraDate}${dateOptions}</select></div>${task ? `<div class="helper-text">عند الحفظ يعاد ترتيب مهام الخطة وفق التاريخ والأولوية مع الحفاظ على وقت الطوارئ.</div>` : ""}</div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon(task ? "check" : "calendar")} ${task ? "حفظ التعديل" : "إضافة للخطة"}</button></div></form>`;
   }
 
   function modalUnexpectedTask() {
@@ -1779,8 +1912,24 @@ svg { display: block; }
       const returnDate = returnValue ? new Date(returnValue) : null;
       if (!place) return showToast("اكتب مكان عمل عاماً أو اسم القسم.", true);
       if (status !== "available" && (!returnDate || Number.isNaN(returnDate.getTime()) || returnDate.getTime() <= Date.now())) return showToast("أدخل وقت عودة لاحقاً للوقت الحالي.", true);
+      const requiresCoverage = ["employee", "department"].includes(state.role) && ["away", "offsite"].includes(status);
+      const coverageChoice = String(data.get("coverageChoice") || "").trim();
+      const handoff = String(data.get("handoff") || "").trim();
+      let coverMode = null;
+      let coverId = null;
+      if (requiresCoverage) {
+        if (!coverageChoice) return showToast("حدد الموظف البديل، أو اختر إحالة المهام لمشرف القسم.", true);
+        if (!handoff) return showToast("اكتب ما يحتاج البديل إلى متابعته، أو اكتب: لا توجد مهام معلقة.", true);
+        if (coverageChoice === "team") coverMode = "team";
+        else {
+          const candidate = eligibleCoverageStaff(person).find((member) => member.id === coverageChoice);
+          if (!candidate) return showToast("هذا البديل غير متاح الآن أو ليس من فريقك؛ اختر بديلاً آخر أو إحالة للمشرف.", true);
+          coverMode = "person";
+          coverId = candidate.id;
+        }
+      }
       const previous = state.availability[person.id] || {};
-      state.availability[person.id] = { status, place, returnAt: status === "available" ? null : returnDate.toISOString(), returnPlace: status === "available" ? null : (previous.status === "available" ? previous.place : previous.returnPlace || "مكتب العمل"), note: String(data.get("note") || "").trim(), updatedAt: Date.now() };
+      state.availability[person.id] = { status, place, returnAt: status === "available" ? null : returnDate.toISOString(), returnPlace: status === "available" ? null : (previous.status === "available" ? previous.place : previous.returnPlace || "مكتب العمل"), note: String(data.get("note") || "").trim(), coverMode, coverId, handoff: requiresCoverage ? handoff : "", coverageUpdatedAt: Date.now(), updatedAt: Date.now() };
       if (state.role === "director") { state.busyUntil = null; state.busyReason = ""; }
       save();
       state.modal = null;
@@ -1829,7 +1978,7 @@ svg { display: block; }
       refreshWeekPlan();
       save();
       render();
-      showToast("أُعيد بناء خطة اليوم والأسبوع بالإعدادات الجديدة.");
+      showToast("أُعيد بناء خطة الغد والأسبوع بالإعدادات الجديدة.");
       return;
     }
     if (kind === "planner-estimate") {
@@ -1849,13 +1998,22 @@ svg { display: block; }
       const title = String(data.get("title") || "").trim();
       if (!title) return showToast("اكتب اسم المهمة.", true);
       const unexpected = kind === "unexpected-task";
-      const task = { id: `PT-${Date.now()}`, title, quadrant: unexpected ? "q1" : String(data.get("quadrant") || "q2"), units: Math.max(1, Number(data.get("units")) || 1), dueDate: unexpected ? localDayKey() : String(data.get("dueDate") || localDayKey()), status: "مفتوحة", urgent: unexpected, createdAt: Date.now() };
-      state.plannerTasks.push(task);
+      const taskId = form.dataset.taskId || "";
+      const existingTask = taskId ? state.plannerTasks.find((item) => item.id === taskId) : null;
+      if (taskId && !existingTask) return showToast("تعذر العثور على المهمة المراد تعديلها.", true);
+      const quadrant = unexpected ? "q1" : String(data.get("quadrant") || "q2");
+      const units = Math.max(1, Math.min(6, Number(data.get("units")) || 1));
+      const dueDate = unexpected ? nextPlanningDayKey() : String(data.get("dueDate") || nextPlanningDayKey());
+      if (existingTask) {
+        Object.assign(existingTask, { title, quadrant, units, dueDate, urgent: quadrant === "q1" && !!existingTask.urgent, updatedAt: Date.now() });
+      } else {
+        state.plannerTasks.push({ id: `PT-${Date.now()}`, title, quadrant, units, dueDate, status: "مفتوحة", urgent: unexpected, createdAt: Date.now() });
+      }
       refreshWeekPlan();
       save();
       state.modal = null;
       render();
-      showToast(unexpected ? "أُدرجت المهمة الطارئة وأعيد ترتيب الخطة وفق الأولوية." : "أضيفت المهمة إلى الخطة.");
+      showToast(unexpected ? "أُدرجت المهمة الطارئة وأعيد ترتيب الخطة وفق الأولوية." : existingTask ? "تم تعديل المهمة وإعادة ترتيب الخطة." : "أضيفت المهمة إلى الخطة.");
       return;
     }
     if (kind === "move-request") {
@@ -1984,9 +2142,10 @@ svg { display: block; }
     else if (action === "update-presence") { state.modal = { type: "availability" }; render(); }
     else if (action === "contact-person") { state.modal = { type: "staff-contact", recipientKind: element.dataset.personKind || "staff", recipientId: element.dataset.personId || "" }; render(); }
     else if (action === "open-planner-task") { state.modal = { type: "planner-task" }; render(); }
+    else if (action === "edit-plan-task") { state.modal = { type: "planner-task", taskId: element.dataset.taskId }; render(); }
     else if (action === "estimate-plan-task") { state.modal = { type: "planner-estimate", taskId: element.dataset.taskId, sourceType: element.dataset.sourceType }; render(); }
     else if (action === "open-unexpected-task") { state.modal = { type: "unexpected-task" }; render(); }
-    else if (action === "refresh-plan") { refreshWeekPlan(); save(); render(); showToast("أعيد ترتيب الخطة: الهام والعاجل أولاً ثم ما يمكن تفويضه."); }
+    else if (action === "refresh-plan") { refreshWeekPlan(); save(); render(); showToast("أعيد ترتيب الخطة: المهم والعاجل أولاً ثم ما يمكن تفويضه."); }
     else if (action === "complete-plan-task") {
       const id = element.dataset.taskId;
       if (element.dataset.sourceType === "request") {
@@ -2071,6 +2230,16 @@ svg { display: block; }
   });
 
   document.addEventListener("change", (event) => {
+    if (event.target.id === "presence-status") {
+      const coverageFields = document.getElementById("coverage-handover-fields");
+      if (coverageFields) coverageFields.hidden = !["away", "offsite"].includes(event.target.value);
+      const returnField = document.getElementById("presence-return");
+      if (returnField) returnField.required = event.target.value !== "available";
+      const coverageChoice = document.getElementById("coverage-choice");
+      if (coverageChoice) coverageChoice.required = ["away", "offsite"].includes(event.target.value);
+      const handoff = document.getElementById("presence-handoff");
+      if (handoff) handoff.required = ["away", "offsite"].includes(event.target.value);
+    }
     if (event.target.id === "role-select") {
       state.role = event.target.value;
       state.view = state.role === "department" ? "employee" : state.role === "employee" ? "my-presence" : "dashboard";
