@@ -1,0 +1,20 @@
+{
+  "name": "رِفد | إدارة العمل التنفيذي",
+  "short_name": "رِفد",
+  "description": "نموذج محلي لإدارة الطلبات والتواجد وخطة وقت المستشفى",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f5",
+  "theme_color": "#103c3b",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
