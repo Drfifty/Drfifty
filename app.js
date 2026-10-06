@@ -22,20 +22,51 @@
   };
 
   const ROLES = {
-    director: { label: "مدير المستشفى", person: "د. أحمد سالم", initials: "أح", short: "المدير" },
-    "deputy-med": { label: "النائب الأول · الشؤون الطبية", person: "د. ليلى منصور", initials: "لم", short: "النائب الأول" },
-    "deputy-admin": { label: "النائب الثاني · إدارية ومالية", person: "أ. كريم فؤاد", initials: "كف", short: "النائب الثاني" },
-    doctor: { label: "الطبيب المصرح · التوقيعات", person: "د. مريم عادل", initials: "مع", short: "الطبيب المصرح" },
-    secretary: { label: "السكرتير التنفيذي", person: "أ. ندى محمود", initials: "نم", short: "السكرتير" },
-    department: { label: "رئيس قسم", person: "د. ليلى منصور", initials: "لم", short: "رئيس قسم" },
-    employee: { label: "موظف", person: "أ. محمد علي", initials: "مح", short: "موظف" },
+    director: { label: "عميد المعهد", person: "أ.د محمد صالح", initials: "مح", short: "العميد" },
+    "deputy-technical": { label: "نائب المدير للشؤون الفنية", person: "أ.د علي حسين", initials: "عح", short: "نائب الشؤون الفنية" },
+    "deputy-technology": { label: "نائب المدير للشؤون التكنولوجية", person: "اسم المستخدم غير محدد", initials: "تق", short: "نائب التكنولوجيا" },
+    "technology-advisor": { label: "مستشار تكنولوجي للعميد", person: "اسم المستخدم غير محدد", initials: "تق", short: "مستشار تكنولوجي" },
+    "deputy-med": { label: "مسؤول الشؤون الطبية · دور عرض", person: "شاغل الوظيفة غير محدد", initials: "ط", short: "الشؤون الطبية" },
+    "deputy-admin": { label: "مسؤول الشؤون الإدارية والمالية · دور عرض", person: "شاغل الوظيفة غير محدد", initials: "إم", short: "الإدارية والمالية" },
+    doctor: { label: "الطبيب المخوّل · دور عرض", person: "شاغل الوظيفة غير محدد", initials: "ط", short: "الطبيب المخوّل" },
+    secretary: { label: "سكرتير العميد · دور عرض", person: "السكرتير غير محدد الاسم", initials: "سك", short: "السكرتير" },
+    department: { label: "رئيس قسم · دور عرض", person: "رئيس القسم غير محدد الاسم", initials: "قس", short: "رئيس القسم" },
+    employee: { label: "موظف · دور عرض", person: "موظف غير محدد الاسم", initials: "مو", short: "الموظف" },
     waiting: { label: "شاشة صالة الانتظار", person: "شاشة العرض", initials: "ر", short: "العرض" },
   };
 
-  const ROLE_IDS = ["director", "deputy-med", "deputy-admin", "doctor", "secretary", "department", "employee", "waiting"];
-  const LEADER_IDS = ["director", "deputy-med", "deputy-admin"];
-  const PRESENCE_ROLE_IDS = [...LEADER_IDS, "doctor"];
+  const ROLE_IDS = ["director", "deputy-technical", "deputy-technology", "technology-advisor", "deputy-med", "deputy-admin", "doctor", "secretary", "department", "employee", "waiting"];
+  const LEADER_IDS = ["director", "deputy-technical", "deputy-technology"];
+  const PRESENCE_ROLE_IDS = [...LEADER_IDS, "technology-advisor", "deputy-med", "deputy-admin", "doctor"];
   const CURRENT_STAFF_BY_ROLE = { secretary: "EMP-006", department: "EMP-005", employee: "EMP-001" };
+  const DEFAULT_BRANCH_ID = "branch-1";
+  const BRANCH_DIVISION_TEMPLATE = [
+    { id: "medical", name: "الشؤون الطبية", scope: "التنظيم اليومي للخدمات الطبية داخل الفرع.", lead: "رئيس الشؤون الطبية · الاسم غير محدد", units: ["العناية المركزة", "العمليات", "الطوارئ", "التمريض", "العيادات الخارجية"] },
+    { id: "technical", name: "الشؤون الفنية", scope: "المرافق والصيانة والأجهزة والخدمات الفنية.", lead: "نائب المدير للشؤون الفنية · أ.د علي حسين", units: ["الهندسة والصيانة", "المرافق", "الأجهزة والتجهيزات"] },
+    { id: "technology", name: "الشؤون التكنولوجية ونظم المعلومات", scope: "الأنظمة الرقمية والشبكات والدعم والتحول التقني في الفرعين.", lead: "نائب المدير للشؤون التكنولوجية · الاسم غير محدد", units: ["الدعم التقني", "الأنظمة والتطبيقات", "الشبكات والاتصالات", "التحول الرقمي"] },
+    { id: "admin", name: "الشؤون الإدارية والمالية", scope: "الموارد والخدمات الإدارية والمالية الخاصة بالفرع.", lead: "مسؤول الشؤون الإدارية والمالية · الاسم غير محدد", units: ["الموارد البشرية", "الإدارة المالية", "المشتريات والمخازن"] },
+    { id: "quality", name: "الجودة وسلامة الخدمة", scope: "متابعة جودة الإجراءات ومخاطر التشغيل ومؤشرات الخدمة.", lead: "مسؤول الجودة · الاسم غير محدد", units: ["مؤشرات الجودة", "إدارة المخاطر", "متابعة التحسين"] },
+  ];
+  const BRANCHES = [
+    {
+      id: "branch-1", name: "الفرع الأول · اسم مؤقت", manager: "مدير الفرع · المسمى المقترح، الشاغل غير محدد",
+      divisions: BRANCH_DIVISION_TEMPLATE.map((division) => ({ ...division, units: [...division.units] })), employees: [],
+      tasks: [
+        { id: "B1-T1", title: "حصر الأنظمة والأجهزة المستخدمة في الفرع", division: "الشؤون التكنولوجية", owner: "نائب المدير للشؤون التكنولوجية", status: "عينة للعرض", priority: "مهم وغير عاجل" },
+        { id: "B1-T2", title: "مراجعة قائمة الصيانة الوقائية للمرافق", division: "الشؤون الفنية", owner: "نائب المدير للشؤون الفنية", status: "عينة للعرض", priority: "مهم وغير عاجل" },
+        { id: "B1-T3", title: "مراجعة مسار متابعة الطلبات بين وحدات الفرع", division: "التنسيق التشغيلي", owner: "مدير الفرع · المسمى المقترح", status: "عينة للعرض", priority: "مهم وعاجل" },
+      ],
+    },
+    {
+      id: "branch-2", name: "الفرع الثاني · اسم مؤقت", manager: "مدير الفرع · المسمى المقترح، الشاغل غير محدد",
+      divisions: BRANCH_DIVISION_TEMPLATE.map((division) => ({ ...division, units: [...division.units] })), employees: [],
+      tasks: [
+        { id: "B2-T1", title: "إعداد قائمة أولية باحتياجات الدعم التقني", division: "الشؤون التكنولوجية", owner: "نائب المدير للشؤون التكنولوجية", status: "عينة للعرض", priority: "مهم وغير عاجل" },
+        { id: "B2-T2", title: "تجميع ملاحظات جاهزية المباني والخدمات الفنية", division: "الشؤون الفنية", owner: "نائب المدير للشؤون الفنية", status: "عينة للعرض", priority: "مهم وغير عاجل" },
+        { id: "B2-T3", title: "تنظيم تقرير متابعة تشغيلي أسبوعي للفرع", division: "التنسيق التشغيلي", owner: "مدير الفرع · المسمى المقترح", status: "عينة للعرض", priority: "مهم وغير عاجل" },
+      ],
+    },
+  ];
   const QUADRANTS = [
     { id: "q1", label: "هام وعاجل", action: "افعل الآن", hint: "تدخل فوري وأولوية قصوى", className: "q1", mark: "١", pill: "pill-red" },
     { id: "q2", label: "هام وغير عاجل", action: "خطّط وجدول", hint: "عمل استراتيجي مجدول", className: "q2", mark: "٢", pill: "pill-green" },
@@ -50,9 +81,9 @@
     { id: "RF-181", title: "اعتماد ميزانية تحديث أجهزة المراقبة", department: "الإدارة المالية", requester: "أ. حازم مصطفى", time: "٩:١٥ ص", date: "اليوم", quadrant: "q2", status: "بانتظار القرار", assignee: "deputy-admin", confidential: false, body: "مقترح اعتماد ميزانية مرحلية لتحديث أجهزة المراقبة في ثلاثة أقسام. مرفق بالمذكرة جدول التكاليف والأولوية التشغيلية.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 72 },
     { id: "RF-180", title: "خطة تحسين مسار التحويلات بين الأقسام", department: "الشؤون الطبية", requester: "د. مازن رياض", time: "٨:٥٨ ص", date: "اليوم", quadrant: "q2", status: "قيد المعالجة", assignee: "deputy-med", confidential: false, body: "خطة أولية لتقليل زمن التحويلات بين الأقسام الطبية، تتضمن مؤشرات أداء ومقترح تجربة لمدة شهر.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 91 },
     { id: "RF-179", title: "تقييم الاحتياج التدريبي للتمريض", department: "التمريض", requester: "أ. منى سمير", time: "٨:٤٠ ص", date: "اليوم", quadrant: "q2", status: "جديد", assignee: "deputy-med", confidential: false, body: "يرجى مراجعة الاحتياج التدريبي للتمريض للربع القادم وجدولة البرامج المقترحة بالتنسيق مع التعليم المستمر.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 110 },
-    { id: "RF-178", title: "صيانة دورية لوحدة التكييف في المبنى الشرقي", department: "الخدمات الهندسية", requester: "م. عمرو لطفي", time: "٨:٢٥ ص", date: "اليوم", quadrant: "q3", status: "مُحال للنائب", assignee: "deputy-admin", confidential: false, body: "وحدة التكييف تعمل بكفاءة منخفضة. لا يوجد تأثير مباشر على الخدمة حالياً، ونقترح إدراجها في جدول الصيانة هذا الأسبوع.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 125 },
+    { id: "RF-178", title: "صيانة دورية لوحدة التكييف في المبنى الشرقي", department: "الخدمات الهندسية", requester: "م. عمرو لطفي", time: "٨:٢٥ ص", date: "اليوم", quadrant: "q3", status: "مُحال للنائب", assignee: "deputy-technical", confidential: false, body: "وحدة التكييف تعمل بكفاءة منخفضة. لا يوجد تأثير مباشر على الخدمة حالياً، ونقترح إدراجها في جدول الصيانة هذا الأسبوع.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 125 },
     { id: "RF-177", title: "اعتماد إجازة سنوية لموظف بالقسم", department: "الموارد البشرية", requester: "أ. فادي نبيل", time: "٨:٠٣ ص", date: "اليوم", quadrant: "q3", status: "مُحال للنائب", assignee: "deputy-admin", confidential: false, body: "طلب اعتماد إجازة سنوية روتينية بعد استكمال موافقة رئيس القسم وتغطية جدول العمل.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 147 },
-    { id: "RF-176", title: "توقيع شهادة طبية روتينية", department: "العيادات الخارجية", requester: "أ. مها عادل", time: "٧:٤٥ ص", date: "اليوم", quadrant: "q3", status: "بانتظار التوقيع", assignee: "doctor", confidential: false, body: "شهادة طبية روتينية مكتملة البيانات وتنتظر مراجعة الطبيب المصرح والتوقيع.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 163 },
+    { id: "RF-176", title: "توقيع شهادة طبية روتينية", department: "العيادات الخارجية", requester: "أ. مها عادل", time: "٧:٤٥ ص", date: "اليوم", quadrant: "q3", status: "بانتظار التوقيع", assignee: "doctor", confidential: false, body: "شهادة طبية روتينية مكتملة البيانات وتنتظر مراجعة الطبيب المخوّل والتوقيع.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 163 },
     { id: "RF-175", title: "طلب مكرر بخصوص مستلزمات مكتبية", department: "شؤون العاملين", requester: "أ. وائل جابر", time: "أمس", date: "أمس", quadrant: "q4", status: "مراجعة", assignee: "secretary", confidential: false, body: "يبدو أن هذا الطلب مكرر مع معاملة RF-170. يرجى الدمج قبل الإحالة.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 60 * 25 },
     { id: "RF-174", title: "طلب غير مستوفٍ للبيانات الأساسية", department: "المخازن", requester: "أ. خالد رجب", time: "أمس", date: "أمس", quadrant: "q4", status: "بانتظار الاستكمال", assignee: "secretary", confidential: false, body: "ينقص المعاملة تحديد الكمية ومبرر الاحتياج. تُعاد لمقدم الطلب للاستكمال قبل أي توجيه.", authorRole: "department", createdAt: Date.now() - 1000 * 60 * 60 * 27 },
   ];
@@ -67,18 +98,18 @@
     { number: "و-١٤", name: "أ. سامي ناصر", department: "الموارد البشرية", time: "١١:٠٠ ص", priority: false },
   ];
   const SEED_DECISIONS = [
-    { id: "ق-٢٤١", title: "توحيد نموذج طلبات الصيانة الدورية", summary: "اعتماد نموذج موحد وتحديد مستوى الاستجابة بحسب تأثير العطل على الخدمة.", category: "تشغيل", date: "٢ أكتوبر ٢٠٢٦", owner: "مدير المستشفى" },
-    { id: "ق-٢٤٠", title: "تنظيم تغطية المناوبات خلال عطلة نهاية الأسبوع", summary: "تُرفع جداول التغطية قبل موعدها بأسبوع وتراجعها الشؤون الطبية.", category: "شؤون طبية", date: "١ أكتوبر ٢٠٢٦", owner: "النائب الأول" },
-    { id: "ق-٢٣٩", title: "إجراءات اعتماد التوريدات المكتبية", summary: "تُجمع الاحتياجات في طلب شهري واحد لتقليل المعاملات المتكررة.", category: "إدارية ومالية", date: "٢٩ سبتمبر ٢٠٢٦", owner: "النائب الثاني" },
+    { id: "ق-٢٤١", title: "توحيد نموذج طلبات الصيانة الدورية", summary: "اعتماد نموذج موحد وتحديد مستوى الاستجابة بحسب تأثير العطل على الخدمة.", category: "تشغيل", date: "٢ أكتوبر ٢٠٢٦", owner: "العميد" },
+    { id: "ق-٢٤٠", title: "تنظيم تغطية المناوبات خلال عطلة نهاية الأسبوع", summary: "تُرفع جداول التغطية قبل موعدها بأسبوع وتراجعها الشؤون الطبية.", category: "شؤون طبية", date: "١ أكتوبر ٢٠٢٦", owner: "نائب المدير للشؤون الفنية" },
+    { id: "ق-٢٣٩", title: "إجراءات اعتماد التوريدات المكتبية", summary: "تُجمع الاحتياجات في طلب شهري واحد لتقليل المعاملات المتكررة.", category: "إدارية ومالية", date: "٢٩ سبتمبر ٢٠٢٦", owner: "مسؤول الشؤون الإدارية والمالية" },
   ];
   const SEED_AGENDA = [
-    { time: "١١:٠٠ ص", title: "مراجعة خطة تحسين العمليات", detail: "مع النائب الأول · قاعة الاجتماعات", focus: false },
+    { time: "١١:٠٠ ص", title: "مراجعة خطة تحسين العمليات", detail: "مع نائب المدير للشؤون الفنية · قاعة الاجتماعات", focus: false },
     { time: "١٢:٣٠ م", title: "لجنة التشغيل الأسبوعية", detail: "قاعة الاجتماعات الرئيسية", focus: false },
     { time: "٠١:٣٠ م", title: "وقت تركيز محمي", detail: "مراجعة ملفات الميزانية والتطوير", focus: true },
   ];
   const SEED_DOCUMENTS = [
     { id: "DOC-04", name: "تعميم تحديث جداول المناوبات.pdf", department: "الشؤون الطبية", status: "بانتظار الموافقة المبدئية", workflowStage: "pending-preapproval", versionNumber: 1, versionLabel: "نسخة ١", createdAt: Date.now(), history: [] },
-    { id: "DOC-03", name: "محضر لجنة التشغيل.pdf", department: "مكتب المدير", status: "موافقة مبدئية مسجلة تجريبياً", workflowStage: "pending-paper-match", versionNumber: 1, versionLabel: "نسخة ١", createdAt: Date.now() - 30 * 60000, preApproval: { by: ROLES.director.person, signerId: "director", role: ROLES.director.label, at: Date.now() - 30 * 60000, versionLabel: "نسخة ١", reason: "اعتماد عينة توضيحية", mode: "demo-only" }, procedureStartedAt: Date.now() - 30 * 60000, history: [{ event: "preapproval", by: ROLES.director.person, at: Date.now() - 30 * 60000, versionLabel: "نسخة ١" }] },
+    { id: "DOC-03", name: "محضر لجنة التشغيل.pdf", department: "مكتب العميد", status: "موافقة مبدئية مسجلة تجريبياً", workflowStage: "pending-paper-match", versionNumber: 1, versionLabel: "نسخة ١", createdAt: Date.now() - 30 * 60000, preApproval: { by: ROLES.director.person, signerId: "director", role: ROLES.director.label, at: Date.now() - 30 * 60000, versionLabel: "نسخة ١", reason: "اعتماد عينة توضيحية", mode: "demo-only" }, procedureStartedAt: Date.now() - 30 * 60000, history: [{ event: "preapproval", by: ROLES.director.person, at: Date.now() - 30 * 60000, versionLabel: "نسخة ١" }] },
   ];
   const SEED_STAFF = [
     { id: "EMP-001", name: "أ. محمد علي", position: "فني صيانة", department: "الخدمات الهندسية", initials: "مح" },
@@ -86,12 +117,15 @@
     { id: "EMP-003", name: "أ. سارة حسن", position: "مسؤولة الجودة", department: "مكتب الجودة", initials: "سه" },
     { id: "EMP-004", name: "أ. وائل جابر", position: "أخصائي موارد بشرية", department: "الموارد البشرية", initials: "وج" },
     { id: "EMP-005", name: "د. ليلى منصور", position: "رئيس قسم", department: "العناية المركزة", initials: "لم" },
-    { id: "EMP-006", name: "أ. ندى محمود", position: "السكرتير التنفيذي", department: "مكتب المدير", initials: "نم" },
+    { id: "EMP-006", name: "أ. ندى محمود", position: "سكرتير العميد", department: "مكتب العميد", initials: "نم" },
     { id: "EMP-007", name: "أ. إبراهيم فوزي", position: "فني صيانة مناوب", department: "الخدمات الهندسية", initials: "إف", coverEligible: true },
     { id: "EMP-008", name: "أ. هاجر سامي", position: "مشرفة تمريض مناوبة", department: "التمريض", initials: "هـس", coverEligible: true },
   ];
   const SEED_AVAILABILITY = {
-    director: { status: "available", place: "مكتب المدير", returnAt: null, note: "متاح للمتابعة" },
+    director: { status: "available", place: "مكتب العميد", returnAt: null, note: "متاح للمتابعة" },
+    "deputy-technical": { status: "available", place: "الشؤون الفنية · الفرع الأول", returnAt: null, note: "متاح للمتابعة" },
+    "deputy-technology": { status: "available", place: "الشؤون التكنولوجية · جميع الفروع", returnAt: null, note: "متاح للمتابعة" },
+    "technology-advisor": { status: "available", place: "مستشار تكنولوجي · جميع الفروع", returnAt: null, note: "متاح للمتابعة" },
     "deputy-med": { status: "away", place: "جولة في قسم العمليات", returnAt: new Date(Date.now() + 35 * 60000).toISOString(), note: "متاح عبر التطبيق" },
     "deputy-admin": { status: "available", place: "مكتب الشؤون الإدارية", returnAt: null, note: "" },
     doctor: { status: "offsite", place: "العيادات الخارجية", returnAt: new Date(Date.now() + 55 * 60000).toISOString(), note: "" },
@@ -127,6 +161,7 @@
     notices: read(STORAGE.notices, null) || clone(SEED_NOTICES),
     queue: read(STORAGE.queue, null) || clone(SEED_QUEUE),
     currentTicket: read("rifd-demo-current-ticket-v1", "و-١١"),
+    branchCurrentTickets: read("rifd-demo-current-tickets-by-branch-v1", {}),
     decisions: read(STORAGE.decisions, null) || clone(SEED_DECISIONS),
     agenda: read(STORAGE.agenda, null) || clone(SEED_AGENDA),
     documents: read(STORAGE.documents, null) || clone(SEED_DOCUMENTS),
@@ -141,13 +176,24 @@
     soundAlerts: !!pref.soundAlerts,
     department: pref.department || "العناية المركزة",
     staffId: pref.staffId || "EMP-001",
+    activeBranchId: BRANCHES.some((branch) => branch.id === pref.activeBranchId) ? pref.activeBranchId : DEFAULT_BRANCH_ID,
     savedRole: null,
   };
+  const activeBranch = () => BRANCHES.find((branch) => branch.id === state.activeBranchId) || BRANCHES[0];
+  const branchRecords = (items) => items.filter((item) => (item.branchId || DEFAULT_BRANCH_ID) === state.activeBranchId);
+  state.requests = state.requests.map((item) => ({ ...item, branchId: item.branchId || DEFAULT_BRANCH_ID }));
+  state.queue = state.queue.map((item) => ({ ...item, branchId: item.branchId || DEFAULT_BRANCH_ID }));
+  state.decisions = state.decisions.map((item) => ({ ...item, branchId: item.branchId || DEFAULT_BRANCH_ID }));
+  state.documents = state.documents.map((item) => ({ ...item, branchId: item.branchId || DEFAULT_BRANCH_ID }));
+  state.plannerTasks = state.plannerTasks.map((item) => ({ ...item, branchId: item.branchId || DEFAULT_BRANCH_ID }));
+  state.staffRequests = state.staffRequests.map((item) => ({ ...item, branchId: item.branchId || DEFAULT_BRANCH_ID }));
+  BRANCHES.forEach((branch) => { if (!state.branchCurrentTickets[branch.id]) state.branchCurrentTickets[branch.id] = branch.id === DEFAULT_BRANCH_ID ? state.currentTicket : "و-١١"; });
   SEED_STAFF.forEach((person) => { if (!state.staff.some((existing) => existing.id === person.id)) state.staff.push(clone(person)); });
   ["EMP-007", "EMP-008"].forEach((id) => { if (!state.availability[id]) state.availability[id] = clone(SEED_AVAILABILITY[id]); });
   if (!state.staff.some((person) => person.id === state.staffId)) state.staffId = state.staff[0]?.id || "EMP-001";
   if (state.role === "department") state.view = "employee";
   if (state.role === "employee") state.view = "my-presence";
+  if (["director", "deputy-technical", "deputy-technology", "technology-advisor"].includes(state.role)) state.view = "branches";
   if (state.role === "waiting") state.view = "waiting";
 
   const ICONS = {
@@ -224,9 +270,12 @@
     return [...new Set(normalizeArabic(value).split(" ").filter((word) => word.length >= 4 && !stop.has(word)))].slice(0, 9);
   };
   const visibleRequests = () => {
-    if (state.role === "director" || state.role === "secretary") return state.requests;
-    if (state.role === "department") return state.requests.filter((r) => r.authorRole === "department" && r.department === state.department);
-    return state.requests.filter((r) => r.assignee === state.role);
+    const requests = branchRecords(state.requests);
+    if (["director", "secretary", "technology-advisor"].includes(state.role)) return requests;
+    if (state.role === "department") return requests.filter((r) => r.authorRole === "department" && r.department === state.department);
+    if (state.role === "deputy-technology") return requests.filter((r) => r.assignee === "deputy-technology" || r.division === "الشؤون التكنولوجية");
+    if (state.role === "deputy-technical") return requests.filter((r) => r.assignee === "deputy-technical");
+    return requests.filter((r) => r.assignee === state.role);
   };
   const save = () => {
     try {
@@ -235,7 +284,8 @@
       localStorage.setItem(STORAGE.role, JSON.stringify(state.role));
       localStorage.setItem(STORAGE.notices, JSON.stringify(state.notices));
       localStorage.setItem(STORAGE.queue, JSON.stringify(state.queue));
-      localStorage.setItem("rifd-demo-current-ticket-v1", JSON.stringify(state.currentTicket));
+      localStorage.setItem("rifd-demo-current-ticket-v1", JSON.stringify(state.branchCurrentTickets?.[state.activeBranchId] || state.currentTicket));
+      localStorage.setItem("rifd-demo-current-tickets-by-branch-v1", JSON.stringify(state.branchCurrentTickets));
       localStorage.setItem(STORAGE.decisions, JSON.stringify(state.decisions));
       localStorage.setItem(STORAGE.agenda, JSON.stringify(state.agenda));
       localStorage.setItem(STORAGE.documents, JSON.stringify(state.documents));
@@ -247,7 +297,7 @@
       localStorage.setItem(STORAGE.plannerPrefs, JSON.stringify(state.plannerPrefs));
       localStorage.setItem("rifd-demo-busy-until-v1", JSON.stringify(state.busyUntil));
       localStorage.setItem("rifd-demo-busy-reason-v1", JSON.stringify(state.busyReason));
-      localStorage.setItem(STORAGE.prefs, JSON.stringify({ soundAlerts: state.soundAlerts, department: state.department, staffId: state.staffId }));
+      localStorage.setItem(STORAGE.prefs, JSON.stringify({ soundAlerts: state.soundAlerts, department: state.department, staffId: state.staffId, activeBranchId: state.activeBranchId }));
     } catch (_) { showToast("تعذر حفظ البيانات محلياً. تحقق من مساحة التخزين في المتصفح.", true); }
   };
 
@@ -329,9 +379,11 @@
   function suggestedAssignee(data, quadrant) {
     const text = normalizeArabic(`${data.title || ""} ${data.details || ""} ${data.department || ""}`);
     if (quadrant === "q1") return "director";
+    if (/(نظام|برمج|تقني|تكنولوج|شبكه|شبكة|اتصال|خادم|تطبيق|رقمن|تحول رقمي)/.test(text)) return "deputy-technology";
     if (/(توقيع|شهاده طبيه|شهادة طبية|روشته|روشتة)/.test(text)) return "doctor";
     if (/(طبيب|اطباء|أطباء|شيفت|مناوبه|مناوبة|تمريض|عمليات|تحويلات|مرضى|مرضى|رعايه|رعاية)/.test(text)) return "deputy-med";
-    if (/(صيانه|صيانة|مباني|مبان|اجازه|إجازة|توريد|مستلزمات|مالي|ميزانيه|ميزانية|المخازن|هندسيه|هندسية)/.test(text)) return "deputy-admin";
+    if (/(صيانه|صيانة|مباني|مبان|معدات|اجهزه|أجهزة|فني|هندسي|هندسيه|هندسية)/.test(text)) return "deputy-technical";
+    if (/(اجازه|إجازة|توريد|مستلزمات|مالي|ميزانيه|ميزانية|المخازن|مشتريات|موارد بشرية)/.test(text)) return "deputy-admin";
     if (quadrant === "q3") return "deputy-admin";
     return "director";
   }
@@ -352,6 +404,7 @@
 
   const VIEW_INFO = {
     dashboard: ["لوحة المتابعة", "صورة تنفيذية سريعة لما يحتاج انتباهك اليوم."],
+    branches: ["الفروع والهيكل", "اختر فرعاً لعرض وحداته ومهامه وقائمة موظفيه المنفصلة."],
     matrix: ["مصفوفة الأولويات", "فرز واضح للطلبات بحسب الأهمية والاستعجال."],
     requests: ["سجل الطلبات", "متابعة الطلبات والتوجيهات والحالات من مكان واحد."],
     communications: ["التواصل والاستدعاء", "إدارة حالة الانشغال والنداءات والتعاميم المحلية."],
@@ -369,13 +422,26 @@
   function navigationFor(role) {
     if (role === "department") return [
       { id: "employee", label: "إرسال طلب للقسم", icon: "send" },
-      { id: "my-requests", label: "طلباتي والردود", icon: "inbox", count: state.requests.filter((r) => r.authorRole === "department" && r.department === state.department && ["جديد", "قيد المعالجة", "موعد مقابلة"].includes(r.status)).length || null },
+      { id: "my-requests", label: "طلباتي والردود", icon: "inbox", count: branchRecords(state.requests).filter((r) => r.authorRole === "department" && r.department === state.department && ["جديد", "قيد المعالجة", "موعد مقابلة"].includes(r.status)).length || null },
       { id: "my-presence", label: "تواجدي والطلبات الواردة", icon: "clock" },
       { id: "staff-inbox", label: "طلبات الإدارة لي", icon: "message", count: incomingStaffRequests().filter((r) => r.status !== "مكتمل").length || null },
     ];
     if (role === "employee") return [
       { id: "my-presence", label: "تواجدي والطلبات الواردة", icon: "clock" },
       { id: "staff-inbox", label: "طلبات الإدارة لي", icon: "message", count: incomingStaffRequests().filter((r) => r.status !== "مكتمل").length || null },
+    ];
+    if (["deputy-technical", "deputy-technology"].includes(role)) return [
+      { id: "branches", label: "الفروع والمهام التخصصية", icon: "grid" },
+      { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
+      { id: "matrix", label: "مصفوفة مهامي", icon: "grid" },
+      { id: "requests", label: "المعاملات الموجّهة إليّ", icon: "inbox" },
+      { id: "planner", label: "خطة الوقت", icon: "clock" },
+      { id: "daily", label: "الموجز اليومي", icon: "report" },
+    ];
+    if (role === "technology-advisor") return [
+      { id: "branches", label: "فروع العميد", icon: "grid" },
+      { id: "daily", label: "الموجز اليومي · عرض", icon: "report" },
+      { id: "decisions", label: "سجل القرارات · عرض", icon: "archive" },
     ];
     if (role === "secretary") return [
       { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
@@ -402,10 +468,10 @@
       { id: "communications", label: "التواصل", icon: "message" },
       { id: "daily", label: "الموجز اليومي", icon: "report" },
     ];
-    return [
+    const standardItems = [
       { id: "dashboard", label: "لوحة المتابعة", icon: "dashboard" },
-      { id: "matrix", label: "مصفوفة الأولويات", icon: "grid" },
-      { id: "requests", label: "سجل الطلبات", icon: "inbox", count: state.requests.filter((r) => r.status === "جديد").length || null },
+      { id: "matrix", label: "مصفوفة آيزنهاور", icon: "grid" },
+      { id: "requests", label: "سجل الطلبات", icon: "inbox", count: branchRecords(state.requests).filter((r) => r.status === "جديد").length || null },
       { id: "presence", label: "تواجد الموظفين", icon: "users", count: incomingStaffRequests().length || null },
       { id: "planner", label: "خطة الوقت", icon: "clock" },
       { id: "communications", label: "التواصل والاستدعاء", icon: "message" },
@@ -413,6 +479,7 @@
       { id: "decisions", label: "سجل القرارات", icon: "archive" },
       { id: "daily", label: "الموجز اليومي", icon: "report" },
     ];
+    return role === "director" ? [{ id: "branches", label: "الفروع والهيكل", icon: "grid" }, ...standardItems] : standardItems;
   }
 
   function renderSidebar() {
@@ -428,7 +495,7 @@
         <nav class="nav-list">
           ${nav.map((item) => `<button class="nav-item${state.view === item.id ? " active" : ""}" data-view="${item.id}" type="button">${icon(item.icon, "nav-icon")}<span>${esc(item.label)}</span>${item.count ? `<span class="nav-count">${toArabicNumber(item.count)}</span>` : ""}</button>`).join("")}
         </nav>
-        ${state.role !== "department" && state.role !== "employee" ? `<div class="sidebar-label" style="margin-top:25px">وصول سريع</div><nav class="nav-list"><button class="nav-item" data-action="open-summon" type="button">${icon("phone", "nav-icon")}<span>نداء مباشر</span></button><button class="nav-item" data-action="open-new-request" type="button">${icon("plus", "nav-icon")}<span>إضافة معاملة</span></button></nav>` : ""}
+        ${state.role !== "department" && state.role !== "employee" && state.role !== "technology-advisor" ? `<div class="sidebar-label" style="margin-top:25px">وصول سريع</div><nav class="nav-list"><button class="nav-item" data-action="open-summon" type="button">${icon("phone", "nav-icon")}<span>نداء مباشر</span></button><button class="nav-item" data-action="open-new-request" type="button">${icon("plus", "nav-icon")}<span>إضافة معاملة</span></button></nav>` : ""}
         <div class="sidebar-spacer"></div>
         <div class="sidebar-card"><div class="sidebar-card-title"><span class="pulse-dot"></span> شبكة المستشفى المحلية</div><p>التطبيق يعمل في وضع العرض المحلي. البيانات التجريبية محفوظة على هذا المتصفح.</p></div>
         <div class="sidebar-foot"><span>نسخة توضيحية</span><strong>${urgentCount ? `${toArabicNumber(urgentCount)} عاجل` : "النظام جاهز"}</strong></div>
@@ -444,7 +511,7 @@
     return `<header class="topbar">
       <div class="topbar-start">
         <button class="mobile-menu" data-action="menu-toggle" aria-label="فتح القائمة" type="button">${icon("menu")}</button>
-        <div class="topbar-title"><strong>${esc(meta[0])}</strong><span>مستشفى النور التخصصي · مساحة العمل التنفيذية</span></div>
+        <div class="topbar-title"><strong>${esc(meta[0])}</strong><span>${esc(activeBranch().name)} · مساحة العمل التنفيذية</span></div>
       </div>
       <div class="topbar-end">
         <span class="local-indicator" title="واجهة محلية تجريبية"><span class="pulse-dot"></span>محلي</span>
@@ -473,7 +540,7 @@
 
   function presenceFor(id) {
     let presence = state.availability[id] || { status: "available", place: "غير محدد", returnAt: null, note: "" };
-    if (id === "director" && isBusy()) presence = { ...presence, status: "away", place: "مشغول حالياً · مكتب المدير", returnAt: state.busyUntil, note: state.busyReason || "" };
+    if (id === "director" && isBusy()) presence = { ...presence, status: "away", place: "مشغول حالياً · مكتب العميد", returnAt: state.busyUntil, note: state.busyReason || "" };
     if (presence.status !== "available" && presence.returnAt && new Date(presence.returnAt).getTime() <= Date.now()) {
       return { ...presence, status: "available", place: presence.returnPlace || "مكتب العمل", returnAt: null, note: "انتهت مدة الغياب المحددة" };
     }
@@ -518,7 +585,7 @@
     const person = currentPerson();
     if (!person) return [];
     const kind = person.kind || "staff";
-    return state.staffRequests.filter((item) => item.recipientKind === kind && item.recipientId === person.id && item.status !== "مكتمل");
+    return branchRecords(state.staffRequests).filter((item) => item.recipientKind === kind && item.recipientId === person.id && item.status !== "مكتمل");
   }
 
   function renderAvailabilityCard(kind, id) {
@@ -532,7 +599,7 @@
   function renderAvailabilityStrip() {
     const view = ["department", "employee"].includes(state.role) ? "my-presence" : "presence";
     const linkLabel = view === "my-presence" ? "تواجدي" : "كل الموظفين";
-    return `<section class="availability-strip" aria-label="حالة تواجد المدير والنواب"><div class="availability-strip-heading"><strong>تواجد المدير والنواب</strong><span>اعرف الحالة قبل الذهاب إلى المكتب</span><button class="link-button" data-view="${view}" type="button">${linkLabel} ${icon("chevron")}</button></div><div class="availability-strip-list">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div></section>`;
+    return `<section class="availability-strip" aria-label="حالة تواجد العميد والنواب"><div class="availability-strip-heading"><strong>تواجد العميد والنواب</strong><span>اعرف الحالة قبل الذهاب إلى المكتب</span><button class="link-button" data-view="${view}" type="button">${linkLabel} ${icon("chevron")}</button></div><div class="availability-strip-list">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div></section>`;
   }
 
   function renderDemoNote() {
@@ -548,7 +615,7 @@
   function renderBusyBanner() {
     if (!isBusy()) return "";
     const time = formatDateTime(state.busyUntil);
-    return `<section class="busy-banner"><div class="busy-banner-copy"><div class="busy-icon">${icon("clock")}</div><div><strong>المدير غير متفرغ${state.busyReason ? ` · ${esc(state.busyReason)}` : ""}</strong><span>الوقت المتوقع للعودة: ${esc(time)} · يظهر هذا المؤشر ضمن المحاكاة المحلية فقط.</span></div></div>${state.role === "director" ? `<button class="btn btn-secondary btn-small" data-action="set-available" type="button">إنهاء الانشغال</button>` : ""}</section>`;
+    return `<section class="busy-banner"><div class="busy-banner-copy"><div class="busy-icon">${icon("clock")}</div><div><strong>العميد غير متفرغ${state.busyReason ? ` · ${esc(state.busyReason)}` : ""}</strong><span>الوقت المتوقع للعودة: ${esc(time)} · يظهر هذا المؤشر ضمن المحاكاة المحلية فقط.</span></div></div>${state.role === "director" ? `<button class="btn btn-secondary btn-small" data-action="set-available" type="button">إنهاء الانشغال</button>` : ""}</section>`;
   }
 
   function heading(title, description, actions = "") {
@@ -561,9 +628,10 @@
 
   function renderDashboard() {
     const requests = visibleRequests();
+    const branchRequests = branchRecords(state.requests);
     const urgent = requests.filter((r) => r.quadrant === "q1" && r.status !== "مكتمل").length;
     const active = requests.filter((r) => !["مكتمل", "مرفوض"].includes(r.status)).length;
-    const withDeputies = state.requests.filter((r) => ["deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل").length;
+    const withDeputies = branchRequests.filter((r) => ["deputy-technical", "deputy-technology", "deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل").length;
     const q1List = requests.filter((r) => r.quadrant === "q1" && r.status !== "مكتمل").slice(0, 3);
     const pendingDecisions = requests.filter((r) => ["بانتظار القرار", "جديد"].includes(r.status)).length;
     const actions = state.role === "department"
@@ -576,7 +644,7 @@
         <article class="stat-card urgent"><div><div class="stat-label">هام وعاجل</div><div class="stat-value">${toArabicNumber(urgent)}</div><div class="stat-foot"><span class="up">يتطلب متابعة فورية</span></div></div><div class="stat-icon">${icon("bellRing")}</div></article>
         <article class="stat-card deputy"><div><div class="stat-label">لدى النواب والجهات</div><div class="stat-value">${toArabicNumber(state.role === "director" ? withDeputies : requests.filter((r) => r.status === "قيد المعالجة" || r.status === "مُحال للنائب").length)}</div><div class="stat-foot">معاملات قيد التنفيذ</div></div><div class="stat-icon">${icon("users")}</div></article>
         <article class="stat-card waiting"><div><div class="stat-label">بانتظار قرار</div><div class="stat-value">${toArabicNumber(pendingDecisions)}</div><div class="stat-foot">جديد أو بحاجة لاعتماد</div></div><div class="stat-icon">${icon("clock")}</div></article>
-        <article class="stat-card"><div><div class="stat-label">طلبات نشطة</div><div class="stat-value">${toArabicNumber(active)}</div><div class="stat-foot"><span class="up">${toArabicNumber(state.requests.filter((r) => r.status === "مكتمل").length)} مكتملة</span> في سجل العرض</div></div><div class="stat-icon">${icon("check")}</div></article>
+        <article class="stat-card"><div><div class="stat-label">طلبات نشطة</div><div class="stat-value">${toArabicNumber(active)}</div><div class="stat-foot"><span class="up">${toArabicNumber(branchRequests.filter((r) => r.status === "مكتمل").length)} مكتملة</span> في سجل العرض</div></div><div class="stat-icon">${icon("check")}</div></article>
       </div>
       <div class="dashboard-grid">
         <div class="dashboard-main-column">
@@ -606,8 +674,9 @@
   }
 
   function renderBriefingCard(urgent, requests) {
-    const handled = state.requests.filter((r) => r.status === "مكتمل").length;
-    const totalToday = Math.max(1, state.requests.length);
+    const branchRequests = branchRecords(state.requests);
+    const handled = branchRequests.filter((r) => r.status === "مكتمل").length;
+    const totalToday = Math.max(1, branchRequests.length);
     const progress = Math.min(100, Math.round(((handled + Math.max(2, Math.round(totalToday * .52))) / totalToday) * 100));
     const urgentList = requests.filter((r) => r.quadrant === "q1").slice(0, 2);
     return `<section class="panel briefing-card"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("report")}</span><div><h2>موجز اليوم</h2><p>ملخص تنفيذي حتى الآن</p></div></div><span class="pill pill-green">${toArabicNumber(handled)} مكتمل</span></div>
@@ -620,12 +689,15 @@
   }
 
   function renderRoutingCard() {
+    const requests = branchRecords(state.requests);
     const routes = [
-      { id: "deputy-med", icon: "مع", name: "النائب الأول", subtitle: "الشؤون الطبية", count: state.requests.filter((r) => r.assignee === "deputy-med" && r.status !== "مكتمل").length },
-      { id: "deputy-admin", icon: "إم", name: "النائب الثاني", subtitle: "الإدارية والمالية", count: state.requests.filter((r) => r.assignee === "deputy-admin" && r.status !== "مكتمل").length },
-      { id: "doctor", icon: "ط", name: "الطبيب المصرح", subtitle: "التوقيعات الروتينية", count: state.requests.filter((r) => r.assignee === "doctor" && r.status !== "مكتمل").length },
+      { id: "deputy-technical", icon: "ف", name: "أ.د علي حسين", subtitle: "نائب المدير للشؤون الفنية", count: requests.filter((r) => r.assignee === "deputy-technical" && r.status !== "مكتمل").length },
+      { id: "deputy-technology", icon: "تق", name: "نائب الشؤون التكنولوجية", subtitle: "المستخدم · جميع الفروع", count: requests.filter((r) => r.assignee === "deputy-technology" && r.status !== "مكتمل").length },
+      { id: "deputy-med", icon: "ط", name: "مسؤول الشؤون الطبية", subtitle: "دور عرض تجريبي", count: requests.filter((r) => r.assignee === "deputy-med" && r.status !== "مكتمل").length },
+      { id: "deputy-admin", icon: "إم", name: "مسؤول الشؤون الإدارية والمالية", subtitle: "دور عرض تجريبي", count: requests.filter((r) => r.assignee === "deputy-admin" && r.status !== "مكتمل").length },
+      { id: "doctor", icon: "ط", name: "الطبيب المخوّل", subtitle: "التوقيعات الروتينية · عينة", count: requests.filter((r) => r.assignee === "doctor" && r.status !== "مكتمل").length },
     ];
-    return `<section class="panel route-card"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>التوجيه للنواب</h2><p>توزيع المهام حسب الاختصاص</p></div></div></div><div class="route-list">${routes.map((r) => `<div class="route-item"><div class="route-person"><span class="route-avatar">${r.icon}</span><div><strong>${r.name}</strong><span>${r.subtitle}</span></div></div><div class="route-number">${toArabicNumber(r.count)}<small>نشطة</small></div></div>`).join("")}</div><div class="briefing-foot"><span>آخر مراجعة</span><strong>اليوم · ${timeNow()}</strong></div></section>`;
+    return `<section class="panel route-card"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>توزيع المهام حسب الاختصاص</h2><p>${esc(activeBranch().name)} · مسارات عرض مقترحة</p></div></div></div><div class="route-list">${routes.map((r) => `<div class="route-item"><div class="route-person"><span class="route-avatar">${r.icon}</span><div><strong>${r.name}</strong><span>${r.subtitle}</span></div></div><div class="route-number">${toArabicNumber(r.count)}<small>نشطة</small></div></div>`).join("")}</div><div class="briefing-foot"><span>آخر مراجعة</span><strong>اليوم · ${timeNow()}</strong></div></section>`;
   }
 
   function renderLocalNoticeCard() {
@@ -633,9 +705,16 @@
     return `<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("bell")}</span><div><h2>التنبيهات</h2><p>آخر التحديثات للمستخدمين</p></div></div><button class="link-button" data-view="communications" type="button">إدارة ${icon("chevron")}</button></div>${items.length ? items.map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time)}</time></div>`).join("") : `<div class="no-results">لا توجد تنبيهات جديدة.</div>`}</section>`;
   }
 
+  function renderRequestCard(request, compact = false) {
+    const priority = qInfo(request.quadrant);
+    const confidential = request.confidential ? `<span class="pill pill-gray">${icon("lock")} سرية</span>` : "";
+    const routing = ["department", "employee"].includes(state.role) ? "" : `<span>المتابعة: ${esc(roleShort(request.assignee))}</span>`;
+    return `<article class="request-card${compact ? " compact" : ""}" data-open-request="${esc(request.id)}" role="button" tabindex="0" aria-label="تفاصيل ${esc(request.title)}"><div class="request-card-top"><div class="request-card-title"><span class="request-type-icon">${icon(request.confidential ? "lock" : "file")}</span><div><strong>${esc(request.title)}</strong><span>${esc(request.id)} · ${esc(request.time || request.date || "اليوم")}</span></div></div><span class="pill ${priority.pill}">${priority.label}</span></div><div class="request-card-meta"><span>${esc(request.department)}</span><span>من: ${esc(request.requester || "مقدم الطلب غير محدد")}</span>${routing}${confidential}</div><div class="request-card-footer"><span class="status-text ${statusClass(request.status)}">${esc(request.status)}</span>${request.learned ? `<span class="learning-label">${icon("spark")} اقتراح سابق</span>` : ""}<span class="request-card-open">افتح التفاصيل ${icon("chevron")}</span></div></article>`;
+  }
+
   function renderRecentRequests(requests) {
     const list = [...requests].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
-    return `<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>أحدث المعاملات</h2><p>آخر ما ورد إلى مساحة العمل</p></div></div><button class="link-button" data-view="requests" type="button">سجل الطلبات ${icon("chevron")}</button></div>${list.length ? `<div class="table-wrap"><table class="requests-table"><thead><tr><th>المعاملة</th><th>القسم</th><th>الأولوية</th><th>الحالة</th></tr></thead><tbody>${list.map((r) => `<tr data-open-request="${esc(r.id)}" tabindex="0"><td><div class="request-title-cell"><span class="request-type-icon">${icon(r.confidential ? "lock" : "file")}</span><div><strong>${esc(r.title)}</strong><span>${esc(r.id)} · ${esc(r.time)}</span></div></div></td><td>${esc(r.department)}</td><td><span class="pill ${qInfo(r.quadrant).pill}">${qInfo(r.quadrant).label}</span></td><td><span class="status-text ${statusClass(r.status)}">${esc(r.status)}</span></td></tr>`).join("")}</tbody></table></div>` : `<div class="no-results">لا توجد معاملات ظاهرة لهذا الدور.</div>`}</section>`;
+    return `<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>أحدث المعاملات</h2><p>آخر ما ورد إلى مساحة العمل</p></div></div><button class="link-button" data-view="requests" type="button">سجل الطلبات ${icon("chevron")}</button></div>${list.length ? `<div class="request-card-list">${list.map((r) => renderRequestCard(r, true)).join("")}</div>` : `<div class="no-results">لا توجد معاملات ظاهرة لهذا الدور.</div>`}</section>`;
   }
 
   function renderMatrixPage() {
@@ -655,9 +734,10 @@
       const matchesFilter = state.requestFilter === "all" || r.quadrant === state.requestFilter || (state.requestFilter === "open" && r.status !== "مكتمل");
       return matchesQuery && matchesFilter;
     });
-    return pageWrap(`${heading(state.role === "director" || state.role === "secretary" ? "سجل الطلبات" : "المعاملات الموجّهة إليّ", "ابحث بالرقم أو القسم أو الكلمات المفتاحية، ثم افتح الطلب للإجراء." , `<button class="btn btn-primary" data-action="open-new-request" type="button">${icon("plus")} إضافة معاملة</button>`)}
+    const canCreate = state.role !== "technology-advisor" && state.role !== "employee";
+    return pageWrap(`${heading(state.role === "director" || state.role === "secretary" ? "سجل الطلبات" : "المعاملات الموجّهة إليّ", `${activeBranch().name} · ابحث بالرقم أو القسم أو الكلمات المفتاحية، ثم افتح البطاقة للإجراء.`, canCreate ? `<button class="btn btn-primary" data-action="open-new-request" type="button">${icon("plus")} إضافة معاملة</button>` : `<span class="pill pill-gray">عرض فقط</span>`)}
       <div class="filter-bar"><label class="filter-search">${icon("search")}<input id="request-search" type="search" placeholder="ابحث في الطلبات..." value="${esc(state.requestSearch)}" autocomplete="off" /></label><select class="filter-select" id="request-filter" aria-label="تصفية الطلبات"><option value="all"${state.requestFilter === "all" ? " selected" : ""}>كل الطلبات</option><option value="open"${state.requestFilter === "open" ? " selected" : ""}>غير مكتملة</option>${QUADRANTS.map((q) => `<option value="${q.id}"${state.requestFilter === q.id ? " selected" : ""}>${q.label}</option>`).join("")}</select></div>
-      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة المعاملات</h2><p>${toArabicNumber(filtered.length)} معاملة معروضة</p></div></div><span class="pill pill-gray">${toArabicNumber(requests.length)} في النطاق</span></div>${filtered.length ? `<div class="table-wrap"><table class="requests-table"><thead><tr><th>المعاملة</th><th>القسم</th><th>الإحالة</th><th>الأولوية</th><th>الحالة</th><th></th></tr></thead><tbody>${filtered.map((r) => `<tr data-open-request="${esc(r.id)}" tabindex="0"><td><div class="request-title-cell"><span class="request-type-icon">${icon(r.confidential ? "lock" : "file")}</span><div><strong>${esc(r.title)}${r.confidential ? ` <span class="confidential">${icon("lock")} سرية</span>` : ""}</strong><span>${esc(r.id)} · ${esc(r.time || r.date || "اليوم")} · ${esc(r.requester)}</span></div></div></td><td>${esc(r.department)}</td><td>${esc(roleShort(r.assignee))}</td><td><span class="pill ${qInfo(r.quadrant).pill}">${qInfo(r.quadrant).label}</span>${r.learned ? `<span class="learning-label">${icon("spark")} تعلم</span>` : ""}</td><td><span class="status-text ${statusClass(r.status)}">${esc(r.status)}</span></td><td><button class="row-menu" data-action="open-request" data-request-id="${esc(r.id)}" aria-label="فتح تفاصيل المعاملة">${icon("more")}</button></td></tr>`).join("")}</tbody></table></div>` : `<div class="no-results">لا توجد نتائج مطابقة.</div>`}</section>`, true);
+      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>بطاقات المعاملات</h2><p>${toArabicNumber(filtered.length)} معاملة معروضة</p></div></div><span class="pill pill-gray">${toArabicNumber(requests.length)} في ${esc(activeBranch().name)}</span></div>${filtered.length ? `<div class="request-card-list">${filtered.map((r) => renderRequestCard(r)).join("")}</div>` : `<div class="no-results">لا توجد نتائج مطابقة لهذا الفرع.</div>`}</section>`, true);
   }
 
   function renderCommunications() {
@@ -665,7 +745,7 @@
     const directorBusy = isBusy();
     return pageWrap(`${heading("التواصل والاستدعاء", "إشعارات وتنسيق داخل الشبكة المحلية — في هذا النموذج لا تُرسل رسائل فعلية إلى أجهزة أخرى.", `<button class="btn btn-primary" data-action="open-broadcast" type="button">${icon("send")} تعميم جديد</button>`)}
       <div class="communication-grid">
-          <section class="panel action-panel"><div class="action-panel-head"><span class="action-big-icon ${directorBusy ? "" : "green"}">${icon("clock")}</span><div><strong>حالة التفرغ</strong><span>تظهر مؤقتاً في لوحات العرض</span></div></div><div class="action-panel-body"><p class="action-description">${directorBusy ? `المدير غير متفرغ حتى ${esc(formatDateTime(state.busyUntil))}${state.busyReason ? ` بسبب: ${esc(state.busyReason)}` : ""}.` : "حدّد مدة الانشغال قبل الاجتماع؛ يلزم إدخال وقت نهاية واضح."}</p>${state.role === "director" ? `<button class="btn ${directorBusy ? "btn-secondary" : "btn-primary"}" data-action="${directorBusy ? "set-available" : "open-busy"}" type="button">${icon(directorBusy ? "check" : "clock")}${directorBusy ? "إنهاء حالة الانشغال" : "تحديد وقت عدم التفرغ"}</button>` : "<span class=\"helper-text\">تُدار هذه الحالة من لوحة المدير.</span>"}</div></section>
+          <section class="panel action-panel"><div class="action-panel-head"><span class="action-big-icon ${directorBusy ? "" : "green"}">${icon("clock")}</span><div><strong>حالة التفرغ</strong><span>تظهر مؤقتاً في لوحات العرض</span></div></div><div class="action-panel-body"><p class="action-description">${directorBusy ? `العميد غير متفرغ حتى ${esc(formatDateTime(state.busyUntil))}${state.busyReason ? ` بسبب: ${esc(state.busyReason)}` : ""}.` : "حدّد مدة الانشغال قبل الاجتماع؛ يلزم إدخال وقت نهاية واضح."}</p>${state.role === "director" ? `<button class="btn ${directorBusy ? "btn-secondary" : "btn-primary"}" data-action="${directorBusy ? "set-available" : "open-busy"}" type="button">${icon(directorBusy ? "check" : "clock")}${directorBusy ? "إنهاء حالة الانشغال" : "تحديد وقت عدم التفرغ"}</button>` : "<span class=\"helper-text\">تُدار هذه الحالة من لوحة المدير.</span>"}</div></section>
         <section class="panel action-panel"><div class="action-panel-head"><span class="action-big-icon blue">${icon("phone")}</span><div><strong>نداء مباشر</strong><span>استدعاء موظف أو نائب للمكتب</span></div></div><div class="action-panel-body"><p class="action-description">إرسال نداء تجريبي إلى شخص محدد أو إلى رئيس قسم. لا يصل إلى هاتف حقيقي في هذه النسخة.</p><button class="btn btn-secondary" data-action="open-summon" type="button">${icon("phone")} إنشاء نداء</button></div></section>
       </div>
       <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("bell")}</span><div><h2>التعاميم والتنبيهات</h2><p>سجل الرسائل المحفوظة محلياً</p></div></div><span class="pill pill-gray">${toArabicNumber(notices.length)} رسالة</span></div>${notices.length ? notices.map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}${n.target === "all" ? ` <span class="pill pill-blue">لكل الأقسام</span>` : ` <span class="pill pill-gray">${esc(n.department || n.target)}</span>`}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time || "الآن")}</time></div>`).join("") : `<div class="no-results">لا توجد تعاميم بعد.</div>`}<div style="padding:0 17px 16px"><button class="btn btn-secondary btn-small" data-action="open-broadcast" type="button">${icon("plus")} إضافة تعميم</button></div></section>
@@ -677,17 +757,18 @@
     const statuses = presenceIds.map((id) => presenceFor(id).status);
     const awayCount = statuses.filter((status) => status !== "available").length;
     const current = currentPerson();
-    const sent = state.staffRequests.filter((item) => item.requesterId === current?.id).slice(0, 5);
-    const received = state.staffRequests.filter((item) => item.recipientKind === (current?.kind || "staff") && item.recipientId === current?.id).slice(0, 5);
+    const branchStaffRequests = branchRecords(state.staffRequests);
+    const sent = branchStaffRequests.filter((item) => item.requesterId === current?.id).slice(0, 5);
+    const received = branchStaffRequests.filter((item) => item.recipientKind === (current?.kind || "staff") && item.recipientId === current?.id).slice(0, 5);
     const coveragePending = state.staff.filter((person) => {
       const coverage = presenceFor(person.id);
       return ["away", "offsite"].includes(coverage.status) && !coverageIsCovered(coverage);
     });
     return pageWrap(`${heading("تواجد الموظفين", "قبل ما تغادر مكتبك، اعرف مين موجود أو خارج المكتب ومتى يرجع. لو غايب ابعت له طلب معلومة أو مستند من هنا.", `<button class="btn btn-secondary" data-action="update-presence" type="button">${icon("clock")} تحديث تواجدي</button>`)}
-      <div class="stats-grid presence-stats"><article class="stat-card"><div><div class="stat-label">المدير والنواب</div><div class="stat-value">${toArabicNumber(LEADER_IDS.filter((id) => presenceFor(id).status === "available").length)} / ${toArabicNumber(LEADER_IDS.length)}</div><div class="stat-foot">متاحون الآن</div></div><div class="stat-icon">${icon("users")}</div></article><article class="stat-card waiting"><div><div class="stat-label">خارج المكان المعتاد</div><div class="stat-value">${toArabicNumber(awayCount)}</div><div class="stat-foot">مع وقت عودة متوقع</div></div><div class="stat-icon">${icon("clock")}</div></article><article class="stat-card deputy"><div><div class="stat-label">طلبات اتصال مفتوحة</div><div class="stat-value">${toArabicNumber(state.staffRequests.filter((item) => item.status !== "مكتمل").length)}</div><div class="stat-foot">معلومات أو مستندات</div></div><div class="stat-icon">${icon("message")}</div></article><article class="stat-card"><div><div class="stat-label">آخر تحديث</div><div class="stat-value" style="font-size:18px">${timeNow()}</div><div class="stat-foot">حالة تجريبية محلية</div></div><div class="stat-icon">${icon("refresh")}</div></article></div>
-      <div class="presence-section-head"><div><h2>المدير والنواب</h2><p>الحالة ظاهرة في الشريط أعلى كل صفحة</p></div><span class="pill pill-blue">${toArabicNumber(LEADER_IDS.length)} أشخاص</span></div><div class="presence-grid">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div>
-      <div class="presence-section-head" style="margin-top:20px"><div><h2>الطبيب المصرح</h2><p>حالة الدور المسؤول عن التوقيعات الروتينية في النموذج</p></div><span class="pill pill-gray">دور مساند</span></div><div class="presence-grid">${renderAvailabilityCard("leader", "doctor")}</div>
-      <div class="presence-section-head" style="margin-top:20px"><div><h2>موظفو الأقسام</h2><p>مكان عمل عام ووقت عودة تقريبي؛ لا نعرض عناوين منزلية أو إحداثيات GPS</p></div><span class="pill pill-gray">${toArabicNumber(state.staff.length)} موظفين</span></div><div class="presence-grid">${state.staff.map((person) => renderAvailabilityCard("staff", person.id)).join("")}</div>
+      <div class="stats-grid presence-stats"><article class="stat-card"><div><div class="stat-label">العميد والنواب</div><div class="stat-value">${toArabicNumber(LEADER_IDS.filter((id) => presenceFor(id).status === "available").length)} / ${toArabicNumber(LEADER_IDS.length)}</div><div class="stat-foot">متاحون الآن</div></div><div class="stat-icon">${icon("users")}</div></article><article class="stat-card waiting"><div><div class="stat-label">خارج المكان المعتاد</div><div class="stat-value">${toArabicNumber(awayCount)}</div><div class="stat-foot">مع وقت عودة متوقع</div></div><div class="stat-icon">${icon("clock")}</div></article><article class="stat-card deputy"><div><div class="stat-label">طلبات اتصال مفتوحة</div><div class="stat-value">${toArabicNumber(branchStaffRequests.filter((item) => item.status !== "مكتمل").length)}</div><div class="stat-foot">معلومات أو مستندات</div></div><div class="stat-icon">${icon("message")}</div></article><article class="stat-card"><div><div class="stat-label">آخر تحديث</div><div class="stat-value" style="font-size:18px">${timeNow()}</div><div class="stat-foot">حالة تجريبية محلية</div></div><div class="stat-icon">${icon("refresh")}</div></article></div>
+      <div class="presence-section-head"><div><h2>العميد والنواب</h2><p>الحالة ظاهرة في الشريط أعلى كل صفحة</p></div><span class="pill pill-blue">${toArabicNumber(LEADER_IDS.length)} أشخاص</span></div><div class="presence-grid">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div>
+      <div class="presence-section-head" style="margin-top:20px"><div><h2>الطبيب المخوّل</h2><p>حالة الدور المسؤول عن التوقيعات الروتينية في النموذج</p></div><span class="pill pill-gray">دور مساند</span></div><div class="presence-grid">${renderAvailabilityCard("leader", "doctor")}</div>
+      <div class="presence-section-head" style="margin-top:20px"><div><h2>موظفو عينة العرض العامة</h2><p>هذه القائمة ليست موزعة على الفروع؛ قوائم كل فرع مستقلة وتُضاف عند ورود الأسماء المعتمدة. لا نعرض عناوين منزلية أو إحداثيات GPS.</p></div><span class="pill pill-gray">${toArabicNumber(state.staff.length)} موظفين</span></div><div class="presence-grid">${state.staff.map((person) => renderAvailabilityCard("staff", person.id)).join("")}</div>
       ${coveragePending.length ? `<section class="panel coverage-escalations"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>تغطية تحتاج توزيعاً من المشرف</h2><p>لا يوجد بديل مؤهل متاح حالياً أو أن البديل المرشح غير متاح؛ راجع المهام ووزّع الضروري أو صعّده للمسؤول المناوب.</p></div></div><span class="pill pill-amber">${toArabicNumber(coveragePending.length)} حالات</span></div>${coveragePending.map((person) => { const coverage = presenceFor(person.id); return `<div class="coverage-exception-row"><div><strong>${esc(person.name)} · ${esc(person.department)}</strong><span>العودة ${esc(coverage.returnAt ? formatDateTime(coverage.returnAt) : "غير محددة")} · ${esc(coverage.handoff || "لم تسجل ملاحظة تسليم")}</span></div><button class="link-button" data-view="planner" type="button">مراجعة الخطة ${icon("chevron")}</button></div>`; }).join("")}<div class="coverage-fallback-note">المسار الاحتياطي: المشرف يوزّع المهام على موظفين مؤهلين؛ إن لم يتوفر أحد، تُرحّل غير الحرجة ويُصعّد العاجل إلى المسؤول المناوب أو قناة التغطية الرسمية.</div></section>` : ""}
       ${received.length ? `<section class="panel received-staff-requests"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>طلبات وصلتني</h2><p>طلبات أرسلها الموظفون إلى دورك</p></div></div><span class="pill pill-blue">${toArabicNumber(received.length)}</span></div>${received.map((item) => renderStaffRequestCard(item)).join("")}</section>` : ""}
       <section class="panel sent-staff-requests"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("message")}</span><div><h2>طلبات أرسلتها</h2><p>طلب معلومة أو ورقة دون البحث عن الموظف في أرجاء المستشفى</p></div></div><span class="pill pill-gray">${toArabicNumber(sent.length)} حديثة</span></div>${sent.length ? sent.map((item) => `<div class="broadcast-item"><div><strong>${esc(item.title)} <span class="pill ${item.status === "مكتمل" ? "pill-green" : "pill-amber"}">${esc(item.status)}</span></strong><p>إلى ${esc(personById(item.recipientKind, item.recipientId)?.name || item.recipientId)} · ${esc(item.message)}</p>${item.response ? `<p><strong>الرد:</strong> ${esc(item.response)}</p>` : ""}</div><time>${esc(item.time)}</time></div>`).join("") : `<div class="no-results">لم ترسل طلبات اتصال بعد.</div>`}</section>
@@ -697,9 +778,9 @@
   function renderMyPresence() {
     const person = currentPerson();
     const presence = presenceFor(person.id);
-    const allIncoming = state.staffRequests.filter((item) => item.recipientKind === (person.kind || "staff") && item.recipientId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const allIncoming = branchRecords(state.staffRequests).filter((item) => item.recipientKind === (person.kind || "staff") && item.recipientId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     const incoming = allIncoming.filter((item) => item.status !== "مكتمل");
-    const sent = state.staffRequests.filter((item) => item.requesterId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+    const sent = branchRecords(state.staffRequests).filter((item) => item.requesterId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
     const coveringAssignments = state.staff.filter((member) => {
       const handover = presenceFor(member.id);
       return ["away", "offsite"].includes(handover.status) && handover.coverMode === "person" && handover.coverId === person.id;
@@ -710,7 +791,7 @@
       ${coveringAssignments.length ? `<section class="panel coverage-inbox"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>تسليمات زملاء أُرشّح لتغطيتها</h2><p>راجع المهام والمواعيد مع المشرف قبل قبول التكليف في العمل الفعلي.</p></div></div><span class="pill pill-blue">${toArabicNumber(coveringAssignments.length)}</span></div>${coveringAssignments.map((member) => { const handover = presenceFor(member.id); return `<div class="coverage-exception-row"><div><strong>${esc(member.name)} · ${esc(member.department)}</strong><span>${esc(handover.handoff || "لا توجد ملاحظة تسليم")}${handover.returnAt ? ` · العودة ${esc(formatDateTime(handover.returnAt))}` : ""}</span></div><span class="pill pill-amber">مرشح للتغطية</span></div>`; }).join("")}<div class="coverage-fallback-note">في النموذج التجريبي لا يرسل هذا الترشيح إشعاراً إلى هاتف زميلك؛ التنبيه والتأكيد يحتاجان خدمة فعلية.</div></section>` : ""}
       <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("message")}</span><div><h2>طلبات المدير أو السكرتارية</h2><p>تظهر لك هنا طلبات المعلومات والمستندات</p></div></div><span class="pill pill-amber">${toArabicNumber(incoming.length)} مفتوح</span></div>${allIncoming.length ? allIncoming.slice(0, 4).map((item) => renderStaffRequestCard(item)).join("") : `<div class="no-results">لا توجد طلبات واردة حالياً.</div>`}</section>
       ${sent.length ? `<section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("send")}</span><div><h2>مراسلاتي إلى المدير أو النواب</h2><p>تظهر حالة الرسالة أو الرد عندما يفتحه الطرف الآخر</p></div></div><span class="pill pill-gray">${toArabicNumber(sent.length)}</span></div>${sent.map((item) => `<div class="broadcast-item"><div><strong>إلى ${esc(item.recipient)} · ${esc(item.title)} <span class="pill ${item.status === "مكتمل" ? "pill-green" : "pill-amber"}">${esc(item.status)}</span></strong><p>${esc(item.message)}</p>${item.response ? `<p><strong>الرد:</strong> ${esc(item.response)}</p>` : ""}</div><time>${esc(item.time)}</time></div>`).join("")}</section>` : ""}
-      <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>حالة المدير والنواب</h2><p>تظهر أيضاً في شريط أعلى الصفحات</p></div></div></div><div class="presence-grid compact-presence">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div></section>
+      <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>حالة العميد والنواب</h2><p>تظهر أيضاً في شريط أعلى الصفحات</p></div></div></div><div class="presence-grid compact-presence">${LEADER_IDS.map((id) => renderAvailabilityCard("leader", id)).join("")}</div></section>
       <div class="demo-note remote-access-note" style="margin-top:15px">${icon("shield")}<span>للوصول من المنزل يلزم VPN المستشفى أو وسيلة وصول مُدارة ومعتمدة. هذه الواجهة لا تتصل بالإنترنت الخارجي ولا ترسل تنبيهاً للهاتف الحقيقي.</span></div>
     </div></div>`;
   }
@@ -722,7 +803,7 @@
 
   function renderStaffInbox() {
     const person = currentPerson();
-    const incoming = state.staffRequests.filter((item) => item.recipientKind === (person.kind || "staff") && item.recipientId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const incoming = branchRecords(state.staffRequests).filter((item) => item.recipientKind === (person.kind || "staff") && item.recipientId === person.id).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${heading("طلبات الإدارة لي", "لو المدير يحتاج معلومة أو ورقة، يرسلها هنا بدل ما يترك مكتبه ويدور عليك.")}<section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>صندوق الطلبات</h2><p>${toArabicNumber(incoming.filter((item) => item.status !== "مكتمل").length)} لم تُغلق بعد</p></div></div></div>${incoming.length ? incoming.map((item) => renderStaffRequestCard(item)).join("") : `<div class="no-results">صندوقك خالٍ من الطلبات حالياً.</div>`}</section><div class="blind-note">لو أنت بعيداً، اكتب وقت عودتك ومكان عمل عام في «تواجدي». إذا كنت خارج شبكة المستشفى، يلزم VPN آمن حتى تستلم الطلب.</div></div></div>`;
   }
 
@@ -765,7 +846,7 @@
   }
 
   function plannerTasks() {
-    const requestTasks = state.requests.filter((request) => request.status !== "مكتمل" && request.quadrant !== "q4").map((request) => ({
+    const requestTasks = branchRecords(state.requests).filter((request) => request.status !== "مكتمل" && request.quadrant !== "q4").map((request) => ({
       id: request.id,
       title: request.title,
       quadrant: request.quadrant,
@@ -775,7 +856,7 @@
       sourceType: "request",
       requestId: request.id,
     }));
-    const manualTasks = state.plannerTasks.filter((task) => task.status !== "مكتمل").map((task) => ({
+    const manualTasks = branchRecords(state.plannerTasks).filter((task) => task.status !== "مكتمل").map((task) => ({
       ...task,
       units: Math.max(1, Math.min(6, Number(task.units) || 1)),
       dueDate: task.dueDate || nextPlanningDayKey(),
@@ -812,7 +893,7 @@
       days.push({ offset, date: key, label: plannerDayLabel(offset, key), totalUnits, bufferUnits, usedUnits: used, items });
     }
     const backlog = tasks.filter((task) => !assigned.has(task.id));
-    return { generatedAt: Date.now(), baseDate: localDayKey(), horizonStart: "tomorrow", workdayHours, totalUnits, bufferUnits, days, backlog };
+    return { generatedAt: Date.now(), baseDate: localDayKey(), horizonStart: "tomorrow", branchId: state.activeBranchId, workdayHours, totalUnits, bufferUnits, days, backlog };
   }
 
   function refreshWeekPlan() {
@@ -827,7 +908,7 @@
   }
 
   function renderPlanner() {
-    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey() || state.weekPlan.horizonStart !== "tomorrow") {
+    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey() || state.weekPlan.horizonStart !== "tomorrow" || state.weekPlan.branchId !== state.activeBranchId) {
       refreshWeekPlan();
       save();
     }
@@ -867,11 +948,12 @@
   function renderSignatureWorkflow() {
     const isSecretary = state.role === "secretary";
     const isApprover = state.role === "director";
-    const pendingPreapproval = state.documents.filter((doc) => doc.workflowStage === "pending-preapproval");
-    const pendingPaperMatch = state.documents.filter((doc) => doc.workflowStage === "pending-paper-match");
-    const pendingInk = state.documents.filter((doc) => doc.workflowStage === "pending-ink-signature");
-    const mismatches = state.documents.filter((doc) => doc.workflowStage === "paper-mismatch");
-    const completed = state.documents.filter((doc) => doc.workflowStage === "completed");
+    const branchDocuments = branchRecords(state.documents);
+    const pendingPreapproval = branchDocuments.filter((doc) => doc.workflowStage === "pending-preapproval");
+    const pendingPaperMatch = branchDocuments.filter((doc) => doc.workflowStage === "pending-paper-match");
+    const pendingInk = branchDocuments.filter((doc) => doc.workflowStage === "pending-ink-signature");
+    const mismatches = branchDocuments.filter((doc) => doc.workflowStage === "paper-mismatch");
+    const completed = branchDocuments.filter((doc) => doc.workflowStage === "completed");
     const actionsFor = (doc) => {
       if (isApprover && doc.workflowStage === "pending-preapproval") return `<button class="btn btn-primary btn-small" data-action="open-document-preapproval" data-document-id="${esc(doc.id)}" type="button">${icon("check")} موافقة تشغيلية مبدئية</button>`;
       if (isSecretary && doc.workflowStage === "pending-paper-match") return `<button class="btn btn-secondary btn-small" data-action="open-document-paper-match" data-document-id="${esc(doc.id)}" type="button">${icon("file")} مطابقة النسخة الورقية</button>`;
@@ -883,23 +965,50 @@
       return "";
     };
     const visibleDocs = isSecretary
-      ? state.documents.filter((doc) => doc.workflowStage !== "pending-preapproval")
-      : state.documents;
+      ? branchDocuments.filter((doc) => doc.workflowStage !== "pending-preapproval")
+      : branchDocuments;
     const count = isSecretary ? pendingPaperMatch.length + mismatches.length : pendingPreapproval.length + pendingInk.length + mismatches.length;
     return `<section class="panel signature-workflow-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("file")}</span><div><h2>${isSecretary ? "حزمة نهاية اليوم · مطابقة الأوراق" : "الموافقة المبدئية والتوقيع الورقي"}</h2><p>${isSecretary ? "طابق رقم النسخة والصفحات والمرفقات قبل إعادة الملف للموقّع." : "سجّل الموافقة التجريبية؛ وبعد مطابقة السكرتير تظهر خطوة تسجيل توقيع القلم."}</p></div></div><span class="pill ${count ? "pill-amber" : "pill-green"}">${toArabicNumber(count)} تحتاج إجراء</span></div><div class="signature-stage-summary"><span><strong>${toArabicNumber(pendingPreapproval.length)}</strong> بانتظار الموافقة</span><span><strong>${toArabicNumber(pendingPaperMatch.length)}</strong> بانتظار المطابقة</span><span><strong>${toArabicNumber(pendingInk.length)}</strong> بانتظار توقيع القلم</span><span><strong>${toArabicNumber(completed.length)}</strong> مكتملة في العرض</span></div><div class="document-workflow-list">${visibleDocs.length ? visibleDocs.map((doc) => documentWorkflowCard(doc, actionsFor(doc))).join("") : `<div class="no-results">لا توجد مستندات في هذه المرحلة.</div>`}</div><div class="signature-workflow-warning">تنبيه مهم: هذه محاكاة محلية فقط. زر الموافقة لا ينشئ توقيعاً إلكترونياً معتمداً ولا يطلق إجراءً حقيقياً. بدء الإجراء قبل التوقيع الورقي يتطلب سياسة مكتوبة تحدد المستندات المسموحة واعتماد الشؤون القانونية. التوقيع الورقي اللاحق لا يمنح الخطوة الإلكترونية السابقة حجية قانونية تلقائياً. أي اختلاف في النسخة يوقف المسار.</div></section>`;
   }
 
+  function renderBranchTaskCard(task) {
+    const priorityClass = task.priority === "مهم وعاجل" ? "pill-red" : "pill-green";
+    return `<article class="branch-task-card"><div class="branch-task-card-top"><span class="pill ${priorityClass}">${esc(task.priority)}</span><span class="pill pill-gray">عينة للعرض</span></div><h3>${esc(task.title)}</h3><p>${esc(task.division)} · المسؤول المقترح: ${esc(task.owner)}</p></article>`;
+  }
+
+  function renderBranches() {
+    const branch = activeBranch();
+    const isAdvisor = state.role === "technology-advisor";
+    const roleIntro = state.role === "director"
+      ? "هذه مساحة العميد لاختيار الفرع ومراجعة هيكله."
+      : state.role === "technology-advisor"
+        ? "عرض استشاري للعميد عبر الفروع؛ لا يمنح هذا الدور وحده صلاحيات إدارية."
+        : `عرض تخصصي لـ${esc(ROLES[state.role].short)} عبر الفروع.`;
+    const employeeList = branch.employees.length
+      ? branch.employees.map((person) => `<article class="branch-employee-card"><strong>${esc(person.name)}</strong><span>${esc(person.position)}</span></article>`).join("")
+      : `<div class="branch-empty-state"><strong>لم تُسجل أسماء موظفي هذا الفرع بعد.</strong><span>أبقيت القائمة مستقلة وفارغة بدلاً من تخمين أسماء الموظفين أو تبعياتهم.</span></div>`;
+    return pageWrap(`${heading(state.role === "director" ? "اختيار الفرع والهيكل التنظيمي" : "فروع العمل والهيكل المقترح", `${roleIntro} اسما الفرعين مؤقتان إلى أن تكتب اسميهما الرسميين.`)}
+      <section class="panel branch-picker-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("grid")}</span><div><h2>اختر الفرع</h2><p>الطلبات والخطة والوثائق التجريبية تُعرض بحسب الفرع النشط.</p></div></div><span class="pill pill-blue">${toArabicNumber(BRANCHES.length)} فرعين</span></div><div class="branch-picker-grid">${BRANCHES.map((item) => `<button class="branch-picker-card${item.id === state.activeBranchId ? " is-selected" : ""}" data-action="select-branch" data-branch-id="${esc(item.id)}" type="button"><span class="branch-picker-icon">${icon("grid")}</span><span><strong>${esc(item.name)}</strong><small>تقسيمات ${toArabicNumber(item.divisions.length)} · ${toArabicNumber(item.tasks.length)} مهام نموذجية</small></span><span class="branch-picker-arrow">${icon("chevron")}</span></button>`).join("")}</div></section>
+      <section class="org-proposal-note"><strong>مخطط مقترح للمراجعة — وليس معياراً عالمياً موحداً.</strong><span>لا يوجد مخطط تنظيمي واحد يصلح لكل المؤسسات؛ هذا النموذج يستخدم خط تبعية واضحاً، ويفصل الدور الاستشاري عن سلطة الإدارة، ويعرض إشرافاً وظيفياً موحداً عبر الفرعين. عدّله وفق لائحة المعهد واعتمادكم.</span></section>
+      <section class="panel organization-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>الهيكل القيادي المقترح</h2><p>علاقات العمل أدناه افتراضية للتوضيح وتنتظر اعتمادك.</p></div></div><span class="pill pill-amber">مقترح</span></div><div class="organization-tree"><div class="organization-top-node"><small>القيادة العليا</small><strong>العميد · أ.د محمد صالح</strong><span>القيادة الاستراتيجية للمعهد والفرعين</span></div><div class="organization-link-line"></div><div class="organization-role-grid"><article class="organization-role-card"><span class="pill pill-blue">خط إداري مباشر</span><strong>نائب المدير للشؤون الفنية</strong><span>أ.د علي حسين</span><small>مسؤولية تخصصية عن الخدمات الفنية في الفرعين، ويرفع للعميد.</small></article><article class="organization-role-card"><span class="pill pill-blue">خط إداري مباشر</span><strong>نائب المدير للشؤون التكنولوجية</strong><span>المستخدم · الاسم غير محدد</span><small>قيادة الأنظمة والشبكات والدعم والتحول الرقمي في جميع الفروع.</small></article><article class="organization-role-card advisory"><span class="pill pill-amber">خط استشاري</span><strong>مستشار تكنولوجي للعميد</strong><span>المستخدم نفسه · على جميع الفروع</span><small>يرفع التوصيات للعميد؛ الصفة الاستشارية وحدها لا تُنشئ سلطة إدارية.</small></article><article class="organization-role-card proposed"><span class="pill pill-gray">مسمى مقترح</span><strong>مدير / رئيس الفرع</strong><span>اسم شاغل الوظيفة غير محدد</span><small>يدير التشغيل اليومي والموظفين في فرعه، ويرفع تقرير الفرع للعميد.</small></article></div><div class="organization-reporting-note"><strong>طريقة التبعية المقترحة:</strong> الموظف يتبع مدير الفرع إدارياً، وتنسق وحدات الفنية والتكنولوجيا تخصصياً مع نائبيهما عبر الفروع. راجع هذا الخط مع المخطط الرسمي قبل اعتماده.</div></div></section>
+      <div class="branch-overview-heading"><div><span class="eyebrow">الفرع النشط</span><h2>${esc(branch.name)}</h2><p>${esc(branch.manager)} · النطاق الحالي: ${esc(branch.name)}</p></div><div class="branch-overview-stats"><span><strong>${toArabicNumber(branch.divisions.length)}</strong> تقسيمات</span><span><strong>${toArabicNumber(branch.employees.length)}</strong> موظفون مدخلون</span><span><strong>${toArabicNumber(branch.tasks.length)}</strong> مهام عينة</span></div></div>
+      <section class="branch-division-section"><div class="branch-section-heading"><div><h2>التقسيمات والوحدات</h2><p>نسخة أولية متطابقة لكل فرع؛ الأسماء والمسؤولون عدا المذكورين أعلاه مقترحون.</p></div></div><div class="branch-division-grid">${branch.divisions.map((division) => `<article class="branch-division-card"><div class="branch-division-top"><span class="branch-division-mark">${icon("grid")}</span><span class="pill pill-gray">تقسيم مقترح</span></div><h3>${esc(division.name)}</h3><p>${esc(division.scope)}</p><strong>${esc(division.lead)}</strong><div class="branch-unit-chips">${division.units.map((unit) => `<span>${esc(unit)}</span>`).join("")}</div></article>`).join("")}</div></section>
+      <div class="branch-detail-grid"><section class="panel branch-staff-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>موظفو ${esc(branch.name)}</h2><p>قائمة خاصة بهذا الفرع</p></div></div><span class="pill pill-gray">${toArabicNumber(branch.employees.length)} موظف</span></div><div class="branch-staff-list">${employeeList}</div></section><section class="panel branch-tasks-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>مهام ${esc(branch.name)}</h2><p>بطاقات مستقلة للفرع · لا تمثل تكليفاً حقيقياً</p></div></div><span class="pill pill-amber">${toArabicNumber(branch.tasks.length)} عينة</span></div><div class="branch-task-grid">${branch.tasks.map(renderBranchTaskCard).join("")}</div></section></div>
+      <div class="demo-note organization-demo-note">${icon("shield")}<span>${isAdvisor ? "عرض استشاري للقراءة في نموذج محلي." : "المهام هنا أمثلة وصفية للعرض فقط، وقائمة الموظفين خالية عمداً حتى لا تُنسب أسماء أو تبعيات غير مؤكدة."} تبديل الفروع والأدوار محاكاة محلية وليست صلاحيات فعلية أو بيانات منفصلة على خادم.</span></div>`, true);
+  }
+
   function renderSecretary() {
-    const waiting = state.queue.length;
-    const next = state.queue[0];
+    const queue = branchRecords(state.queue);
+    const waiting = queue.length;
+    const next = queue[0];
     const appointments = [...state.agenda];
-    return pageWrap(`${heading("إدارة المكتب", "طابور منظم للزوار، أجندة المدير، ومستندات جاهزة للمراجعة.", `<button class="btn btn-secondary" data-action="show-waiting" type="button">${icon("laptop")} شاشة صالة الانتظار</button><button class="btn btn-primary" data-action="open-queue-add" type="button">${icon("plus")} حجز موعد</button>`)}
+    return pageWrap(`${heading("إدارة المكتب", "طابور منظم للزوار، أجندة العميد، ومستندات جاهزة للمراجعة.", `<button class="btn btn-secondary" data-action="show-waiting" type="button">${icon("laptop")} شاشة صالة الانتظار</button><button class="btn btn-primary" data-action="open-queue-add" type="button">${icon("plus")} حجز موعد</button>`)}
       <div class="secretary-grid">
         <div style="display:grid;gap:15px">
           <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("users")}</span><div><h2>طابور المكتب</h2><p>عرض الرقم الحالي فقط على شاشة الانتظار</p></div></div><span class="pill pill-green">${toArabicNumber(waiting)} بانتظار الدخول</span></div>
-            <div class="queue-display"><div><small>الرقم الحالي</small><strong>${esc(state.currentTicket)}</strong><p>تتم إدارة تفاصيل الزائر داخل المكتب فقط</p></div><div class="queue-next"><span>التالي</span><strong>${esc(next ? next.number : "—")}</strong></div></div>
+            <div class="queue-display"><div><small>الرقم الحالي</small><strong>${esc(state.branchCurrentTickets[state.activeBranchId] || state.currentTicket)}</strong><p>تتم إدارة تفاصيل الزائر داخل المكتب فقط</p></div><div class="queue-next"><span>التالي</span><strong>${esc(next ? next.number : "—")}</strong></div></div>
             <div class="queue-actions"><button class="btn btn-primary btn-small" data-action="call-next" type="button">${icon("arrow")} استدعاء التالي</button><button class="btn btn-secondary btn-small" data-action="show-waiting" type="button">فتح شاشة العرض</button></div>
-            <div class="queue-list">${state.queue.length ? state.queue.slice(0, 5).map((q) => `<div class="queue-row${q.priority ? " is-priority" : ""}"><span class="queue-number">${esc(q.number)}</span><div class="queue-copy"><strong>${esc(q.name)}</strong><span>${esc(q.department)}${q.priority ? " · أولوية" : ""}</span></div><time>${esc(q.time)}</time></div>`).join("") : `<div class="no-results">الطابور فارغ حالياً.</div>`}</div>
+            <div class="queue-list">${queue.length ? queue.slice(0, 5).map((q) => `<div class="queue-row${q.priority ? " is-priority" : ""}"><span class="queue-number">${esc(q.number)}</span><div class="queue-copy"><strong>${esc(q.name)}</strong><span>${esc(q.department)}${q.priority ? " · أولوية" : ""}</span></div><time>${esc(q.time)}</time></div>`).join("") : `<div class="no-results">الطابور فارغ حالياً.</div>`}</div>
           </section>
           ${renderSignatureWorkflow()}
         </div>
@@ -910,8 +1019,8 @@
 
   function renderDecisions() {
     const query = normalizeArabic(state.decisionSearch);
-    const decisions = state.decisions.filter((d) => !query || normalizeArabic(`${d.id} ${d.title} ${d.summary} ${d.category} ${d.owner}`).includes(query));
-    return pageWrap(`${heading("سجل القرارات", "أرشيف تجريبي قابل للبحث للرجوع إلى القرارات السابقة ومنع التضارب.", `<button class="btn btn-primary" data-action="open-decision" type="button">${icon("plus")} تسجيل قرار</button>`)}
+    const decisions = branchRecords(state.decisions).filter((d) => !query || normalizeArabic(`${d.id} ${d.title} ${d.summary} ${d.category} ${d.owner}`).includes(query));
+    return pageWrap(`${heading("سجل القرارات", "أرشيف تجريبي قابل للبحث للرجوع إلى القرارات السابقة ومنع التضارب.", state.role === "technology-advisor" ? `<span class="pill pill-gray">عرض فقط</span>` : `<button class="btn btn-primary" data-action="open-decision" type="button">${icon("plus")} تسجيل قرار</button>`)}
       <label class="filter-search" style="margin-bottom:14px">${icon("search")}<input id="decision-search" type="search" placeholder="ابحث عن قرار أو موضوع..." value="${esc(state.decisionSearch)}" autocomplete="off" /></label>
       <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("archive")}</span><div><h2>القرارات المحفوظة</h2><p>${toArabicNumber(decisions.length)} نتيجة</p></div></div><span class="pill pill-gray">تخزين محلي توضيحي</span></div><div class="decisions-list">${decisions.length ? decisions.map((d) => `<article class="decision-row"><div class="decision-number">${esc(d.id)}</div><div class="decision-copy"><strong>${esc(d.title)}</strong><p>${esc(d.summary)}</p></div><div class="decision-meta"><span class="pill pill-blue">${esc(d.category)}</span><span>${esc(d.date)}</span></div></article>`).join("") : `<div class="no-results">لا توجد قرارات مطابقة.</div>`}</div></section>`, true);
   }
@@ -924,27 +1033,28 @@
   }
 
   function renderDailyPlanWeek() {
-    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey() || state.weekPlan.horizonStart !== "tomorrow") {
+    if (!state.weekPlan || state.weekPlan.baseDate !== localDayKey() || state.weekPlan.horizonStart !== "tomorrow" || state.weekPlan.branchId !== state.activeBranchId) {
       refreshWeekPlan();
       save();
     }
     const plan = state.weekPlan;
     const tomorrow = plan.days[0];
-    return `<section class="panel daily-planner-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("calendar")}</span><div><h2>قبل مغادرة المكتب: خطة الغد والأسبوع</h2><p>${toArabicNumber(plan.workdayHours)} ساعات عمل = ${toArabicNumber(plan.totalUnits)} وحدة نصف ساعة · احتياطي يومي ${toArabicNumber(plan.bufferUnits)} وحدة</p></div></div><div class="daily-planner-actions"><button class="btn btn-secondary btn-small" data-view="planner" type="button">فتح الخطة كاملة</button><button class="btn btn-quiet btn-small" data-action="open-planner-task" type="button">${icon("plus")} مهمة مخططة</button></div></div><div class="daily-plan-callout"><div><strong>موعد المراجعة: خطة الغد أولاً</strong><span>${tomorrow.items.length ? `غداً: ${toArabicNumber(tomorrow.items.length)} مهام، واستخدام ${toArabicNumber(tomorrow.usedUnits)} من ${toArabicNumber(tomorrow.totalUnits)} وحدة.` : "غداً لا توجد مهام مثبتة بعد؛ أضف مهامك قبل إنهاء اليوم."}</span></div><button class="btn btn-primary btn-small" data-action="open-unexpected-task" type="button">${icon("bellRing")} أضف مهمة عاجلة</button></div><div class="daily-plan-days">${plan.days.map((day) => renderDailyPlanDay(day)).join("")}</div>${plan.backlog.length ? `<div class="daily-plan-backlog">هناك ${toArabicNumber(plan.backlog.length)} مهام لم تتسع لها الأيام السبعة. راجعها في الخطة كاملة وقرّر تفويضها أو ترحيلها.</div>` : ""}<div class="daily-plan-footnote">رتّب المهم والعاجل أولاً، ثم الأعمال العاجلة القابلة للتفويض، واترك الاحتياطي للطوارئ. الخطة في هذا النموذج تجريبية ومحفوظة على هذا المتصفح فقط.</div></section>`;
+    return `<section class="panel daily-planner-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("calendar")}</span><div><h2>قبل مغادرة المكتب: خطة الغد والأسبوع</h2><p>${toArabicNumber(plan.workdayHours)} ساعات عمل = ${toArabicNumber(plan.totalUnits)} وحدة نصف ساعة · احتياطي يومي ${toArabicNumber(plan.bufferUnits)} وحدة</p></div></div><div class="daily-planner-actions">${state.role === "technology-advisor" ? `<span class="pill pill-gray">عرض فقط</span>` : `<button class="btn btn-secondary btn-small" data-view="planner" type="button">فتح الخطة كاملة</button><button class="btn btn-quiet btn-small" data-action="open-planner-task" type="button">${icon("plus")} مهمة مخططة</button>`}</div></div><div class="daily-plan-callout"><div><strong>موعد المراجعة: خطة الغد أولاً</strong><span>${tomorrow.items.length ? `غداً: ${toArabicNumber(tomorrow.items.length)} مهام، واستخدام ${toArabicNumber(tomorrow.usedUnits)} من ${toArabicNumber(tomorrow.totalUnits)} وحدة.` : "غداً لا توجد مهام مثبتة بعد؛ أضف مهامك قبل إنهاء اليوم."}</span></div>${state.role === "technology-advisor" ? "" : `<button class="btn btn-primary btn-small" data-action="open-unexpected-task" type="button">${icon("bellRing")} أضف مهمة عاجلة</button>`}</div><div class="daily-plan-days">${plan.days.map((day) => renderDailyPlanDay(day)).join("")}</div>${plan.backlog.length ? `<div class="daily-plan-backlog">هناك ${toArabicNumber(plan.backlog.length)} مهام لم تتسع لها الأيام السبعة. راجعها في الخطة كاملة وقرّر تفويضها أو ترحيلها.</div>` : ""}<div class="daily-plan-footnote">رتّب المهم والعاجل أولاً، ثم الأعمال العاجلة القابلة للتفويض، واترك الاحتياطي للطوارئ. الخطة في هذا النموذج تجريبية ومحفوظة على هذا المتصفح فقط.</div></section>`;
   }
 
   function renderDaily() {
-    const open = state.requests.filter((r) => r.status !== "مكتمل");
+    const branchRequests = branchRecords(state.requests);
+    const open = branchRequests.filter((r) => r.status !== "مكتمل");
     const urgent = open.filter((r) => r.quadrant === "q1");
-    const completed = state.requests.filter((r) => r.status === "مكتمل");
-    const signed = state.documents.filter((d) => d.workflowStage === "completed");
-    const deputyPending = state.requests.filter((r) => ["deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل");
+    const completed = branchRequests.filter((r) => r.status === "مكتمل");
+    const signed = branchRecords(state.documents).filter((d) => d.workflowStage === "completed");
+    const deputyPending = branchRequests.filter((r) => ["deputy-technical", "deputy-technology", "deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل");
     return pageWrap(`${heading("الموجز اليومي", "ملخص تنفيذي لليوم، ومعه خطة الغد والأيام الستة التالية قبل مغادرة المكتب.", `<button class="btn btn-secondary" data-action="print-page" type="button">${icon("file")} طباعة الموجز</button>`)}
       ${renderDailyPlanWeek()}
       <div class="digest-grid">
         <div style="display:grid;gap:15px">
-          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("report")}</span><div><h2>ملخص الحالة</h2><p>${dateLong()} · ${timeNow()}</p></div></div><span class="pill pill-green">محدّث الآن</span></div><div class="digest-summary"><div class="digest-summary-item critical"><span>أزمات عاجلة</span><strong>${toArabicNumber(urgent.length)}</strong></div><div class="digest-summary-item"><span>مكتملة</span><strong>${toArabicNumber(completed.length)}</strong></div><div class="digest-summary-item"><span>معلّقة</span><strong>${toArabicNumber(open.length)}</strong></div></div><div class="digest-list"><div class="digest-line"><span class="digest-line-icon">${icon("bellRing")}</span><div><strong>الأزمات العاجلة</strong><span>${urgent.length ? urgent.map((r) => esc(r.title)).join(" · ") : "لا توجد حالات عاجلة ظاهرة."}</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("users")}</span><div><strong>مهام لدى النواب</strong><span>${toArabicNumber(deputyPending.length)} معاملة لا تزال مفتوحة لدى النواب أو الطبيب المصرح.</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("file")}</span><div><strong>الأوراق الموقعة</strong><span>${toArabicNumber(signed.length)} مستند بحالة موقّع تجريبياً أو مكتمل في بيانات العرض.</span></div></div></div></section>
-          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة المتابعة قبل نهاية اليوم</h2><p>الأولوية للطلبات العاجلة ثم المعلّقة</p></div></div></div><div class="decisions-list">${open.slice(0, 6).map((r) => `<div class="digest-line" style="padding:13px 18px;cursor:pointer" data-open-request="${esc(r.id)}"><span class="digest-line-icon">${icon(r.quadrant === "q1" ? "bellRing" : "file")}</span><div><strong>${esc(r.title)}</strong><span>${esc(r.department)} · ${esc(r.status)} · ${esc(roleShort(r.assignee))}</span></div></div>`).join("") || `<div class="no-results">لا توجد مهام مفتوحة.</div>`}</div></section>
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("report")}</span><div><h2>ملخص الحالة</h2><p>${dateLong()} · ${timeNow()}</p></div></div><span class="pill pill-green">محدّث الآن</span></div><div class="digest-summary"><div class="digest-summary-item critical"><span>أزمات عاجلة</span><strong>${toArabicNumber(urgent.length)}</strong></div><div class="digest-summary-item"><span>مكتملة</span><strong>${toArabicNumber(completed.length)}</strong></div><div class="digest-summary-item"><span>معلّقة</span><strong>${toArabicNumber(open.length)}</strong></div></div><div class="digest-list"><div class="digest-line"><span class="digest-line-icon">${icon("bellRing")}</span><div><strong>الأزمات العاجلة</strong><span>${urgent.length ? urgent.map((r) => esc(r.title)).join(" · ") : "لا توجد حالات عاجلة ظاهرة."}</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("users")}</span><div><strong>مهام لدى النواب</strong><span>${toArabicNumber(deputyPending.length)} معاملة لا تزال مفتوحة لدى النواب أو الطبيب المخوّل.</span></div></div><div class="digest-line"><span class="digest-line-icon">${icon("file")}</span><div><strong>الأوراق الموقعة</strong><span>${toArabicNumber(signed.length)} مستند بحالة موقّع تجريبياً أو مكتمل في بيانات العرض.</span></div></div></div></section>
+          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>قائمة المتابعة قبل نهاية اليوم</h2><p>الأولوية للطلبات العاجلة ثم المعلّقة</p></div></div></div><div class="request-card-list">${open.slice(0, 6).map((r) => renderRequestCard(r, true)).join("") || `<div class="no-results">لا توجد مهام مفتوحة.</div>`}</div></section>
         </div>
         <div style="display:grid;align-content:start;gap:15px">
           <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("sound")}</span><div><h2>تنبيهات صوتية محلية</h2><p>للمربع الأول فقط عند إضافة طلب عاجل</p></div></div></div><div class="action-panel-body"><p class="action-description">الصوت يعمل بعد تفعيل يدوي في هذا المتصفح. لا يرسل بيانات أو تنبيهاً إلى أجهزة أخرى.</p><button class="btn ${state.soundAlerts ? "btn-primary" : "btn-secondary"}" data-action="toggle-sound" type="button">${icon(state.soundAlerts ? "check" : "sound")}${state.soundAlerts ? "التنبيهات مفعّلة" : "تفعيل الصوت"}</button>${state.soundAlerts ? `<button class="btn btn-quiet btn-small" style="margin-right:8px" data-action="test-sound" type="button">تجربة</button>` : ""}</div></section>
@@ -955,7 +1065,7 @@
 
   function renderEmployee() {
     const notices = state.notices.filter((n) => n.target === "all" || n.department === state.department).slice(0, 3);
-    return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}<div class="employee-hero"><h1>بوابة رئيس القسم</h1><p>سجّل المشكلة أو الاحتياج مرة واحدة، واحتفظ برقم متابعة. لا تعرض هذه الواجهة مسار الإحالة في نموذج العرض.</p><span class="employee-status"><span class="pulse-dot"></span>${isBusy() ? `المدير غير متفرغ حتى ${esc(formatDateTime(state.busyUntil))}` : "استقبلنا الطلبات عبر النظام"}</span></div>
+    return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}<div class="employee-hero"><h1>بوابة رئيس القسم</h1><p>سجّل المشكلة أو الاحتياج مرة واحدة، واحتفظ برقم متابعة. لا تعرض هذه الواجهة مسار الإحالة في نموذج العرض.</p><span class="employee-status"><span class="pulse-dot"></span>${isBusy() ? `العميد غير متفرغ حتى ${esc(formatDateTime(state.busyUntil))}` : "استقبلنا الطلبات عبر النظام"}</span></div>
       <section class="panel employee-form-panel"><div class="employee-form-heading"><h2>تسجيل طلب جديد</h2><p>أدخل المعلومات الضرورية فقط. لا ترفع بيانات تعريفية للمرضى في هذه النسخة التجريبية.</p></div><form class="form-stack" data-form="new-request"><div class="field-row"><div class="form-field"><label for="employee-department">القسم</label><select id="employee-department" name="department" required>${["العناية المركزة", "العمليات", "الطوارئ", "التمريض", "الشؤون الطبية", "الخدمات الهندسية", "الموارد البشرية", "الإدارة المالية", "المخازن", "مكتب الجودة", "العيادات الخارجية"].map((dep) => `<option${state.department === dep ? " selected" : ""}>${dep}</option>`).join("")}</select></div><div class="form-field"><label for="employee-requester">مقدم الطلب</label><input id="employee-requester" name="requester" value="${esc(ROLES.department.person)}" required /></div></div><div class="form-field"><label for="employee-title">عنوان الطلب</label><input id="employee-title" name="title" maxlength="120" placeholder="مثال: عطل يؤثر على تقديم الخدمة" required /></div><div class="form-field"><label for="employee-details">التفاصيل</label><textarea id="employee-details" name="details" maxlength="1500" placeholder="اكتب ملخصاً واضحاً، دون بيانات مرضى أو معلومات لا تلزم لمعالجة الطلب." required></textarea></div><div class="field-row"><div class="form-field"><label for="employee-importance">الأهمية</label><select id="employee-importance" name="importance"><option value="auto">يحددها النظام مبدئياً</option><option value="high">هام</option><option value="low">غير هام</option></select></div><div class="form-field"><label for="employee-urgency">الاستعجال</label><select id="employee-urgency" name="urgency"><option value="normal">عادي</option><option value="urgent">عاجل / يؤثر على سلامة الخدمة</option></select></div></div><label class="confidential-choice"><input type="checkbox" name="confidential" value="yes" /><span><strong>يتطلب مناقشة سرية أو حضوراً شخصياً</strong><span>سيُمنع الرد الكتابي في المحاكاة ويُقترح استدعاء شخصي؛ هذا لا يضمن منع التصوير أو التسريب في نظام ويب حقيقي.</span></span></label><div class="employee-submit"><span class="helper-text">لن يظهر لك مسؤول الإحالة في هذه الواجهة. رقم المتابعة لا يعني أن بياناتك معزولة خادمياً.</span><button class="btn btn-primary" type="submit">${icon("send")} إرسال الطلب</button></div></form></section>
       ${notices.length ? `<section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("bell")}</span><div><h2>تنبيهات المكتب</h2><p>رسائل عامة في نموذج العرض</p></div></div></div>${notices.map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time)}</time></div>`).join("")}</section>` : ""}
       <div class="footer-caption">النسخة الحالية لا تنفذ المصادقة أو سياسات العزل على مستوى قاعدة البيانات.</div></div></div>`;
@@ -963,15 +1073,16 @@
 
   function renderMyRequests() {
     const list = visibleRequests().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}${heading("طلباتي والردود", `قسم ${esc(state.department)} · يمكنك متابعة الحالة ورسائل المكتب.`, `<button class="btn btn-primary" data-view="employee" type="button">${icon("plus")} طلب جديد</button>`)}
-      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>معاملاتي</h2><p>${toArabicNumber(list.length)} طلب مسجل</p></div></div></div>${list.length ? list.map((r) => `<div class="my-request-row"><div><strong>${esc(r.title)}</strong><span>${esc(r.id)} · ${esc(r.time || r.date)} · ${r.confidential ? "مناقشة شخصية" : "متابعة رقمية"}</span></div><span class="status-text ${statusClass(r.status)}">${esc(r.status)}</span></div>`).join("") : `<div class="no-results">لا توجد طلبات بعد. ابدأ بتسجيل طلب جديد.</div>`}</section>
+    return `<div class="page-content"><div class="employee-wrap">${renderDemoNote()}${renderBusyBanner()}${heading("طلباتي والردود", `قسم ${esc(state.department)} · ${esc(activeBranch().name)} · يمكنك متابعة الحالة ورسائل المكتب.`, `<button class="btn btn-primary" data-view="employee" type="button">${icon("plus")} طلب جديد</button>`)}
+      <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("inbox")}</span><div><h2>بطاقات معاملاتي</h2><p>${toArabicNumber(list.length)} طلب مسجل في هذا الفرع</p></div></div></div>${list.length ? `<div class="request-card-list">${list.map((r) => renderRequestCard(r, true)).join("")}</div>` : `<div class="no-results">لا توجد طلبات لهذا الفرع بعد.</div>`}</section>
       <div class="blind-note">${icon("shield")} إذا استدعى الطلب مقابلة شخصية، سيظهر لك موعد المراجعة فقط دون رد كتابي. يرجى عدم استخدام بيانات حقيقية داخل هذا النموذج التوضيحي.</div>
       <section class="panel" style="margin-top:15px"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("message")}</span><div><h2>رسائل المكتب</h2><p>التعاميم والاستدعاءات الظاهرة لهذا القسم</p></div></div></div>${state.notices.filter((n) => n.target === "all" || n.department === state.department).map((n) => `<div class="broadcast-item"><div><strong>${esc(n.title)}</strong><p>${esc(n.message)}</p></div><time>${esc(n.time)}</time></div>`).join("") || `<div class="no-results">لا توجد رسائل حالياً.</div>`}</section></div></div>`;
   }
 
   function renderWaiting() {
-    const next = state.queue[0];
-    return `<main class="waiting-screen"><div class="waiting-top"><div class="waiting-brand"><span class="brand-mark">${icon("brand")}</span><strong>مستشفى النور التخصصي · صالة الانتظار</strong></div><button class="btn" data-action="exit-waiting" type="button">${icon("x")} إنهاء العرض</button></div><div class="waiting-label">الرقم الحالي</div><div class="waiting-number">${esc(state.currentTicket)}</div><div class="waiting-next"><span>يرجى الاستعداد · الرقم التالي</span><strong>${esc(next ? next.number : "—")}</strong></div><div class="waiting-message">يرجى متابعة الشاشة والتوجه إلى المكتب عند ظهور رقمك.</div><div class="waiting-clock">${dateLong()} · ${timeNow()}</div></main>`;
+    const queue = branchRecords(state.queue);
+    const next = queue[0];
+    return `<main class="waiting-screen"><div class="waiting-top"><div class="waiting-brand"><span class="brand-mark">${icon("brand")}</span><strong>صالة انتظار · عرض تجريبي</strong></div><button class="btn" data-action="exit-waiting" type="button">${icon("x")} إنهاء العرض</button></div><div class="waiting-label">الرقم الحالي</div><div class="waiting-number">${esc(state.branchCurrentTickets[state.activeBranchId] || state.currentTicket)}</div><div class="waiting-next"><span>يرجى الاستعداد · الرقم التالي</span><strong>${esc(next ? next.number : "—")}</strong></div><div class="waiting-message">يرجى متابعة الشاشة والتوجه إلى المكتب عند ظهور رقمك.</div><div class="waiting-clock">${dateLong()} · ${timeNow()}</div></main>`;
   }
 
   function renderModal() {
@@ -1028,7 +1139,7 @@
     const isConfidential = request.confidential;
     const detailMessage = showBody ? `<p>${esc(request.body || "لا توجد تفاصيل إضافية مسجلة.")}</p>` : `<p>المعاملة سرية. تُخفى التفاصيل عن دور السكرتارية في هذا النموذج.</p>`;
     const canChange = canManage && !isDepartment;
-    return `${modalHeader("تفاصيل المعاملة", `${esc(request.id)} · ${esc(request.department)}`)}<div class="modal-body"><div class="request-detail-header"><h3>${esc(request.title)}</h3><div class="request-detail-meta"><span>${esc(request.requester)}</span><span>${esc(request.time || request.date || "اليوم")}</span><span class="pill ${q.pill}">${q.label}</span>${isConfidential ? `<span class="confidential">${icon("lock")} سرية</span>` : ""}</div></div><div class="request-detail-body">${detailMessage}</div><div class="detail-grid"><div class="detail-info"><span>الحالة</span><strong>${esc(request.status)}</strong></div><div class="detail-info"><span>جهة المتابعة</span><strong>${esc(roleName(request.assignee))}</strong></div></div>${request.learned ? `<div class="learning-label">${icon("spark")} تم اقتراح التصنيف بناءً على تعديل سابق</div>` : ""}${isConfidential ? `<div class="secret-warning">${icon("lock")} معاملة حساسة: يمنع هذا النموذج عرض الرد الكتابي أو الملفات. استخدم الاستدعاء الشخصي. لا يمكن لواجهة ويب منع لقطات الشاشة أو ضمان السرية.</div>` : ""}${canChange ? `<div class="form-stack" style="margin-top:15px"><div class="field-row"><button class="btn btn-secondary" data-action="move-request" data-request-id="${esc(request.id)}" type="button">${icon("grid")} تغيير المربع</button><form data-form="assign-request" data-request-id="${esc(request.id)}" style="display:flex;gap:7px"><select class="filter-select" name="assignee" aria-label="جهة الإحالة">${["director", "deputy-med", "deputy-admin", "doctor", "secretary"].map((id) => `<option value="${id}"${request.assignee === id ? " selected" : ""}>${esc(roleName(id))}</option>`).join("")}</select><button class="btn btn-secondary btn-small" type="submit">إحالة</button></form></div></div>` : ""}${isConfidential && canChange && request.status !== "مكتمل" ? `<div style="margin-top:14px"><button class="btn btn-danger btn-block" data-action="summon-request" data-request-id="${esc(request.id)}" type="button">${icon("phone")} استدعاء شخصي — بلا رد كتابي</button></div>` : ""}${!isConfidential && canManage && request.status !== "مكتمل" ? `<form data-form="reply-request" data-request-id="${esc(request.id)}" class="form-stack" style="margin-top:15px"><div class="form-field"><label for="reply-text">رد أو ملاحظة المتابعة</label><textarea id="reply-text" name="reply" maxlength="900" placeholder="اكتب ملخص الإجراء أو المطلوب من القسم..." required></textarea></div><button class="btn btn-primary" type="submit">${icon("send")} إرسال الرد وتحديث الحالة</button></form>` : ""}${request.response ? `<div class="digest-quote" style="margin:15px 0 0"><strong>آخر رد مسجل</strong>${esc(request.response)}</div>` : ""}</div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إغلاق</button></div>`;
+    return `${modalHeader("تفاصيل المعاملة", `${esc(request.id)} · ${esc(request.department)}`)}<div class="modal-body"><div class="request-detail-header"><h3>${esc(request.title)}</h3><div class="request-detail-meta"><span>${esc(request.requester)}</span><span>${esc(request.time || request.date || "اليوم")}</span><span class="pill ${q.pill}">${q.label}</span>${isConfidential ? `<span class="confidential">${icon("lock")} سرية</span>` : ""}</div></div><div class="request-detail-body">${detailMessage}</div><div class="detail-grid"><div class="detail-info"><span>الحالة</span><strong>${esc(request.status)}</strong></div>${isDepartment ? "" : `<div class="detail-info"><span>جهة المتابعة</span><strong>${esc(roleName(request.assignee))}</strong></div>`}</div>${request.learned ? `<div class="learning-label">${icon("spark")} تم اقتراح التصنيف بناءً على تعديل سابق</div>` : ""}${isConfidential ? `<div class="secret-warning">${icon("lock")} معاملة حساسة: يمنع هذا النموذج عرض الرد الكتابي أو الملفات. استخدم الاستدعاء الشخصي. لا يمكن لواجهة ويب منع لقطات الشاشة أو ضمان السرية.</div>` : ""}${canChange ? `<div class="form-stack" style="margin-top:15px"><div class="field-row"><button class="btn btn-secondary" data-action="move-request" data-request-id="${esc(request.id)}" type="button">${icon("grid")} تغيير المربع</button><form data-form="assign-request" data-request-id="${esc(request.id)}" style="display:flex;gap:7px"><select class="filter-select" name="assignee" aria-label="جهة الإحالة">${["director", "deputy-technical", "deputy-technology", "deputy-med", "deputy-admin", "doctor", "secretary"].map((id) => `<option value="${id}"${request.assignee === id ? " selected" : ""}>${esc(roleName(id))}</option>`).join("")}</select><button class="btn btn-secondary btn-small" type="submit">إحالة</button></form></div></div>` : ""}${isConfidential && canChange && request.status !== "مكتمل" ? `<div style="margin-top:14px"><button class="btn btn-danger btn-block" data-action="summon-request" data-request-id="${esc(request.id)}" type="button">${icon("phone")} استدعاء شخصي — بلا رد كتابي</button></div>` : ""}${!isConfidential && canManage && request.status !== "مكتمل" ? `<form data-form="reply-request" data-request-id="${esc(request.id)}" class="form-stack" style="margin-top:15px"><div class="form-field"><label for="reply-text">رد أو ملاحظة المتابعة</label><textarea id="reply-text" name="reply" maxlength="900" placeholder="اكتب ملخص الإجراء أو المطلوب من القسم..." required></textarea></div><button class="btn btn-primary" type="submit">${icon("send")} إرسال الرد وتحديث الحالة</button></form>` : ""}${request.response ? `<div class="digest-quote" style="margin:15px 0 0"><strong>آخر رد مسجل</strong>${esc(request.response)}</div>` : ""}</div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إغلاق</button></div>`;
   }
 
   function modalDocumentPreapproval() {
@@ -1096,7 +1207,7 @@
 
   function modalSummon() {
     const request = state.modal.requestId ? state.requests.find((r) => r.id === state.modal.requestId) : null;
-    return `${modalHeader(request ? "استدعاء صاحب المعاملة" : "نداء مباشر", request ? `معاملة ${esc(request.id)} · لا ترسل تفاصيل مكتوبة` : "اختر شخصاً أو قسماً للحضور إلى المكتب.")}<form data-form="summon" data-request-id="${request ? esc(request.id) : ""}"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="summon-target">المستلم</label><select id="summon-target" name="target" required><option value="رئيس قسم العناية المركزة"${request?.department === "العناية المركزة" ? " selected" : ""}>رئيس قسم العناية المركزة</option><option value="رئيس قسم العمليات"${request?.department === "العمليات" ? " selected" : ""}>رئيس قسم العمليات</option><option value="رئيس قسم الطوارئ">رئيس قسم الطوارئ</option><option value="النائب الأول للشؤون الطبية">النائب الأول للشؤون الطبية</option><option value="النائب الثاني للشؤون الإدارية">النائب الثاني للشؤون الإدارية</option><option value="الطبيب المصرح">الطبيب المصرح</option><option value="السكرتير التنفيذي">السكرتير التنفيذي</option></select></div><div class="form-field"><label for="summon-time">موعد الحضور</label><select id="summon-time" name="time"><option value="فوراً">فوراً</option><option value="خلال ١٥ دقيقة">خلال ١٥ دقيقة</option><option value="خلال ٣٠ دقيقة">خلال ٣٠ دقيقة</option><option value="عند مراجعة السكرتارية">عند مراجعة السكرتارية</option></select></div><div class="form-field"><label for="summon-message">نص الاستدعاء</label><textarea id="summon-message" name="message" maxlength="250" required>${request ? "يرجى الحضور إلى المكتب لمناقشة المعاملة بسرية. لا تُرسل تفاصيل عبر التطبيق." : "يرجى الحضور إلى مكتب الإدارة."}</textarea></div><div class="secret-warning">لن تُرسل رسالة فعلية على الهاتف في هذا النموذج. لا تُدرج معلومات طبية أو سرية في نص الاستدعاء.</div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("phone")} تسجيل الاستدعاء</button></div></form>`;
+    return `${modalHeader(request ? "استدعاء صاحب المعاملة" : "نداء مباشر", request ? `معاملة ${esc(request.id)} · لا ترسل تفاصيل مكتوبة` : "اختر شخصاً أو قسماً للحضور إلى المكتب.")}<form data-form="summon" data-request-id="${request ? esc(request.id) : ""}"><div class="modal-body"><div class="form-stack"><div class="form-field"><label for="summon-target">المستلم</label><select id="summon-target" name="target" required><option value="رئيس قسم العناية المركزة"${request?.department === "العناية المركزة" ? " selected" : ""}>رئيس قسم العناية المركزة</option><option value="رئيس قسم العمليات"${request?.department === "العمليات" ? " selected" : ""}>رئيس قسم العمليات</option><option value="رئيس قسم الطوارئ">رئيس قسم الطوارئ</option><option value="نائب المدير للشؤون الفنية">نائب المدير للشؤون الفنية</option><option value="مسؤول الشؤون الإدارية والمالية">مسؤول الشؤون الإدارية والمالية</option><option value="الطبيب المخوّل">الطبيب المخوّل</option><option value="سكرتير العميد">سكرتير العميد</option></select></div><div class="form-field"><label for="summon-time">موعد الحضور</label><select id="summon-time" name="time"><option value="فوراً">فوراً</option><option value="خلال ١٥ دقيقة">خلال ١٥ دقيقة</option><option value="خلال ٣٠ دقيقة">خلال ٣٠ دقيقة</option><option value="عند مراجعة السكرتارية">عند مراجعة السكرتارية</option></select></div><div class="form-field"><label for="summon-message">نص الاستدعاء</label><textarea id="summon-message" name="message" maxlength="250" required>${request ? "يرجى الحضور إلى المكتب لمناقشة المعاملة بسرية. لا تُرسل تفاصيل عبر التطبيق." : "يرجى الحضور إلى مكتب الإدارة."}</textarea></div><div class="secret-warning">لن تُرسل رسالة فعلية على الهاتف في هذا النموذج. لا تُدرج معلومات طبية أو سرية في نص الاستدعاء.</div></div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("phone")} تسجيل الاستدعاء</button></div></form>`;
   }
 
   function modalBroadcast() {
@@ -1122,7 +1233,8 @@
     }
     const view = state.view;
     let content;
-    if (view === "matrix") content = renderMatrixPage();
+    if (view === "branches") content = renderBranches();
+    else if (view === "matrix") content = renderMatrixPage();
     else if (view === "requests") content = renderRequestsPage();
     else if (view === "communications") content = renderCommunications();
     else if (view === "secretary") content = renderSecretary();
@@ -1141,7 +1253,7 @@
   }
 
   function openRequest(requestId) {
-    if (!state.requests.some((r) => r.id === requestId)) return;
+    if (!visibleRequests().some((r) => r.id === requestId)) return;
     state.modal = { type: "request-details", requestId };
     render();
   }
@@ -1179,6 +1291,7 @@
       body: details,
       authorRole: state.role === "department" ? "department" : state.role,
       learned: classification.learned,
+      branchId: state.activeBranchId,
       createdAt: Date.now(),
     };
     state.requests.unshift(request);
@@ -1302,7 +1415,7 @@
       const dueDate = dueValue ? new Date(dueValue) : null;
       if (!recipient || !title || !message) return showToast("اختر مستلماً واكتب العنوان والتفاصيل.", true);
       if (dueValue && (!dueDate || Number.isNaN(dueDate.getTime()) || dueDate.getTime() <= Date.now())) return showToast("اختر موعداً لاحقاً للوقت الحالي.", true);
-      const staffRequest = { id: `SR-${Date.now()}`, kind: String(data.get("kind") || "info"), title, message, priority: String(data.get("priority") || "normal"), requesterId: sender.id, requesterKind: sender.kind || "staff", requester: sender.name, recipientId, recipientKind, recipient: recipient.name, dueAt: dueDate ? dueDate.toISOString() : null, status: "جديد", response: "", createdAt: Date.now(), time: timeNow() };
+      const staffRequest = { id: `SR-${Date.now()}`, kind: String(data.get("kind") || "info"), title, message, priority: String(data.get("priority") || "normal"), requesterId: sender.id, requesterKind: sender.kind || "staff", requester: sender.name, recipientId, recipientKind, recipient: recipient.name, branchId: state.activeBranchId, dueAt: dueDate ? dueDate.toISOString() : null, status: "جديد", response: "", createdAt: Date.now(), time: timeNow() };
       state.staffRequests.unshift(staffRequest);
       save();
       state.modal = null;
@@ -1361,7 +1474,7 @@
       if (existingTask) {
         Object.assign(existingTask, { title, quadrant, units, dueDate, urgent: quadrant === "q1" && !!existingTask.urgent, updatedAt: Date.now() });
       } else {
-        state.plannerTasks.push({ id: `PT-${Date.now()}`, title, quadrant, units, dueDate, status: "مفتوحة", urgent: unexpected, createdAt: Date.now() });
+        state.plannerTasks.push({ id: `PT-${Date.now()}`, title, quadrant, units, dueDate, status: "مفتوحة", urgent: unexpected, branchId: state.activeBranchId, createdAt: Date.now() });
       }
       refreshWeekPlan();
       save();
@@ -1454,7 +1567,7 @@
     if (kind === "queue-add") {
       const serials = state.queue.map((q) => Number((q.number.match(/\d+/) || ["10"])[0]));
       const nextNo = Math.max(10, ...serials) + 1;
-      state.queue.push({ number: `و-${new Intl.NumberFormat("ar-EG").format(nextNo)}`, name: String(data.get("name") || "").trim(), department: String(data.get("department") || "").trim(), time: timeNow(), priority: data.get("priority") === "yes" });
+      state.queue.push({ number: `و-${new Intl.NumberFormat("ar-EG").format(nextNo)}`, name: String(data.get("name") || "").trim(), department: String(data.get("department") || "").trim(), branchId: state.activeBranchId, time: timeNow(), priority: data.get("priority") === "yes" });
       save();
       state.modal = null;
       render();
@@ -1463,7 +1576,7 @@
     }
     if (kind === "decision") {
       const next = Math.max(1, ...state.decisions.map((d) => Number((d.id.match(/\d+/) || ["0"])[0]) + 1));
-      state.decisions.unshift({ id: `ق-${next}`, title: String(data.get("title") || "").trim(), summary: String(data.get("summary") || "").trim(), category: String(data.get("category") || "تشغيل"), date: dateLong(), owner: String(data.get("owner") || ROLES[state.role].person).trim() });
+      state.decisions.unshift({ id: `ق-${next}`, title: String(data.get("title") || "").trim(), summary: String(data.get("summary") || "").trim(), category: String(data.get("category") || "تشغيل"), date: dateLong(), owner: String(data.get("owner") || ROLES[state.role].person).trim(), branchId: state.activeBranchId });
       save();
       state.modal = null;
       render();
@@ -1486,7 +1599,15 @@
 
   function handleAction(action, element) {
     const requestId = element.dataset.requestId;
-    if (action === "menu-toggle") { state.menuOpen = !state.menuOpen; render(); }
+    if (action === "select-branch") {
+      const nextBranch = BRANCHES.find((branch) => branch.id === element.dataset.branchId);
+      if (!nextBranch || !["director", "deputy-technical", "deputy-technology", "technology-advisor"].includes(state.role)) return;
+      state.activeBranchId = nextBranch.id;
+      state.weekPlan = null;
+      save(); render();
+      showToast(`تم اختيار ${nextBranch.name} في نموذج العرض المحلي.`);
+    }
+    else if (action === "menu-toggle") { state.menuOpen = !state.menuOpen; render(); }
     else if (action === "close-menu") { state.menuOpen = false; render(); }
     else if (action === "open-new-request" || action === "new-request") {
       if (state.role === "department") setView("employee");
@@ -1522,9 +1643,11 @@
     else if (action === "backdrop-close" && element.classList.contains("modal-backdrop")) { state.modal = null; render(); }
     else if (action === "open-queue-add") { state.modal = { type: "queue-add" }; render(); }
     else if (action === "call-next") {
-      if (!state.queue.length) return showToast("لا يوجد زوار في الطابور.");
-      const next = state.queue.shift();
+      const nextIndex = state.queue.findIndex((item) => (item.branchId || DEFAULT_BRANCH_ID) === state.activeBranchId);
+      if (nextIndex < 0) return showToast("لا يوجد زوار في طابور هذا الفرع.");
+      const [next] = state.queue.splice(nextIndex, 1);
       state.currentTicket = next.number;
+      state.branchCurrentTickets[state.activeBranchId] = next.number;
       save(); render(); showToast(`تم استدعاء الرقم ${next.number} إلى المكتب.`);
     }
     else if (action === "show-waiting") { state.savedRole = state.role; state.role = "waiting"; save(); render(); }
@@ -1582,7 +1705,7 @@
       else if (state.menuOpen) { state.menuOpen = false; render(); }
     }
     const target = event.target;
-    if ((event.key === "Enter" || event.key === " ") && target instanceof HTMLElement && target.matches("[data-open-request][role='button'], tr[data-open-request]")) {
+    if ((event.key === "Enter" || event.key === " ") && target instanceof HTMLElement && target.matches("[data-open-request][role='button']")) {
       event.preventDefault(); openRequest(target.dataset.openRequest);
     }
   });
@@ -1607,7 +1730,7 @@
     }
     if (event.target.id === "role-select") {
       state.role = event.target.value;
-      state.view = state.role === "department" ? "employee" : state.role === "employee" ? "my-presence" : "dashboard";
+      state.view = ["director", "deputy-technical", "deputy-technology", "technology-advisor"].includes(state.role) ? "branches" : state.role === "department" ? "employee" : state.role === "employee" ? "my-presence" : "dashboard";
       state.modal = null;
       save(); render();
       showToast(`تم تفعيل عرض الدور: ${roleName(state.role)}. التبديل تمثيلي وليس مصادقة حقيقية.`);
@@ -1629,7 +1752,7 @@
     if (event.target.id === "request-search") {
       state.requestSearch = event.target.value;
       const query = normalizeArabic(state.requestSearch);
-      document.querySelectorAll("tbody tr[data-open-request]").forEach((row) => {
+      document.querySelectorAll(".request-card[data-open-request]").forEach((row) => {
         row.style.display = !query || normalizeArabic(row.textContent).includes(query) ? "" : "none";
       });
     }
@@ -1667,6 +1790,8 @@
       state.notices = read(STORAGE.notices, clone(SEED_NOTICES));
       state.queue = read(STORAGE.queue, clone(SEED_QUEUE));
       state.currentTicket = read("rifd-demo-current-ticket-v1", "و-١١");
+      state.branchCurrentTickets = read("rifd-demo-current-tickets-by-branch-v1", state.branchCurrentTickets || {});
+      BRANCHES.forEach((branch) => { if (!state.branchCurrentTickets[branch.id]) state.branchCurrentTickets[branch.id] = branch.id === DEFAULT_BRANCH_ID ? state.currentTicket : "و-١١"; });
       state.busyUntil = read("rifd-demo-busy-until-v1", null);
       state.busyReason = read("rifd-demo-busy-reason-v1", "");
       state.availability = read(STORAGE.availability, clone(SEED_AVAILABILITY));

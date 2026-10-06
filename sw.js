@@ -1,4 +1,4 @@
-const CACHE_NAME = "rifd-shell-v4";
+const CACHE_NAME = "rifd-shell-v5";
 const SHELL = [
   "./",
   "./index.html",
