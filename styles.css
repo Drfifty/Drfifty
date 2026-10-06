@@ -770,6 +770,39 @@ svg { display: block; }
   .my-presence-details { grid-template-columns: 1fr; }
 }
 
+.signature-workflow-panel { margin-top: 0; overflow: hidden; }
+.signature-workflow-panel .panel-head { min-height: 0; padding: 13px 17px; align-items: flex-start; flex-wrap: wrap; }
+.signature-workflow-panel .panel-title { align-items: flex-start; }
+.signature-workflow-panel .panel-title h2 { font-size: 14px; }
+.signature-workflow-panel .panel-title p { max-width: 470px; font-size: 10px; line-height: 1.7; }
+.signature-stage-summary { padding: 10px 15px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; border-bottom: 1px solid #edf1ef; }
+.signature-stage-summary > span { padding: 7px 8px; border: 1px solid #edf1ef; border-radius: 8px; color: #87968e; background: #fbfcfb; font-size: 10px; text-align: center; }
+.signature-stage-summary strong { margin-left: 3px; color: #4a7963; font-size: 12px; }
+.document-workflow-list { padding: 11px 14px; display: grid; gap: 8px; }
+.document-workflow-card { min-width: 0; padding: 12px; border: 1px solid #e8efeb; border-radius: 11px; background: #fcfdfc; }
+.document-workflow-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.document-workflow-top > div { min-width: 0; display: grid; gap: 5px; }
+.document-workflow-top > div > strong { color: #435e53; font-size: 11px; line-height: 1.7; }
+.document-workflow-top > div > span { color: #91a098; font-size: 9px; }
+.document-workflow-top > .pill { max-width: 250px; font-size: 10px; white-space: normal; text-align: right; line-height: 1.5; }
+.document-workflow-details { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px 12px; color: #83938b; font-size: 10px; line-height: 1.7; }
+.document-workflow-actions { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 7px; }
+.document-next-step { align-self: center; color: #9a783c; font-size: 10px; }
+.document-mismatch-note, .document-migration-note { margin-top: 8px; padding: 8px 9px; border-radius: 8px; color: #945146; background: #fff4f1; font-size: 10px; line-height: 1.7; }
+.document-migration-note { color: #7d6b43; background: #fff9ea; }
+.document-modal-summary { margin-bottom: 13px; padding: 11px 12px; display: grid; gap: 5px; border: 1px solid #e5eee8; border-radius: 9px; background: #f8fbf9; }
+.document-modal-summary strong { color: #466257; font-size: 12px; line-height: 1.7; }
+.document-modal-summary span { color: #88978f; font-size: 10px; }
+.signature-workflow-warning { margin-top: 12px; padding: 10px 11px; border: 1px solid #f0dfbd; border-radius: 9px; color: #866a35; background: #fffaf0; font-size: 10px; line-height: 1.8; }
+@media (max-width: 700px) {
+  .signature-workflow-panel .panel-head { padding: 12px; }
+  .signature-stage-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 9px 10px; }
+  .document-workflow-list { padding: 10px; }
+  .document-workflow-card { padding: 10px; }
+  .document-workflow-top { flex-direction: column; }
+  .document-workflow-top > .pill { max-width: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

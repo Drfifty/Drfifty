@@ -779,6 +779,39 @@ svg { display: block; }
   .my-presence-details { grid-template-columns: 1fr; }
 }
 
+.signature-workflow-panel { margin-top: 0; overflow: hidden; }
+.signature-workflow-panel .panel-head { min-height: 0; padding: 13px 17px; align-items: flex-start; flex-wrap: wrap; }
+.signature-workflow-panel .panel-title { align-items: flex-start; }
+.signature-workflow-panel .panel-title h2 { font-size: 14px; }
+.signature-workflow-panel .panel-title p { max-width: 470px; font-size: 10px; line-height: 1.7; }
+.signature-stage-summary { padding: 10px 15px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; border-bottom: 1px solid #edf1ef; }
+.signature-stage-summary > span { padding: 7px 8px; border: 1px solid #edf1ef; border-radius: 8px; color: #87968e; background: #fbfcfb; font-size: 10px; text-align: center; }
+.signature-stage-summary strong { margin-left: 3px; color: #4a7963; font-size: 12px; }
+.document-workflow-list { padding: 11px 14px; display: grid; gap: 8px; }
+.document-workflow-card { min-width: 0; padding: 12px; border: 1px solid #e8efeb; border-radius: 11px; background: #fcfdfc; }
+.document-workflow-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.document-workflow-top > div { min-width: 0; display: grid; gap: 5px; }
+.document-workflow-top > div > strong { color: #435e53; font-size: 11px; line-height: 1.7; }
+.document-workflow-top > div > span { color: #91a098; font-size: 9px; }
+.document-workflow-top > .pill { max-width: 250px; font-size: 10px; white-space: normal; text-align: right; line-height: 1.5; }
+.document-workflow-details { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px 12px; color: #83938b; font-size: 10px; line-height: 1.7; }
+.document-workflow-actions { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 7px; }
+.document-next-step { align-self: center; color: #9a783c; font-size: 10px; }
+.document-mismatch-note, .document-migration-note { margin-top: 8px; padding: 8px 9px; border-radius: 8px; color: #945146; background: #fff4f1; font-size: 10px; line-height: 1.7; }
+.document-migration-note { color: #7d6b43; background: #fff9ea; }
+.document-modal-summary { margin-bottom: 13px; padding: 11px 12px; display: grid; gap: 5px; border: 1px solid #e5eee8; border-radius: 9px; background: #f8fbf9; }
+.document-modal-summary strong { color: #466257; font-size: 12px; line-height: 1.7; }
+.document-modal-summary span { color: #88978f; font-size: 10px; }
+.signature-workflow-warning { margin-top: 12px; padding: 10px 11px; border: 1px solid #f0dfbd; border-radius: 9px; color: #866a35; background: #fffaf0; font-size: 10px; line-height: 1.8; }
+@media (max-width: 700px) {
+  .signature-workflow-panel .panel-head { padding: 12px; }
+  .signature-stage-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 9px 10px; }
+  .document-workflow-list { padding: 10px; }
+  .document-workflow-card { padding: 10px; }
+  .document-workflow-top { flex-direction: column; }
+  .document-workflow-top > .pill { max-width: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
@@ -868,8 +901,8 @@ svg { display: block; }
     { time: "٠١:٣٠ م", title: "وقت تركيز محمي", detail: "مراجعة ملفات الميزانية والتطوير", focus: true },
   ];
   const SEED_DOCUMENTS = [
-    { id: "DOC-04", name: "تعميم تحديث جداول المناوبات.pdf", department: "الشؤون الطبية", status: "بانتظار التوقيع" },
-    { id: "DOC-03", name: "محضر لجنة التشغيل.pdf", department: "مكتب المدير", status: "موقّع تجريبياً" },
+    { id: "DOC-04", name: "تعميم تحديث جداول المناوبات.pdf", department: "الشؤون الطبية", status: "بانتظار الموافقة المبدئية", workflowStage: "pending-preapproval", versionNumber: 1, versionLabel: "نسخة ١", createdAt: Date.now(), history: [] },
+    { id: "DOC-03", name: "محضر لجنة التشغيل.pdf", department: "مكتب المدير", status: "موافقة مبدئية مسجلة تجريبياً", workflowStage: "pending-paper-match", versionNumber: 1, versionLabel: "نسخة ١", createdAt: Date.now() - 30 * 60000, preApproval: { by: ROLES.director.person, signerId: "director", role: ROLES.director.label, at: Date.now() - 30 * 60000, versionLabel: "نسخة ١", reason: "اعتماد عينة توضيحية", mode: "demo-only" }, procedureStartedAt: Date.now() - 30 * 60000, history: [{ event: "preapproval", by: ROLES.director.person, at: Date.now() - 30 * 60000, versionLabel: "نسخة ١" }] },
   ];
   const SEED_STAFF = [
     { id: "EMP-001", name: "أ. محمد علي", position: "فني صيانة", department: "الخدمات الهندسية", initials: "مح" },
@@ -1041,6 +1074,24 @@ svg { display: block; }
       localStorage.setItem(STORAGE.prefs, JSON.stringify({ soundAlerts: state.soundAlerts, department: state.department, staffId: state.staffId }));
     } catch (_) { showToast("تعذر حفظ البيانات محلياً. تحقق من مساحة التخزين في المتصفح.", true); }
   };
+
+  function migrateDocumentWorkflow() {
+    let changed = false;
+    state.documents.forEach((doc) => {
+      if (!doc.workflowStage) {
+        doc.legacyDemoNote = doc.status === "موقّع تجريبياً";
+        doc.workflowStage = "pending-preapproval";
+        changed = true;
+      }
+      if (!doc.versionLabel) { doc.versionLabel = "نسخة ١"; changed = true; }
+      if (!Number(doc.versionNumber)) { doc.versionNumber = 1; changed = true; }
+      if (!Array.isArray(doc.history)) { doc.history = []; changed = true; }
+      const currentLabel = documentStageLabel(doc);
+      if (doc.status !== currentLabel) { doc.status = currentLabel; changed = true; }
+    });
+    if (changed) save();
+  }
+  migrateDocumentWorkflow();
 
   function showToast(message, error = false) {
     const el = document.createElement("div");
@@ -1614,11 +1665,58 @@ svg { display: block; }
       <div class="demo-note remote-access-note">${icon("shield")}<span>هذه خطة عرض تجريبية مبنية على الأولوية والتقدير اليدوي، وليست تكاملاً مع تقويم حقيقي. المدير يستطيع تعديل الوحدات والاحتياطي؛ كل نصف ساعة وحدة واحدة، والمهام غير المنجزة يعاد ترتيبها لا حذفها.</span></div>`, true);
   }
 
+  function documentStageLabel(doc) {
+    return ({
+      "pending-preapproval": "بانتظار الموافقة التشغيلية المبدئية",
+      "pending-paper-match": "موافقة مبدئية مسجلة · بانتظار مطابقة الورق",
+      "pending-ink-signature": "تمت المطابقة · بانتظار توقيع القلم",
+      completed: "اكتمل المسار · توقيع القلم مسجل",
+      "paper-mismatch": "اختلاف ورقي · الإجراء موقوف للمراجعة",
+    })[doc.workflowStage] || "بانتظار المراجعة";
+  }
+
+  function documentWorkflowCard(doc, actionHtml = "") {
+    const approval = doc.preApproval;
+    const match = doc.paperMatch;
+    const approvalDetail = approval ? `<span>الموافقة التجريبية: ${esc(approval.by)} · ${esc(formatDateTime(approval.at))} · ${esc(approval.versionLabel || doc.versionLabel)}</span>` : "";
+    const matchDetail = match ? `<span>مطابقة الورق: ${esc(match.by || "")} · ${esc(match.paperVersion || "")} · ${esc(formatDateTime(match.at))}</span>` : "";
+    const inkDetail = doc.inkSignature ? `<span>تسجيل توقيع القلم: ${esc(doc.inkSignature.by)} · ${esc(formatDateTime(doc.inkSignature.at))}</span>` : "";
+    const procedureDetail = doc.procedureStartedAt ? `<span>${doc.workflowStage === "completed" ? "المسار الورقي اكتمل في العرض" : doc.procedurePausedAt ? "الإجراء التجريبي موقوف للمراجعة" : "بدء الإجراء التجريبي مسجل"} · ${esc(formatDateTime(doc.procedureStartedAt))}</span>` : "";
+    const reason = doc.workflowStage === "paper-mismatch" ? `<div class="document-mismatch-note"><strong>سبب الإيقاف:</strong> ${esc(doc.paperMismatchReason || "لم يُسجل سبب الاختلاف")}</div>` : "";
+    const migrationNote = doc.legacyDemoNote ? `<div class="document-migration-note">كانت الحالة السابقة تغييراً تجريبياً للواجهة؛ أعيد المستند إلى بداية المسار ولم يُعتبر موقعاً.</div>` : "";
+    const statusClassName = doc.workflowStage === "completed" ? "pill-green" : doc.workflowStage === "paper-mismatch" ? "pill-red" : doc.workflowStage === "pending-preapproval" ? "pill-amber" : "pill-blue";
+    return `<article class="document-workflow-card"><div class="document-workflow-top"><div><strong>${esc(doc.name)}</strong><span>${esc(doc.id)} · ${esc(doc.department)} · ${esc(doc.versionLabel || "نسخة ١")}</span></div><span class="pill ${statusClassName}">${esc(documentStageLabel(doc))}</span></div><div class="document-workflow-details">${approvalDetail}${matchDetail}${inkDetail}${procedureDetail}${doc.preApproval?.reason ? `<span>سبب الاستعجال: ${esc(doc.preApproval.reason)}</span>` : ""}</div>${reason}${migrationNote}${actionHtml ? `<div class="document-workflow-actions">${actionHtml}</div>` : ""}</article>`;
+  }
+
+  function renderSignatureWorkflow() {
+    const isSecretary = state.role === "secretary";
+    const isApprover = state.role === "director";
+    const pendingPreapproval = state.documents.filter((doc) => doc.workflowStage === "pending-preapproval");
+    const pendingPaperMatch = state.documents.filter((doc) => doc.workflowStage === "pending-paper-match");
+    const pendingInk = state.documents.filter((doc) => doc.workflowStage === "pending-ink-signature");
+    const mismatches = state.documents.filter((doc) => doc.workflowStage === "paper-mismatch");
+    const completed = state.documents.filter((doc) => doc.workflowStage === "completed");
+    const actionsFor = (doc) => {
+      if (isApprover && doc.workflowStage === "pending-preapproval") return `<button class="btn btn-primary btn-small" data-action="open-document-preapproval" data-document-id="${esc(doc.id)}" type="button">${icon("check")} موافقة تشغيلية مبدئية</button>`;
+      if (isSecretary && doc.workflowStage === "pending-paper-match") return `<button class="btn btn-secondary btn-small" data-action="open-document-paper-match" data-document-id="${esc(doc.id)}" type="button">${icon("file")} مطابقة النسخة الورقية</button>`;
+      if (isApprover && doc.workflowStage === "pending-ink-signature") return `<button class="btn btn-primary btn-small" data-action="open-document-ink-confirm" data-document-id="${esc(doc.id)}" type="button">${icon("check")} تسجيل توقيع القلم</button>`;
+      if (isApprover && doc.workflowStage === "paper-mismatch") return `<button class="btn btn-secondary btn-small" data-action="reset-paper-mismatch" data-document-id="${esc(doc.id)}" type="button">${icon("refresh")} إعادة إصدار نسخة للمراجعة</button>`;
+      if (doc.workflowStage === "pending-paper-match") return `<span class="document-next-step">بانتظار مراجعة السكرتير</span>`;
+      if (doc.workflowStage === "pending-ink-signature") return `<span class="document-next-step">بانتظار توقيع المسؤول بالقلم</span>`;
+      if (doc.workflowStage === "pending-preapproval") return `<span class="document-next-step">بانتظار المعتمد المخوّل</span>`;
+      return "";
+    };
+    const visibleDocs = isSecretary
+      ? state.documents.filter((doc) => doc.workflowStage !== "pending-preapproval")
+      : state.documents;
+    const count = isSecretary ? pendingPaperMatch.length + mismatches.length : pendingPreapproval.length + pendingInk.length + mismatches.length;
+    return `<section class="panel signature-workflow-panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("file")}</span><div><h2>${isSecretary ? "حزمة نهاية اليوم · مطابقة الأوراق" : "الموافقة المبدئية والتوقيع الورقي"}</h2><p>${isSecretary ? "طابق رقم النسخة والصفحات والمرفقات قبل إعادة الملف للموقّع." : "سجّل الموافقة التجريبية؛ وبعد مطابقة السكرتير تظهر خطوة تسجيل توقيع القلم."}</p></div></div><span class="pill ${count ? "pill-amber" : "pill-green"}">${toArabicNumber(count)} تحتاج إجراء</span></div><div class="signature-stage-summary"><span><strong>${toArabicNumber(pendingPreapproval.length)}</strong> بانتظار الموافقة</span><span><strong>${toArabicNumber(pendingPaperMatch.length)}</strong> بانتظار المطابقة</span><span><strong>${toArabicNumber(pendingInk.length)}</strong> بانتظار توقيع القلم</span><span><strong>${toArabicNumber(completed.length)}</strong> مكتملة في العرض</span></div><div class="document-workflow-list">${visibleDocs.length ? visibleDocs.map((doc) => documentWorkflowCard(doc, actionsFor(doc))).join("") : `<div class="no-results">لا توجد مستندات في هذه المرحلة.</div>`}</div><div class="signature-workflow-warning">تنبيه مهم: هذه محاكاة محلية فقط. زر الموافقة لا ينشئ توقيعاً إلكترونياً معتمداً ولا يطلق إجراءً حقيقياً. بدء الإجراء قبل التوقيع الورقي يتطلب سياسة مكتوبة تحدد المستندات المسموحة واعتماد الشؤون القانونية. التوقيع الورقي اللاحق لا يمنح الخطوة الإلكترونية السابقة حجية قانونية تلقائياً. أي اختلاف في النسخة يوقف المسار.</div></section>`;
+  }
+
   function renderSecretary() {
     const waiting = state.queue.length;
     const next = state.queue[0];
     const appointments = [...state.agenda];
-    const unsigned = state.documents.filter((d) => d.status === "بانتظار التوقيع");
     return pageWrap(`${heading("إدارة المكتب", "طابور منظم للزوار، أجندة المدير، ومستندات جاهزة للمراجعة.", `<button class="btn btn-secondary" data-action="show-waiting" type="button">${icon("laptop")} شاشة صالة الانتظار</button><button class="btn btn-primary" data-action="open-queue-add" type="button">${icon("plus")} حجز موعد</button>`)}
       <div class="secretary-grid">
         <div style="display:grid;gap:15px">
@@ -1627,7 +1725,7 @@ svg { display: block; }
             <div class="queue-actions"><button class="btn btn-primary btn-small" data-action="call-next" type="button">${icon("arrow")} استدعاء التالي</button><button class="btn btn-secondary btn-small" data-action="show-waiting" type="button">فتح شاشة العرض</button></div>
             <div class="queue-list">${state.queue.length ? state.queue.slice(0, 5).map((q) => `<div class="queue-row${q.priority ? " is-priority" : ""}"><span class="queue-number">${esc(q.number)}</span><div class="queue-copy"><strong>${esc(q.name)}</strong><span>${esc(q.department)}${q.priority ? " · أولوية" : ""}</span></div><time>${esc(q.time)}</time></div>`).join("") : `<div class="no-results">الطابور فارغ حالياً.</div>`}</div>
           </section>
-          <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("file")}</span><div><h2>مسار التوقيعات</h2><p>محاكاة لحالة المستندات فقط — لا توقيع رقمي فعلي</p></div></div><span class="pill pill-amber">${toArabicNumber(unsigned.length)} بانتظار المراجعة</span></div><div class="queue-list">${state.documents.map((d) => `<div class="queue-row"><span class="request-type-icon">${icon("file")}</span><div class="queue-copy"><strong>${esc(d.name)}</strong><span>${esc(d.department)} · ${esc(d.status)}</span></div>${d.status === "بانتظار التوقيع" ? `<button class="btn btn-secondary btn-small" data-action="demo-sign" data-document-id="${esc(d.id)}" type="button">اعتماد تجريبي</button>` : `<span class="pill pill-green">تم</span>`}</div>`).join("")}</div><div class="blind-note" style="margin:0 17px 15px">الإقرار هنا يغيّر حالة العرض فقط؛ لا ينشئ توقيع PDF معتمداً أو ختمًا رقمياً.</div></section>
+          ${renderSignatureWorkflow()}
         </div>
         <section class="panel"><div class="panel-head"><div class="panel-title"><span class="title-icon">${icon("calendar")}</span><div><h2>أجندة اليوم</h2><p>${dateLong()}</p></div></div><button class="link-button" data-action="open-appointment" type="button">إضافة ${icon("plus")}</button></div><div class="calendar-body"><div class="calendar-head"><strong>المواعيد القادمة</strong><span>${toArabicNumber(appointments.length)} بنود</span></div>${appointments.map((item) => `<div class="agenda-item"><div class="agenda-time">${esc(item.time)}</div><div class="agenda-event" style="border-color:${item.focus ? "#dfbd72" : "#a9d5c0"}"><strong>${esc(item.title)}</strong><span>${esc(item.detail)}</span></div></div>`).join("")}<div class="focus-card"><strong>${icon("target")} وقت تركيز محمي</strong><p>احجز فترة بلا مقاطعات للمهام المهمة وغير العاجلة.</p><button class="btn btn-secondary btn-small" data-action="open-focus" type="button">${icon("clock")} حجز وقت تركيز</button></div></div></section>
       </div>
@@ -1663,7 +1761,7 @@ svg { display: block; }
     const open = state.requests.filter((r) => r.status !== "مكتمل");
     const urgent = open.filter((r) => r.quadrant === "q1");
     const completed = state.requests.filter((r) => r.status === "مكتمل");
-    const signed = state.documents.filter((d) => d.status !== "بانتظار التوقيع");
+    const signed = state.documents.filter((d) => d.workflowStage === "completed");
     const deputyPending = state.requests.filter((r) => ["deputy-med", "deputy-admin", "doctor"].includes(r.assignee) && r.status !== "مكتمل");
     return pageWrap(`${heading("الموجز اليومي", "ملخص تنفيذي لليوم، ومعه خطة الغد والأيام الستة التالية قبل مغادرة المكتب.", `<button class="btn btn-secondary" data-action="print-page" type="button">${icon("file")} طباعة الموجز</button>`)}
       ${renderDailyPlanWeek()}
@@ -1708,6 +1806,9 @@ svg { display: block; }
     if (type === "new-request") content = modalNewRequest();
     else if (type === "move-request") content = modalMoveRequest();
     else if (type === "request-details") content = modalRequestDetails();
+    else if (type === "document-preapproval") { compact = true; content = modalDocumentPreapproval(); }
+    else if (type === "document-paper-match") { compact = true; content = modalDocumentPaperMatch(); }
+    else if (type === "document-ink-confirm") { compact = true; content = modalDocumentInkConfirm(); }
     else if (type === "availability") { compact = true; content = modalAvailability(); }
     else if (type === "staff-contact") { compact = true; content = modalStaffContact(); }
     else if (type === "planner-task") { compact = true; content = modalPlannerTask(); }
@@ -1752,6 +1853,24 @@ svg { display: block; }
     const detailMessage = showBody ? `<p>${esc(request.body || "لا توجد تفاصيل إضافية مسجلة.")}</p>` : `<p>المعاملة سرية. تُخفى التفاصيل عن دور السكرتارية في هذا النموذج.</p>`;
     const canChange = canManage && !isDepartment;
     return `${modalHeader("تفاصيل المعاملة", `${esc(request.id)} · ${esc(request.department)}`)}<div class="modal-body"><div class="request-detail-header"><h3>${esc(request.title)}</h3><div class="request-detail-meta"><span>${esc(request.requester)}</span><span>${esc(request.time || request.date || "اليوم")}</span><span class="pill ${q.pill}">${q.label}</span>${isConfidential ? `<span class="confidential">${icon("lock")} سرية</span>` : ""}</div></div><div class="request-detail-body">${detailMessage}</div><div class="detail-grid"><div class="detail-info"><span>الحالة</span><strong>${esc(request.status)}</strong></div><div class="detail-info"><span>جهة المتابعة</span><strong>${esc(roleName(request.assignee))}</strong></div></div>${request.learned ? `<div class="learning-label">${icon("spark")} تم اقتراح التصنيف بناءً على تعديل سابق</div>` : ""}${isConfidential ? `<div class="secret-warning">${icon("lock")} معاملة حساسة: يمنع هذا النموذج عرض الرد الكتابي أو الملفات. استخدم الاستدعاء الشخصي. لا يمكن لواجهة ويب منع لقطات الشاشة أو ضمان السرية.</div>` : ""}${canChange ? `<div class="form-stack" style="margin-top:15px"><div class="field-row"><button class="btn btn-secondary" data-action="move-request" data-request-id="${esc(request.id)}" type="button">${icon("grid")} تغيير المربع</button><form data-form="assign-request" data-request-id="${esc(request.id)}" style="display:flex;gap:7px"><select class="filter-select" name="assignee" aria-label="جهة الإحالة">${["director", "deputy-med", "deputy-admin", "doctor", "secretary"].map((id) => `<option value="${id}"${request.assignee === id ? " selected" : ""}>${esc(roleName(id))}</option>`).join("")}</select><button class="btn btn-secondary btn-small" type="submit">إحالة</button></form></div></div>` : ""}${isConfidential && canChange && request.status !== "مكتمل" ? `<div style="margin-top:14px"><button class="btn btn-danger btn-block" data-action="summon-request" data-request-id="${esc(request.id)}" type="button">${icon("phone")} استدعاء شخصي — بلا رد كتابي</button></div>` : ""}${!isConfidential && canManage && request.status !== "مكتمل" ? `<form data-form="reply-request" data-request-id="${esc(request.id)}" class="form-stack" style="margin-top:15px"><div class="form-field"><label for="reply-text">رد أو ملاحظة المتابعة</label><textarea id="reply-text" name="reply" maxlength="900" placeholder="اكتب ملخص الإجراء أو المطلوب من القسم..." required></textarea></div><button class="btn btn-primary" type="submit">${icon("send")} إرسال الرد وتحديث الحالة</button></form>` : ""}${request.response ? `<div class="digest-quote" style="margin:15px 0 0"><strong>آخر رد مسجل</strong>${esc(request.response)}</div>` : ""}</div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إغلاق</button></div>`;
+  }
+
+  function modalDocumentPreapproval() {
+    const doc = state.documents.find((item) => item.id === state.modal?.documentId);
+    if (!doc) return "";
+    return `${modalHeader("موافقة تشغيلية مبدئية عن بُعد", "راجع نوع المستند والنسخة، وسجّل سبب الاستعجال قبل المتابعة.")}<form data-form="document-preapproval" data-document-id="${esc(doc.id)}"><div class="modal-body"><div class="document-modal-summary"><strong>${esc(doc.name)}</strong><span>${esc(doc.id)} · ${esc(doc.department)} · ${esc(doc.versionLabel)}</span></div><div class="form-stack"><div class="form-field"><label for="preapproval-reason">لماذا يلزم عدم انتظار التوقيع الورقي؟</label><textarea id="preapproval-reason" name="reason" maxlength="300" required placeholder="اكتب سبباً تشغيلياً عاماً، دون بيانات مرضى."></textarea></div><label class="confidential-choice"><input type="checkbox" name="policyEligible" value="yes" required /><span><strong>أؤكد أن هذا المستند مسموح ببدء الإجراء بعد الموافقة المبدئية وفق سياسة الجهة.</strong><span>إذا لم تكن متأكداً من أن هذا النوع مسموح، لا تعتمد عليه قبل التوقيع الورقي.</span></span></label></div><div class="signature-workflow-warning">في هذا النموذج، الزر يسجل حالة عرض محلية فقط؛ ليس توقيعاً قانونياً ولا يرسل المستند أو يبدأ خدمة حقيقية. التوقيع الإلكتروني الرسمي في مصر له متطلبات وشهادات معتمدة، والتوقيع الورقي اللاحق لا يمنح هذه الخطوة الإلكترونية حجية قانونية تلقائياً.</div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} تسجيل الموافقة التجريبية</button></div></form>`;
+  }
+
+  function modalDocumentPaperMatch() {
+    const doc = state.documents.find((item) => item.id === state.modal?.documentId);
+    if (!doc) return "";
+    return `${modalHeader("مطابقة النسخة الورقية", "السكرتير يراجع رقم النسخة والصفحات والمرفقات قبل إحالتها للموقّع.")}<form data-form="document-paper-match" data-document-id="${esc(doc.id)}"><div class="modal-body"><div class="document-modal-summary"><strong>${esc(doc.name)}</strong><span>النسخة المعتمدة مبدئياً: ${esc(doc.versionLabel)} · ${esc(doc.id)}</span></div><div class="form-stack"><div class="form-field"><label for="paper-version">رقم النسخة الظاهر على الورق</label><input id="paper-version" name="paperVersion" value="${esc(doc.versionLabel)}" maxlength="30" required /></div><div class="form-field"><label for="paper-match-decision">نتيجة المطابقة</label><select id="paper-match-decision" name="decision" required><option value="">اختر النتيجة</option><option value="matched">النسخة والصفحات والمرفقات متطابقة</option><option value="mismatch">وجدت اختلافاً — أوقف المسار</option></select></div><div class="form-field"><label for="paper-match-note">ملاحظة أو سبب الاختلاف</label><textarea id="paper-match-note" name="note" maxlength="300" placeholder="عند وجود اختلاف، اذكره بوضوح. لا تُكمل التوقيع بالقلم على نسخة مختلفة."></textarea></div></div><div class="signature-workflow-warning">المطابقة هنا مجرد تسجيل تجريبي لرقم النسخة؛ لا يفحص هذا النموذج ملف PDF أو محتواه آلياً.</div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} حفظ نتيجة المطابقة</button></div></form>`;
+  }
+
+  function modalDocumentInkConfirm() {
+    const doc = state.documents.find((item) => item.id === state.modal?.documentId);
+    if (!doc) return "";
+    return `${modalHeader("تسجيل التوقيع بالقلم", "يظهر هذا الخيار بعد تسجيل مطابقة السكرتير للنسخة الورقية.")}<form data-form="document-ink-confirm" data-document-id="${esc(doc.id)}"><div class="modal-body"><div class="document-modal-summary"><strong>${esc(doc.name)}</strong><span>${esc(doc.id)} · النسخة المطابقة: ${esc(doc.versionLabel)}</span></div><label class="confidential-choice"><input type="checkbox" name="paperSigned" value="yes" required /><span><strong>تم توقيع النسخة الورقية المطابقة بالقلم فعلياً.</strong><span>هذا التأكيد لا يوقّع المستند؛ يسجل فقط أن التوقيع الورقي تم خارج التطبيق.</span></span></label><div class="signature-workflow-warning">لا تضغط التأكيد قبل أن يوقّع الشخص المخوّل النسخة الورقية فعلياً. التطبيق لا يملك شهادة توقيع رقمية أو أداة توقيع معتمدة.</div></div><div class="modal-footer"><span class="spacer"></span><button class="btn btn-secondary" data-action="close-modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">${icon("check")} تسجيل اكتمال الورق</button></div></form>`;
   }
 
   function modalAvailability() {
@@ -1902,6 +2021,65 @@ svg { display: block; }
     const kind = form.dataset.form;
     if (kind === "new-request") {
       createNewRequest(data);
+      return;
+    }
+    if (kind === "document-preapproval") {
+      const doc = state.documents.find((item) => item.id === form.dataset.documentId);
+      const reason = String(data.get("reason") || "").trim();
+      if (state.role !== "director" || !doc || doc.workflowStage !== "pending-preapproval") return showToast("المستند ليس بانتظار موافقة هذا الدور.", true);
+      if (data.get("policyEligible") !== "yes") return showToast("لا يمكن تسجيل الموافقة قبل تأكيد أن السياسة تسمح ببدء هذا الإجراء.", true);
+      if (!reason) return showToast("اكتب سبب الحاجة إلى عدم انتظار الورق.", true);
+      const signer = currentPerson();
+      const at = Date.now();
+      doc.preApproval = { by: signer?.name || ROLES[state.role].person, signerId: signer?.id || state.role, role: ROLES[state.role].label, at, versionLabel: doc.versionLabel, reason, mode: "demo-only" };
+      doc.workflowStage = "pending-paper-match";
+      doc.procedureStartedAt = at;
+      doc.procedurePausedAt = null;
+      doc.status = documentStageLabel(doc);
+      doc.legacyDemoNote = false;
+      doc.history = [...(doc.history || []), { event: "preapproval-demo", by: doc.preApproval.by, at, versionLabel: doc.versionLabel }];
+      save(); state.modal = null; render(); showToast("سُجلت موافقة أولية تجريبية فقط؛ لم يُنشأ توقيع معتمد أو إجراء فعلي.");
+      return;
+    }
+    if (kind === "document-paper-match") {
+      const doc = state.documents.find((item) => item.id === form.dataset.documentId);
+      const decision = String(data.get("decision") || "");
+      const paperVersion = String(data.get("paperVersion") || "").trim();
+      const note = String(data.get("note") || "").trim();
+      if (state.role !== "secretary" || !doc || doc.workflowStage !== "pending-paper-match") return showToast("المستند ليس بانتظار مطابقة السكرتير.", true);
+      if (!["matched", "mismatch"].includes(decision) || !paperVersion) return showToast("اختر نتيجة المطابقة واكتب رقم نسخة الورق.", true);
+      if (decision === "mismatch" && !note) return showToast("اكتب وصف الاختلاف؛ سيظل المستند موقوفاً.", true);
+      if (decision === "matched" && paperVersion !== doc.versionLabel) return showToast("رقم نسخة الورق لا يطابق النسخة المعتمدة. اختر «وجدت اختلافاً» لإيقاف المسار.", true);
+      const at = Date.now();
+      const checker = currentPerson();
+      doc.paperMatch = { status: decision, by: checker?.name || ROLES.secretary.person, at, paperVersion, note };
+      if (decision === "matched") {
+        doc.workflowStage = "pending-ink-signature";
+        doc.procedurePausedAt = null;
+        doc.paperMismatchReason = "";
+      } else {
+        doc.workflowStage = "paper-mismatch";
+        doc.procedurePausedAt = at;
+        doc.paperMismatchReason = note;
+      }
+      doc.status = documentStageLabel(doc);
+      doc.history = [...(doc.history || []), { event: decision === "matched" ? "paper-match" : "paper-mismatch", by: doc.paperMatch.by, at, versionLabel: doc.versionLabel, note }];
+      save(); state.modal = null; render(); showToast(decision === "matched" ? "تم تسجيل المطابقة التجريبية؛ أُحيل المستند للموقّع بالقلم." : "أُوقف المسار بسبب اختلاف النسخة؛ لن يظهر خيار توقيع القلم.");
+      return;
+    }
+    if (kind === "document-ink-confirm") {
+      const doc = state.documents.find((item) => item.id === form.dataset.documentId);
+      if (state.role !== "director" || !doc || doc.workflowStage !== "pending-ink-signature") return showToast("يلزم أن تتم مطابقة الورق أولاً، ومن الدور المخوّل.", true);
+      if (data.get("paperSigned") !== "yes") return showToast("أكد أن التوقيع بالقلم تم فعلياً خارج التطبيق.", true);
+      if (doc.paperMatch?.status !== "matched" || doc.paperMatch.paperVersion !== doc.versionLabel) return showToast("لا يمكن الإكمال: بيانات المطابقة لا تطابق النسخة المعتمدة.", true);
+      const signer = currentPerson();
+      if (doc.preApproval?.signerId && doc.preApproval.signerId !== signer?.id) return showToast("الموقّع بالقلم يجب أن يكون هو صاحب الموافقة المبدئية في هذا النموذج.", true);
+      const at = Date.now();
+      doc.inkSignature = { by: signer?.name || ROLES[state.role].person, role: ROLES[state.role].label, at, versionLabel: doc.versionLabel, mode: "recorded-outside-app" };
+      doc.workflowStage = "completed";
+      doc.status = documentStageLabel(doc);
+      doc.history = [...(doc.history || []), { event: "paper-signature-recorded", by: doc.inkSignature.by, at, versionLabel: doc.versionLabel }];
+      save(); state.modal = null; render(); showToast("سُجل اكتمال التوقيع الورقي بعد المطابقة؛ التطبيق لم يوقّع المستند.");
       return;
     }
     if (kind === "availability") {
@@ -2178,10 +2356,21 @@ svg { display: block; }
     else if (action === "open-decision") { state.modal = { type: "decision" }; render(); }
     else if (action === "open-appointment") { state.modal = { type: "appointment" }; render(); }
     else if (action === "open-focus") { state.modal = { type: "focus" }; render(); }
-    else if (action === "demo-sign") {
-      const doc = state.documents.find((d) => d.id === element.dataset.documentId);
-      if (doc) { doc.status = "موقّع تجريبياً"; save(); render(); showToast("تم تغيير حالة العرض فقط؛ لم ينشأ توقيع رقمي معتمد."); }
+    else if (action === "open-document-preapproval") { state.modal = { type: "document-preapproval", documentId: element.dataset.documentId }; render(); }
+    else if (action === "open-document-paper-match") { state.modal = { type: "document-paper-match", documentId: element.dataset.documentId }; render(); }
+    else if (action === "open-document-ink-confirm") { state.modal = { type: "document-ink-confirm", documentId: element.dataset.documentId }; render(); }
+    else if (action === "reset-paper-mismatch") {
+      const doc = state.documents.find((item) => item.id === element.dataset.documentId);
+      if (doc && state.role === "director" && doc.workflowStage === "paper-mismatch") {
+        doc.versionNumber = Math.max(1, Number(doc.versionNumber) || 1) + 1;
+        doc.versionLabel = `نسخة ${toArabicNumber(doc.versionNumber)}`;
+        doc.preApproval = null; doc.paperMatch = null; doc.paperMismatchReason = ""; doc.procedureStartedAt = null; doc.procedurePausedAt = null;
+        doc.workflowStage = "pending-preapproval"; doc.status = documentStageLabel(doc); doc.legacyDemoNote = false;
+        doc.history = [...(doc.history || []), { event: "reissued", by: currentPerson()?.name || ROLES.director.person, at: Date.now(), versionLabel: doc.versionLabel }];
+        save(); render(); showToast("أعيد فتح المسار بنسخة جديدة في هذا العرض؛ حدّث ملف المستند خارج التطبيق قبل اعتماده.");
+      }
     }
+    else if (action === "demo-sign") showToast("أُوقف الاعتماد الأحادي. استخدم مسار الموافقة المبدئية ثم مطابقة النسخة الورقية.", true);
     else if (action === "toggle-sound") { state.soundAlerts = !state.soundAlerts; save(); render(); showToast(state.soundAlerts ? "فُعّلت التنبيهات الصوتية في هذا المتصفح." : "أُوقفت التنبيهات الصوتية."); if (state.soundAlerts) playUrgentTone(); }
     else if (action === "test-sound") { playUrgentTone(); showToast("هذا اختبار صوت محلي فقط."); }
     else if (action === "export-requests") exportRequests();
