@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة السيرة الذاتية التنفيذية | د. محمود همام</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f2c59;
+      --primary-light: #1e4b85;
+      --accent: #c59b27;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f2c59 0%, #1e4b85 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      color: var(--text);
+    }
+    .hub-container {
+      background: var(--card-bg);
+      max-width: 860px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      border-top: 6px solid var(--accent);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 26px;
+      color: var(--primary);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-bottom: 30px;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      text-align: right;
+    }
+    @media (max-width: 700px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .hub-container { padding: 25px 20px; }
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.25s ease;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(15, 44, 89, 0.12);
+      border-color: var(--accent);
+    }
+    .card-tag {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .tag-ar { background: #e0f2fe; color: #0369a1; }
+    .tag-en { background: #fef2f2; color: #b91c1c; }
+    .card h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: block;
+      text-align: center;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--primary);
+      border: 1px solid #cbd5e1;
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .footer-note {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 12.5px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hub-container">
+    <div class="badge">Executive Portfolio Portal</div>
+    <h1>الملفات الكاملة للسيرة الذاتية التنفيذية</h1>
+    <p class="subtitle">د. محمود عبد الرحمن همام | مستشار الشئون التكنولوجية والتحول الرقمي</p>
+
+    <div class="cards-grid">
+      <!-- 1: AR HTML -->
+      <div class="card">
+        <div>
+          <span class="card-tag tag-ar">نسخة مصممة للطباعة والعرض المباشر (عربي)</span>
+          <h3>السيرة الذاتية بالعربية (Executive HTML)</h3>
+          <p>عرض تفاعلي أنيق ومصمم بالكامل بخط Cairo الفاخر، جاهز للطباعة الفورية وحفظه كـ PDF عبر (Ctrl + P).</p>
+        </div>
+        <a href="CV_Mahmoud_Hammam_AR.html" target="_blank" class="btn btn-primary">فتح النسخة العربية للعرض المباشر ↗</a>
+      </div>
+
+      <!-- 2: EN HTML -->
+      <div class="card">
+        <div>
+          <span class="card-tag tag-en">Print-Ready Executive Layout (English)</span>
+          <h3>السيرة الذاتية بالإنجليزية (Executive HTML)</h3>
+          <p>نسخة إنجليزية مصممة بأعلى معايير الإدارة العليا والتنسيق العالمي، جاهزة للحفظ كـ PDF عبر (Ctrl + P).</p>
+        </div>
+        <a href="CV_Mahmoud_Hammam_EN.html" target="_blank" class="btn btn-primary">فتح النسخة الإنجليزية للعرض المباشر ↗</a>
+      </div>
+
+      <!-- 3: AR MD Document -->
+      <div class="card">
+        <div>
+          <span class="card-tag tag-ar">ملف وثيقة نصية (عربي)</span>
+          <h3>ملف السيرة الذاتية (Markdown العربي)</h3>
+          <p>معاينة محتوى ملف الـ Markdown المنسق كوثيقة مقروءة ومرتبة بالكامل لأنظمة التوظيف ومسؤولي التوظيف.</p>
+        </div>
+        <a href="view_ar_md.html" target="_blank" class="btn btn-secondary">عرض وثيقة الـ Markdown بالعربية ↗</a>
+      </div>
+
+      <!-- 4: EN MD Document -->
+      <div class="card">
+        <div>
+          <span class="card-tag tag-en">Text Document Format (English)</span>
+          <h3>ملف السيرة الذاتية (Markdown الإنجليزي)</h3>
+          <p>معاينة محتوى ملف الـ Markdown الإنجليزي المنسق كوثيقة معتمدة ومطابقة لمعايير أنظمة الفرز الذاتي (ATS).</p>
+        </div>
+        <a href="view_en_md.html" target="_blank" class="btn btn-secondary">عرض وثيقة الـ Markdown بالإنجليزية ↗</a>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>💡 للتحويل إلى PDF فوري: افتح أي نسخة واضغط (Ctrl + P) ثم اختر "Save as PDF".</span>
+    </div>
+  </div>
+
+</body>
+</html>
