@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>السيرة الذاتية التنفيذية | د. محمود عبد الرحمن همام</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f2c59;
+      --primary-light: #1e4b85;
+      --accent: #c59b27;
+      --accent-soft: #fcf8e8;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --border-color: #e5e7eb;
+      --bg-card: #f8fafc;
+      --metric-bg: #ecfdf5;
+      --metric-border: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f1f5f9;
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 14px;
+      padding: 30px 15px;
+    }
+
+    .cv-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 45px 50px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-top: 6px solid var(--primary);
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .header .titles {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--primary-light);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .header .titles span {
+      color: var(--accent);
+      margin: 0 6px;
+    }
+
+    .contact-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .contact-item strong {
+      color: var(--primary);
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    /* Summary */
+    .summary-text {
+      text-align: justify;
+      color: var(--text-main);
+      font-size: 13.5px;
+      line-height: 1.75;
+      background: #fafbfc;
+      padding: 14px 18px;
+      border-right: 4px solid var(--accent);
+      border-radius: 4px;
+    }
+
+    .highlight {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Competencies Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-right: 3px solid var(--primary-light);
+      padding: 9px 12px;
+      border-radius: 4px;
+      font-size: 12.8px;
+      line-height: 1.45;
+    }
+
+    .skill-card strong {
+      color: var(--primary);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Experience Items */
+    .exp-item {
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .exp-role {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .exp-company {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+
+    .exp-date {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid #fae8a4;
+    }
+
+    .exp-bullets {
+      list-style-type: none;
+      padding-right: 0;
+      margin-top: 6px;
+    }
+
+    .exp-bullets li {
+      position: relative;
+      padding-right: 18px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+      text-align: justify;
+    }
+
+    .exp-bullets li::before {
+      content: '■';
+      position: absolute;
+      right: 0;
+      color: var(--accent);
+      font-size: 9px;
+      top: 4px;
+    }
+
+    /* Metric Badge */
+    .metric-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #166534;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 12.5px;
+      margin: 6px 0;
+      display: inline-block;
+    }
+
+    /* Research Box */
+    .research-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+      border: 1px solid #cbd5e1;
+      border-right: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 6px;
+    }
+
+    .research-card h4 {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+
+    /* Two Columns */
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .list-unstyled {
+      list-style: none;
+    }
+
+    .list-unstyled li {
+      padding: 4px 0;
+      font-size: 13px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .list-unstyled li:last-child {
+      border-bottom: none;
+    }
+
+    /* Print settings */
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+        font-size: 12px;
+      }
+      .cv-container {
+        box-shadow: none;
+        padding: 20px 25px;
+        max-width: 100%;
+        border-top: none;
+      }
+      .section {
+        page-break-inside: avoid;
+        margin-bottom: 18px;
+      }
+      .exp-item {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cv-container">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>د. محمود عبد الرحمن همام عبد الرحمن</h1>
+      <div class="titles">
+        استشاري تكنولوجيا الرعاية الصحية والتحول الرقمي <span>|</span> مفتش رقابي بهيئة الشراء الموحد (UPA)<br>
+        مستشار عميد المعهد ومدير الشئون التكنولوجية <span>|</span> المدير العلمي لفرق الـ CDC <span>|</span> المؤسس والرئيس التنفيذي لـ Al-Abd Unimed
+      </div>
+      <div class="contact-bar">
+        <div class="contact-item"><strong>الموقع:</strong> الجيزة / القاهرة، مصر</div>
+        <div class="contact-item"><strong>هاتف / واتساب:</strong> 01010436430 (+20)</div>
+        <div class="contact-item"><strong>البريد الإلكتروني:</strong> Drfifty.mido@gmail.com</div>
+        <div class="contact-item"><strong>المؤهل:</strong> بكالوريوس الصيدلة الإكلينيكية (B.Pharm)</div>
+      </div>
+    </header>
+
+    <!-- Executive Summary -->
+    <section class="section">
+      <h2 class="section-title">الملخص التنفيذي (Executive Summary)</h2>
+      <div class="summary-text">
+        قائد استراتيجي وخبير تحول رقمي يتمتع بمسيرة مهنية تمتد لأكثر من <span class="highlight">عشر سنوات</span>، تجمع بتفرد استثنائي بين الرؤية الطبية والتشخيصية (الصيدلة الإكلينيكية والجينوميكس)، وحوكمة الامتثال والتفتيش الرقابي الصارم (مفتش بهيئة الشراء الموحد UPA)، وهندسة البرمجيات والأتمتة الذكية (Python & Custom ERP)، والإدارة التجارية لسلاسل الصيدليات الكبرى، وريادة الأعمال في قطاع التكنولوجيا الصحية (Health-Tech).<br><br>
+        يمتلك سجلاً تاريخياً مشهوداً في إدارة الأزمات الحساسة رفيعة المستوى، أبرزها النجاح الفردي في فك وتسوية أزمة مخزنية ورقابية معقدة بقيمة <span class="highlight">600 مليون جنيه مصري</span> في أقل من 10 ساعات متواصلة وحماية قيادات كبرى من تبعات قانونية وإدارية فادحة. مبتكر حلول برمجية نوعية أسهمت في ميكنة الفحص الجيني القومي لحديثي الولادة بنسبة خطأ <span class="highlight">0.00%</span> محولاً زمن معالجة وإرسال النتائج لبوابة وزارة الصحة من أيام إلى ثوانٍ معدودة، ومطور لمنظومة عقود مؤتمتة بالكامل حلت أزمة إدارية مزمنة. بناءً على هذه الإنجازات، تم تكليفه رسمياً بقرار مباشر من عميد المعهد القومي لأبحاث الكبد كمستشار رئيسي للإدارة العليا ومديراً للشئون التكنولوجية للمعهد بفروعه الثلاثة.
+      </div>
+    </section>
+
+    <!-- Core Competencies -->
+    <section class="section">
+      <h2 class="section-title">الكفاءات والقدرات الجوهرية (Core Competencies)</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <strong>الاستشارات الاستراتيجية والتحول الرقمي</strong>
+          صياغة استراتيجيات التحول الرقمي، ودعم القرار الوزاري والتنفيذي، وإدارة المنشآت الطبية متعددة الفروع.
+        </div>
+        <div class="skill-card">
+          <strong>هندسة النظم والأتمتة (Custom ERP & Automation)</strong>
+          ابتكار أنظمة إدارة العقود والموردين، وأتمتة دورات العمل التشخيصية وسير البيانات الفوري.
+        </div>
+        <div class="skill-card">
+          <strong>إدارة الأزمات والامتثال الرقابي (UPA Compliance)</strong>
+          التفتيش الصيدلي والمخزني، تسوية فروقات الجرد، ومطابقة السجلات الرقمية وتوفير الحماية القانونية.
+        </div>
+        <div class="skill-card">
+          <strong>حوكمة برامج المسح الجيني والمبادرات الرئاسية</strong>
+          إدارة منظومات الفحص الجيني القومي للولدان، الكشف المبكر للأورام، وفحص المقبلين على الزواج بـ CDC.
+        </div>
+        <div class="skill-card">
+          <strong>لوجستيات سلاسل الإمداد والاقتصاد الدائري</strong>
+          هندسة خوارزميات بلغة Python لإعادة توزيع المخزون بشبكات واسعة (60 فرعاً) وخفض الهدر الدوائي.
+        </div>
+        <div class="skill-card">
+          <strong>الإدارة التجارية وريادة الأعمال (Commercial & Startups)</strong>
+          إدارة سلاسل الصيدليات الكبرى، وتأسيس الشركات الناشئة، وبناء المنصات الرقمية (AU MED & AU Business).
+        </div>
+      </div>
+    </section>
+
+    <!-- Professional Experience -->
+    <section class="section">
+      <h2 class="section-title">الخبرات المهنية والتنفيذية (Professional Experience)</h2>
+
+      <!-- Role 1 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">مستشار عميد المعهد | مدير معهد الكبد للشئون التكنولوجية</span>
+            <div class="exp-company">المعهد القومي لأبحاث الكبد والأمراض المتوطنة (NHTMRI) – الهيئة العامة للمستشفيات والمعاهد التعليمية (GOTHI)</div>
+          </div>
+          <span class="exp-date">2026 – حتى الآن</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>القيادة التكنولوجية المباشرة:</strong> التكليف المباشر بقرار من عميد المعهد لتولي قيادة وتنسيق الشئون التكنولوجية والتحول الرقمي للقطاع بالكامل والإشراف المباشر على فروعه الثلاثة، والعمل كمستشار تكنولوجي استراتيجي للإدارة العليا.</li>
+          <li><strong>ابتكار نظام العقود والتعاقدات المخصص (Custom ERP & Automation):</strong> تصميم وبرمجة نظام رقمي متكامل ومؤتمت بنسبة 100% لإدارة وتنظيم ومتابعة كافة العقود والمناقصات والاتفاقيات بين المعهد وجميع الشركات والموردين، مما أنهى أزمة إدارية مزمنة وضمن الامتثال المالي والرقابي الصارم.</li>
+          <li><strong>تحديث البنية التحتية والربط المؤسسي:</strong> وضع وتطبيق استراتيجية التحديث المؤسسي للبنية البرمجية والشبكات لربط الفروع الثلاثة للارتقاء بمستوى الخدمات الطبية والتشخيصية والإدارية.</li>
+        </ul>
+      </div>
+
+      <!-- Role 2 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">المدير العلمي – فرق المسح الجيني القومي والمبادرات الرئاسية</span>
+            <div class="exp-company">مركز التحكم في الأمراض المصري (CDC) – المعهد القومي لأبحاث الكبد</div>
+          </div>
+          <span class="exp-date">2026 – حتى الآن</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>قيادة البرامج القومية والرئاسية:</strong> إدارة وتوجيه الفريق العلمي المسؤول عن مكافحة الاضطرابات الوراثية لدى حديثي الولادة، منظومة الاكتشاف المبكر للأورام، ومبادرة فحص المقبلين على الزواج بالاعتماد على أحدث تقنيات الـ DNA والتكنولوجيا الحيوية.</li>
+          <li><strong>استيعاب وحوكمة دورة العمل الفائقة في 72 ساعة:</strong> إتقان وحوكمة الدورة المعقدة لبرنامج المسح الجيني لحديثي الولادة على مستوى جمهورية مصر العربية بالكامل (من استقبال العينات من المحافظات حتى اعتماد النتائج) في 3 أيام تدريب فقط.</li>
+          <li><strong>ابتكار أداة الأتمتة القومية (إنجاز اليوم الرابع):</strong> برمجة وتطوير أداة أتمتة فائقة الدقة والسرعة في اليوم الرابع لسد العجز الحاد في الكوادر الطبية المتخصصة، محولاً عملية توليد التقارير الطبية ورفع آلاف التحاليل الجينية الحساسة على بوابة وزارة الصحة من عمل يدوي يستغرق أياماً إلى <strong>ثوانٍ معدودة بضغطة زر وبنسبة خطأ 0.00%</strong>.</li>
+          <li><strong>الترقية الاستثنائية:</strong> تقديم الأداة لمساعد وزير الصحة (مدير الـ CDC) وعميد المعهد، مما أدى لترقية فورية لمنصب مستشار العميد ورئيس قطاع التكنولوجيا.</li>
+        </ul>
+      </div>
+
+      <!-- Role 3 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">مفتش ومراجع الامتثال التنظيمي والمخزني (مخازن الأدوية والمعامل والتجهيزات)</span>
+            <div class="exp-company">هيئة الشراء الموحد (UPA) / المعهد القومي لأبحاث الكبد</div>
+          </div>
+          <span class="exp-date">فبراير 2026 – حتى الآن</span>
+        </div>
+        <div class="metric-box">★ إنجاز تاريخي: إنهاء وتسوية أزمة مخزنية بقيمة 600 مليون جنيه مصري في أقل من 10 ساعات متواصلة</div>
+        <ul class="exp-bullets">
+          <li><strong>حل أزمة الـ 600 مليون جنيه:</strong> النجاح الفردي في تفكيك وإعادة مراجعة سجلات مخزنية معقدة بقيمة 600 مليون جنيه مصري كانت مسجلة بالخطأ كأصناف منتهية الصلاحية بمخازن المعامل والـ CDC، وفحص المستندات وحل المعضلة بالكامل في 10 ساعات عمل متواصلة.</li>
+          <li><strong>تسوية البيانات والحماية القانونية:</strong> مطابقة السجلات الرقمية لهيئة الشراء الموحد مع الجرود الفعلية، مما وفّر حماية قانونية ورقابية كاملة لقيادات الهيئة العامة للمستشفيات والمعاهد التعليمية (GOTHI) وإدارة المعهد والـ CDC من عقوبات ومساءلات جسيمة.</li>
+          <li><strong>الترقية المباشرة:</strong> النقل والترقية الفورية إلى الفريق العلمي بـ CDC تقديراً للدقة الاستثنائية وإدارة الأزمات في وقت قياسي.</li>
+        </ul>
+      </div>
+
+      <!-- Role 4 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">عضو الإدارة التجارية وعمليات التطوير الاستراتيجي (Commercial Management)</span>
+            <div class="exp-company">صيدليات سيف (SEIF Pharmacies) – الإدارة المركزية</div>
+          </div>
+          <span class="exp-date">2026 – حتى الآن</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>المساهمة في العمليات التجارية وصناعة القرارات الاستراتيجية لواحدة من كبرى سلاسل الصيدليات في مصر (تضم قرابة <strong>60 فرعاً</strong>).</li>
+          <li>التفاوض التجاري مع الشركات الموردة، وتعظيم هوامش الربحية، وتحسين معدلات دوران المخزون السلعي عبر الفروع.</li>
+        </ul>
+      </div>
+
+      <!-- Role 5 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">المؤسس والرئيس التنفيذي (Founder & CEO)</span>
+            <div class="exp-company">شركة العبد يونيميد للخدمات الإدارية وتكنولوجيا الرعاية الصحية (Al-Abd Unimed Startup)</div>
+          </div>
+          <span class="exp-date">2020 – حتى الآن</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>تأسيس وقيادة مجموعة صحية وتقنية متكاملة تضم سلسلة صيدليات، مستودع توزيع أدوية، مركزاً طبياً متطوراً، وحلولاً برمجية نوعية.</li>
+          <li>امتلاك وإدارة سلسلة صيدليات "العبد" (5 فروع بمحافظة المنيا) وتحقيق نمو مالي وتشغيلي متواصل.</li>
+          <li><strong>برمجة خوارزمية إعادة توزيع المخزون (Python):</strong> تطوير نظام برمجي بلغة Python لإعادة التوزيع الآلي للمخزون الدوائي عبر شبكة من 60 فرعاً لتقليص الأدوية الراكدة والتالفة وضمان وفرة الأصناف الحيوية.</li>
+          <li>قيادة تطوير منصات وتطبيقات الرعاية الصحية الذكية (AU MED و AU Business) لتقديم خدمات طبية وإدارية مؤتمتة للمؤسسات وللجمهور.</li>
+        </ul>
+      </div>
+
+      <!-- Earlier Roles -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">صيدلي إكلينيكي ومؤسسي</span>
+            <div class="exp-company">المعهد القومي لأبحاث الكبد (2017 – 2026) <span>|</span> معهد القلب القومي (2017)</div>
+          </div>
+          <span class="exp-date">2017 – 2026</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>إدارة صرف وتدقيق البروتوكولات العلاجية التخصصية لمرضى الكبد والحالات القلبية الحرجة، والإشراف على الجرود المخزنية الدقيقة وسلاسل الإمداد الداخلية.</li>
+          <li>خبرات مجتمعية سابقة: صيدلي بصيدليات د. شعبان بكر (2014 – 2017)، ومساعد صيدلي بصيدلية د. أدهم سيف (2013 – 2014).</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- Research -->
+    <section class="section">
+      <h2 class="section-title">البحث والإنتاج العلمي (Scientific Research)</h2>
+      <div class="research-card">
+        <h4>ورقة بحثية علمية أصلية قيد النشر في مجلات دولية محكمة (Peer-Reviewed International Journals):</h4>
+        <p><strong>«تطبيقات الاقتصاد الدائري في سلاسل الإمداد والتوزيع الدوائي»</strong><br>
+        <em>(Applications of the Circular Economy in Pharmaceutical Supply and Distribution Chains)</em><br>
+        دراسة منهجية مبتكرة لتطوير نماذج رقمية ولوجستية مستدامة تهدف إلى القضاء على الهدر الدوائي وإعادة تدوير الموارد وتحسين الكفاءة الاقتصادية في القطاع الصحي.</p>
+      </div>
+    </section>
+
+    <!-- Education & Skills -->
+    <section class="section">
+      <div class="two-cols">
+        <div>
+          <h2 class="section-title">التعليم والمؤهلات</h2>
+          <ul class="list-unstyled">
+            <li>
+              <strong>بكالوريوس العلوم الصيدلية (الصيدلة الإكلينيكية)</strong><br>
+              جامعة النهضة (NUB)، بني سويف | 2013 – 2017
+            </li>
+            <li>
+              <strong>الرخصة الدولية لقيادة الحاسب الآلي (ICDL)</strong>
+            </li>
+            <li>
+              <strong>شهادة إدارة العلاقات والشراكات المؤسسية (Relationship Management)</strong>
+            </li>
+            <li>
+              <strong>التفتيش والرقابة على المنشآت الطبية (معايير هيئة الشراء الموحد UPA)</strong>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="section-title">المهارات التقنية واللغات</h2>
+          <ul class="list-unstyled">
+            <li><strong>لغات البرمجة والأنظمة:</strong> Python, Custom ERP, Batch Automation Pipelines, SQL.</li>
+            <li><strong>المعلوماتية الصحية:</strong> LIS, HIS, تكامل بوابات وزارة الصحة، أتمتة الفحص الجيني.</li>
+            <li><strong>المهارات الشخصية والقيادية:</strong> التفكير الإبداعي (100%)، إدارة الأزمات وحل المعضلات، القيادة والتفويض، التخطيط الاستراتيجي.</li>
+            <li><strong>اللغات:</strong> العربية (اللغة الأم)، الإنجليزية (مستوى متقدم احترافي - Advanced).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive CV | Dr. Mahmoud Abdelrahman Hammam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f2c59;
+      --primary-light: #1e4b85;
+      --accent: #b45309;
+      --accent-soft: #fef3c7;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --border-color: #e5e7eb;
+      --bg-card: #f8fafc;
+      --metric-bg: #ecfdf5;
+      --metric-border: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f1f5f9;
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 13.5px;
+      padding: 30px 15px;
+    }
+
+    .cv-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 45px 50px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-top: 6px solid var(--primary);
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .header .titles {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-light);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .header .titles span {
+      color: var(--accent);
+      margin: 0 6px;
+    }
+
+    .contact-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 12.8px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .contact-item strong {
+      color: var(--primary);
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    /* Summary */
+    .summary-text {
+      text-align: justify;
+      color: var(--text-main);
+      font-size: 13.5px;
+      line-height: 1.7;
+      background: #fafbfc;
+      padding: 14px 18px;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+    }
+
+    .highlight {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Competencies Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 3px solid var(--primary-light);
+      padding: 9px 12px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .skill-card strong {
+      color: var(--primary);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+
+    /* Experience Items */
+    .exp-item {
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .exp-role {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .exp-company {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+
+    .exp-date {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid #fde68a;
+    }
+
+    .exp-bullets {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 6px;
+    }
+
+    .exp-bullets li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-main);
+      text-align: justify;
+    }
+
+    .exp-bullets li::before {
+      content: '■';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 9px;
+      top: 4px;
+    }
+
+    /* Metric Badge */
+    .metric-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #166534;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 12.5px;
+      margin: 6px 0;
+      display: inline-block;
+    }
+
+    /* Research Box */
+    .research-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 6px;
+    }
+
+    .research-card h4 {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+
+    /* Two Columns */
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .list-unstyled {
+      list-style: none;
+    }
+
+    .list-unstyled li {
+      padding: 5px 0;
+      font-size: 12.8px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .list-unstyled li:last-child {
+      border-bottom: none;
+    }
+
+    /* Print settings */
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+        font-size: 12px;
+      }
+      .cv-container {
+        box-shadow: none;
+        padding: 20px 25px;
+        max-width: 100%;
+        border-top: none;
+      }
+      .section {
+        page-break-inside: avoid;
+        margin-bottom: 18px;
+      }
+      .exp-item {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cv-container">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>Dr. Mahmoud Abdelrahman Hammam Abdelrahman</h1>
+      <div class="titles">
+        Healthcare Technology Consultant & Digital Health Transformation Leader <span>|</span> UPA Regulatory Inspector<br>
+        Advisor to the Dean & Director of Technological Affairs (NHTMRI) <span>|</span> Scientific Director, Egyptian CDC <span>|</span> Founder & CEO, Al-Abd Unimed
+      </div>
+      <div class="contact-bar">
+        <div class="contact-item"><strong>Location:</strong> Giza / Cairo, Egypt</div>
+        <div class="contact-item"><strong>Phone / WhatsApp:</strong> (+20) 01010436430</div>
+        <div class="contact-item"><strong>Email:</strong> Drfifty.mido@gmail.com</div>
+        <div class="contact-item"><strong>Degree:</strong> B.Pharm (Clinical Pharmacy)</div>
+      </div>
+    </header>
+
+    <!-- Executive Summary -->
+    <section class="section">
+      <h2 class="section-title">Executive Profile</h2>
+      <div class="summary-text">
+        Visionary Healthcare Technology Leader, Regulatory Inspector, and Innovative Clinical Pharmacist with over <span class="highlight">10 years of multi-disciplinary excellence</span> spanning digital health transformation, high-stakes regulatory compliance (Unified Procurement Authority - UPA), custom ERP and automation engineering (Python), national genomic screening program leadership, commercial pharmacy chain management, and health-tech entrepreneurship.<br><br>
+        Possesses an unprecedented track record in high-level crisis management and executive risk mitigation—highlighted by single-handedly auditing, reconciling, and resolving a <span class="highlight">600 Million EGP</span> regulatory inventory crisis in less than 10 consecutive hours, legally protecting executive leadership across governmental healthcare entities from severe liabilities. Architect of breakthrough automation platforms, notably developing a national diagnostic automation tool on Day 4 that transformed days of manual genetic reporting for nationwide newborn screening into seconds with <span class="highlight">0.00% error rate</span> directly integrated into the Ministry of Health portal, and engineering a full-lifecycle Custom Contract & Vendor ERP. These achievements led to an executive directive from the Dean of NHTMRI appointing Dr. Hammam as <span class="highlight">Senior Advisor to the Dean & Director of Technological Affairs</span> across all 3 branches.
+      </div>
+    </section>
+
+    <!-- Core Competencies -->
+    <section class="section">
+      <h2 class="section-title">Core Competencies & Areas of Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <strong>Strategic Digital Health Leadership</strong>
+          Formulating enterprise digital transformation roadmaps, executive & ministerial decision support, and multi-site healthcare operations governance.
+        </div>
+        <div class="skill-card">
+          <strong>Custom ERP & Automation Architecture</strong>
+          Architecting Contract & Vendor Management Systems, automated batch processing engines, and real-time clinical data pipelines.
+        </div>
+        <div class="skill-card">
+          <strong>High-Stakes Crisis Management & Compliance</strong>
+          UPA regulatory inspections, forensic warehouse auditing, digital-to-physical inventory reconciliation, and executive legal liability shielding.
+        </div>
+        <div class="skill-card">
+          <strong>Genomic Diagnostics & CDC Governance</strong>
+          Managing nationwide newborn genetic screening, early oncology detection programs, and automated Ministry of Health database synchronization.
+        </div>
+        <div class="skill-card">
+          <strong>Pharma Supply Chain & Circular Economy</strong>
+          Engineering Python-based automated redistribution engines across large networks (60 branches), eliminating pharmaceutical waste.
+        </div>
+        <div class="skill-card">
+          <strong>Commercial Retail & Health-Tech Startups</strong>
+          Commercial management of large-scale pharmacy chains, startup leadership, and scaling proprietary healthcare SaaS platforms (AU MED & AU Business).
+        </div>
+      </div>
+    </section>
+
+    <!-- Professional Experience -->
+    <section class="section">
+      <h2 class="section-title">Executive & Professional Experience</h2>
+
+      <!-- Role 1 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">Advisor to the Dean | Director of Technological Affairs</span>
+            <div class="exp-company">National Hepatology & Tropical Medicine Research Institute (NHTMRI) – GOTHI</div>
+          </div>
+          <span class="exp-date">2026 – Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>Executive Technological Direction:</strong> Appointed directly by the Dean to spearhead the institute's technological strategy, lead digital transformation, and oversee systems architecture across all 3 institute branches, serving as principal technology advisor to senior leadership.</li>
+          <li><strong>Architected Custom Contract & Vendor ERP:</strong> Conceived, designed, and deployed a centralized, custom software engine to govern all contracts, tenders, and vendor agreements between the institute and partner companies, completely eliminating paperwork bottlenecks and ensuring 100% automated regulatory and fiscal compliance.</li>
+          <li><strong>Infrastructure Modernization:</strong> Formulated and executed institute-wide infrastructure and software upgrades across all branches to elevate diagnostic throughput and clinical care.</li>
+        </ul>
+      </div>
+
+      <!-- Role 2 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">Scientific Director – National Newborn Screening & Presidential Initiatives Teams</span>
+            <div class="exp-company">Egyptian Center for Disease Control and Prevention (CDC) – NHTMRI</div>
+          </div>
+          <span class="exp-date">2026 – Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li><strong>National Program Oversight:</strong> Directing the scientific and operational teams responsible for controlling genetic disorders in newborns, early cancer detection programs, the Premarital Screening Initiative, and presidential health campaigns utilizing cutting-edge biotechnology and high-throughput DNA analysis.</li>
+          <li><strong>Mastered End-to-End National Workflow in 72 Hours:</strong> Audited, analyzed, and achieved total operational governance over Egypt’s nationwide newborn genetic screening program covering all governorates within just 3 training days.</li>
+          <li><strong>Pioneered Nationwide Diagnostic Automation Tool (Day 4 Breakthrough):</strong> Developed and deployed an ultra-precise automated diagnostics engine on Day 4 to bridge a severe nationwide shortage of certified medical doctors, transforming days of manual entry into a single-click operation completed in <strong>seconds with 100% accuracy (0.00% error rate)</strong> directly uploaded to the Ministry of Health portal.</li>
+          <li><strong>Accelerated Executive Promotion:</strong> Breakthrough presented directly to the Director of Egyptian CDC (Assistant Minister of Health) and the Dean, leading to an immediate executive directive promoting Dr. Hammam to Dean's Advisor and Tech Affairs Director.</li>
+        </ul>
+      </div>
+
+      <!-- Role 3 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">Pharmacist Inspector — Drug Stores, Laboratories, and Medical Equipment</span>
+            <div class="exp-company">Unified Procurement Authority (UPA) / NHTMRI</div>
+          </div>
+          <span class="exp-date">Feb 2026 – Present</span>
+        </div>
+        <div class="metric-box">★ Historic Achievement: Resolved 600 Million EGP inventory crisis in under 10 consecutive hours</div>
+        <ul class="exp-bullets">
+          <li><strong>Resolved 600 Million EGP Regulatory Crisis:</strong> Spearheaded the forensic audit of critical inventory records totaling 600M EGP erroneously recorded as expired stock in central laboratory and CDC facilities, resolving the entire crisis in under 10 hours of non-stop investigation.</li>
+          <li><strong>Digital Reconciliation & Legal Protection:</strong> Reconciled physical warehouse counts with UPA digital registries, shielding senior executives across GOTHI, NHTMRI, and CDC from severe administrative penalties and legal investigations.</li>
+          <li><strong>Merit Promotion:</strong> Immediately transferred and promoted to the CDC Scientific Team in recognition of unprecedented crisis mitigation and forensic rigor under extreme time pressure.</li>
+        </ul>
+      </div>
+
+      <!-- Role 4 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">Commercial Management Department</span>
+            <div class="exp-company">SEIF Pharmacies — Central Administration</div>
+          </div>
+          <span class="exp-date">2026 – Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Contributing to commercial strategy, vendor negotiations, procurement planning, and retail decision-making for one of Egypt’s premier and largest retail pharmacy chains (~<strong>60 branches</strong>).</li>
+          <li>Evaluating sales metrics, optimizing profit margins, and coordinating supply pipelines across high-volume retail outlets to maximize inventory turns and operational ROI.</li>
+        </ul>
+      </div>
+
+      <!-- Role 5 -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">Founder & Chief Executive Officer (CEO)</span>
+            <div class="exp-company">Al-Abd Unimed for Administrative Services & Health-Tech</div>
+          </div>
+          <span class="exp-date">2020 – Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Founded and scaled an integrated health-tech group comprising a 5-branch pharmacy chain, a pharmaceutical distribution warehouse, a modern medical center, and healthcare software solutions.</li>
+          <li>Owned and managed the Al-Abd pharmacy chain (5 branches in Minya), achieving consistent operational and commercial expansion.</li>
+          <li><strong>Engineered Python-Based Inventory Redistribution Algorithm:</strong> Designed and deployed custom software to automate pharmaceutical inventory rebalancing across a 60-branch network, drastically cutting dead stock and preventing medication expiration.</li>
+          <li>Leading the engineering and deployment of <strong>AU MED</strong> and <strong>AU Business</strong> cloud platforms for automated clinical and administrative services.</li>
+        </ul>
+      </div>
+
+      <!-- Earlier Roles -->
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <span class="exp-role">Clinical & Institutional Pharmacist</span>
+            <div class="exp-company">National Hepatology & Tropical Medicine Research Institute (2017 – 2026) <span>|</span> National Heart Institute (2017)</div>
+          </div>
+          <span class="exp-date">2017 – 2026</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Managed dispensing of specialized hepatology, oncology, and critical cardiac regimens; maintained strict oversight of cold chain, inventory registers, and Good Pharmacy Practice (GPP).</li>
+          <li>Early community practice: Pharmacist at Dr. Shaaban Bakr Pharmacies (2014 – 2017), Assistant Pharmacist at Dr. Adham Seif Pharmacy (2013 – 2014).</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- Research -->
+    <section class="section">
+      <h2 class="section-title">Scientific Research & Publications</h2>
+      <div class="research-card">
+        <h4>Original Scientific Research Paper (In Preparation for Peer-Reviewed International Journals):</h4>
+        <p><strong>“Applications of the Circular Economy in Pharmaceutical Supply and Distribution Chains”</strong><br>
+        Investigating algorithmic, data-driven closed-loop frameworks to eliminate pharmaceutical waste, optimize dynamic multi-site inventory redistribution, and enhance resource recovery across supply chains.</p>
+      </div>
+    </section>
+
+    <!-- Education & Skills -->
+    <section class="section">
+      <div class="two-cols">
+        <div>
+          <h2 class="section-title">Education & Certifications</h2>
+          <ul class="list-unstyled">
+            <li>
+              <strong>Bachelor of Pharmacy (B.Pharm) — Clinical Pharmacy Major</strong><br>
+              Nahda University (NUB), Beni Suef | 2013 – 2017
+            </li>
+            <li>
+              <strong>International Computer Driving Licence (ICDL)</strong>
+            </li>
+            <li>
+              <strong>Certified Relationship Management Specialist</strong>
+            </li>
+            <li>
+              <strong>Healthcare Quality & Regulatory Inspection (UPA Standards)</strong>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="section-title">Technical Stack & Languages</h2>
+          <ul class="list-unstyled">
+            <li><strong>Programming & ERP:</strong> Python, Custom ERP Systems, Batch Processing Pipelines, SQL.</li>
+            <li><strong>Health Informatics:</strong> LIS, HIS, Ministry of Health Portal Integration, Genomic Automation.</li>
+            <li><strong>Executive Strengths:</strong> Creative Thinking (100%), Crisis Mitigation, Planning & Strategic Thinking (90%), Delegation & Teamwork.</li>
+            <li><strong>Languages:</strong> Arabic (Native), English (Advanced Professional).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
